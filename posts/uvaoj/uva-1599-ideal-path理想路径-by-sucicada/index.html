@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <meta name="robots" content="index, follow">
-<title>理想路径（Ideal Path, NEERC 2010, UVa1599） | SuCicada</title>
+<title>UVA 1599 - Ideal Path(理想路径) By SuCicada | SuCicada</title>
 <meta name="keywords" content="UVaOJ">
 <meta name="description" content="例题6-20 理想路径（Ideal Path, NEERC 2010, UVa1599）
 给一个n个点m条边（2≤n≤100000，1≤m≤200000）的无向图，每条边上都涂有一种颜
@@ -26,13 +26,14 @@ Sample Output
 1 3
 本家链接
 先找最短路：倒序从终点bfs找。
-在此认为倒序和正序效果一样。只是某些处理逻辑相反。
-bfs之后，可能存在多条最短路，所以再需要一次bfs，来选出颜色最小的路。 降低时间的注意点：
+- 在此认为倒序和正序效果一样。只是某些处理逻辑相反。
+bfs之后，可能存在多条最短路，所以再需要一次bfs，来选出颜色最小的路。
+降低时间的注意点：
 选择合适的数据结构存储图。 一开始使用了map作为存储图的结构，后来在遍历过程中实在比vector慢了太多。 使用标记记录走过的结点，减少bfs重复计算。 对了2:00 - 2:30 期间uva oj 判题特别慢特别慢。尽量避开。
 #include&lt;iostream&gt; #include&lt;vector&gt; #include&lt;map&gt; #include&lt;queue&gt; #include&lt;cmath&gt; #include&lt;cstring&gt; #include&lt;set&gt; using namespace std; #define mapiter map&lt;int,int&gt;::iterator const int MAX_N = 100005; /* 先找最短路：倒序从终点bfs找。 - 在此认为倒序和正序效果一样。只是某些处理逻辑相反。 bfs之后，可能存在多条最短路，所以再需要一次bfs，来选出颜色最小的路。 一开始使用了map作为存储图的结构，后来在遍历过程中实在比vector慢了太多。 */ /* a-&gt;b map[a][b] == color */ class Node{ public: int next; int color; }; // map&lt;int,int&gt; door[MAX_N]; vector&lt;Node&gt; door[MAX_N]; /* 存储无向图，因为结点太多了 */ int book[MAX_N]; /* 记录每个点距离终点`的最小距离 */ int visit[MAX_N]; /* 记录走过的点 */ int big = (1L&lt;&lt;31)-1; int res[MAX_N]; int N,M; /* n下各点 到n 的距离取最短&#43;1 door[a][b] a -&gt; b log[b] = min(log[b], log[a]&#43;1) */ void bfs(){ queue&lt;int&gt; tmp; tmp.">
 <meta name="author" content="SuCicada">
-<link rel="canonical" href="https://sucicada.github.io/blog/posts/uvaoj/%E7%90%86%E6%83%B3%E8%B7%AF%E5%BE%84ideal-path-neerc-2010-uva1599/">
-<link crossorigin="anonymous" href="/blog/assets/css/stylesheet.4398b09e795c3aac93a04f4160281925a588bcdf14941ead87ab7bfe555ba854.css" integrity="sha256-Q5iwnnlcOqyToE9BYCgZJaWIvN8UlB6th6t7/lVbqFQ=" rel="preload stylesheet" as="style">
+<link rel="canonical" href="https://sucicada.github.io/blog/posts/uvaoj/uva-1599-ideal-path%E7%90%86%E6%83%B3%E8%B7%AF%E5%BE%84-by-sucicada/">
+<link crossorigin="anonymous" href="/blog/assets/css/stylesheet.5b5501da54f21435c8f8010d1de02123ae8d1ada696b48c6530ec4eea283e7d6.css" integrity="sha256-W1UB2lTyFDXI&#43;AENHeAhI66NGtppa0jGUw7E7qKD59Y=" rel="preload stylesheet" as="style">
 <link rel="icon" href="https://sucicada.github.io/blog/favicon.ico">
 <link rel="icon" type="image/png" sizes="16x16" href="https://sucicada.github.io/blog/favicon-16x16.png">
 <link rel="icon" type="image/png" sizes="32x32" href="https://sucicada.github.io/blog/favicon-32x32.png">
@@ -76,7 +77,7 @@ bfs之后，可能存在多条最短路，所以再需要一次bfs，来选出�
         }
 
     </style>
-</noscript><meta property="og:title" content="理想路径（Ideal Path, NEERC 2010, UVa1599）" />
+</noscript><meta property="og:title" content="UVA 1599 - Ideal Path(理想路径) By SuCicada" />
 <meta property="og:description" content="例题6-20 理想路径（Ideal Path, NEERC 2010, UVa1599）
 给一个n个点m条边（2≤n≤100000，1≤m≤200000）的无向图，每条边上都涂有一种颜
 色。求从结点1到结点n的一条路径，使得经过的边数尽量少，在此前提下，经过边的颜色序
@@ -96,19 +97,20 @@ Sample Output
 1 3
 本家链接
 先找最短路：倒序从终点bfs找。
-在此认为倒序和正序效果一样。只是某些处理逻辑相反。
-bfs之后，可能存在多条最短路，所以再需要一次bfs，来选出颜色最小的路。 降低时间的注意点：
+- 在此认为倒序和正序效果一样。只是某些处理逻辑相反。
+bfs之后，可能存在多条最短路，所以再需要一次bfs，来选出颜色最小的路。
+降低时间的注意点：
 选择合适的数据结构存储图。 一开始使用了map作为存储图的结构，后来在遍历过程中实在比vector慢了太多。 使用标记记录走过的结点，减少bfs重复计算。 对了2:00 - 2:30 期间uva oj 判题特别慢特别慢。尽量避开。
 #include&lt;iostream&gt; #include&lt;vector&gt; #include&lt;map&gt; #include&lt;queue&gt; #include&lt;cmath&gt; #include&lt;cstring&gt; #include&lt;set&gt; using namespace std; #define mapiter map&lt;int,int&gt;::iterator const int MAX_N = 100005; /* 先找最短路：倒序从终点bfs找。 - 在此认为倒序和正序效果一样。只是某些处理逻辑相反。 bfs之后，可能存在多条最短路，所以再需要一次bfs，来选出颜色最小的路。 一开始使用了map作为存储图的结构，后来在遍历过程中实在比vector慢了太多。 */ /* a-&gt;b map[a][b] == color */ class Node{ public: int next; int color; }; // map&lt;int,int&gt; door[MAX_N]; vector&lt;Node&gt; door[MAX_N]; /* 存储无向图，因为结点太多了 */ int book[MAX_N]; /* 记录每个点距离终点`的最小距离 */ int visit[MAX_N]; /* 记录走过的点 */ int big = (1L&lt;&lt;31)-1; int res[MAX_N]; int N,M; /* n下各点 到n 的距离取最短&#43;1 door[a][b] a -&gt; b log[b] = min(log[b], log[a]&#43;1) */ void bfs(){ queue&lt;int&gt; tmp; tmp." />
 <meta property="og:type" content="article" />
-<meta property="og:url" content="https://sucicada.github.io/blog/posts/uvaoj/%E7%90%86%E6%83%B3%E8%B7%AF%E5%BE%84ideal-path-neerc-2010-uva1599/" /><meta property="og:image" content="https://sucicada.github.io/blog/papermod-cover.png"/><meta property="article:section" content="posts" />
-<meta property="article:published_time" content="2022-12-13T16:23:31+09:00" />
-<meta property="article:modified_time" content="2022-12-13T16:23:31+09:00" />
+<meta property="og:url" content="https://sucicada.github.io/blog/posts/uvaoj/uva-1599-ideal-path%E7%90%86%E6%83%B3%E8%B7%AF%E5%BE%84-by-sucicada/" /><meta property="og:image" content="https://sucicada.github.io/blog/papermod-cover.png"/><meta property="article:section" content="posts" />
+
+
 
 <meta name="twitter:card" content="summary_large_image"/>
 <meta name="twitter:image" content="https://sucicada.github.io/blog/papermod-cover.png"/>
 
-<meta name="twitter:title" content="理想路径（Ideal Path, NEERC 2010, UVa1599）"/>
+<meta name="twitter:title" content="UVA 1599 - Ideal Path(理想路径) By SuCicada"/>
 <meta name="twitter:description" content="例题6-20 理想路径（Ideal Path, NEERC 2010, UVa1599）
 给一个n个点m条边（2≤n≤100000，1≤m≤200000）的无向图，每条边上都涂有一种颜
 色。求从结点1到结点n的一条路径，使得经过的边数尽量少，在此前提下，经过边的颜色序
@@ -128,8 +130,9 @@ Sample Output
 1 3
 本家链接
 先找最短路：倒序从终点bfs找。
-在此认为倒序和正序效果一样。只是某些处理逻辑相反。
-bfs之后，可能存在多条最短路，所以再需要一次bfs，来选出颜色最小的路。 降低时间的注意点：
+- 在此认为倒序和正序效果一样。只是某些处理逻辑相反。
+bfs之后，可能存在多条最短路，所以再需要一次bfs，来选出颜色最小的路。
+降低时间的注意点：
 选择合适的数据结构存储图。 一开始使用了map作为存储图的结构，后来在遍历过程中实在比vector慢了太多。 使用标记记录走过的结点，减少bfs重复计算。 对了2:00 - 2:30 期间uva oj 判题特别慢特别慢。尽量避开。
 #include&lt;iostream&gt; #include&lt;vector&gt; #include&lt;map&gt; #include&lt;queue&gt; #include&lt;cmath&gt; #include&lt;cstring&gt; #include&lt;set&gt; using namespace std; #define mapiter map&lt;int,int&gt;::iterator const int MAX_N = 100005; /* 先找最短路：倒序从终点bfs找。 - 在此认为倒序和正序效果一样。只是某些处理逻辑相反。 bfs之后，可能存在多条最短路，所以再需要一次bfs，来选出颜色最小的路。 一开始使用了map作为存储图的结构，后来在遍历过程中实在比vector慢了太多。 */ /* a-&gt;b map[a][b] == color */ class Node{ public: int next; int color; }; // map&lt;int,int&gt; door[MAX_N]; vector&lt;Node&gt; door[MAX_N]; /* 存储无向图，因为结点太多了 */ int book[MAX_N]; /* 记录每个点距离终点`的最小距离 */ int visit[MAX_N]; /* 记录走过的点 */ int big = (1L&lt;&lt;31)-1; int res[MAX_N]; int N,M; /* n下各点 到n 的距离取最短&#43;1 door[a][b] a -&gt; b log[b] = min(log[b], log[a]&#43;1) */ void bfs(){ queue&lt;int&gt; tmp; tmp."/>
 
@@ -148,8 +151,8 @@ bfs之后，可能存在多条最短路，所以再需要一次bfs，来选出�
     {
       "@type": "ListItem",
       "position":  3 ,
-      "name": "理想路径（Ideal Path, NEERC 2010, UVa1599）",
-      "item": "https://sucicada.github.io/blog/posts/uvaoj/%E7%90%86%E6%83%B3%E8%B7%AF%E5%BE%84ideal-path-neerc-2010-uva1599/"
+      "name": "UVA 1599 - Ideal Path(理想路径) By SuCicada",
+      "item": "https://sucicada.github.io/blog/posts/uvaoj/uva-1599-ideal-path%E7%90%86%E6%83%B3%E8%B7%AF%E5%BE%84-by-sucicada/"
     }
   ]
 }
@@ -158,24 +161,24 @@ bfs之后，可能存在多条最短路，所以再需要一次bfs，来选出�
 {
   "@context": "https://schema.org",
   "@type": "BlogPosting",
-  "headline": "理想路径（Ideal Path, NEERC 2010, UVa1599）",
-  "name": "理想路径（Ideal Path, NEERC 2010, UVa1599）",
-  "description": "例题6-20 理想路径（Ideal Path, NEERC 2010, UVa1599）\n给一个n个点m条边（2≤n≤100000，1≤m≤200000）的无向图，每条边上都涂有一种颜\n色。求从结点1到结点n的一条路径，使得经过的边数尽量少，在此前提下，经过边的颜色序\n列的字典序最小。一对结点间可能有多条边，一条边可能连接两个相同结点。输入保证结点\n1可以达到结点n。颜色为1～10\n9的整数。\nSample Input\n4 6\n1 2 1\n1 3 2\n3 4 3\n2 3 1\n2 4 4\n3 1 1\nSample Output\n2\n1 3\n本家链接\n先找最短路：倒序从终点bfs找。\n在此认为倒序和正序效果一样。只是某些处理逻辑相反。\nbfs之后，可能存在多条最短路，所以再需要一次bfs，来选出颜色最小的路。 降低时间的注意点：\n选择合适的数据结构存储图。 一开始使用了map作为存储图的结构，后来在遍历过程中实在比vector慢了太多。 使用标记记录走过的结点，减少bfs重复计算。 对了2:00 - 2:30 期间uva oj 判题特别慢特别慢。尽量避开。\n#include\u0026lt;iostream\u0026gt; #include\u0026lt;vector\u0026gt; #include\u0026lt;map\u0026gt; #include\u0026lt;queue\u0026gt; #include\u0026lt;cmath\u0026gt; #include\u0026lt;cstring\u0026gt; #include\u0026lt;set\u0026gt; using namespace std; #define mapiter map\u0026lt;int,int\u0026gt;::iterator const int MAX_N = 100005; /* 先找最短路：倒序从终点bfs找。 - 在此认为倒序和正序效果一样。只是某些处理逻辑相反。 bfs之后，可能存在多条最短路，所以再需要一次bfs，来选出颜色最小的路。 一开始使用了map作为存储图的结构，后来在遍历过程中实在比vector慢了太多。 */ /* a-\u0026gt;b map[a][b] == color */ class Node{ public: int next; int color; }; // map\u0026lt;int,int\u0026gt; door[MAX_N]; vector\u0026lt;Node\u0026gt; door[MAX_N]; /* 存储无向图，因为结点太多了 */ int book[MAX_N]; /* 记录每个点距离终点`的最小距离 */ int visit[MAX_N]; /* 记录走过的点 */ int big = (1L\u0026lt;\u0026lt;31)-1; int res[MAX_N]; int N,M; /* n下各点 到n 的距离取最短+1 door[a][b] a -\u0026gt; b log[b] = min(log[b], log[a]+1) */ void bfs(){ queue\u0026lt;int\u0026gt; tmp; tmp.",
+  "headline": "UVA 1599 - Ideal Path(理想路径) By SuCicada",
+  "name": "UVA 1599 - Ideal Path(理想路径) By SuCicada",
+  "description": "例题6-20 理想路径（Ideal Path, NEERC 2010, UVa1599）\n给一个n个点m条边（2≤n≤100000，1≤m≤200000）的无向图，每条边上都涂有一种颜\n色。求从结点1到结点n的一条路径，使得经过的边数尽量少，在此前提下，经过边的颜色序\n列的字典序最小。一对结点间可能有多条边，一条边可能连接两个相同结点。输入保证结点\n1可以达到结点n。颜色为1～10\n9的整数。\nSample Input\n4 6\n1 2 1\n1 3 2\n3 4 3\n2 3 1\n2 4 4\n3 1 1\nSample Output\n2\n1 3\n本家链接\n先找最短路：倒序从终点bfs找。\n- 在此认为倒序和正序效果一样。只是某些处理逻辑相反。\nbfs之后，可能存在多条最短路，所以再需要一次bfs，来选出颜色最小的路。\n降低时间的注意点：\n选择合适的数据结构存储图。 一开始使用了map作为存储图的结构，后来在遍历过程中实在比vector慢了太多。 使用标记记录走过的结点，减少bfs重复计算。 对了2:00 - 2:30 期间uva oj 判题特别慢特别慢。尽量避开。\n#include\u0026lt;iostream\u0026gt; #include\u0026lt;vector\u0026gt; #include\u0026lt;map\u0026gt; #include\u0026lt;queue\u0026gt; #include\u0026lt;cmath\u0026gt; #include\u0026lt;cstring\u0026gt; #include\u0026lt;set\u0026gt; using namespace std; #define mapiter map\u0026lt;int,int\u0026gt;::iterator const int MAX_N = 100005; /* 先找最短路：倒序从终点bfs找。 - 在此认为倒序和正序效果一样。只是某些处理逻辑相反。 bfs之后，可能存在多条最短路，所以再需要一次bfs，来选出颜色最小的路。 一开始使用了map作为存储图的结构，后来在遍历过程中实在比vector慢了太多。 */ /* a-\u0026gt;b map[a][b] == color */ class Node{ public: int next; int color; }; // map\u0026lt;int,int\u0026gt; door[MAX_N]; vector\u0026lt;Node\u0026gt; door[MAX_N]; /* 存储无向图，因为结点太多了 */ int book[MAX_N]; /* 记录每个点距离终点`的最小距离 */ int visit[MAX_N]; /* 记录走过的点 */ int big = (1L\u0026lt;\u0026lt;31)-1; int res[MAX_N]; int N,M; /* n下各点 到n 的距离取最短+1 door[a][b] a -\u0026gt; b log[b] = min(log[b], log[a]+1) */ void bfs(){ queue\u0026lt;int\u0026gt; tmp; tmp.",
   "keywords": [
     "UVaOJ"
   ],
-  "articleBody": " 例题6-20 理想路径（Ideal Path, NEERC 2010, UVa1599）\n给一个n个点m条边（2≤n≤100000，1≤m≤200000）的无向图，每条边上都涂有一种颜\n色。求从结点1到结点n的一条路径，使得经过的边数尽量少，在此前提下，经过边的颜色序\n列的字典序最小。一对结点间可能有多条边，一条边可能连接两个相同结点。输入保证结点\n1可以达到结点n。颜色为1～10\n9的整数。\nSample Input\n4 6\n1 2 1\n1 3 2\n3 4 3\n2 3 1\n2 4 4\n3 1 1\nSample Output\n2\n1 3\n本家链接\n先找最短路：倒序从终点bfs找。\n在此认为倒序和正序效果一样。只是某些处理逻辑相反。\nbfs之后，可能存在多条最短路，所以再需要一次bfs，来选出颜色最小的路。 降低时间的注意点：\n选择合适的数据结构存储图。 一开始使用了map作为存储图的结构，后来在遍历过程中实在比vector慢了太多。 使用标记记录走过的结点，减少bfs重复计算。 对了2:00 - 2:30 期间uva oj 判题特别慢特别慢。尽量避开。\n#include #include #include #include #include #include #include using namespace std; #define mapiter map::iterator const int MAX_N = 100005; /* 先找最短路：倒序从终点bfs找。 - 在此认为倒序和正序效果一样。只是某些处理逻辑相反。 bfs之后，可能存在多条最短路，所以再需要一次bfs，来选出颜色最小的路。 一开始使用了map作为存储图的结构，后来在遍历过程中实在比vector慢了太多。 */ /* a-\u003eb map[a][b] == color */ class Node{ public: int next; int color; }; // map door[MAX_N]; vector\u003cNode\u003e door[MAX_N]; /* 存储无向图，因为结点太多了 */ int book[MAX_N]; /* 记录每个点距离终点`的最小距离 */ int visit[MAX_N]; /* 记录走过的点 */ int big = (1L\u003c\u003c31)-1; int res[MAX_N]; int N,M; /* n下各点 到n 的距离取最短+1 door[a][b] a -\u003e b log[b] = min(log[b], log[a]+1) */ void bfs(){ queue\u003cint\u003e tmp; tmp.push(N); visit[N] = 1; while(!tmp.empty()){ int a = tmp.front(); tmp.pop(); if(a==1){ /* 到头了 */ break; } for(int i=0;i\u003cdoor[a].size();i++){ int b = door[a][i].next; if(book[b] \u003e book[a]+1){ book[b] = book[a]+1; } if(!visit[b]){ visit[b] = 1; tmp.push(b); } } } } void calc(){ memset(visit, 0, sizeof(visit)); set\u003cint\u003e tmp; int resN = book[1]; tmp.insert(1); while(!tmp.empty()){ vector\u003cint\u003e tmpV; int a; int min_color = big; int min_b = big; int n; /* 同color同距离的 一层 , 不同的位置即a, 要找出最小的 color和对应的 位置 */ for(set\u003cint\u003e::iterator it = tmp.begin();it!=tmp.end();it++){ a = *it; // 这个的位置 n = book[a]; // 这一个的距离到n /* 扫相连, 找下一跳, \u0026\u0026 字典序小 */ for(int i=0;i\u003cdoor[a].size();i++){ int b = door[a][i].next; int color = door[a][i].color; if(book[b]==n-1){ min_b = b; if( min_color \u003e color){ min_color = color; tmpV.clear(); tmpV.push_back(b); }else if(min_color == color){ tmpV.push_back(b);// 相同的color位置存 } } } } // 得到了这一层最小的color对应的位置: tmp if(n==0) break; // 这个位置虽然下一跳不确定,但是color确定了, 存下 res[n] = min(res[n],min_color); tmp.clear(); // 开始遍历color相同的位置 for(int i=0;i\u003ctmpV.size();i++){ // 不走重复的愿望路是非常重要的 if(visit[index]==0){ visit[index]=1; tmp.insert(index); } } } } int main(){ int n,m; while(cin\u003e\u003en\u003e\u003em){ for(int i=1;i\u003c=n;i++){ door[i].clear(); book[i]= big; res[i] = big; visit[i] = 0; } N = n; M = m; for(int i=0;i\u003cm;i++){ int a,b,c; cin\u003e\u003ea\u003e\u003eb\u003e\u003ec; Node n1; n1.next = b; n1.color = c; Node n2; n2.next = a; n2.color = c; door[a].push_back(n1); door[b].push_back(n2); } book[n] = 0; bfs(); calc(); cout\u003c\u003cbook[1]\u003c\u003cendl; for(int i=book[1];i\u003e=1;i--){ cout\u003c\u003cres[i]; if(i!=1){ cout\u003c\u003c\" \"; } } cout\u003c\u003cendl; } return 0; } // AC at 2020/09/16 ps：这道题提交了太多次，做了很多天，一度绝望，一直超时。熬夜一天废一周。所以要保证良好的精神状态和心态再来做题。警惕陷入负面漩涡之中。\n",
-  "wordCount" : "357",
+  "articleBody": " 例题6-20 理想路径（Ideal Path, NEERC 2010, UVa1599）\n给一个n个点m条边（2≤n≤100000，1≤m≤200000）的无向图，每条边上都涂有一种颜\n色。求从结点1到结点n的一条路径，使得经过的边数尽量少，在此前提下，经过边的颜色序\n列的字典序最小。一对结点间可能有多条边，一条边可能连接两个相同结点。输入保证结点\n1可以达到结点n。颜色为1～10\n9的整数。\nSample Input\n4 6\n1 2 1\n1 3 2\n3 4 3\n2 3 1\n2 4 4\n3 1 1\nSample Output\n2\n1 3\n本家链接\n先找最短路：倒序从终点bfs找。\n- 在此认为倒序和正序效果一样。只是某些处理逻辑相反。\nbfs之后，可能存在多条最短路，所以再需要一次bfs，来选出颜色最小的路。\n降低时间的注意点：\n选择合适的数据结构存储图。 一开始使用了map作为存储图的结构，后来在遍历过程中实在比vector慢了太多。 使用标记记录走过的结点，减少bfs重复计算。 对了2:00 - 2:30 期间uva oj 判题特别慢特别慢。尽量避开。\n#include #include #include #include #include #include #include using namespace std; #define mapiter map::iterator const int MAX_N = 100005; /* 先找最短路：倒序从终点bfs找。 - 在此认为倒序和正序效果一样。只是某些处理逻辑相反。 bfs之后，可能存在多条最短路，所以再需要一次bfs，来选出颜色最小的路。 一开始使用了map作为存储图的结构，后来在遍历过程中实在比vector慢了太多。 */ /* a-\u003eb map[a][b] == color */ class Node{ public: int next; int color; }; // map door[MAX_N]; vector\u003cNode\u003e door[MAX_N]; /* 存储无向图，因为结点太多了 */ int book[MAX_N]; /* 记录每个点距离终点`的最小距离 */ int visit[MAX_N]; /* 记录走过的点 */ int big = (1L\u003c\u003c31)-1; int res[MAX_N]; int N,M; /* n下各点 到n 的距离取最短+1 door[a][b] a -\u003e b log[b] = min(log[b], log[a]+1) */ void bfs(){ queue\u003cint\u003e tmp; tmp.push(N); visit[N] = 1; while(!tmp.empty()){ int a = tmp.front(); tmp.pop(); if(a==1){ /* 到头了 */ break; } for(int i=0;i\u003cdoor[a].size();i++){ int b = door[a][i].next; if(book[b] \u003e book[a]+1){ book[b] = book[a]+1; } if(!visit[b]){ visit[b] = 1; tmp.push(b); } } } } void calc(){ memset(visit, 0, sizeof(visit)); set\u003cint\u003e tmp; int resN = book[1]; tmp.insert(1); while(!tmp.empty()){ vector\u003cint\u003e tmpV; int a; int min_color = big; int min_b = big; int n; /* 同color同距离的 一层 , 不同的位置即a, 要找出最小的 color和对应的 位置 */ for(set\u003cint\u003e::iterator it = tmp.begin();it!=tmp.end();it++){ a = *it; // 这个的位置 n = book[a]; // 这一个的距离到n /* 扫相连, 找下一跳, \u0026\u0026 字典序小 */ for(int i=0;i\u003cdoor[a].size();i++){ int b = door[a][i].next; int color = door[a][i].color; if(book[b]==n-1){ min_b = b; if( min_color \u003e color){ min_color = color; tmpV.clear(); tmpV.push_back(b); }else if(min_color == color){ tmpV.push_back(b);// 相同的color位置存 } } } } // 得到了这一层最小的color对应的位置: tmp if(n==0) break; // 这个位置虽然下一跳不确定,但是color确定了, 存下 res[n] = min(res[n],min_color); tmp.clear(); // 开始遍历color相同的位置 for(int i=0;i\u003ctmpV.size();i++){ // 不走重复的愿望路是非常重要的 if(visit[index]==0){ visit[index]=1; tmp.insert(index); } } } } int main(){ int n,m; while(cin\u003e\u003en\u003e\u003em){ for(int i=1;i\u003c=n;i++){ door[i].clear(); book[i]= big; res[i] = big; visit[i] = 0; } N = n; M = m; for(int i=0;i\u003cm;i++){ int a,b,c; cin\u003e\u003ea\u003e\u003eb\u003e\u003ec; Node n1; n1.next = b; n1.color = c; Node n2; n2.next = a; n2.color = c; door[a].push_back(n1); door[b].push_back(n2); } book[n] = 0; bfs(); calc(); cout\u003c\u003cbook[1]\u003c\u003cendl; for(int i=book[1];i\u003e=1;i--){ cout\u003c\u003cres[i]; if(i!=1){ cout\u003c\u003c\" \"; } } cout\u003c\u003cendl; } return 0; } // AC at 2020/09/16 ps：这道题提交了太多次，做了很多天，一度绝望，一直超时。熬夜一天废一周。所以要保证良好的精神状态和心态再来做题。警惕陷入负面漩涡之中。\n",
+  "wordCount" : "358",
   "inLanguage": "en",
-  "datePublished": "2022-12-13T16:23:31+09:00",
-  "dateModified": "2022-12-13T16:23:31+09:00",
+  "datePublished": "0001-01-01T00:00:00Z",
+  "dateModified": "0001-01-01T00:00:00Z",
   "author":{
     "@type": "Person",
     "name": "SuCicada"
   },
   "mainEntityOfPage": {
     "@type": "WebPage",
-    "@id": "https://sucicada.github.io/blog/posts/uvaoj/%E7%90%86%E6%83%B3%E8%B7%AF%E5%BE%84ideal-path-neerc-2010-uva1599/"
+    "@id": "https://sucicada.github.io/blog/posts/uvaoj/uva-1599-ideal-path%E7%90%86%E6%83%B3%E8%B7%AF%E5%BE%84-by-sucicada/"
   },
   "publisher": {
     "@type": "Organization",
@@ -230,7 +233,7 @@ bfs之后，可能存在多条最短路，所以再需要一次bfs，来选出�
         </div>
         <ul id="menu">
             <li>
-                <a href="https://sucicada.github.io/blog/archives" title="Archive">
+                <a href="https://sucicada.github.io/blog/archives/" title="Archive">
                     <span>Archive</span>
                 </a>
             </li>
@@ -245,25 +248,8 @@ bfs之后，可能存在多条最短路，所以再需要一次bfs，来选出�
                 </a>
             </li>
             <li>
-                <a href="https://discord.gg/ahpmTvhVmp" title="Discord">
-                    <span>Discord</span>&nbsp;
-                    <svg fill="none" shape-rendering="geometricPrecision" stroke="currentColor" stroke-linecap="round"
-                        stroke-linejoin="round" stroke-width="2.5" viewBox="0 0 24 24" height="12" width="12">
-                        <path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"></path>
-                        <path d="M15 3h6v6"></path>
-                        <path d="M10 14L21 3"></path>
-                    </svg>
-                </a>
-            </li>
-            <li>
-                <a href="https://github.com/adityatelange/hugo-PaperMod/wiki/" title="WiKi">
-                    <span>WiKi</span>&nbsp;
-                    <svg fill="none" shape-rendering="geometricPrecision" stroke="currentColor" stroke-linecap="round"
-                        stroke-linejoin="round" stroke-width="2.5" viewBox="0 0 24 24" height="12" width="12">
-                        <path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"></path>
-                        <path d="M15 3h6v6"></path>
-                        <path d="M10 14L21 3"></path>
-                    </svg>
+                <a href="https://sucicada.github.io/blog/about/" title="About">
+                    <span>About</span>
                 </a>
             </li>
         </ul>
@@ -275,9 +261,9 @@ bfs之后，可能存在多条最短路，所以再需要一次bfs，来选出�
   <header class="post-header">
 
     <h1 class="post-title">
-      理想路径（Ideal Path, NEERC 2010, UVa1599）
+      UVA 1599 - Ideal Path(理想路径) By SuCicada
     </h1>
-    <div class="post-meta"><span title='2022-12-13 16:23:31 +0900 +0900'>December 13, 2022</span>&nbsp;·&nbsp;2 min&nbsp;·&nbsp;SuCicada&nbsp;|&nbsp;<a href="https://github.com/adityatelange/hugo-PaperMod/tree/exampleSite/content/posts/UVaOJ/%e7%90%86%e6%83%b3%e8%b7%af%e5%be%84%ef%bc%88Ideal%20Path,%20NEERC%202010,%20UVa1599%ef%bc%89.md" rel="noopener noreferrer" target="_blank">Suggest Changes</a>
+    <div class="post-meta">SuCicada&nbsp;|&nbsp;<a href="https://github.com/SuCicada/mysite-hugo/content/posts/UVaOJ/UVA%201599%20-%20Ideal%20Path%28%e7%90%86%e6%83%b3%e8%b7%af%e5%be%84%29%20By%20SuCicada.md" rel="noopener noreferrer" target="_blank">Suggest Changes</a>
 
 </div>
     <ul class="post-tags">
@@ -306,11 +292,9 @@ bfs之后，可能存在多条最短路，所以再需要一次bfs，来选出�
 </blockquote>
 <p><a href="https://onlinejudge.org/index.php?option=com_onlinejudge&amp;Itemid=8&amp;category=838&amp;page=show_problem&amp;problem=4474">本家链接</a></p>
 <hr>
-<p>先找最短路：倒序从终点bfs找。</p>
-<ul>
-<li>在此认为倒序和正序效果一样。只是某些处理逻辑相反。<br>
-bfs之后，可能存在多条最短路，所以再需要一次bfs，来选出颜色最小的路。</li>
-</ul>
+<p>先找最短路：倒序从终点bfs找。<br>
+- 在此认为倒序和正序效果一样。只是某些处理逻辑相反。<br>
+bfs之后，可能存在多条最短路，所以再需要一次bfs，来选出颜色最小的路。</p>
 <p>降低时间的注意点：</p>
 <ol>
 <li>选择合适的数据结构存储图。   一开始使用了map作为存储图的结构，后来在遍历过程中实在比vector慢了太多。</li>
@@ -479,18 +463,30 @@ bfs之后，可能存在多条最短路，所以再需要一次bfs，来选出�
   </div>
 
   <footer class="post-footer">
+<nav class="paginav">
+  <a class="prev" href="https://sucicada.github.io/blog/posts/uvaoj/uva-1592-database-%E6%95%B0%E6%8D%AE%E5%BA%93-by-sucicada/">
+    <span class="title">« Prev</span>
+    <br>
+    <span>UVA 1592 - Database (数据库) By SuCicada</span>
+  </a>
+  <a class="next" href="https://sucicada.github.io/blog/posts/uvaoj/uva-201-squares%E6%95%B0%E6%AD%A3%E6%96%B9%E5%BD%A2/">
+    <span class="title">Next »</span>
+    <br>
+    <span>uva 201 - Squares（数正方形）</span>
+  </a>
+</nav>
 
 
 <div class="share-buttons">
-    <a target="_blank" rel="noopener noreferrer" aria-label="share 理想路径（Ideal Path, NEERC 2010, UVa1599） on twitter"
-        href="https://twitter.com/intent/tweet/?text=%e7%90%86%e6%83%b3%e8%b7%af%e5%be%84%ef%bc%88Ideal%20Path%2c%20NEERC%202010%2c%20UVa1599%ef%bc%89&amp;url=https%3a%2f%2fsucicada.github.io%2fblog%2fposts%2fuvaoj%2f%25E7%2590%2586%25E6%2583%25B3%25E8%25B7%25AF%25E5%25BE%2584ideal-path-neerc-2010-uva1599%2f&amp;hashtags=UVaOJ">
+    <a target="_blank" rel="noopener noreferrer" aria-label="share UVA 1599 - Ideal Path(理想路径) By SuCicada on twitter"
+        href="https://twitter.com/intent/tweet/?text=UVA%201599%20-%20Ideal%20Path%28%e7%90%86%e6%83%b3%e8%b7%af%e5%be%84%29%20By%20SuCicada&amp;url=https%3a%2f%2fsucicada.github.io%2fblog%2fposts%2fuvaoj%2fuva-1599-ideal-path%25E7%2590%2586%25E6%2583%25B3%25E8%25B7%25AF%25E5%25BE%2584-by-sucicada%2f&amp;hashtags=UVaOJ">
         <svg version="1.1" viewBox="0 0 512 512" xml:space="preserve" height="30px" width="30px" fill="currentColor">
             <path
                 d="M449.446,0c34.525,0 62.554,28.03 62.554,62.554l0,386.892c0,34.524 -28.03,62.554 -62.554,62.554l-386.892,0c-34.524,0 -62.554,-28.03 -62.554,-62.554l0,-386.892c0,-34.524 28.029,-62.554 62.554,-62.554l386.892,0Zm-253.927,424.544c135.939,0 210.268,-112.643 210.268,-210.268c0,-3.218 0,-6.437 -0.153,-9.502c14.406,-10.421 26.973,-23.448 36.935,-38.314c-13.18,5.824 -27.433,9.809 -42.452,11.648c15.326,-9.196 26.973,-23.602 32.49,-40.92c-14.252,8.429 -30.038,14.56 -46.896,17.931c-13.487,-14.406 -32.644,-23.295 -53.946,-23.295c-40.767,0 -73.87,33.104 -73.87,73.87c0,5.824 0.613,11.494 1.992,16.858c-61.456,-3.065 -115.862,-32.49 -152.337,-77.241c-6.284,10.881 -9.962,23.601 -9.962,37.088c0,25.594 13.027,48.276 32.95,61.456c-12.107,-0.307 -23.448,-3.678 -33.41,-9.196l0,0.92c0,35.862 25.441,65.594 59.311,72.49c-6.13,1.686 -12.72,2.606 -19.464,2.606c-4.751,0 -9.348,-0.46 -13.946,-1.38c9.349,29.426 36.628,50.728 68.965,51.341c-25.287,19.771 -57.164,31.571 -91.8,31.571c-5.977,0 -11.801,-0.306 -17.625,-1.073c32.337,21.15 71.264,33.41 112.95,33.41Z" />
         </svg>
     </a>
-    <a target="_blank" rel="noopener noreferrer" aria-label="share 理想路径（Ideal Path, NEERC 2010, UVa1599） on telegram"
-        href="https://telegram.me/share/url?text=%e7%90%86%e6%83%b3%e8%b7%af%e5%be%84%ef%bc%88Ideal%20Path%2c%20NEERC%202010%2c%20UVa1599%ef%bc%89&amp;url=https%3a%2f%2fsucicada.github.io%2fblog%2fposts%2fuvaoj%2f%25E7%2590%2586%25E6%2583%25B3%25E8%25B7%25AF%25E5%25BE%2584ideal-path-neerc-2010-uva1599%2f">
+    <a target="_blank" rel="noopener noreferrer" aria-label="share UVA 1599 - Ideal Path(理想路径) By SuCicada on telegram"
+        href="https://telegram.me/share/url?text=UVA%201599%20-%20Ideal%20Path%28%e7%90%86%e6%83%b3%e8%b7%af%e5%be%84%29%20By%20SuCicada&amp;url=https%3a%2f%2fsucicada.github.io%2fblog%2fposts%2fuvaoj%2fuva-1599-ideal-path%25E7%2590%2586%25E6%2583%25B3%25E8%25B7%25AF%25E5%25BE%2584-by-sucicada%2f">
         <svg version="1.1" xml:space="preserve" viewBox="2 2 28 28" height="30px" width="30px" fill="currentColor">
             <path
                 d="M26.49,29.86H5.5a3.37,3.37,0,0,1-2.47-1,3.35,3.35,0,0,1-1-2.47V5.48A3.36,3.36,0,0,1,3,3,3.37,3.37,0,0,1,5.5,2h21A3.38,3.38,0,0,1,29,3a3.36,3.36,0,0,1,1,2.46V26.37a3.35,3.35,0,0,1-1,2.47A3.38,3.38,0,0,1,26.49,29.86Zm-5.38-6.71a.79.79,0,0,0,.85-.66L24.73,9.24a.55.55,0,0,0-.18-.46.62.62,0,0,0-.41-.17q-.08,0-16.53,6.11a.59.59,0,0,0-.41.59.57.57,0,0,0,.43.52l4,1.24,1.61,4.83a.62.62,0,0,0,.63.43.56.56,0,0,0,.4-.17L16.54,20l4.09,3A.9.9,0,0,0,21.11,23.15ZM13.8,20.71l-1.21-4q8.72-5.55,8.78-5.55c.15,0,.23,0,.23.16a.18.18,0,0,1,0,.06s-2.51,2.3-7.52,6.8Z" />
@@ -498,7 +494,27 @@ bfs之后，可能存在多条最短路，所以再需要一次bfs，来选出�
     </a>
 </div>
 
-  </footer>
+  </footer><div id="disqus_thread"></div>
+<script type="application/javascript">
+    window.disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "sucicada" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
 </article>
     </main>
     

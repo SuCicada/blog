@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto">
+
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>UVA 10562 - Undraw the Trees(看图写树) By SuCicada | SuCicada</title>
+<meta name="keywords" content="UVaOJ">
+<meta name="description" content="例题6-17 看图写树（Undraw the Trees, UVa 10562）
+你的任务是将多叉树转化为括号表示法。如图6-16所示，每个结点用除了“-”、“|”和空格
+的其他字符表示，每个非叶结点的正下方总会有一个“|”字符，然后下方是一排“-”字符，恰
+好覆盖所有子结点的上方。单独的一行“#”为数据结束标记。
+Sample Input
+2 A | -------- B C D | | ----- - E F G # e | ---- f g # Sample Output
+(A(B()C(E()F())D(G())))
+(e(f()g()))
+本家地址
+先记录树，然后从头开始递归遍历树，并且构造先序遍历字串。
+非叶子结点字母下方必有竖线。竖线下方必有若干横线，横线下方必有若干字母，即子节点。
+#include&lt;iostream&gt; #include&lt;string&gt; #include&lt;cstdio&gt; #include&lt;cstring&gt; using namespace std; char tree[222][222]; int isRightChar(char c){ return c &amp;&amp; c!=&#39;-&#39; &amp;&amp; c!=&#39;|&#39; &amp;&amp; c!=&#39; &#39; &amp;&amp; c!=&#39;#&#39;; } int loop(int x,int y){ cout&lt;&lt;tree[x][y]; cout&lt;&lt;&#34;(&#34;; if(tree[x&#43;1][y]!">
+<meta name="author" content="SuCicada">
+<link rel="canonical" href="https://sucicada.github.io/blog/posts/uvaoj/uva-10562-undraw-the-trees%E7%9C%8B%E5%9B%BE%E5%86%99%E6%A0%91-by-sucicada/">
+<link crossorigin="anonymous" href="/blog/assets/css/stylesheet.5b5501da54f21435c8f8010d1de02123ae8d1ada696b48c6530ec4eea283e7d6.css" integrity="sha256-W1UB2lTyFDXI&#43;AENHeAhI66NGtppa0jGUw7E7qKD59Y=" rel="preload stylesheet" as="style">
+<link rel="icon" href="https://sucicada.github.io/blog/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="https://sucicada.github.io/blog/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://sucicada.github.io/blog/favicon-32x32.png">
+<link rel="apple-touch-icon" href="https://sucicada.github.io/blog/apple-touch-icon.png">
+<link rel="mask-icon" href="https://sucicada.github.io/blog/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --hljs-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-track {
+                background: 0 0;
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-thumb {
+                border-color: var(--theme);
+            }
+        }
+
+    </style>
+</noscript><meta property="og:title" content="UVA 10562 - Undraw the Trees(看图写树) By SuCicada" />
+<meta property="og:description" content="例题6-17 看图写树（Undraw the Trees, UVa 10562）
+你的任务是将多叉树转化为括号表示法。如图6-16所示，每个结点用除了“-”、“|”和空格
+的其他字符表示，每个非叶结点的正下方总会有一个“|”字符，然后下方是一排“-”字符，恰
+好覆盖所有子结点的上方。单独的一行“#”为数据结束标记。
+Sample Input
+2 A | -------- B C D | | ----- - E F G # e | ---- f g # Sample Output
+(A(B()C(E()F())D(G())))
+(e(f()g()))
+本家地址
+先记录树，然后从头开始递归遍历树，并且构造先序遍历字串。
+非叶子结点字母下方必有竖线。竖线下方必有若干横线，横线下方必有若干字母，即子节点。
+#include&lt;iostream&gt; #include&lt;string&gt; #include&lt;cstdio&gt; #include&lt;cstring&gt; using namespace std; char tree[222][222]; int isRightChar(char c){ return c &amp;&amp; c!=&#39;-&#39; &amp;&amp; c!=&#39;|&#39; &amp;&amp; c!=&#39; &#39; &amp;&amp; c!=&#39;#&#39;; } int loop(int x,int y){ cout&lt;&lt;tree[x][y]; cout&lt;&lt;&#34;(&#34;; if(tree[x&#43;1][y]!" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://sucicada.github.io/blog/posts/uvaoj/uva-10562-undraw-the-trees%E7%9C%8B%E5%9B%BE%E5%86%99%E6%A0%91-by-sucicada/" /><meta property="og:image" content="https://sucicada.github.io/blog/papermod-cover.png"/><meta property="article:section" content="posts" />
+
+
+
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="https://sucicada.github.io/blog/papermod-cover.png"/>
+
+<meta name="twitter:title" content="UVA 10562 - Undraw the Trees(看图写树) By SuCicada"/>
+<meta name="twitter:description" content="例题6-17 看图写树（Undraw the Trees, UVa 10562）
+你的任务是将多叉树转化为括号表示法。如图6-16所示，每个结点用除了“-”、“|”和空格
+的其他字符表示，每个非叶结点的正下方总会有一个“|”字符，然后下方是一排“-”字符，恰
+好覆盖所有子结点的上方。单独的一行“#”为数据结束标记。
+Sample Input
+2 A | -------- B C D | | ----- - E F G # e | ---- f g # Sample Output
+(A(B()C(E()F())D(G())))
+(e(f()g()))
+本家地址
+先记录树，然后从头开始递归遍历树，并且构造先序遍历字串。
+非叶子结点字母下方必有竖线。竖线下方必有若干横线，横线下方必有若干字母，即子节点。
+#include&lt;iostream&gt; #include&lt;string&gt; #include&lt;cstdio&gt; #include&lt;cstring&gt; using namespace std; char tree[222][222]; int isRightChar(char c){ return c &amp;&amp; c!=&#39;-&#39; &amp;&amp; c!=&#39;|&#39; &amp;&amp; c!=&#39; &#39; &amp;&amp; c!=&#39;#&#39;; } int loop(int x,int y){ cout&lt;&lt;tree[x][y]; cout&lt;&lt;&#34;(&#34;; if(tree[x&#43;1][y]!"/>
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "Posts",
+      "item": "https://sucicada.github.io/blog/posts/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  3 ,
+      "name": "UVA 10562 - Undraw the Trees(看图写树) By SuCicada",
+      "item": "https://sucicada.github.io/blog/posts/uvaoj/uva-10562-undraw-the-trees%E7%9C%8B%E5%9B%BE%E5%86%99%E6%A0%91-by-sucicada/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "UVA 10562 - Undraw the Trees(看图写树) By SuCicada",
+  "name": "UVA 10562 - Undraw the Trees(看图写树) By SuCicada",
+  "description": "例题6-17 看图写树（Undraw the Trees, UVa 10562）\n你的任务是将多叉树转化为括号表示法。如图6-16所示，每个结点用除了“-”、“|”和空格\n的其他字符表示，每个非叶结点的正下方总会有一个“|”字符，然后下方是一排“-”字符，恰\n好覆盖所有子结点的上方。单独的一行“#”为数据结束标记。\nSample Input\n2 A | -------- B C D | | ----- - E F G # e | ---- f g # Sample Output\n(A(B()C(E()F())D(G())))\n(e(f()g()))\n本家地址\n先记录树，然后从头开始递归遍历树，并且构造先序遍历字串。\n非叶子结点字母下方必有竖线。竖线下方必有若干横线，横线下方必有若干字母，即子节点。\n#include\u0026lt;iostream\u0026gt; #include\u0026lt;string\u0026gt; #include\u0026lt;cstdio\u0026gt; #include\u0026lt;cstring\u0026gt; using namespace std; char tree[222][222]; int isRightChar(char c){ return c \u0026amp;\u0026amp; c!=\u0026#39;-\u0026#39; \u0026amp;\u0026amp; c!=\u0026#39;|\u0026#39; \u0026amp;\u0026amp; c!=\u0026#39; \u0026#39; \u0026amp;\u0026amp; c!=\u0026#39;#\u0026#39;; } int loop(int x,int y){ cout\u0026lt;\u0026lt;tree[x][y]; cout\u0026lt;\u0026lt;\u0026#34;(\u0026#34;; if(tree[x+1][y]!",
+  "keywords": [
+    "UVaOJ"
+  ],
+  "articleBody": " 例题6-17 看图写树（Undraw the Trees, UVa 10562）\n你的任务是将多叉树转化为括号表示法。如图6-16所示，每个结点用除了“-”、“|”和空格\n的其他字符表示，每个非叶结点的正下方总会有一个“|”字符，然后下方是一排“-”字符，恰\n好覆盖所有子结点的上方。单独的一行“#”为数据结束标记。\nSample Input\n2 A | -------- B C D | | ----- - E F G # e | ---- f g # Sample Output\n(A(B()C(E()F())D(G())))\n(e(f()g()))\n本家地址\n先记录树，然后从头开始递归遍历树，并且构造先序遍历字串。\n非叶子结点字母下方必有竖线。竖线下方必有若干横线，横线下方必有若干字母，即子节点。\n#include #include #include #include using namespace std; char tree[222][222]; int isRightChar(char c){ return c \u0026\u0026 c!='-' \u0026\u0026 c!='|' \u0026\u0026 c!=' ' \u0026\u0026 c!='#'; } int loop(int x,int y){ cout\u003c\u003ctree[x][y]; cout\u003c\u003c\"(\"; if(tree[x+1][y]!='|'){ return 0; }else{ int a; for(a=y;tree[x+2][a]=='-';a--){} a++; int b; for(b=y;tree[x+2][b]=='-';b++){} b--; for(int i=a;i\u003c=b;i++){ if(isRightChar(tree[x+3][i])){ loop(x+3,i); cout\u003c\u003c\")\"; } } } return 1; } int main(){ int T; cin\u003e\u003eT; getchar(); while(T--){ memset(tree,0,sizeof(tree)); int line=0; int row=0; while(1){ string s; getline(cin,s); row=0; if(s.size()==1 \u0026\u0026 s[0]=='#'){ break; }else{ for(int i=0;i\u003cs.size();i++){ tree[line][row++] = s[i]; } line++; } } cout\u003c\u003c\"(\"; for(int i=0;i\u003c200;i++){ if(isRightChar(tree[0][i])){ loop(0,i); cout\u003c\u003c\")\"; break; } } cout\u003c\u003c\")\"\u003c\u003cendl; } return 0; } // AC at 2020/08/16 ",
+  "wordCount" : "141",
+  "inLanguage": "en",
+  "datePublished": "0001-01-01T00:00:00Z",
+  "dateModified": "0001-01-01T00:00:00Z",
+  "author":{
+    "@type": "Person",
+    "name": "SuCicada"
+  },
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://sucicada.github.io/blog/posts/uvaoj/uva-10562-undraw-the-trees%E7%9C%8B%E5%9B%BE%E5%86%99%E6%A0%91-by-sucicada/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "SuCicada",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://sucicada.github.io/blog/favicon.ico"
+    }
+  }
+}
+</script>
+</head>
+
+<body class="" id="top">
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.body.classList.add('dark');
+    } else if (localStorage.getItem("pref-theme") === "light") {
+        document.body.classList.remove('dark')
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.body.classList.add('dark');
+    }
+
+</script>
+
+<header class="header">
+    <nav class="nav">
+        <div class="logo">
+            <a href="https://sucicada.github.io/blog" accesskey="h" title="SuCicada (Alt + H)">SuCicada</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" accesskey="t" title="(Alt + T)">
+                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu">
+            <li>
+                <a href="https://sucicada.github.io/blog/archives/" title="Archive">
+                    <span>Archive</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://sucicada.github.io/blog/search/" title="Search (Alt &#43; /)" accesskey=/>
+                    <span>Search</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://sucicada.github.io/blog/tags/" title="Tags">
+                    <span>Tags</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://sucicada.github.io/blog/about/" title="About">
+                    <span>About</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+
+    <h1 class="post-title">
+      UVA 10562 - Undraw the Trees(看图写树) By SuCicada
+    </h1>
+    <div class="post-meta">SuCicada&nbsp;|&nbsp;<a href="https://github.com/SuCicada/mysite-hugo/content/posts/UVaOJ/UVA%2010562%20-%20Undraw%20the%20Trees%28%e7%9c%8b%e5%9b%be%e5%86%99%e6%a0%91%29%20By%20SuCicada.md" rel="noopener noreferrer" target="_blank">Suggest Changes</a>
+
+</div>
+    <ul class="post-tags">
+      <li><a href="https://sucicada.github.io/blog/tags/uvaoj/">UVaOJ</a></li>
+    </ul>
+  </header> 
+
+  <div class="post-content"><blockquote>
+<p>例题6-17 看图写树（Undraw the Trees, UVa 10562）<br>
+你的任务是将多叉树转化为括号表示法。如图6-16所示，每个结点用除了“-”、“|”和空格<br>
+的其他字符表示，每个非叶结点的正下方总会有一个“|”字符，然后下方是一排“-”字符，恰<br>
+好覆盖所有子结点的上方。单独的一行“#”为数据结束标记。</p>
+</blockquote>
+<p><strong>Sample Input</strong></p>
+<pre>
+
+2
+    A
+    |
+--------
+B   C  D
+    |  |
+ ----- -
+ E   F G
+#
+e
+|
+----
+f g
+#
+</pre>
+<p><strong>Sample Output</strong><br>
+(A(B()C(E()F())D(G())))<br>
+(e(f()g()))</p>
+<hr>
+<p><a href="https://onlinejudge.org/index.php?option=com_onlinejudge&amp;Itemid=8&amp;category=838&amp;page=show_problem&amp;problem=1503">本家地址</a></p>
+<hr>
+<p>先记录树，然后从头开始递归遍历树，并且构造先序遍历字串。<br>
+非叶子结点字母下方必有竖线。竖线下方必有若干横线，横线下方必有若干字母，即子节点。</p>
+<hr>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="cp">#include</span><span class="cpf">&lt;iostream&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span><span class="cpf">&lt;string&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span><span class="cpf">&lt;cstdio&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span><span class="cpf">&lt;cstring&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp"></span><span class="k">using</span> <span class="k">namespace</span> <span class="n">std</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kt">char</span> <span class="n">tree</span><span class="p">[</span><span class="mi">222</span><span class="p">][</span><span class="mi">222</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="nf">isRightChar</span><span class="p">(</span><span class="kt">char</span> <span class="n">c</span><span class="p">){</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="n">c</span> <span class="o">&amp;&amp;</span> <span class="n">c</span><span class="o">!=</span><span class="sc">&#39;-&#39;</span> <span class="o">&amp;&amp;</span> <span class="n">c</span><span class="o">!=</span><span class="sc">&#39;|&#39;</span> <span class="o">&amp;&amp;</span> <span class="n">c</span><span class="o">!=</span><span class="sc">&#39; &#39;</span> <span class="o">&amp;&amp;</span> <span class="n">c</span><span class="o">!=</span><span class="sc">&#39;#&#39;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="nf">loop</span><span class="p">(</span><span class="kt">int</span> <span class="n">x</span><span class="p">,</span><span class="kt">int</span> <span class="n">y</span><span class="p">){</span>
+</span></span><span class="line"><span class="cl">    <span class="n">cout</span><span class="o">&lt;&lt;</span><span class="n">tree</span><span class="p">[</span><span class="n">x</span><span class="p">][</span><span class="n">y</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl">    <span class="n">cout</span><span class="o">&lt;&lt;</span><span class="s">&#34;(&#34;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span><span class="p">(</span><span class="n">tree</span><span class="p">[</span><span class="n">x</span><span class="o">+</span><span class="mi">1</span><span class="p">][</span><span class="n">y</span><span class="p">]</span><span class="o">!=</span><span class="sc">&#39;|&#39;</span><span class="p">){</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span><span class="k">else</span><span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="kt">int</span> <span class="n">a</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="k">for</span><span class="p">(</span><span class="n">a</span><span class="o">=</span><span class="n">y</span><span class="p">;</span><span class="n">tree</span><span class="p">[</span><span class="n">x</span><span class="o">+</span><span class="mi">2</span><span class="p">][</span><span class="n">a</span><span class="p">]</span><span class="o">==</span><span class="sc">&#39;-&#39;</span><span class="p">;</span><span class="n">a</span><span class="o">--</span><span class="p">){}</span>
+</span></span><span class="line"><span class="cl">        <span class="n">a</span><span class="o">++</span><span class="p">;</span>    
+</span></span><span class="line"><span class="cl">        <span class="kt">int</span> <span class="n">b</span><span class="p">;</span>  
+</span></span><span class="line"><span class="cl">        <span class="k">for</span><span class="p">(</span><span class="n">b</span><span class="o">=</span><span class="n">y</span><span class="p">;</span><span class="n">tree</span><span class="p">[</span><span class="n">x</span><span class="o">+</span><span class="mi">2</span><span class="p">][</span><span class="n">b</span><span class="p">]</span><span class="o">==</span><span class="sc">&#39;-&#39;</span><span class="p">;</span><span class="n">b</span><span class="o">++</span><span class="p">){}</span>
+</span></span><span class="line"><span class="cl">        <span class="n">b</span><span class="o">--</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">i</span><span class="o">=</span><span class="n">a</span><span class="p">;</span><span class="n">i</span><span class="o">&lt;=</span><span class="n">b</span><span class="p">;</span><span class="n">i</span><span class="o">++</span><span class="p">){</span>
+</span></span><span class="line"><span class="cl">            <span class="k">if</span><span class="p">(</span><span class="n">isRightChar</span><span class="p">(</span><span class="n">tree</span><span class="p">[</span><span class="n">x</span><span class="o">+</span><span class="mi">3</span><span class="p">][</span><span class="n">i</span><span class="p">])){</span>
+</span></span><span class="line"><span class="cl">                <span class="n">loop</span><span class="p">(</span><span class="n">x</span><span class="o">+</span><span class="mi">3</span><span class="p">,</span><span class="n">i</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">                <span class="n">cout</span><span class="o">&lt;&lt;</span><span class="s">&#34;)&#34;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">            <span class="p">}</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="mi">1</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="nf">main</span><span class="p">(){</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="n">T</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">cin</span><span class="o">&gt;&gt;</span><span class="n">T</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">getchar</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">    <span class="k">while</span><span class="p">(</span><span class="n">T</span><span class="o">--</span><span class="p">){</span>
+</span></span><span class="line"><span class="cl">        <span class="n">memset</span><span class="p">(</span><span class="n">tree</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="k">sizeof</span><span class="p">(</span><span class="n">tree</span><span class="p">));</span>
+</span></span><span class="line"><span class="cl">        <span class="kt">int</span> <span class="n">line</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="kt">int</span> <span class="n">row</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="k">while</span><span class="p">(</span><span class="mi">1</span><span class="p">){</span>
+</span></span><span class="line"><span class="cl">            <span class="n">string</span> <span class="n">s</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">            <span class="n">getline</span><span class="p">(</span><span class="n">cin</span><span class="p">,</span><span class="n">s</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">            <span class="n">row</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">            <span class="k">if</span><span class="p">(</span><span class="n">s</span><span class="p">.</span><span class="n">size</span><span class="p">()</span><span class="o">==</span><span class="mi">1</span> <span class="o">&amp;&amp;</span> <span class="n">s</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">==</span><span class="sc">&#39;#&#39;</span><span class="p">){</span>
+</span></span><span class="line"><span class="cl">                <span class="k">break</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">            <span class="p">}</span><span class="k">else</span><span class="p">{</span>
+</span></span><span class="line"><span class="cl">                <span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span><span class="n">i</span><span class="o">&lt;</span><span class="n">s</span><span class="p">.</span><span class="n">size</span><span class="p">();</span><span class="n">i</span><span class="o">++</span><span class="p">){</span>
+</span></span><span class="line"><span class="cl">                    <span class="n">tree</span><span class="p">[</span><span class="n">line</span><span class="p">][</span><span class="n">row</span><span class="o">++</span><span class="p">]</span> <span class="o">=</span> <span class="n">s</span><span class="p">[</span><span class="n">i</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl">                <span class="p">}</span>
+</span></span><span class="line"><span class="cl">                <span class="n">line</span><span class="o">++</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">            <span class="p">}</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="n">cout</span><span class="o">&lt;&lt;</span><span class="s">&#34;(&#34;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span><span class="n">i</span><span class="o">&lt;</span><span class="mi">200</span><span class="p">;</span><span class="n">i</span><span class="o">++</span><span class="p">){</span>
+</span></span><span class="line"><span class="cl">            <span class="k">if</span><span class="p">(</span><span class="n">isRightChar</span><span class="p">(</span><span class="n">tree</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="n">i</span><span class="p">])){</span>
+</span></span><span class="line"><span class="cl">                <span class="n">loop</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="n">i</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">                <span class="n">cout</span><span class="o">&lt;&lt;</span><span class="s">&#34;)&#34;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">                <span class="k">break</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">            <span class="p">}</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">        <span class="n">cout</span><span class="o">&lt;&lt;</span><span class="s">&#34;)&#34;</span><span class="o">&lt;&lt;</span><span class="n">endl</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// AC at 2020/08/16
+</span></span></span></code></pre></div>
+
+  </div>
+
+  <footer class="post-footer">
+<nav class="paginav">
+  <a class="prev" href="https://sucicada.github.io/blog/posts/uvaoj/uva-10340-all-in-all%E5%AD%90%E5%BA%8F%E5%88%97/">
+    <span class="title">« Prev</span>
+    <br>
+    <span>uva 10340 - All in All（子序列）</span>
+  </a>
+  <a class="next" href="https://sucicada.github.io/blog/posts/uvaoj/uva-11809-floating-point-numbers%E6%B5%AE%E7%82%B9%E6%95%B0/">
+    <span class="title">Next »</span>
+    <br>
+    <span>uva 11809 - Floating-Point Numbers（浮点数）</span>
+  </a>
+</nav>
+
+
+<div class="share-buttons">
+    <a target="_blank" rel="noopener noreferrer" aria-label="share UVA 10562 - Undraw the Trees(看图写树) By SuCicada on twitter"
+        href="https://twitter.com/intent/tweet/?text=UVA%2010562%20-%20Undraw%20the%20Trees%28%e7%9c%8b%e5%9b%be%e5%86%99%e6%a0%91%29%20By%20SuCicada&amp;url=https%3a%2f%2fsucicada.github.io%2fblog%2fposts%2fuvaoj%2fuva-10562-undraw-the-trees%25E7%259C%258B%25E5%259B%25BE%25E5%2586%2599%25E6%25A0%2591-by-sucicada%2f&amp;hashtags=UVaOJ">
+        <svg version="1.1" viewBox="0 0 512 512" xml:space="preserve" height="30px" width="30px" fill="currentColor">
+            <path
+                d="M449.446,0c34.525,0 62.554,28.03 62.554,62.554l0,386.892c0,34.524 -28.03,62.554 -62.554,62.554l-386.892,0c-34.524,0 -62.554,-28.03 -62.554,-62.554l0,-386.892c0,-34.524 28.029,-62.554 62.554,-62.554l386.892,0Zm-253.927,424.544c135.939,0 210.268,-112.643 210.268,-210.268c0,-3.218 0,-6.437 -0.153,-9.502c14.406,-10.421 26.973,-23.448 36.935,-38.314c-13.18,5.824 -27.433,9.809 -42.452,11.648c15.326,-9.196 26.973,-23.602 32.49,-40.92c-14.252,8.429 -30.038,14.56 -46.896,17.931c-13.487,-14.406 -32.644,-23.295 -53.946,-23.295c-40.767,0 -73.87,33.104 -73.87,73.87c0,5.824 0.613,11.494 1.992,16.858c-61.456,-3.065 -115.862,-32.49 -152.337,-77.241c-6.284,10.881 -9.962,23.601 -9.962,37.088c0,25.594 13.027,48.276 32.95,61.456c-12.107,-0.307 -23.448,-3.678 -33.41,-9.196l0,0.92c0,35.862 25.441,65.594 59.311,72.49c-6.13,1.686 -12.72,2.606 -19.464,2.606c-4.751,0 -9.348,-0.46 -13.946,-1.38c9.349,29.426 36.628,50.728 68.965,51.341c-25.287,19.771 -57.164,31.571 -91.8,31.571c-5.977,0 -11.801,-0.306 -17.625,-1.073c32.337,21.15 71.264,33.41 112.95,33.41Z" />
+        </svg>
+    </a>
+    <a target="_blank" rel="noopener noreferrer" aria-label="share UVA 10562 - Undraw the Trees(看图写树) By SuCicada on telegram"
+        href="https://telegram.me/share/url?text=UVA%2010562%20-%20Undraw%20the%20Trees%28%e7%9c%8b%e5%9b%be%e5%86%99%e6%a0%91%29%20By%20SuCicada&amp;url=https%3a%2f%2fsucicada.github.io%2fblog%2fposts%2fuvaoj%2fuva-10562-undraw-the-trees%25E7%259C%258B%25E5%259B%25BE%25E5%2586%2599%25E6%25A0%2591-by-sucicada%2f">
+        <svg version="1.1" xml:space="preserve" viewBox="2 2 28 28" height="30px" width="30px" fill="currentColor">
+            <path
+                d="M26.49,29.86H5.5a3.37,3.37,0,0,1-2.47-1,3.35,3.35,0,0,1-1-2.47V5.48A3.36,3.36,0,0,1,3,3,3.37,3.37,0,0,1,5.5,2h21A3.38,3.38,0,0,1,29,3a3.36,3.36,0,0,1,1,2.46V26.37a3.35,3.35,0,0,1-1,2.47A3.38,3.38,0,0,1,26.49,29.86Zm-5.38-6.71a.79.79,0,0,0,.85-.66L24.73,9.24a.55.55,0,0,0-.18-.46.62.62,0,0,0-.41-.17q-.08,0-16.53,6.11a.59.59,0,0,0-.41.59.57.57,0,0,0,.43.52l4,1.24,1.61,4.83a.62.62,0,0,0,.63.43.56.56,0,0,0,.4-.17L16.54,20l4.09,3A.9.9,0,0,0,21.11,23.15ZM13.8,20.71l-1.21-4q8.72-5.55,8.78-5.55c.15,0,.23,0,.23.16a.18.18,0,0,1,0,.06s-2.51,2.3-7.52,6.8Z" />
+        </svg>
+    </a>
+</div>
+
+  </footer><div id="disqus_thread"></div>
+<script type="application/javascript">
+    window.disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "sucicada" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+</article>
+    </main>
+    
+<footer class="footer">
+    <span>&copy; 2022 <a href="https://sucicada.github.io/blog">SuCicada</a></span>
+    <span>
+        Powered by
+        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+        <path d="M12 6H0l6-6z" />
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu')
+    if (menu) {
+        menu.scrollLeft = localStorage.getItem("menu-scroll-position");
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var mybutton = document.getElementById("top-link");
+    window.onscroll = function () {
+        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
+            mybutton.style.visibility = "visible";
+            mybutton.style.opacity = "1";
+        } else {
+            mybutton.style.visibility = "hidden";
+            mybutton.style.opacity = "0";
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        if (document.body.className.includes("dark")) {
+            document.body.classList.remove('dark');
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            document.body.classList.add('dark');
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+<script>
+    document.querySelectorAll('pre > code').forEach((codeblock) => {
+        const container = codeblock.parentNode.parentNode;
+
+        const copybutton = document.createElement('button');
+        copybutton.classList.add('copy-code');
+        copybutton.innerHTML = 'copy';
+
+        function copyingDone() {
+            copybutton.innerHTML = 'copied!';
+            setTimeout(() => {
+                copybutton.innerHTML = 'copy';
+            }, 2000);
+        }
+
+        copybutton.addEventListener('click', (cb) => {
+            if ('clipboard' in navigator) {
+                navigator.clipboard.writeText(codeblock.textContent);
+                copyingDone();
+                return;
+            }
+
+            const range = document.createRange();
+            range.selectNodeContents(codeblock);
+            const selection = window.getSelection();
+            selection.removeAllRanges();
+            selection.addRange(range);
+            try {
+                document.execCommand('copy');
+                copyingDone();
+            } catch (e) { };
+            selection.removeRange(range);
+        });
+
+        if (container.classList.contains("highlight")) {
+            container.appendChild(copybutton);
+        } else if (container.parentNode.firstChild == container) {
+            
+        } else if (codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName == "TABLE") {
+            
+            codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(copybutton);
+        } else {
+            
+            codeblock.parentNode.appendChild(copybutton);
+        }
+    });
+</script>
+</body>
+
+</html>

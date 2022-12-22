@@ -1,0 +1,573 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto">
+
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>uva 253 - Cube painting（相同骰子） | SuCicada</title>
+<meta name="keywords" content="UVaOJ">
+<meta name="description" content="习题4-4 骰子涂色（Cube painting, UVa 253）
+输入两个骰子，判断二者是否等价。每个骰子用6个字母表示，如图4-7所示。
+图4-7 骰子涂色
+例如rbgggr和rggbgr分别表示如图4-8所示的两个骰子。二者是等价的，因为图4-8（a）
+所示的骰子沿着竖直轴旋转90°之后就可以得到图4-8（b）所示的骰子。
+（a） （b）
+图4-8 旋转前后的两个骰子
+.
+Sample Input
+rbgggrrggbgr
+rrrbbbrrbbbr
+rbgrbgrrrrrg
+Sample Output
+TRUE
+FALSE
+FALSE
+思路：暴力枚举，将一个骰子的所有姿态都列出来，
+1、注意第一个图上的数字，那个是记录骰子面的顺序
+2、先找最上面的，也就是1的位置，能排列6种（1，2，3，4，5，6）
+3、然后找到了上面也就找到了与其相对的面，就是下面，就是字串中第六个元素。这个不会额外记录，因为有上就有下了。
+4、然后就是中间四个的排列了，很显然，4种。
+5、然后我们变换第二个骰子，看看它在这24种情况中，有没有一种的情况和第一个骰子的记录是相同的。（比较字串即可）
+6、请注意骰子面的转换是否正确，虽然这个逻辑简单，但是容易写错，要好好检查，我就因为写错下标错了两次。
+#include&lt;iostream&gt; #include&lt;string&gt; using namespace std; /* 1 3 2 4 5 1在顶上 6 2 3 6 4 1 2在顶上 5 3 5 6 2 1	3在顶上 4 4 2 6 5 1	4在顶上 3 5 4 6 3 1	5在顶上 2 6 3 5 4 2	6在顶上 1 */ string s1,s2;//记录两个骰子的字符串 int str_equal(string a,char s1,char s2,char s3,char s4,char s5,char s6)//比较两个字串相等吗 { string b=&#34;0000000&#34;; b[1]=s1; b[2]=s2; b[3]=s3; b[4]=s4; b[5]=s5; b[6]=s6; //cout&lt;&lt;b.">
+<meta name="author" content="SuCicada">
+<link rel="canonical" href="https://sucicada.github.io/blog/posts/uvaoj/uva-253-cube-painting%E7%9B%B8%E5%90%8C%E9%AA%B0%E5%AD%90/">
+<link crossorigin="anonymous" href="/blog/assets/css/stylesheet.5b5501da54f21435c8f8010d1de02123ae8d1ada696b48c6530ec4eea283e7d6.css" integrity="sha256-W1UB2lTyFDXI&#43;AENHeAhI66NGtppa0jGUw7E7qKD59Y=" rel="preload stylesheet" as="style">
+<link rel="icon" href="https://sucicada.github.io/blog/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="https://sucicada.github.io/blog/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://sucicada.github.io/blog/favicon-32x32.png">
+<link rel="apple-touch-icon" href="https://sucicada.github.io/blog/apple-touch-icon.png">
+<link rel="mask-icon" href="https://sucicada.github.io/blog/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --hljs-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-track {
+                background: 0 0;
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-thumb {
+                border-color: var(--theme);
+            }
+        }
+
+    </style>
+</noscript><meta property="og:title" content="uva 253 - Cube painting（相同骰子）" />
+<meta property="og:description" content="习题4-4 骰子涂色（Cube painting, UVa 253）
+输入两个骰子，判断二者是否等价。每个骰子用6个字母表示，如图4-7所示。
+图4-7 骰子涂色
+例如rbgggr和rggbgr分别表示如图4-8所示的两个骰子。二者是等价的，因为图4-8（a）
+所示的骰子沿着竖直轴旋转90°之后就可以得到图4-8（b）所示的骰子。
+（a） （b）
+图4-8 旋转前后的两个骰子
+.
+Sample Input
+rbgggrrggbgr
+rrrbbbrrbbbr
+rbgrbgrrrrrg
+Sample Output
+TRUE
+FALSE
+FALSE
+思路：暴力枚举，将一个骰子的所有姿态都列出来，
+1、注意第一个图上的数字，那个是记录骰子面的顺序
+2、先找最上面的，也就是1的位置，能排列6种（1，2，3，4，5，6）
+3、然后找到了上面也就找到了与其相对的面，就是下面，就是字串中第六个元素。这个不会额外记录，因为有上就有下了。
+4、然后就是中间四个的排列了，很显然，4种。
+5、然后我们变换第二个骰子，看看它在这24种情况中，有没有一种的情况和第一个骰子的记录是相同的。（比较字串即可）
+6、请注意骰子面的转换是否正确，虽然这个逻辑简单，但是容易写错，要好好检查，我就因为写错下标错了两次。
+#include&lt;iostream&gt; #include&lt;string&gt; using namespace std; /* 1 3 2 4 5 1在顶上 6 2 3 6 4 1 2在顶上 5 3 5 6 2 1	3在顶上 4 4 2 6 5 1	4在顶上 3 5 4 6 3 1	5在顶上 2 6 3 5 4 2	6在顶上 1 */ string s1,s2;//记录两个骰子的字符串 int str_equal(string a,char s1,char s2,char s3,char s4,char s5,char s6)//比较两个字串相等吗 { string b=&#34;0000000&#34;; b[1]=s1; b[2]=s2; b[3]=s3; b[4]=s4; b[5]=s5; b[6]=s6; //cout&lt;&lt;b." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://sucicada.github.io/blog/posts/uvaoj/uva-253-cube-painting%E7%9B%B8%E5%90%8C%E9%AA%B0%E5%AD%90/" /><meta property="og:image" content="https://sucicada.github.io/blog/papermod-cover.png"/><meta property="article:section" content="posts" />
+
+
+
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="https://sucicada.github.io/blog/papermod-cover.png"/>
+
+<meta name="twitter:title" content="uva 253 - Cube painting（相同骰子）"/>
+<meta name="twitter:description" content="习题4-4 骰子涂色（Cube painting, UVa 253）
+输入两个骰子，判断二者是否等价。每个骰子用6个字母表示，如图4-7所示。
+图4-7 骰子涂色
+例如rbgggr和rggbgr分别表示如图4-8所示的两个骰子。二者是等价的，因为图4-8（a）
+所示的骰子沿着竖直轴旋转90°之后就可以得到图4-8（b）所示的骰子。
+（a） （b）
+图4-8 旋转前后的两个骰子
+.
+Sample Input
+rbgggrrggbgr
+rrrbbbrrbbbr
+rbgrbgrrrrrg
+Sample Output
+TRUE
+FALSE
+FALSE
+思路：暴力枚举，将一个骰子的所有姿态都列出来，
+1、注意第一个图上的数字，那个是记录骰子面的顺序
+2、先找最上面的，也就是1的位置，能排列6种（1，2，3，4，5，6）
+3、然后找到了上面也就找到了与其相对的面，就是下面，就是字串中第六个元素。这个不会额外记录，因为有上就有下了。
+4、然后就是中间四个的排列了，很显然，4种。
+5、然后我们变换第二个骰子，看看它在这24种情况中，有没有一种的情况和第一个骰子的记录是相同的。（比较字串即可）
+6、请注意骰子面的转换是否正确，虽然这个逻辑简单，但是容易写错，要好好检查，我就因为写错下标错了两次。
+#include&lt;iostream&gt; #include&lt;string&gt; using namespace std; /* 1 3 2 4 5 1在顶上 6 2 3 6 4 1 2在顶上 5 3 5 6 2 1	3在顶上 4 4 2 6 5 1	4在顶上 3 5 4 6 3 1	5在顶上 2 6 3 5 4 2	6在顶上 1 */ string s1,s2;//记录两个骰子的字符串 int str_equal(string a,char s1,char s2,char s3,char s4,char s5,char s6)//比较两个字串相等吗 { string b=&#34;0000000&#34;; b[1]=s1; b[2]=s2; b[3]=s3; b[4]=s4; b[5]=s5; b[6]=s6; //cout&lt;&lt;b."/>
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "Posts",
+      "item": "https://sucicada.github.io/blog/posts/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  3 ,
+      "name": "uva 253 - Cube painting（相同骰子）",
+      "item": "https://sucicada.github.io/blog/posts/uvaoj/uva-253-cube-painting%E7%9B%B8%E5%90%8C%E9%AA%B0%E5%AD%90/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "uva 253 - Cube painting（相同骰子）",
+  "name": "uva 253 - Cube painting（相同骰子）",
+  "description": "习题4-4 骰子涂色（Cube painting, UVa 253）\n输入两个骰子，判断二者是否等价。每个骰子用6个字母表示，如图4-7所示。\n图4-7 骰子涂色\n例如rbgggr和rggbgr分别表示如图4-8所示的两个骰子。二者是等价的，因为图4-8（a）\n所示的骰子沿着竖直轴旋转90°之后就可以得到图4-8（b）所示的骰子。\n（a） （b）\n图4-8 旋转前后的两个骰子\n.\nSample Input\nrbgggrrggbgr\nrrrbbbrrbbbr\nrbgrbgrrrrrg\nSample Output\nTRUE\nFALSE\nFALSE\n思路：暴力枚举，将一个骰子的所有姿态都列出来，\n1、注意第一个图上的数字，那个是记录骰子面的顺序\n2、先找最上面的，也就是1的位置，能排列6种（1，2，3，4，5，6）\n3、然后找到了上面也就找到了与其相对的面，就是下面，就是字串中第六个元素。这个不会额外记录，因为有上就有下了。\n4、然后就是中间四个的排列了，很显然，4种。\n5、然后我们变换第二个骰子，看看它在这24种情况中，有没有一种的情况和第一个骰子的记录是相同的。（比较字串即可）\n6、请注意骰子面的转换是否正确，虽然这个逻辑简单，但是容易写错，要好好检查，我就因为写错下标错了两次。\n#include\u0026lt;iostream\u0026gt; #include\u0026lt;string\u0026gt; using namespace std; /* 1 3 2 4 5 1在顶上 6 2 3 6 4 1 2在顶上 5 3 5 6 2 1\t3在顶上 4 4 2 6 5 1\t4在顶上 3 5 4 6 3 1\t5在顶上 2 6 3 5 4 2\t6在顶上 1 */ string s1,s2;//记录两个骰子的字符串 int str_equal(string a,char s1,char s2,char s3,char s4,char s5,char s6)//比较两个字串相等吗 { string b=\u0026#34;0000000\u0026#34;; b[1]=s1; b[2]=s2; b[3]=s3; b[4]=s4; b[5]=s5; b[6]=s6; //cout\u0026lt;\u0026lt;b.",
+  "keywords": [
+    "UVaOJ"
+  ],
+  "articleBody": " 习题4-4 骰子涂色（Cube painting, UVa 253）\n输入两个骰子，判断二者是否等价。每个骰子用6个字母表示，如图4-7所示。\n图4-7 骰子涂色\n例如rbgggr和rggbgr分别表示如图4-8所示的两个骰子。二者是等价的，因为图4-8（a）\n所示的骰子沿着竖直轴旋转90°之后就可以得到图4-8（b）所示的骰子。\n（a） （b）\n图4-8 旋转前后的两个骰子\n.\nSample Input\nrbgggrrggbgr\nrrrbbbrrbbbr\nrbgrbgrrrrrg\nSample Output\nTRUE\nFALSE\nFALSE\n思路：暴力枚举，将一个骰子的所有姿态都列出来，\n1、注意第一个图上的数字，那个是记录骰子面的顺序\n2、先找最上面的，也就是1的位置，能排列6种（1，2，3，4，5，6）\n3、然后找到了上面也就找到了与其相对的面，就是下面，就是字串中第六个元素。这个不会额外记录，因为有上就有下了。\n4、然后就是中间四个的排列了，很显然，4种。\n5、然后我们变换第二个骰子，看看它在这24种情况中，有没有一种的情况和第一个骰子的记录是相同的。（比较字串即可）\n6、请注意骰子面的转换是否正确，虽然这个逻辑简单，但是容易写错，要好好检查，我就因为写错下标错了两次。\n#include #include using namespace std; /* 1 3 2 4 5 1在顶上 6 2 3 6 4 1 2在顶上 5 3 5 6 2 1\t3在顶上 4 4 2 6 5 1\t4在顶上 3 5 4 6 3 1\t5在顶上 2 6 3 5 4 2\t6在顶上 1 */ string s1,s2;//记录两个骰子的字符串 int str_equal(string a,char s1,char s2,char s3,char s4,char s5,char s6)//比较两个字串相等吗 { string b=\"0000000\"; b[1]=s1; b[2]=s2; b[3]=s3; b[4]=s4; b[5]=s5; b[6]=s6; //cout\u003c",
+  "wordCount" : "180",
+  "inLanguage": "en",
+  "datePublished": "0001-01-01T00:00:00Z",
+  "dateModified": "0001-01-01T00:00:00Z",
+  "author":{
+    "@type": "Person",
+    "name": "SuCicada"
+  },
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://sucicada.github.io/blog/posts/uvaoj/uva-253-cube-painting%E7%9B%B8%E5%90%8C%E9%AA%B0%E5%AD%90/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "SuCicada",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://sucicada.github.io/blog/favicon.ico"
+    }
+  }
+}
+</script>
+</head>
+
+<body class="" id="top">
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.body.classList.add('dark');
+    } else if (localStorage.getItem("pref-theme") === "light") {
+        document.body.classList.remove('dark')
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.body.classList.add('dark');
+    }
+
+</script>
+
+<header class="header">
+    <nav class="nav">
+        <div class="logo">
+            <a href="https://sucicada.github.io/blog" accesskey="h" title="SuCicada (Alt + H)">SuCicada</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" accesskey="t" title="(Alt + T)">
+                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu">
+            <li>
+                <a href="https://sucicada.github.io/blog/archives/" title="Archive">
+                    <span>Archive</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://sucicada.github.io/blog/search/" title="Search (Alt &#43; /)" accesskey=/>
+                    <span>Search</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://sucicada.github.io/blog/tags/" title="Tags">
+                    <span>Tags</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://sucicada.github.io/blog/about/" title="About">
+                    <span>About</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+
+    <h1 class="post-title">
+      uva 253 - Cube painting（相同骰子）
+    </h1>
+    <div class="post-meta">SuCicada&nbsp;|&nbsp;<a href="https://github.com/SuCicada/mysite-hugo/content/posts/UVaOJ/uva%20253%20-%20Cube%20painting%ef%bc%88%e7%9b%b8%e5%90%8c%e9%aa%b0%e5%ad%90%ef%bc%89.md" rel="noopener noreferrer" target="_blank">Suggest Changes</a>
+
+</div>
+    <ul class="post-tags">
+      <li><a href="https://sucicada.github.io/blog/tags/uvaoj/">UVaOJ</a></li>
+    </ul>
+  </header> 
+
+  <div class="post-content"><blockquote>
+<p>习题4-4 骰子涂色（Cube painting, UVa 253）<br>
+输入两个骰子，判断二者是否等价。每个骰子用6个字母表示，如图4-7所示。<br>
+图4-7 骰子涂色<br>
+例如rbgggr和rggbgr分别表示如图4-8所示的两个骰子。二者是等价的，因为图4-8（a）<br>
+所示的骰子沿着竖直轴旋转90°之后就可以得到图4-8（b）所示的骰子。<br>
+
+
+
+
+<img loading="lazy" src="https://img-blog.csdn.net/20180422182216607?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvc3VfY2ljYWRh/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="这里写图片描述"  />
+<br>
+（a） （b）<br>
+图4-8 旋转前后的两个骰子<br>
+.<br>
+<strong>Sample Input</strong><br>
+rbgggrrggbgr<br>
+rrrbbbrrbbbr<br>
+rbgrbgrrrrrg<br>
+<strong>Sample Output</strong><br>
+TRUE<br>
+FALSE<br>
+FALSE</p>
+</blockquote>
+<p>思路：暴力枚举，将一个骰子的所有姿态都列出来，<br>
+1、注意第一个图上的数字，那个是记录骰子面的顺序<br>
+2、先找最上面的，也就是1的位置，能排列6种（1，2，3，4，5，6）<br>
+3、然后找到了上面也就找到了与其相对的面，就是下面，就是字串中第六个元素。这个不会额外记录，因为有上就有下了。<br>
+4、然后就是中间四个的排列了，很显然，4种。<br>
+5、然后我们变换第二个骰子，看看它在这24种情况中，有没有一种的情况和第一个骰子的记录是相同的。（比较字串即可）<br>
+6、请注意骰子面的转换是否正确，虽然这个逻辑简单，但是容易写错，要好好检查，我就因为写错下标错了两次。</p>
+<pre tabindex="0"><code>#include&lt;iostream&gt;
+#include&lt;string&gt;
+using namespace std;
+/*
+  1
+3 2 4 5         1在顶上
+  6
+
+  2
+3 6 4 1         2在顶上
+  5
+
+  3
+5 6 2 1			3在顶上
+  4
+
+  4
+2 6 5 1			4在顶上
+  3
+
+  5
+4 6 3 1			5在顶上
+  2
+
+  6
+3 5 4 2			6在顶上
+  1
+
+
+*/
+string s1,s2;//记录两个骰子的字符串
+int str_equal(string a,char s1,char s2,char s3,char s4,char s5,char s6)//比较两个字串相等吗
+{
+    string b=&#34;0000000&#34;;
+    b[1]=s1;
+    b[2]=s2;
+    b[3]=s3;
+    b[4]=s4;
+    b[5]=s5;
+    b[6]=s6;
+    //cout&lt;&lt;b.substr(1)&lt;&lt;endl;
+    if(a==b)
+        return 1;
+    return 0;
+}
+int exc(string a,char s1,char s2,char s3,char s4,char s5,char s6)//中间四个面的四种情况
+{
+    if(str_equal(a,s1,s2,s3,s4,s5,s6)) return 1;
+    if(str_equal(a,s1,s3,s5,s2,s4,s6)) return 1;
+    if(str_equal(a,s1,s5,s4,s3,s2,s6)) return 1;
+    if(str_equal(a,s1,s4,s2,s5,s3,s6)) return 1;
+    return 0;
+}
+int main()
+{
+    char c;
+    while(cin&gt;&gt;c)
+    {
+//        cin&gt;&gt;s1;
+//        s2=s1.substr(5);
+//        s1.assign(s1,0,6);
+//        cout&lt;&lt;s1&lt;&lt;&#34; &#34;&lt;&lt;s2&lt;&lt;endl;
+        //以上注释是一种输入方法，以下是另一种
+
+        s1=s2=&#34;0000000&#34;;
+        s1[1]=c;
+        for(int i=2;i&lt;=6;i++)  //因为s1[1]已经在while中输入了
+            cin&gt;&gt;s1[i];
+        for(int i=1;i&lt;=6;i++)
+            cin&gt;&gt;s2[i];
+        //cout&lt;&lt;s1.substr(1)&lt;&lt;&#34;  &#34;&lt;&lt;s2&lt;&lt;endl;
+
+        if(exc(s1,s2[1],s2[2],s2[3],s2[4],s2[5],s2[6])){cout&lt;&lt;&#34;TRUE&#34;&lt;&lt;endl;continue;}
+        if(exc(s1,s2[2],s2[6],s2[3],s2[4],s2[1],s2[5])){cout&lt;&lt;&#34;TRUE&#34;&lt;&lt;endl;continue;}
+        if(exc(s1,s2[3],s2[6],s2[5],s2[2],s2[1],s2[4])){cout&lt;&lt;&#34;TRUE&#34;&lt;&lt;endl;continue;}
+        if(exc(s1,s2[4],s2[6],s2[2],s2[5],s2[1],s2[3])){cout&lt;&lt;&#34;TRUE&#34;&lt;&lt;endl;continue;}
+        if(exc(s1,s2[5],s2[6],s2[4],s2[3],s2[1],s2[2])){cout&lt;&lt;&#34;TRUE&#34;&lt;&lt;endl;continue;}
+        if(exc(s1,s2[6],s2[5],s2[3],s2[4],s2[2],s2[1])){cout&lt;&lt;&#34;TRUE&#34;&lt;&lt;endl;continue;}
+
+        cout&lt;&lt;&#34;FALSE&#34;&lt;&lt;endl;
+
+    }
+    return 0;
+}
+//AC at 2018/4/20
+</code></pre><hr>
+<p>题外话：（<br>
+休战一个月后的第一道题，手生的很（才不），这道题的灵感还是来自蓝桥的直播课上老师演示的二阶魔方转换题（然而并并不会做）<br>
+因为最近一直看python，所以都不会用c++的string了，其中将字符连接起来就伤了我脑筋，不得已用了同样暴力的传进6+个参数的方法。（所谓一暴到底吗）<br>
+啊啊好想做后面的题，一直窝在第四章，会来不及看真正有用的算法的，本来以外蓝桥后算法会松一些，但是比赛还有（好事不是吗），我会继续努力的（乖孩子的话语，不喜欢）<br>
+）</p>
+
+
+  </div>
+
+  <footer class="post-footer">
+<nav class="paginav">
+  <a class="prev" href="https://sucicada.github.io/blog/posts/uvaoj/uva-232-crossword-answers%E7%BA%B5%E6%A8%AA%E8%BF%B7%E5%AE%AB/">
+    <span class="title">« Prev</span>
+    <br>
+    <span>uva 232 - Crossword Answers（纵横迷宫）</span>
+  </a>
+  <a class="next" href="https://sucicada.github.io/blog/posts/uvaoj/uva-297-quadtrees-%E5%9B%9B%E5%88%86%E6%95%B0-by-sucicada/">
+    <span class="title">Next »</span>
+    <br>
+    <span>UVA 297 - Quadtrees （四分数） By SuCicada</span>
+  </a>
+</nav>
+
+
+<div class="share-buttons">
+    <a target="_blank" rel="noopener noreferrer" aria-label="share uva 253 - Cube painting（相同骰子） on twitter"
+        href="https://twitter.com/intent/tweet/?text=uva%20253%20-%20Cube%20painting%ef%bc%88%e7%9b%b8%e5%90%8c%e9%aa%b0%e5%ad%90%ef%bc%89&amp;url=https%3a%2f%2fsucicada.github.io%2fblog%2fposts%2fuvaoj%2fuva-253-cube-painting%25E7%259B%25B8%25E5%2590%258C%25E9%25AA%25B0%25E5%25AD%2590%2f&amp;hashtags=UVaOJ">
+        <svg version="1.1" viewBox="0 0 512 512" xml:space="preserve" height="30px" width="30px" fill="currentColor">
+            <path
+                d="M449.446,0c34.525,0 62.554,28.03 62.554,62.554l0,386.892c0,34.524 -28.03,62.554 -62.554,62.554l-386.892,0c-34.524,0 -62.554,-28.03 -62.554,-62.554l0,-386.892c0,-34.524 28.029,-62.554 62.554,-62.554l386.892,0Zm-253.927,424.544c135.939,0 210.268,-112.643 210.268,-210.268c0,-3.218 0,-6.437 -0.153,-9.502c14.406,-10.421 26.973,-23.448 36.935,-38.314c-13.18,5.824 -27.433,9.809 -42.452,11.648c15.326,-9.196 26.973,-23.602 32.49,-40.92c-14.252,8.429 -30.038,14.56 -46.896,17.931c-13.487,-14.406 -32.644,-23.295 -53.946,-23.295c-40.767,0 -73.87,33.104 -73.87,73.87c0,5.824 0.613,11.494 1.992,16.858c-61.456,-3.065 -115.862,-32.49 -152.337,-77.241c-6.284,10.881 -9.962,23.601 -9.962,37.088c0,25.594 13.027,48.276 32.95,61.456c-12.107,-0.307 -23.448,-3.678 -33.41,-9.196l0,0.92c0,35.862 25.441,65.594 59.311,72.49c-6.13,1.686 -12.72,2.606 -19.464,2.606c-4.751,0 -9.348,-0.46 -13.946,-1.38c9.349,29.426 36.628,50.728 68.965,51.341c-25.287,19.771 -57.164,31.571 -91.8,31.571c-5.977,0 -11.801,-0.306 -17.625,-1.073c32.337,21.15 71.264,33.41 112.95,33.41Z" />
+        </svg>
+    </a>
+    <a target="_blank" rel="noopener noreferrer" aria-label="share uva 253 - Cube painting（相同骰子） on telegram"
+        href="https://telegram.me/share/url?text=uva%20253%20-%20Cube%20painting%ef%bc%88%e7%9b%b8%e5%90%8c%e9%aa%b0%e5%ad%90%ef%bc%89&amp;url=https%3a%2f%2fsucicada.github.io%2fblog%2fposts%2fuvaoj%2fuva-253-cube-painting%25E7%259B%25B8%25E5%2590%258C%25E9%25AA%25B0%25E5%25AD%2590%2f">
+        <svg version="1.1" xml:space="preserve" viewBox="2 2 28 28" height="30px" width="30px" fill="currentColor">
+            <path
+                d="M26.49,29.86H5.5a3.37,3.37,0,0,1-2.47-1,3.35,3.35,0,0,1-1-2.47V5.48A3.36,3.36,0,0,1,3,3,3.37,3.37,0,0,1,5.5,2h21A3.38,3.38,0,0,1,29,3a3.36,3.36,0,0,1,1,2.46V26.37a3.35,3.35,0,0,1-1,2.47A3.38,3.38,0,0,1,26.49,29.86Zm-5.38-6.71a.79.79,0,0,0,.85-.66L24.73,9.24a.55.55,0,0,0-.18-.46.62.62,0,0,0-.41-.17q-.08,0-16.53,6.11a.59.59,0,0,0-.41.59.57.57,0,0,0,.43.52l4,1.24,1.61,4.83a.62.62,0,0,0,.63.43.56.56,0,0,0,.4-.17L16.54,20l4.09,3A.9.9,0,0,0,21.11,23.15ZM13.8,20.71l-1.21-4q8.72-5.55,8.78-5.55c.15,0,.23,0,.23.16a.18.18,0,0,1,0,.06s-2.51,2.3-7.52,6.8Z" />
+        </svg>
+    </a>
+</div>
+
+  </footer><div id="disqus_thread"></div>
+<script type="application/javascript">
+    window.disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "sucicada" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+</article>
+    </main>
+    
+<footer class="footer">
+    <span>&copy; 2022 <a href="https://sucicada.github.io/blog">SuCicada</a></span>
+    <span>
+        Powered by
+        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+        <path d="M12 6H0l6-6z" />
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu')
+    if (menu) {
+        menu.scrollLeft = localStorage.getItem("menu-scroll-position");
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var mybutton = document.getElementById("top-link");
+    window.onscroll = function () {
+        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
+            mybutton.style.visibility = "visible";
+            mybutton.style.opacity = "1";
+        } else {
+            mybutton.style.visibility = "hidden";
+            mybutton.style.opacity = "0";
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        if (document.body.className.includes("dark")) {
+            document.body.classList.remove('dark');
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            document.body.classList.add('dark');
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+<script>
+    document.querySelectorAll('pre > code').forEach((codeblock) => {
+        const container = codeblock.parentNode.parentNode;
+
+        const copybutton = document.createElement('button');
+        copybutton.classList.add('copy-code');
+        copybutton.innerHTML = 'copy';
+
+        function copyingDone() {
+            copybutton.innerHTML = 'copied!';
+            setTimeout(() => {
+                copybutton.innerHTML = 'copy';
+            }, 2000);
+        }
+
+        copybutton.addEventListener('click', (cb) => {
+            if ('clipboard' in navigator) {
+                navigator.clipboard.writeText(codeblock.textContent);
+                copyingDone();
+                return;
+            }
+
+            const range = document.createRange();
+            range.selectNodeContents(codeblock);
+            const selection = window.getSelection();
+            selection.removeAllRanges();
+            selection.addRange(range);
+            try {
+                document.execCommand('copy');
+                copyingDone();
+            } catch (e) { };
+            selection.removeRange(range);
+        });
+
+        if (container.classList.contains("highlight")) {
+            container.appendChild(copybutton);
+        } else if (container.parentNode.firstChild == container) {
+            
+        } else if (codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName == "TABLE") {
+            
+            codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(copybutton);
+        } else {
+            
+            codeblock.parentNode.appendChild(copybutton);
+        }
+    });
+</script>
+</body>
+
+</html>

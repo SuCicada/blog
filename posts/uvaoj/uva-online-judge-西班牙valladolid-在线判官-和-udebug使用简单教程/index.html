@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto">
+
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>UVa Online Judge 西班牙Valladolid 在线判官 和 uDebug使用简单教程 | SuCicada</title>
+<meta name="keywords" content="UVaOJ">
+<meta name="description" content="udebug使用在后面
+https://uva.onlinejudge.org/
+1、这是主界面，如果你还没有账号，那么就点击图中的register。
+2、然后就是填写信息，邮箱要用gmail，信息填写完成后点击下方的register
+3、之后打开邮箱查看接受的邮件，并点击其中的链接完成注册确认，之后会转到uva oj，如果页面显示 your account is now active.You may now log in!则表示注册完成。
+4、然后输入用户名密码登录
+5、然后在左边的栏目中，点击Browse Problems 就可以找到有关刘汝佳以及其他一些著名套题了。
+6、然后是关于如何答题，现在我们打开了一道题目，看图上红框住的左上角，
+（1）其中我们点击PDF，会下载下来本道题的pdf格式文件
+（2）我们点击submit就是提交代码了。
+其中如果是用的C语言或C&#43;&#43;选择第一个c&#43;&#43;，提交结果没有ac，如果不是代码问题，那么试试选择c&#43;&#43;11吧。
+参考了UVAOJ的注册和评测入门
+（3）最后我想说一下在看题界面的那个Debug选项，就是旁边有个红色的甲虫的。
+若果打不开udebug就挂vpn试试吧
+https://www.udebug.com/UVa/1589 （当前是1589号题）
+我们点进去后，一共四部分。上左边就是一些用户上传的关于本题的一些样例。点击其中一个，这些样例就会显示在右边的框中。
+然后我们点击下方写着Get Accepted Output蓝格，就会在下方的左边出现这些样例的正确输出结果。我们可以把这些样例用我们的代码输出的结果粘到右边的框中。之后点击Compare Outputs 进行对比。
+这样我就能很方便的知道我们的代码在处理哪一个样例上出现里问题，更改起来也更有方向性。还有如果出现了图中的情况，明明都对但还是显示不对，那是因为他的输出默认多了一个空行，这个一般和代码没有关系。默认为对就行了。
+我们还可以在上面快速搜索你需要的题号。
+目前支持这些oj
+这是主页https://www.udebug.com/
+可以去他的Twitter和Facebook上看看，网上关于udegug的信息不多。">
+<meta name="author" content="SuCicada">
+<link rel="canonical" href="https://sucicada.github.io/blog/posts/uvaoj/uva-online-judge-%E8%A5%BF%E7%8F%AD%E7%89%99valladolid-%E5%9C%A8%E7%BA%BF%E5%88%A4%E5%AE%98-%E5%92%8C-udebug%E4%BD%BF%E7%94%A8%E7%AE%80%E5%8D%95%E6%95%99%E7%A8%8B/">
+<link crossorigin="anonymous" href="/blog/assets/css/stylesheet.5b5501da54f21435c8f8010d1de02123ae8d1ada696b48c6530ec4eea283e7d6.css" integrity="sha256-W1UB2lTyFDXI&#43;AENHeAhI66NGtppa0jGUw7E7qKD59Y=" rel="preload stylesheet" as="style">
+<link rel="icon" href="https://sucicada.github.io/blog/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="https://sucicada.github.io/blog/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://sucicada.github.io/blog/favicon-32x32.png">
+<link rel="apple-touch-icon" href="https://sucicada.github.io/blog/apple-touch-icon.png">
+<link rel="mask-icon" href="https://sucicada.github.io/blog/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --hljs-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-track {
+                background: 0 0;
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-thumb {
+                border-color: var(--theme);
+            }
+        }
+
+    </style>
+</noscript><meta property="og:title" content="UVa Online Judge 西班牙Valladolid 在线判官 和 uDebug使用简单教程" />
+<meta property="og:description" content="udebug使用在后面
+https://uva.onlinejudge.org/
+1、这是主界面，如果你还没有账号，那么就点击图中的register。
+2、然后就是填写信息，邮箱要用gmail，信息填写完成后点击下方的register
+3、之后打开邮箱查看接受的邮件，并点击其中的链接完成注册确认，之后会转到uva oj，如果页面显示 your account is now active.You may now log in!则表示注册完成。
+4、然后输入用户名密码登录
+5、然后在左边的栏目中，点击Browse Problems 就可以找到有关刘汝佳以及其他一些著名套题了。
+6、然后是关于如何答题，现在我们打开了一道题目，看图上红框住的左上角，
+（1）其中我们点击PDF，会下载下来本道题的pdf格式文件
+（2）我们点击submit就是提交代码了。
+其中如果是用的C语言或C&#43;&#43;选择第一个c&#43;&#43;，提交结果没有ac，如果不是代码问题，那么试试选择c&#43;&#43;11吧。
+参考了UVAOJ的注册和评测入门
+（3）最后我想说一下在看题界面的那个Debug选项，就是旁边有个红色的甲虫的。
+若果打不开udebug就挂vpn试试吧
+https://www.udebug.com/UVa/1589 （当前是1589号题）
+我们点进去后，一共四部分。上左边就是一些用户上传的关于本题的一些样例。点击其中一个，这些样例就会显示在右边的框中。
+然后我们点击下方写着Get Accepted Output蓝格，就会在下方的左边出现这些样例的正确输出结果。我们可以把这些样例用我们的代码输出的结果粘到右边的框中。之后点击Compare Outputs 进行对比。
+这样我就能很方便的知道我们的代码在处理哪一个样例上出现里问题，更改起来也更有方向性。还有如果出现了图中的情况，明明都对但还是显示不对，那是因为他的输出默认多了一个空行，这个一般和代码没有关系。默认为对就行了。
+我们还可以在上面快速搜索你需要的题号。
+目前支持这些oj
+这是主页https://www.udebug.com/
+可以去他的Twitter和Facebook上看看，网上关于udegug的信息不多。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://sucicada.github.io/blog/posts/uvaoj/uva-online-judge-%E8%A5%BF%E7%8F%AD%E7%89%99valladolid-%E5%9C%A8%E7%BA%BF%E5%88%A4%E5%AE%98-%E5%92%8C-udebug%E4%BD%BF%E7%94%A8%E7%AE%80%E5%8D%95%E6%95%99%E7%A8%8B/" /><meta property="og:image" content="https://sucicada.github.io/blog/papermod-cover.png"/><meta property="article:section" content="posts" />
+
+
+
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="https://sucicada.github.io/blog/papermod-cover.png"/>
+
+<meta name="twitter:title" content="UVa Online Judge 西班牙Valladolid 在线判官 和 uDebug使用简单教程"/>
+<meta name="twitter:description" content="udebug使用在后面
+https://uva.onlinejudge.org/
+1、这是主界面，如果你还没有账号，那么就点击图中的register。
+2、然后就是填写信息，邮箱要用gmail，信息填写完成后点击下方的register
+3、之后打开邮箱查看接受的邮件，并点击其中的链接完成注册确认，之后会转到uva oj，如果页面显示 your account is now active.You may now log in!则表示注册完成。
+4、然后输入用户名密码登录
+5、然后在左边的栏目中，点击Browse Problems 就可以找到有关刘汝佳以及其他一些著名套题了。
+6、然后是关于如何答题，现在我们打开了一道题目，看图上红框住的左上角，
+（1）其中我们点击PDF，会下载下来本道题的pdf格式文件
+（2）我们点击submit就是提交代码了。
+其中如果是用的C语言或C&#43;&#43;选择第一个c&#43;&#43;，提交结果没有ac，如果不是代码问题，那么试试选择c&#43;&#43;11吧。
+参考了UVAOJ的注册和评测入门
+（3）最后我想说一下在看题界面的那个Debug选项，就是旁边有个红色的甲虫的。
+若果打不开udebug就挂vpn试试吧
+https://www.udebug.com/UVa/1589 （当前是1589号题）
+我们点进去后，一共四部分。上左边就是一些用户上传的关于本题的一些样例。点击其中一个，这些样例就会显示在右边的框中。
+然后我们点击下方写着Get Accepted Output蓝格，就会在下方的左边出现这些样例的正确输出结果。我们可以把这些样例用我们的代码输出的结果粘到右边的框中。之后点击Compare Outputs 进行对比。
+这样我就能很方便的知道我们的代码在处理哪一个样例上出现里问题，更改起来也更有方向性。还有如果出现了图中的情况，明明都对但还是显示不对，那是因为他的输出默认多了一个空行，这个一般和代码没有关系。默认为对就行了。
+我们还可以在上面快速搜索你需要的题号。
+目前支持这些oj
+这是主页https://www.udebug.com/
+可以去他的Twitter和Facebook上看看，网上关于udegug的信息不多。"/>
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "Posts",
+      "item": "https://sucicada.github.io/blog/posts/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  3 ,
+      "name": "UVa Online Judge 西班牙Valladolid 在线判官 和 uDebug使用简单教程",
+      "item": "https://sucicada.github.io/blog/posts/uvaoj/uva-online-judge-%E8%A5%BF%E7%8F%AD%E7%89%99valladolid-%E5%9C%A8%E7%BA%BF%E5%88%A4%E5%AE%98-%E5%92%8C-udebug%E4%BD%BF%E7%94%A8%E7%AE%80%E5%8D%95%E6%95%99%E7%A8%8B/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "UVa Online Judge 西班牙Valladolid 在线判官 和 uDebug使用简单教程",
+  "name": "UVa Online Judge 西班牙Valladolid 在线判官 和 uDebug使用简单教程",
+  "description": "udebug使用在后面\nhttps://uva.onlinejudge.org/\n1、这是主界面，如果你还没有账号，那么就点击图中的register。\n2、然后就是填写信息，邮箱要用gmail，信息填写完成后点击下方的register\n3、之后打开邮箱查看接受的邮件，并点击其中的链接完成注册确认，之后会转到uva oj，如果页面显示 your account is now active.You may now log in!则表示注册完成。\n4、然后输入用户名密码登录\n5、然后在左边的栏目中，点击Browse Problems 就可以找到有关刘汝佳以及其他一些著名套题了。\n6、然后是关于如何答题，现在我们打开了一道题目，看图上红框住的左上角，\n（1）其中我们点击PDF，会下载下来本道题的pdf格式文件\n（2）我们点击submit就是提交代码了。\n其中如果是用的C语言或C++选择第一个c++，提交结果没有ac，如果不是代码问题，那么试试选择c++11吧。\n参考了UVAOJ的注册和评测入门\n（3）最后我想说一下在看题界面的那个Debug选项，就是旁边有个红色的甲虫的。\n若果打不开udebug就挂vpn试试吧\nhttps://www.udebug.com/UVa/1589 （当前是1589号题）\n我们点进去后，一共四部分。上左边就是一些用户上传的关于本题的一些样例。点击其中一个，这些样例就会显示在右边的框中。\n然后我们点击下方写着Get Accepted Output蓝格，就会在下方的左边出现这些样例的正确输出结果。我们可以把这些样例用我们的代码输出的结果粘到右边的框中。之后点击Compare Outputs 进行对比。\n这样我就能很方便的知道我们的代码在处理哪一个样例上出现里问题，更改起来也更有方向性。还有如果出现了图中的情况，明明都对但还是显示不对，那是因为他的输出默认多了一个空行，这个一般和代码没有关系。默认为对就行了。\n我们还可以在上面快速搜索你需要的题号。\n目前支持这些oj\n这是主页https://www.udebug.com/\n可以去他的Twitter和Facebook上看看，网上关于udegug的信息不多。",
+  "keywords": [
+    "UVaOJ"
+  ],
+  "articleBody": "udebug使用在后面\nhttps://uva.onlinejudge.org/\n1、这是主界面，如果你还没有账号，那么就点击图中的register。\n2、然后就是填写信息，邮箱要用gmail，信息填写完成后点击下方的register\n3、之后打开邮箱查看接受的邮件，并点击其中的链接完成注册确认，之后会转到uva oj，如果页面显示 your account is now active.You may now log in!则表示注册完成。\n4、然后输入用户名密码登录\n5、然后在左边的栏目中，点击Browse Problems 就可以找到有关刘汝佳以及其他一些著名套题了。\n6、然后是关于如何答题，现在我们打开了一道题目，看图上红框住的左上角，\n（1）其中我们点击PDF，会下载下来本道题的pdf格式文件\n（2）我们点击submit就是提交代码了。\n其中如果是用的C语言或C++选择第一个c++，提交结果没有ac，如果不是代码问题，那么试试选择c++11吧。\n参考了UVAOJ的注册和评测入门\n（3）最后我想说一下在看题界面的那个Debug选项，就是旁边有个红色的甲虫的。\n若果打不开udebug就挂vpn试试吧\nhttps://www.udebug.com/UVa/1589 （当前是1589号题）\n我们点进去后，一共四部分。上左边就是一些用户上传的关于本题的一些样例。点击其中一个，这些样例就会显示在右边的框中。\n然后我们点击下方写着Get Accepted Output蓝格，就会在下方的左边出现这些样例的正确输出结果。我们可以把这些样例用我们的代码输出的结果粘到右边的框中。之后点击Compare Outputs 进行对比。\n这样我就能很方便的知道我们的代码在处理哪一个样例上出现里问题，更改起来也更有方向性。还有如果出现了图中的情况，明明都对但还是显示不对，那是因为他的输出默认多了一个空行，这个一般和代码没有关系。默认为对就行了。\n我们还可以在上面快速搜索你需要的题号。\n目前支持这些oj\n这是主页https://www.udebug.com/\n可以去他的Twitter和Facebook上看看，网上关于udegug的信息不多。\n",
+  "wordCount" : "39",
+  "inLanguage": "en",
+  "datePublished": "0001-01-01T00:00:00Z",
+  "dateModified": "0001-01-01T00:00:00Z",
+  "author":{
+    "@type": "Person",
+    "name": "SuCicada"
+  },
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://sucicada.github.io/blog/posts/uvaoj/uva-online-judge-%E8%A5%BF%E7%8F%AD%E7%89%99valladolid-%E5%9C%A8%E7%BA%BF%E5%88%A4%E5%AE%98-%E5%92%8C-udebug%E4%BD%BF%E7%94%A8%E7%AE%80%E5%8D%95%E6%95%99%E7%A8%8B/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "SuCicada",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://sucicada.github.io/blog/favicon.ico"
+    }
+  }
+}
+</script>
+</head>
+
+<body class="" id="top">
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.body.classList.add('dark');
+    } else if (localStorage.getItem("pref-theme") === "light") {
+        document.body.classList.remove('dark')
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.body.classList.add('dark');
+    }
+
+</script>
+
+<header class="header">
+    <nav class="nav">
+        <div class="logo">
+            <a href="https://sucicada.github.io/blog" accesskey="h" title="SuCicada (Alt + H)">SuCicada</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" accesskey="t" title="(Alt + T)">
+                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu">
+            <li>
+                <a href="https://sucicada.github.io/blog/archives/" title="Archive">
+                    <span>Archive</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://sucicada.github.io/blog/search/" title="Search (Alt &#43; /)" accesskey=/>
+                    <span>Search</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://sucicada.github.io/blog/tags/" title="Tags">
+                    <span>Tags</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://sucicada.github.io/blog/about/" title="About">
+                    <span>About</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+
+    <h1 class="post-title">
+      UVa Online Judge 西班牙Valladolid 在线判官 和 uDebug使用简单教程
+    </h1>
+    <div class="post-meta">SuCicada&nbsp;|&nbsp;<a href="https://github.com/SuCicada/mysite-hugo/content/posts/UVaOJ/UVa%20Online%20Judge%20%e8%a5%bf%e7%8f%ad%e7%89%99Valladolid%20%e5%9c%a8%e7%ba%bf%e5%88%a4%e5%ae%98%20%e5%92%8c%20uDebug%e4%bd%bf%e7%94%a8%e7%ae%80%e5%8d%95%e6%95%99%e7%a8%8b.md" rel="noopener noreferrer" target="_blank">Suggest Changes</a>
+
+</div>
+    <ul class="post-tags">
+      <li><a href="https://sucicada.github.io/blog/tags/uvaoj/">UVaOJ</a></li>
+    </ul>
+  </header> 
+
+  <div class="post-content"><p><strong>udebug使用在后面</strong><br>
+<strong><a href="https://uva.onlinejudge.org/">https://uva.onlinejudge.org/</a></strong><br>
+1、这是主界面，如果你还没有账号，那么就点击图中的register。<br>
+
+
+
+
+<img loading="lazy" src="https://img-blog.csdn.net/20180302120246557?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvc3VfY2ljYWRh/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="这里写图片描述"  />
+<br>
+2、然后就是填写信息，邮箱要用gmail，信息填写完成后点击下方的register<br>
+
+
+
+
+<img loading="lazy" src="https://img-blog.csdn.net/20180303144347646?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvc3VfY2ljYWRh/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="这里写图片描述"  />
+<br>
+3、之后打开邮箱查看接受的邮件，并点击其中的链接完成注册确认，之后会转到uva oj，如果页面显示 your account is now active.You may now log in!则表示注册完成。<br>
+4、然后输入用户名密码登录<br>
+
+
+
+
+<img loading="lazy" src="https://img-blog.csdn.net/20180303145034010?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvc3VfY2ljYWRh/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="这里写图片描述"  />
+<br>
+5、然后在左边的栏目中，点击Browse Problems 就可以找到有关刘汝佳以及其他一些著名套题了。<br>
+
+
+
+
+<img loading="lazy" src="https://img-blog.csdn.net/20180303145500790?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvc3VfY2ljYWRh/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="这里写图片描述"  />
+<br>
+6、然后是关于如何答题，现在我们打开了一道题目，看图上红框住的左上角，<br>
+（1）其中我们点击PDF，会下载下来本道题的pdf格式文件<br>
+（2）我们点击submit就是提交代码了。<br>
+
+
+
+
+<img loading="lazy" src="https://img-blog.csdn.net/20180303150046264?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvc3VfY2ljYWRh/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="这里写图片描述"  />
+<br>
+
+
+
+
+<img loading="lazy" src="https://img-blog.csdn.net/20180303150427377?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvc3VfY2ljYWRh/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="这里写图片描述"  />
+<br>
+其中如果是用的C语言或C++选择第一个c++，提交结果没有ac，如果不是代码问题，那么试试选择c++11吧。</p>
+<p><em>参考了</em><a href="http://www.cnblogs.com/fzd19zx/archive/2012/11/02/2750711.html">UVAOJ的注册和评测入门</a></p>
+<hr>
+<hr>
+<p>（3）<strong>最后我想说一下在看题界面的那个Debug选项，就是旁边有个红色的甲虫的。</strong><br>
+<em>若果打不开udebug就挂vpn试试吧</em><br>
+<strong><a href="https://www.udebug.com/UVa/1589">https://www.udebug.com/UVa/1589</a></strong> （当前是1589号题）<br>
+我们点进去后，一共四部分。上左边就是一些用户上传的关于本题的一些样例。点击其中一个，这些样例就会显示在右边的框中。<br>
+
+
+
+
+<img loading="lazy" src="https://img-blog.csdn.net/20180303151312617?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvc3VfY2ljYWRh/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="这里写图片描述"  />
+<br>
+然后我们点击下方写着Get Accepted Output蓝格，就会在下方的左边出现这些样例的正确输出结果。我们可以把这些样例用我们的代码输出的结果粘到右边的框中。之后点击Compare Outputs 进行对比。<br>
+
+
+
+
+<img loading="lazy" src="https://img-blog.csdn.net/20180303151623615?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvc3VfY2ljYWRh/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="这里写图片描述"  />
+<br>
+这样我就能很方便的知道我们的代码在处理哪一个样例上出现里问题，更改起来也更有方向性。还有如果出现了图中的情况，明明都对但还是显示不对，那是因为他的输出默认多了一个空行，这个一般和代码没有关系。默认为对就行了。<br>
+
+
+
+
+<img loading="lazy" src="https://img-blog.csdn.net/20180303152152362?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvc3VfY2ljYWRh/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="这里写图片描述"  />
+</p>
+<p>我们还可以在上面快速搜索你需要的题号。<br>
+目前支持这些oj<br>
+
+
+
+
+<img loading="lazy" src="https://img-blog.csdn.net/20180303152933065?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvc3VfY2ljYWRh/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="这里写图片描述"  />
+<br>
+这是主页https://www.udebug.com/<br>
+可以去他的Twitter和Facebook上看看，网上关于udegug的信息不多。<br>
+
+
+
+
+<img loading="lazy" src="https://img-blog.csdn.net/20180303153316885?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvc3VfY2ljYWRh/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="这里写图片描述"  />
+</p>
+
+
+  </div>
+
+  <footer class="post-footer">
+<nav class="paginav">
+  <a class="prev" href="https://sucicada.github.io/blog/posts/uvaoj/uva-839-not-so-mobile-%E5%A4%A9%E5%B9%B3by-sucicada/">
+    <span class="title">« Prev</span>
+    <br>
+    <span>UVA 839 - Not so Mobile （天平）By SuCicada</span>
+  </a>
+  <a class="next" href="https://sucicada.github.io/blog/posts/uvaoj/uva1583-digit-generator-%E7%94%9F%E6%88%90%E5%85%83/">
+    <span class="title">Next »</span>
+    <br>
+    <span>uva1583 - Digit Generator （生成元）</span>
+  </a>
+</nav>
+
+
+<div class="share-buttons">
+    <a target="_blank" rel="noopener noreferrer" aria-label="share UVa Online Judge 西班牙Valladolid 在线判官 和 uDebug使用简单教程 on twitter"
+        href="https://twitter.com/intent/tweet/?text=UVa%20Online%20Judge%20%e8%a5%bf%e7%8f%ad%e7%89%99Valladolid%20%e5%9c%a8%e7%ba%bf%e5%88%a4%e5%ae%98%20%e5%92%8c%20uDebug%e4%bd%bf%e7%94%a8%e7%ae%80%e5%8d%95%e6%95%99%e7%a8%8b&amp;url=https%3a%2f%2fsucicada.github.io%2fblog%2fposts%2fuvaoj%2fuva-online-judge-%25E8%25A5%25BF%25E7%258F%25AD%25E7%2589%2599valladolid-%25E5%259C%25A8%25E7%25BA%25BF%25E5%2588%25A4%25E5%25AE%2598-%25E5%2592%258C-udebug%25E4%25BD%25BF%25E7%2594%25A8%25E7%25AE%2580%25E5%258D%2595%25E6%2595%2599%25E7%25A8%258B%2f&amp;hashtags=UVaOJ">
+        <svg version="1.1" viewBox="0 0 512 512" xml:space="preserve" height="30px" width="30px" fill="currentColor">
+            <path
+                d="M449.446,0c34.525,0 62.554,28.03 62.554,62.554l0,386.892c0,34.524 -28.03,62.554 -62.554,62.554l-386.892,0c-34.524,0 -62.554,-28.03 -62.554,-62.554l0,-386.892c0,-34.524 28.029,-62.554 62.554,-62.554l386.892,0Zm-253.927,424.544c135.939,0 210.268,-112.643 210.268,-210.268c0,-3.218 0,-6.437 -0.153,-9.502c14.406,-10.421 26.973,-23.448 36.935,-38.314c-13.18,5.824 -27.433,9.809 -42.452,11.648c15.326,-9.196 26.973,-23.602 32.49,-40.92c-14.252,8.429 -30.038,14.56 -46.896,17.931c-13.487,-14.406 -32.644,-23.295 -53.946,-23.295c-40.767,0 -73.87,33.104 -73.87,73.87c0,5.824 0.613,11.494 1.992,16.858c-61.456,-3.065 -115.862,-32.49 -152.337,-77.241c-6.284,10.881 -9.962,23.601 -9.962,37.088c0,25.594 13.027,48.276 32.95,61.456c-12.107,-0.307 -23.448,-3.678 -33.41,-9.196l0,0.92c0,35.862 25.441,65.594 59.311,72.49c-6.13,1.686 -12.72,2.606 -19.464,2.606c-4.751,0 -9.348,-0.46 -13.946,-1.38c9.349,29.426 36.628,50.728 68.965,51.341c-25.287,19.771 -57.164,31.571 -91.8,31.571c-5.977,0 -11.801,-0.306 -17.625,-1.073c32.337,21.15 71.264,33.41 112.95,33.41Z" />
+        </svg>
+    </a>
+    <a target="_blank" rel="noopener noreferrer" aria-label="share UVa Online Judge 西班牙Valladolid 在线判官 和 uDebug使用简单教程 on telegram"
+        href="https://telegram.me/share/url?text=UVa%20Online%20Judge%20%e8%a5%bf%e7%8f%ad%e7%89%99Valladolid%20%e5%9c%a8%e7%ba%bf%e5%88%a4%e5%ae%98%20%e5%92%8c%20uDebug%e4%bd%bf%e7%94%a8%e7%ae%80%e5%8d%95%e6%95%99%e7%a8%8b&amp;url=https%3a%2f%2fsucicada.github.io%2fblog%2fposts%2fuvaoj%2fuva-online-judge-%25E8%25A5%25BF%25E7%258F%25AD%25E7%2589%2599valladolid-%25E5%259C%25A8%25E7%25BA%25BF%25E5%2588%25A4%25E5%25AE%2598-%25E5%2592%258C-udebug%25E4%25BD%25BF%25E7%2594%25A8%25E7%25AE%2580%25E5%258D%2595%25E6%2595%2599%25E7%25A8%258B%2f">
+        <svg version="1.1" xml:space="preserve" viewBox="2 2 28 28" height="30px" width="30px" fill="currentColor">
+            <path
+                d="M26.49,29.86H5.5a3.37,3.37,0,0,1-2.47-1,3.35,3.35,0,0,1-1-2.47V5.48A3.36,3.36,0,0,1,3,3,3.37,3.37,0,0,1,5.5,2h21A3.38,3.38,0,0,1,29,3a3.36,3.36,0,0,1,1,2.46V26.37a3.35,3.35,0,0,1-1,2.47A3.38,3.38,0,0,1,26.49,29.86Zm-5.38-6.71a.79.79,0,0,0,.85-.66L24.73,9.24a.55.55,0,0,0-.18-.46.62.62,0,0,0-.41-.17q-.08,0-16.53,6.11a.59.59,0,0,0-.41.59.57.57,0,0,0,.43.52l4,1.24,1.61,4.83a.62.62,0,0,0,.63.43.56.56,0,0,0,.4-.17L16.54,20l4.09,3A.9.9,0,0,0,21.11,23.15ZM13.8,20.71l-1.21-4q8.72-5.55,8.78-5.55c.15,0,.23,0,.23.16a.18.18,0,0,1,0,.06s-2.51,2.3-7.52,6.8Z" />
+        </svg>
+    </a>
+</div>
+
+  </footer><div id="disqus_thread"></div>
+<script type="application/javascript">
+    window.disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "sucicada" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+</article>
+    </main>
+    
+<footer class="footer">
+    <span>&copy; 2022 <a href="https://sucicada.github.io/blog">SuCicada</a></span>
+    <span>
+        Powered by
+        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+        <path d="M12 6H0l6-6z" />
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu')
+    if (menu) {
+        menu.scrollLeft = localStorage.getItem("menu-scroll-position");
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var mybutton = document.getElementById("top-link");
+    window.onscroll = function () {
+        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
+            mybutton.style.visibility = "visible";
+            mybutton.style.opacity = "1";
+        } else {
+            mybutton.style.visibility = "hidden";
+            mybutton.style.opacity = "0";
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        if (document.body.className.includes("dark")) {
+            document.body.classList.remove('dark');
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            document.body.classList.add('dark');
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+<script>
+    document.querySelectorAll('pre > code').forEach((codeblock) => {
+        const container = codeblock.parentNode.parentNode;
+
+        const copybutton = document.createElement('button');
+        copybutton.classList.add('copy-code');
+        copybutton.innerHTML = 'copy';
+
+        function copyingDone() {
+            copybutton.innerHTML = 'copied!';
+            setTimeout(() => {
+                copybutton.innerHTML = 'copy';
+            }, 2000);
+        }
+
+        copybutton.addEventListener('click', (cb) => {
+            if ('clipboard' in navigator) {
+                navigator.clipboard.writeText(codeblock.textContent);
+                copyingDone();
+                return;
+            }
+
+            const range = document.createRange();
+            range.selectNodeContents(codeblock);
+            const selection = window.getSelection();
+            selection.removeAllRanges();
+            selection.addRange(range);
+            try {
+                document.execCommand('copy');
+                copyingDone();
+            } catch (e) { };
+            selection.removeRange(range);
+        });
+
+        if (container.classList.contains("highlight")) {
+            container.appendChild(copybutton);
+        } else if (container.parentNode.firstChild == container) {
+            
+        } else if (codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName == "TABLE") {
+            
+            codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(copybutton);
+        } else {
+            
+            codeblock.parentNode.appendChild(copybutton);
+        }
+    });
+</script>
+</body>
+
+</html>

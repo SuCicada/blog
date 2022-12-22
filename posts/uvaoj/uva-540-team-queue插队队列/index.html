@@ -1,0 +1,612 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto">
+
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>uva 540 - Team Queue（插队队列） | SuCicada</title>
+<meta name="keywords" content="UVaOJ">
+<meta name="description" content="例题5-6 团体队列(Team Queue,UVa540)
+有t个团队的人正在排一个长队。每次新来一个人时,如果他有队友在排队,那么这个
+新人会插队到最后一个队友的身后。如果没有任何一个队友排队,则他会排到长队的队尾。
+输入每个团队中所有队员的编号,要求支持如下3种指令(前两种指令可以穿插进
+行)。
+ENQUEUEx:编号为x的人进入长队。
+DEQUEUE:长队的队首出队。
+STOP:停止模拟。
+对于每个DEQUEUE指令,输出出队的人的编号。
+Sample Input
+2
+3 101 102 103
+3 201 202 203
+ENQUEUE 101
+ENQUEUE 201
+ENQUEUE 102
+ENQUEUE 202
+ENQUEUE 103
+ENQUEUE 203
+DEQUEUE
+DEQUEUE
+DEQUEUE
+DEQUEUE
+DEQUEUE
+DEQUEUE
+STOP
+2
+5 259001 259002 259003 259004 259005
+6 260001 260002 260003 260004 260005 260006
+ENQUEUE 259001
+ENQUEUE 260001
+ENQUEUE 259002
+ENQUEUE 259003
+ENQUEUE 259004
+ENQUEUE 259005
+DEQUEUE
+DEQUEUE">
+<meta name="author" content="SuCicada">
+<link rel="canonical" href="https://sucicada.github.io/blog/posts/uvaoj/uva-540-team-queue%E6%8F%92%E9%98%9F%E9%98%9F%E5%88%97/">
+<link crossorigin="anonymous" href="/blog/assets/css/stylesheet.5b5501da54f21435c8f8010d1de02123ae8d1ada696b48c6530ec4eea283e7d6.css" integrity="sha256-W1UB2lTyFDXI&#43;AENHeAhI66NGtppa0jGUw7E7qKD59Y=" rel="preload stylesheet" as="style">
+<link rel="icon" href="https://sucicada.github.io/blog/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="https://sucicada.github.io/blog/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://sucicada.github.io/blog/favicon-32x32.png">
+<link rel="apple-touch-icon" href="https://sucicada.github.io/blog/apple-touch-icon.png">
+<link rel="mask-icon" href="https://sucicada.github.io/blog/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --hljs-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-track {
+                background: 0 0;
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-thumb {
+                border-color: var(--theme);
+            }
+        }
+
+    </style>
+</noscript><meta property="og:title" content="uva 540 - Team Queue（插队队列）" />
+<meta property="og:description" content="例题5-6 团体队列(Team Queue,UVa540)
+有t个团队的人正在排一个长队。每次新来一个人时,如果他有队友在排队,那么这个
+新人会插队到最后一个队友的身后。如果没有任何一个队友排队,则他会排到长队的队尾。
+输入每个团队中所有队员的编号,要求支持如下3种指令(前两种指令可以穿插进
+行)。
+ENQUEUEx:编号为x的人进入长队。
+DEQUEUE:长队的队首出队。
+STOP:停止模拟。
+对于每个DEQUEUE指令,输出出队的人的编号。
+Sample Input
+2
+3 101 102 103
+3 201 202 203
+ENQUEUE 101
+ENQUEUE 201
+ENQUEUE 102
+ENQUEUE 202
+ENQUEUE 103
+ENQUEUE 203
+DEQUEUE
+DEQUEUE
+DEQUEUE
+DEQUEUE
+DEQUEUE
+DEQUEUE
+STOP
+2
+5 259001 259002 259003 259004 259005
+6 260001 260002 260003 260004 260005 260006
+ENQUEUE 259001
+ENQUEUE 260001
+ENQUEUE 259002
+ENQUEUE 259003
+ENQUEUE 259004
+ENQUEUE 259005
+DEQUEUE
+DEQUEUE" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://sucicada.github.io/blog/posts/uvaoj/uva-540-team-queue%E6%8F%92%E9%98%9F%E9%98%9F%E5%88%97/" /><meta property="og:image" content="https://sucicada.github.io/blog/papermod-cover.png"/><meta property="article:section" content="posts" />
+
+
+
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="https://sucicada.github.io/blog/papermod-cover.png"/>
+
+<meta name="twitter:title" content="uva 540 - Team Queue（插队队列）"/>
+<meta name="twitter:description" content="例题5-6 团体队列(Team Queue,UVa540)
+有t个团队的人正在排一个长队。每次新来一个人时,如果他有队友在排队,那么这个
+新人会插队到最后一个队友的身后。如果没有任何一个队友排队,则他会排到长队的队尾。
+输入每个团队中所有队员的编号,要求支持如下3种指令(前两种指令可以穿插进
+行)。
+ENQUEUEx:编号为x的人进入长队。
+DEQUEUE:长队的队首出队。
+STOP:停止模拟。
+对于每个DEQUEUE指令,输出出队的人的编号。
+Sample Input
+2
+3 101 102 103
+3 201 202 203
+ENQUEUE 101
+ENQUEUE 201
+ENQUEUE 102
+ENQUEUE 202
+ENQUEUE 103
+ENQUEUE 203
+DEQUEUE
+DEQUEUE
+DEQUEUE
+DEQUEUE
+DEQUEUE
+DEQUEUE
+STOP
+2
+5 259001 259002 259003 259004 259005
+6 260001 260002 260003 260004 260005 260006
+ENQUEUE 259001
+ENQUEUE 260001
+ENQUEUE 259002
+ENQUEUE 259003
+ENQUEUE 259004
+ENQUEUE 259005
+DEQUEUE
+DEQUEUE"/>
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "Posts",
+      "item": "https://sucicada.github.io/blog/posts/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  3 ,
+      "name": "uva 540 - Team Queue（插队队列）",
+      "item": "https://sucicada.github.io/blog/posts/uvaoj/uva-540-team-queue%E6%8F%92%E9%98%9F%E9%98%9F%E5%88%97/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "uva 540 - Team Queue（插队队列）",
+  "name": "uva 540 - Team Queue（插队队列）",
+  "description": "例题5-6 团体队列(Team Queue,UVa540)\n有t个团队的人正在排一个长队。每次新来一个人时,如果他有队友在排队,那么这个\n新人会插队到最后一个队友的身后。如果没有任何一个队友排队,则他会排到长队的队尾。\n输入每个团队中所有队员的编号,要求支持如下3种指令(前两种指令可以穿插进\n行)。\nENQUEUEx:编号为x的人进入长队。\nDEQUEUE:长队的队首出队。\nSTOP:停止模拟。\n对于每个DEQUEUE指令,输出出队的人的编号。\nSample Input\n2\n3 101 102 103\n3 201 202 203\nENQUEUE 101\nENQUEUE 201\nENQUEUE 102\nENQUEUE 202\nENQUEUE 103\nENQUEUE 203\nDEQUEUE\nDEQUEUE\nDEQUEUE\nDEQUEUE\nDEQUEUE\nDEQUEUE\nSTOP\n2\n5 259001 259002 259003 259004 259005\n6 260001 260002 260003 260004 260005 260006\nENQUEUE 259001\nENQUEUE 260001\nENQUEUE 259002\nENQUEUE 259003\nENQUEUE 259004\nENQUEUE 259005\nDEQUEUE\nDEQUEUE",
+  "keywords": [
+    "UVaOJ"
+  ],
+  "articleBody": " 例题5-6 团体队列(Team Queue,UVa540)\n有t个团队的人正在排一个长队。每次新来一个人时,如果他有队友在排队,那么这个\n新人会插队到最后一个队友的身后。如果没有任何一个队友排队,则他会排到长队的队尾。\n输入每个团队中所有队员的编号,要求支持如下3种指令(前两种指令可以穿插进\n行)。\nENQUEUEx:编号为x的人进入长队。\nDEQUEUE:长队的队首出队。\nSTOP:停止模拟。\n对于每个DEQUEUE指令,输出出队的人的编号。\nSample Input\n2\n3 101 102 103\n3 201 202 203\nENQUEUE 101\nENQUEUE 201\nENQUEUE 102\nENQUEUE 202\nENQUEUE 103\nENQUEUE 203\nDEQUEUE\nDEQUEUE\nDEQUEUE\nDEQUEUE\nDEQUEUE\nDEQUEUE\nSTOP\n2\n5 259001 259002 259003 259004 259005\n6 260001 260002 260003 260004 260005 260006\nENQUEUE 259001\nENQUEUE 260001\nENQUEUE 259002\nENQUEUE 259003\nENQUEUE 259004\nENQUEUE 259005\nDEQUEUE\nDEQUEUE\nENQUEUE 260002\nENQUEUE 260003\nDEQUEUE\nDEQUEUE\nDEQUEUE\nDEQUEUE\nSTOP\n0\nSample Output\nScenario #1\n101\n102\n103\n201\n202\n203\nScenario #2\n259001\n259002\n259003\n259004\n259005\n260001\nhttps://uva.onlinejudge.org/index.php?option=com_onlinejudge\u0026Itemid=8\u0026page=show_problem\u0026category=835\u0026problem=481\u0026mosmsg=Submission+received+with+ID+21283631\n用map来映射每个人与其所在的组，组号码顺序记录\n用两个队列存，一个存组的顺序。\n另一个是队列数组，存的是没有顺序的组以及里面的人\n#include #include #include #include using namespace std; int main() { int T=1; int n; //几个组 while(cin\u003e\u003en\u0026\u0026n!=0) { map group; //每个人对应其所属的组 for(int i=0;i\u003em; for(int j=0;j\u003ename; group[name] = i; //人的号码对应于组名 } } string str; queue que;//存组的顺序 queue per[1003];//存所有人的顺序,per[i]是第i组 cout\u003c\u003c\"Scenario #\"\u003c",
+  "wordCount" : "191",
+  "inLanguage": "en",
+  "datePublished": "0001-01-01T00:00:00Z",
+  "dateModified": "0001-01-01T00:00:00Z",
+  "author":{
+    "@type": "Person",
+    "name": "SuCicada"
+  },
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://sucicada.github.io/blog/posts/uvaoj/uva-540-team-queue%E6%8F%92%E9%98%9F%E9%98%9F%E5%88%97/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "SuCicada",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://sucicada.github.io/blog/favicon.ico"
+    }
+  }
+}
+</script>
+</head>
+
+<body class="" id="top">
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.body.classList.add('dark');
+    } else if (localStorage.getItem("pref-theme") === "light") {
+        document.body.classList.remove('dark')
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.body.classList.add('dark');
+    }
+
+</script>
+
+<header class="header">
+    <nav class="nav">
+        <div class="logo">
+            <a href="https://sucicada.github.io/blog" accesskey="h" title="SuCicada (Alt + H)">SuCicada</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" accesskey="t" title="(Alt + T)">
+                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu">
+            <li>
+                <a href="https://sucicada.github.io/blog/archives/" title="Archive">
+                    <span>Archive</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://sucicada.github.io/blog/search/" title="Search (Alt &#43; /)" accesskey=/>
+                    <span>Search</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://sucicada.github.io/blog/tags/" title="Tags">
+                    <span>Tags</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://sucicada.github.io/blog/about/" title="About">
+                    <span>About</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+
+    <h1 class="post-title">
+      uva 540 - Team Queue（插队队列）
+    </h1>
+    <div class="post-meta">SuCicada&nbsp;|&nbsp;<a href="https://github.com/SuCicada/mysite-hugo/content/posts/UVaOJ/uva%20540%20-%20Team%20Queue%ef%bc%88%e6%8f%92%e9%98%9f%e9%98%9f%e5%88%97%ef%bc%89.md" rel="noopener noreferrer" target="_blank">Suggest Changes</a>
+
+</div>
+    <ul class="post-tags">
+      <li><a href="https://sucicada.github.io/blog/tags/uvaoj/">UVaOJ</a></li>
+    </ul>
+  </header> 
+
+  <div class="post-content"><blockquote>
+<p>例题5-6 团体队列(Team Queue,UVa540)<br>
+有t个团队的人正在排一个长队。每次新来一个人时,如果他有队友在排队,那么这个<br>
+新人会插队到最后一个队友的身后。如果没有任何一个队友排队,则他会排到长队的队尾。<br>
+输入每个团队中所有队员的编号,要求支持如下3种指令(前两种指令可以穿插进<br>
+行)。<br>
+ENQUEUEx:编号为x的人进入长队。<br>
+DEQUEUE:长队的队首出队。<br>
+STOP:停止模拟。<br>
+对于每个DEQUEUE指令,输出出队的人的编号。<br>
+<strong>Sample Input</strong><br>
+2<br>
+3 101 102 103<br>
+3 201 202 203<br>
+ENQUEUE 101<br>
+ENQUEUE 201<br>
+ENQUEUE 102<br>
+ENQUEUE 202<br>
+ENQUEUE 103<br>
+ENQUEUE 203<br>
+DEQUEUE<br>
+DEQUEUE<br>
+DEQUEUE<br>
+DEQUEUE<br>
+DEQUEUE<br>
+DEQUEUE<br>
+STOP<br>
+2<br>
+5 259001 259002 259003 259004 259005<br>
+6 260001 260002 260003 260004 260005 260006<br>
+ENQUEUE 259001<br>
+ENQUEUE 260001<br>
+ENQUEUE 259002<br>
+ENQUEUE 259003<br>
+ENQUEUE 259004<br>
+ENQUEUE 259005<br>
+DEQUEUE<br>
+DEQUEUE<br>
+ENQUEUE 260002<br>
+ENQUEUE 260003<br>
+DEQUEUE<br>
+DEQUEUE<br>
+DEQUEUE<br>
+DEQUEUE<br>
+STOP<br>
+0<br>
+<strong>Sample Output</strong><br>
+Scenario #1<br>
+101<br>
+102<br>
+103<br>
+201<br>
+202<br>
+203<br>
+Scenario #2<br>
+259001<br>
+259002<br>
+259003<br>
+259004<br>
+259005<br>
+260001</p>
+</blockquote>
+<p><a href="https://uva.onlinejudge.org/index.php?option=com_onlinejudge&amp;Itemid=8&amp;page=show_problem&amp;category=835&amp;problem=481&amp;mosmsg=Submission+received+with+ID+21283631">https://uva.onlinejudge.org/index.php?option=com_onlinejudge&amp;Itemid=8&amp;page=show_problem&amp;category=835&amp;problem=481&amp;mosmsg=Submission+received+with+ID+21283631</a></p>
+<p>用map来映射每个人与其所在的组，组号码顺序记录<br>
+用两个队列存，一个存组的顺序。<br>
+另一个是队列数组，存的是没有顺序的组以及里面的人</p>
+<pre tabindex="0"><code>#include &lt;iostream&gt;
+#include &lt;queue&gt;
+#include &lt;map&gt;
+#include &lt;string&gt;
+using namespace std;
+
+int main()
+{
+	int T=1;
+	int n; //几个组
+	while(cin&gt;&gt;n&amp;&amp;n!=0)
+	{
+		map&lt;int,int&gt; group;  //每个人对应其所属的组
+		for(int i=0;i&lt;n;i++)
+		{
+			int m;//每组几个
+			cin&gt;&gt;m;
+			for(int j=0;j&lt;m;j++)
+			{
+				int name;  //每人号码
+				cin&gt;&gt;name;
+				group[name] = i; //人的号码对应于组名
+			}
+		}
+
+		string str;
+		queue&lt;int&gt; que;//存组的顺序
+		queue&lt;int&gt; per[1003];//存所有人的顺序,per[i]是第i组
+		
+		cout&lt;&lt;&#34;Scenario #&#34;&lt;&lt;T++&lt;&lt;endl;
+		while(cin&gt;&gt;str&amp;&amp;str!=&#34;STOP&#34;)
+		{
+		//cout&lt;&lt;&#34;???&#34;&lt;&lt;endl;
+			if(str == &#34;ENQUEUE&#34;)
+			{
+				int name; 
+				cin&gt;&gt;name;
+				int qn=group[name];//组名
+				if(per[qn].empty())  //说明这个组还没有在队列中
+					que.push(qn); //组名入组队列
+				per[qn].push(name);
+			}
+			else
+			{
+				int qn=que.front(); //获取组名
+				cout&lt;&lt;per[qn].front()&lt;&lt;endl; //输出出队列的
+				per[qn].pop();  //人出组
+				if(per[qn].empty())//如果此组空了
+					que.pop();
+			}
+		}
+		cout&lt;&lt;endl;
+	}
+	return 0;
+}
+//AC at 2018/5/9
+</code></pre>
+
+  </div>
+
+  <footer class="post-footer">
+<nav class="paginav">
+  <a class="prev" href="https://sucicada.github.io/blog/posts/uvaoj/uva-514-rails-%E9%93%81%E8%BD%A8/">
+    <span class="title">« Prev</span>
+    <br>
+    <span>UVA 514 - Rails ( 铁轨)</span>
+  </a>
+  <a class="next" href="https://sucicada.github.io/blog/posts/uvaoj/uva-548-tree%E6%A0%91-by-sucicada/">
+    <span class="title">Next »</span>
+    <br>
+    <span>UVA 548 - Tree(树) By SuCicada</span>
+  </a>
+</nav>
+
+
+<div class="share-buttons">
+    <a target="_blank" rel="noopener noreferrer" aria-label="share uva 540 - Team Queue（插队队列） on twitter"
+        href="https://twitter.com/intent/tweet/?text=uva%20540%20-%20Team%20Queue%ef%bc%88%e6%8f%92%e9%98%9f%e9%98%9f%e5%88%97%ef%bc%89&amp;url=https%3a%2f%2fsucicada.github.io%2fblog%2fposts%2fuvaoj%2fuva-540-team-queue%25E6%258F%2592%25E9%2598%259F%25E9%2598%259F%25E5%2588%2597%2f&amp;hashtags=UVaOJ">
+        <svg version="1.1" viewBox="0 0 512 512" xml:space="preserve" height="30px" width="30px" fill="currentColor">
+            <path
+                d="M449.446,0c34.525,0 62.554,28.03 62.554,62.554l0,386.892c0,34.524 -28.03,62.554 -62.554,62.554l-386.892,0c-34.524,0 -62.554,-28.03 -62.554,-62.554l0,-386.892c0,-34.524 28.029,-62.554 62.554,-62.554l386.892,0Zm-253.927,424.544c135.939,0 210.268,-112.643 210.268,-210.268c0,-3.218 0,-6.437 -0.153,-9.502c14.406,-10.421 26.973,-23.448 36.935,-38.314c-13.18,5.824 -27.433,9.809 -42.452,11.648c15.326,-9.196 26.973,-23.602 32.49,-40.92c-14.252,8.429 -30.038,14.56 -46.896,17.931c-13.487,-14.406 -32.644,-23.295 -53.946,-23.295c-40.767,0 -73.87,33.104 -73.87,73.87c0,5.824 0.613,11.494 1.992,16.858c-61.456,-3.065 -115.862,-32.49 -152.337,-77.241c-6.284,10.881 -9.962,23.601 -9.962,37.088c0,25.594 13.027,48.276 32.95,61.456c-12.107,-0.307 -23.448,-3.678 -33.41,-9.196l0,0.92c0,35.862 25.441,65.594 59.311,72.49c-6.13,1.686 -12.72,2.606 -19.464,2.606c-4.751,0 -9.348,-0.46 -13.946,-1.38c9.349,29.426 36.628,50.728 68.965,51.341c-25.287,19.771 -57.164,31.571 -91.8,31.571c-5.977,0 -11.801,-0.306 -17.625,-1.073c32.337,21.15 71.264,33.41 112.95,33.41Z" />
+        </svg>
+    </a>
+    <a target="_blank" rel="noopener noreferrer" aria-label="share uva 540 - Team Queue（插队队列） on telegram"
+        href="https://telegram.me/share/url?text=uva%20540%20-%20Team%20Queue%ef%bc%88%e6%8f%92%e9%98%9f%e9%98%9f%e5%88%97%ef%bc%89&amp;url=https%3a%2f%2fsucicada.github.io%2fblog%2fposts%2fuvaoj%2fuva-540-team-queue%25E6%258F%2592%25E9%2598%259F%25E9%2598%259F%25E5%2588%2597%2f">
+        <svg version="1.1" xml:space="preserve" viewBox="2 2 28 28" height="30px" width="30px" fill="currentColor">
+            <path
+                d="M26.49,29.86H5.5a3.37,3.37,0,0,1-2.47-1,3.35,3.35,0,0,1-1-2.47V5.48A3.36,3.36,0,0,1,3,3,3.37,3.37,0,0,1,5.5,2h21A3.38,3.38,0,0,1,29,3a3.36,3.36,0,0,1,1,2.46V26.37a3.35,3.35,0,0,1-1,2.47A3.38,3.38,0,0,1,26.49,29.86Zm-5.38-6.71a.79.79,0,0,0,.85-.66L24.73,9.24a.55.55,0,0,0-.18-.46.62.62,0,0,0-.41-.17q-.08,0-16.53,6.11a.59.59,0,0,0-.41.59.57.57,0,0,0,.43.52l4,1.24,1.61,4.83a.62.62,0,0,0,.63.43.56.56,0,0,0,.4-.17L16.54,20l4.09,3A.9.9,0,0,0,21.11,23.15ZM13.8,20.71l-1.21-4q8.72-5.55,8.78-5.55c.15,0,.23,0,.23.16a.18.18,0,0,1,0,.06s-2.51,2.3-7.52,6.8Z" />
+        </svg>
+    </a>
+</div>
+
+  </footer><div id="disqus_thread"></div>
+<script type="application/javascript">
+    window.disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "sucicada" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+</article>
+    </main>
+    
+<footer class="footer">
+    <span>&copy; 2022 <a href="https://sucicada.github.io/blog">SuCicada</a></span>
+    <span>
+        Powered by
+        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+        <path d="M12 6H0l6-6z" />
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu')
+    if (menu) {
+        menu.scrollLeft = localStorage.getItem("menu-scroll-position");
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var mybutton = document.getElementById("top-link");
+    window.onscroll = function () {
+        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
+            mybutton.style.visibility = "visible";
+            mybutton.style.opacity = "1";
+        } else {
+            mybutton.style.visibility = "hidden";
+            mybutton.style.opacity = "0";
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        if (document.body.className.includes("dark")) {
+            document.body.classList.remove('dark');
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            document.body.classList.add('dark');
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+<script>
+    document.querySelectorAll('pre > code').forEach((codeblock) => {
+        const container = codeblock.parentNode.parentNode;
+
+        const copybutton = document.createElement('button');
+        copybutton.classList.add('copy-code');
+        copybutton.innerHTML = 'copy';
+
+        function copyingDone() {
+            copybutton.innerHTML = 'copied!';
+            setTimeout(() => {
+                copybutton.innerHTML = 'copy';
+            }, 2000);
+        }
+
+        copybutton.addEventListener('click', (cb) => {
+            if ('clipboard' in navigator) {
+                navigator.clipboard.writeText(codeblock.textContent);
+                copyingDone();
+                return;
+            }
+
+            const range = document.createRange();
+            range.selectNodeContents(codeblock);
+            const selection = window.getSelection();
+            selection.removeAllRanges();
+            selection.addRange(range);
+            try {
+                document.execCommand('copy');
+                copyingDone();
+            } catch (e) { };
+            selection.removeRange(range);
+        });
+
+        if (container.classList.contains("highlight")) {
+            container.appendChild(copybutton);
+        } else if (container.parentNode.firstChild == container) {
+            
+        } else if (codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName == "TABLE") {
+            
+            codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(copybutton);
+        } else {
+            
+            codeblock.parentNode.appendChild(copybutton);
+        }
+    });
+</script>
+</body>
+
+</html>

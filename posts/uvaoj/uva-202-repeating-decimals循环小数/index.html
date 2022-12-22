@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto">
+
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>uva 202 - Repeating Decimals（循环小数） | SuCicada</title>
+<meta name="keywords" content="UVaOJ">
+<meta name="description" content="习题3-8 循环小数（Repeating Decimals, ACM/ICPC World Finals 1990, UVa202）
+输入整数a和b（0≤a≤3000，1≤b≤3000），输出a/b的循环小数表示以及循环节长度。例
+如a=5，b=43，小数表示为0.(116279069767441860465)，循环节长度为21。
+注意：有些即便是原题也可能没用看清的要求
+（如果小数位大于50括号里显示到50个小数位即可，后面加&hellip;）
+（但是输出的小数位要是确实的位数，即便几百几千）
+https://uva.onlinejudge.org/index.php?option=com_onlinejudge&amp;Itemid=8&amp;page=show_problem&amp;category=830&amp;problem=138&amp;mosmsg=Submission&#43;received&#43;with&#43;ID&#43;20551105
+Sample Input
+76 25
+5 43
+1 397
+Sample Output
+76/25 = 3.04(0)
+1 = number of digits in repeating cycle
+5/43 = 0.(116279069767441860465)
+21 = number of digits in repeating cycle
+1/397 = 0.(00251889168765743073047858942065491183879093198992&hellip;)
+99 = number of digits in repeating cycle
+（ps：这个案例的99就很是误导人）
+思路：从手算的除法公式下手，每一次的被除数都是 上一个被除数 &ndash; 上一位商*除数，而我们只要找到从哪里开始的被除数和之前的某一个被除数一样，那么从这一位便开始循环；如果不懂，看下面的例子：2/3
+0.6 6 // 3|2.0 //一开始不够除，补零 1.8 //28 = 4（商）* 7（除数） 2 0 //20 = (30（被除数）- 4（商）* 7（除数）)*10 //开始循环 //同时我们发现 这里的被除数20 和第二行的被除数20 一样， 如果还不懂，亲自写一下除法运算，真的可以秒懂。">
+<meta name="author" content="SuCicada">
+<link rel="canonical" href="https://sucicada.github.io/blog/posts/uvaoj/uva-202-repeating-decimals%E5%BE%AA%E7%8E%AF%E5%B0%8F%E6%95%B0/">
+<link crossorigin="anonymous" href="/blog/assets/css/stylesheet.5b5501da54f21435c8f8010d1de02123ae8d1ada696b48c6530ec4eea283e7d6.css" integrity="sha256-W1UB2lTyFDXI&#43;AENHeAhI66NGtppa0jGUw7E7qKD59Y=" rel="preload stylesheet" as="style">
+<link rel="icon" href="https://sucicada.github.io/blog/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="https://sucicada.github.io/blog/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://sucicada.github.io/blog/favicon-32x32.png">
+<link rel="apple-touch-icon" href="https://sucicada.github.io/blog/apple-touch-icon.png">
+<link rel="mask-icon" href="https://sucicada.github.io/blog/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --hljs-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-track {
+                background: 0 0;
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-thumb {
+                border-color: var(--theme);
+            }
+        }
+
+    </style>
+</noscript><meta property="og:title" content="uva 202 - Repeating Decimals（循环小数）" />
+<meta property="og:description" content="习题3-8 循环小数（Repeating Decimals, ACM/ICPC World Finals 1990, UVa202）
+输入整数a和b（0≤a≤3000，1≤b≤3000），输出a/b的循环小数表示以及循环节长度。例
+如a=5，b=43，小数表示为0.(116279069767441860465)，循环节长度为21。
+注意：有些即便是原题也可能没用看清的要求
+（如果小数位大于50括号里显示到50个小数位即可，后面加&hellip;）
+（但是输出的小数位要是确实的位数，即便几百几千）
+https://uva.onlinejudge.org/index.php?option=com_onlinejudge&amp;Itemid=8&amp;page=show_problem&amp;category=830&amp;problem=138&amp;mosmsg=Submission&#43;received&#43;with&#43;ID&#43;20551105
+Sample Input
+76 25
+5 43
+1 397
+Sample Output
+76/25 = 3.04(0)
+1 = number of digits in repeating cycle
+5/43 = 0.(116279069767441860465)
+21 = number of digits in repeating cycle
+1/397 = 0.(00251889168765743073047858942065491183879093198992&hellip;)
+99 = number of digits in repeating cycle
+（ps：这个案例的99就很是误导人）
+思路：从手算的除法公式下手，每一次的被除数都是 上一个被除数 &ndash; 上一位商*除数，而我们只要找到从哪里开始的被除数和之前的某一个被除数一样，那么从这一位便开始循环；如果不懂，看下面的例子：2/3
+0.6 6 // 3|2.0 //一开始不够除，补零 1.8 //28 = 4（商）* 7（除数） 2 0 //20 = (30（被除数）- 4（商）* 7（除数）)*10 //开始循环 //同时我们发现 这里的被除数20 和第二行的被除数20 一样， 如果还不懂，亲自写一下除法运算，真的可以秒懂。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://sucicada.github.io/blog/posts/uvaoj/uva-202-repeating-decimals%E5%BE%AA%E7%8E%AF%E5%B0%8F%E6%95%B0/" /><meta property="og:image" content="https://sucicada.github.io/blog/papermod-cover.png"/><meta property="article:section" content="posts" />
+
+
+
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="https://sucicada.github.io/blog/papermod-cover.png"/>
+
+<meta name="twitter:title" content="uva 202 - Repeating Decimals（循环小数）"/>
+<meta name="twitter:description" content="习题3-8 循环小数（Repeating Decimals, ACM/ICPC World Finals 1990, UVa202）
+输入整数a和b（0≤a≤3000，1≤b≤3000），输出a/b的循环小数表示以及循环节长度。例
+如a=5，b=43，小数表示为0.(116279069767441860465)，循环节长度为21。
+注意：有些即便是原题也可能没用看清的要求
+（如果小数位大于50括号里显示到50个小数位即可，后面加&hellip;）
+（但是输出的小数位要是确实的位数，即便几百几千）
+https://uva.onlinejudge.org/index.php?option=com_onlinejudge&amp;Itemid=8&amp;page=show_problem&amp;category=830&amp;problem=138&amp;mosmsg=Submission&#43;received&#43;with&#43;ID&#43;20551105
+Sample Input
+76 25
+5 43
+1 397
+Sample Output
+76/25 = 3.04(0)
+1 = number of digits in repeating cycle
+5/43 = 0.(116279069767441860465)
+21 = number of digits in repeating cycle
+1/397 = 0.(00251889168765743073047858942065491183879093198992&hellip;)
+99 = number of digits in repeating cycle
+（ps：这个案例的99就很是误导人）
+思路：从手算的除法公式下手，每一次的被除数都是 上一个被除数 &ndash; 上一位商*除数，而我们只要找到从哪里开始的被除数和之前的某一个被除数一样，那么从这一位便开始循环；如果不懂，看下面的例子：2/3
+0.6 6 // 3|2.0 //一开始不够除，补零 1.8 //28 = 4（商）* 7（除数） 2 0 //20 = (30（被除数）- 4（商）* 7（除数）)*10 //开始循环 //同时我们发现 这里的被除数20 和第二行的被除数20 一样， 如果还不懂，亲自写一下除法运算，真的可以秒懂。"/>
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "Posts",
+      "item": "https://sucicada.github.io/blog/posts/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  3 ,
+      "name": "uva 202 - Repeating Decimals（循环小数）",
+      "item": "https://sucicada.github.io/blog/posts/uvaoj/uva-202-repeating-decimals%E5%BE%AA%E7%8E%AF%E5%B0%8F%E6%95%B0/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "uva 202 - Repeating Decimals（循环小数）",
+  "name": "uva 202 - Repeating Decimals（循环小数）",
+  "description": "习题3-8 循环小数（Repeating Decimals, ACM/ICPC World Finals 1990, UVa202）\n输入整数a和b（0≤a≤3000，1≤b≤3000），输出a/b的循环小数表示以及循环节长度。例\n如a=5，b=43，小数表示为0.(116279069767441860465)，循环节长度为21。\n注意：有些即便是原题也可能没用看清的要求\n（如果小数位大于50括号里显示到50个小数位即可，后面加\u0026hellip;）\n（但是输出的小数位要是确实的位数，即便几百几千）\nhttps://uva.onlinejudge.org/index.php?option=com_onlinejudge\u0026amp;Itemid=8\u0026amp;page=show_problem\u0026amp;category=830\u0026amp;problem=138\u0026amp;mosmsg=Submission+received+with+ID+20551105\nSample Input\n76 25\n5 43\n1 397\nSample Output\n76/25 = 3.04(0)\n1 = number of digits in repeating cycle\n5/43 = 0.(116279069767441860465)\n21 = number of digits in repeating cycle\n1/397 = 0.(00251889168765743073047858942065491183879093198992\u0026hellip;)\n99 = number of digits in repeating cycle\n（ps：这个案例的99就很是误导人）\n思路：从手算的除法公式下手，每一次的被除数都是 上一个被除数 \u0026ndash; 上一位商*除数，而我们只要找到从哪里开始的被除数和之前的某一个被除数一样，那么从这一位便开始循环；如果不懂，看下面的例子：2/3\n0.6 6 // 3|2.0 //一开始不够除，补零 1.8 //28 = 4（商）* 7（除数） 2 0 //20 = (30（被除数）- 4（商）* 7（除数）)*10 //开始循环 //同时我们发现 这里的被除数20 和第二行的被除数20 一样， 如果还不懂，亲自写一下除法运算，真的可以秒懂。",
+  "keywords": [
+    "UVaOJ"
+  ],
+  "articleBody": " 习题3-8 循环小数（Repeating Decimals, ACM/ICPC World Finals 1990, UVa202）\n输入整数a和b（0≤a≤3000，1≤b≤3000），输出a/b的循环小数表示以及循环节长度。例\n如a=5，b=43，小数表示为0.(116279069767441860465)，循环节长度为21。\n注意：有些即便是原题也可能没用看清的要求\n（如果小数位大于50括号里显示到50个小数位即可，后面加…）\n（但是输出的小数位要是确实的位数，即便几百几千）\nhttps://uva.onlinejudge.org/index.php?option=com_onlinejudge\u0026Itemid=8\u0026page=show_problem\u0026category=830\u0026problem=138\u0026mosmsg=Submission+received+with+ID+20551105\nSample Input\n76 25\n5 43\n1 397\nSample Output\n76/25 = 3.04(0)\n1 = number of digits in repeating cycle\n5/43 = 0.(116279069767441860465)\n21 = number of digits in repeating cycle\n1/397 = 0.(00251889168765743073047858942065491183879093198992…)\n99 = number of digits in repeating cycle\n（ps：这个案例的99就很是误导人）\n思路：从手算的除法公式下手，每一次的被除数都是 上一个被除数 – 上一位商*除数，而我们只要找到从哪里开始的被除数和之前的某一个被除数一样，那么从这一位便开始循环；如果不懂，看下面的例子：2/3\n0.6 6 // 3|2.0 //一开始不够除，补零 1.8 //28 = 4（商）* 7（除数） 2 0 //20 = (30（被除数）- 4（商）* 7（除数）)*10 //开始循环 //同时我们发现 这里的被除数20 和第二行的被除数20 一样， 如果还不懂，亲自写一下除法运算，真的可以秒懂。\n#include #include using namespace std; int const N = 3000; int divident[N+5];//被除数 int result[N+5];//得数 int circle(int nd,int n1) { for(int i=0;i\u003ea\u003e\u003eb) { int n1=a;//被除数 int nc=-1; int nd=1,nr=0;//因为result第一位是整数位，所以为了输出对上 nd=1 memset(divident,0,sizeof(divident)); memset(result,0,sizeof(result)); do { result[nr++]=n1/b;//cout\u003c",
+  "wordCount" : "193",
+  "inLanguage": "en",
+  "datePublished": "0001-01-01T00:00:00Z",
+  "dateModified": "0001-01-01T00:00:00Z",
+  "author":{
+    "@type": "Person",
+    "name": "SuCicada"
+  },
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://sucicada.github.io/blog/posts/uvaoj/uva-202-repeating-decimals%E5%BE%AA%E7%8E%AF%E5%B0%8F%E6%95%B0/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "SuCicada",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://sucicada.github.io/blog/favicon.ico"
+    }
+  }
+}
+</script>
+</head>
+
+<body class="" id="top">
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.body.classList.add('dark');
+    } else if (localStorage.getItem("pref-theme") === "light") {
+        document.body.classList.remove('dark')
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.body.classList.add('dark');
+    }
+
+</script>
+
+<header class="header">
+    <nav class="nav">
+        <div class="logo">
+            <a href="https://sucicada.github.io/blog" accesskey="h" title="SuCicada (Alt + H)">SuCicada</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" accesskey="t" title="(Alt + T)">
+                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu">
+            <li>
+                <a href="https://sucicada.github.io/blog/archives/" title="Archive">
+                    <span>Archive</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://sucicada.github.io/blog/search/" title="Search (Alt &#43; /)" accesskey=/>
+                    <span>Search</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://sucicada.github.io/blog/tags/" title="Tags">
+                    <span>Tags</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://sucicada.github.io/blog/about/" title="About">
+                    <span>About</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+
+    <h1 class="post-title">
+      uva 202 - Repeating Decimals（循环小数）
+    </h1>
+    <div class="post-meta">SuCicada&nbsp;|&nbsp;<a href="https://github.com/SuCicada/mysite-hugo/content/posts/UVaOJ/uva%20202%20-%20Repeating%20Decimals%ef%bc%88%e5%be%aa%e7%8e%af%e5%b0%8f%e6%95%b0%ef%bc%89.md" rel="noopener noreferrer" target="_blank">Suggest Changes</a>
+
+</div>
+    <ul class="post-tags">
+      <li><a href="https://sucicada.github.io/blog/tags/uvaoj/">UVaOJ</a></li>
+    </ul>
+  </header> 
+
+  <div class="post-content"><blockquote>
+<p>习题3-8 循环小数（Repeating Decimals, ACM/ICPC World Finals 1990, UVa202）<br>
+输入整数a和b（0≤a≤3000，1≤b≤3000），输出a/b的循环小数表示以及循环节长度。例<br>
+如a=5，b=43，小数表示为0.(116279069767441860465)，循环节长度为21。<br>
+注意：有些即便是原题也可能没用看清的要求<br>
+（如果小数位大于50括号里显示到50个小数位即可，后面加&hellip;）<br>
+（但是输出的小数位要是确实的位数，即便几百几千）</p>
+</blockquote>
+<p><a href="https://uva.onlinejudge.org/index.php?option=com_onlinejudge&amp;Itemid=8&amp;page=show_problem&amp;category=830&amp;problem=138&amp;mosmsg=Submission+received+with+ID+20551105">https://uva.onlinejudge.org/index.php?option=com_onlinejudge&amp;Itemid=8&amp;page=show_problem&amp;category=830&amp;problem=138&amp;mosmsg=Submission+received+with+ID+20551105</a></p>
+<p><strong>Sample Input</strong><br>
+76 25<br>
+5 43<br>
+1 397<br>
+<strong>Sample Output</strong><br>
+76/25 = 3.04(0)<br>
+1 = number of digits in repeating cycle</p>
+<p>5/43 = 0.(116279069767441860465)<br>
+21 = number of digits in repeating cycle</p>
+<p>1/397 = 0.(00251889168765743073047858942065491183879093198992&hellip;)<br>
+99 = number of digits in repeating cycle<br>
+<em>（ps：这个案例的99就很是误导人）</em></p>
+<hr>
+<p>思路：从手算的除法公式下手，每一次的被除数都是 上一个被除数 &ndash; 上一位商*除数，而我们只要找到从哪里开始的被除数和之前的某一个被除数一样，那么从这一位便开始循环；如果不懂，看下面的例子：2/3</p>
+<pre tabindex="0"><code>  0.6 6  //
+3|2.0    //一开始不够除，补零
+  1.8    //28 = 4（商）* 7（除数）
+    2 0  //20 = (30（被除数）- 4（商）* 7（除数）)*10
+         //开始循环
+         //同时我们发现 这里的被除数20 和第二行的被除数20 一样，  
+</code></pre><p>如果还不懂，亲自写一下除法运算，真的可以秒懂。</p>
+<hr>
+<pre tabindex="0"><code>#include&lt;iostream&gt;
+#include&lt;cstring&gt;
+using namespace std;
+int const N = 3000;
+int divident[N+5];//被除数
+int result[N+5];//得数
+int circle(int nd,int n1)
+{
+    for(int i=0;i&lt;nd;i++)
+    {
+        if(n1==divident[i])//发现循环
+        {
+            return i;//返回 循环体的头部位置,
+        }
+    }
+    return -1;
+}
+int main()
+{
+    int a,b;
+    while(cin&gt;&gt;a&gt;&gt;b)
+    {
+        int n1=a;//被除数
+        int nc=-1;
+        int nd=1,nr=0;//因为result第一位是整数位，所以为了输出对上 nd=1
+        memset(divident,0,sizeof(divident));
+        memset(result,0,sizeof(result));
+        do
+        {
+            result[nr++]=n1/b;//cout&lt;&lt;n1/b;
+            //cout&lt;&lt;n1&lt;&lt;&#34; n1  &#34;&lt;&lt;result[nr-1]&lt;&lt;endl;
+            //if(nc==1)
+            n1 = (n1-n1/b*b);
+            n1*=10;
+            divident[nd++]=n1;//将每一阶段的被除数存下
+            //cout&lt;&lt;n1&lt;&lt;&#34; &#34;&lt;&lt;result[nr-1]&lt;&lt;endl;
+            if(n1==0)//若能整除
+            {
+                result[nr++]=0;
+                nc=nd-1;
+                nd++;
+                break;
+            }
+         }while((nc=circle(nd-1,n1))==-1);//&amp;&amp;nr&lt;=50);//nc---(nd-1)循环
+//         if(nr&gt;50)
+//            nc=1;
+        cout&lt;&lt;a&lt;&lt;&#34;/&#34;&lt;&lt;b&lt;&lt;&#34; = &#34;;
+        cout&lt;&lt;result[0]&lt;&lt;&#34;.&#34;;
+        for(int i=1;i&lt;nc;i++)
+            cout&lt;&lt;result[i];
+        cout&lt;&lt;&#34;(&#34;;
+        for(int i=nc;i&lt;nd-1&amp;&amp;i&lt;=50;i++)
+            cout&lt;&lt;result[i];
+        if(nr&gt;50)
+            cout&lt;&lt;&#34;...&#34;;
+        cout&lt;&lt;&#34;)&#34;&lt;&lt;endl;
+        cout&lt;&lt;&#34;   &#34;&lt;&lt;nd-nc-1//(nr&lt;=50?nd-nc-1:99)要求算具体的
+            &lt;&lt;&#34; = number of digits in repeating cycle&#34;&lt;&lt;endl&lt;&lt;endl;
+    }
+    return 0;
+}
+//AC at 2017/12/30
+</code></pre><p>（题外话：一开始认为很难，查询资料，琢磨用辗转还是减减，后来在（未再次找到）博客上获得灵感。总计花费2个多小时，一周前就写好初始版了，之后一直忙于课设，昨天修改后始终wa，深夜难眠。今日有幸发现uva站的参考参数和参考结果 模块，甚是大喜，风吹落叶般改好了代码，果不其然，漂亮的AC。<br>
+给吾身一言，入寒假之后，还望能发出关于两个课设的程序，与uva站的使用介绍。）</p>
+
+
+  </div>
+
+  <footer class="post-footer">
+<nav class="paginav">
+  <a class="prev" href="https://sucicada.github.io/blog/posts/uvaoj/uva-201-squares%E6%95%B0%E6%AD%A3%E6%96%B9%E5%BD%A2/">
+    <span class="title">« Prev</span>
+    <br>
+    <span>uva 201 - Squares（数正方形）</span>
+  </a>
+  <a class="next" href="https://sucicada.github.io/blog/posts/uvaoj/uva-210-concurrency-simulator-%E5%B9%B6%E8%A1%8C%E7%A8%8B%E5%BA%8F%E6%A8%A1%E6%8B%9F/">
+    <span class="title">Next »</span>
+    <br>
+    <span>uva 210 - Concurrency Simulator (并行程序模拟)</span>
+  </a>
+</nav>
+
+
+<div class="share-buttons">
+    <a target="_blank" rel="noopener noreferrer" aria-label="share uva 202 - Repeating Decimals（循环小数） on twitter"
+        href="https://twitter.com/intent/tweet/?text=uva%20202%20-%20Repeating%20Decimals%ef%bc%88%e5%be%aa%e7%8e%af%e5%b0%8f%e6%95%b0%ef%bc%89&amp;url=https%3a%2f%2fsucicada.github.io%2fblog%2fposts%2fuvaoj%2fuva-202-repeating-decimals%25E5%25BE%25AA%25E7%258E%25AF%25E5%25B0%258F%25E6%2595%25B0%2f&amp;hashtags=UVaOJ">
+        <svg version="1.1" viewBox="0 0 512 512" xml:space="preserve" height="30px" width="30px" fill="currentColor">
+            <path
+                d="M449.446,0c34.525,0 62.554,28.03 62.554,62.554l0,386.892c0,34.524 -28.03,62.554 -62.554,62.554l-386.892,0c-34.524,0 -62.554,-28.03 -62.554,-62.554l0,-386.892c0,-34.524 28.029,-62.554 62.554,-62.554l386.892,0Zm-253.927,424.544c135.939,0 210.268,-112.643 210.268,-210.268c0,-3.218 0,-6.437 -0.153,-9.502c14.406,-10.421 26.973,-23.448 36.935,-38.314c-13.18,5.824 -27.433,9.809 -42.452,11.648c15.326,-9.196 26.973,-23.602 32.49,-40.92c-14.252,8.429 -30.038,14.56 -46.896,17.931c-13.487,-14.406 -32.644,-23.295 -53.946,-23.295c-40.767,0 -73.87,33.104 -73.87,73.87c0,5.824 0.613,11.494 1.992,16.858c-61.456,-3.065 -115.862,-32.49 -152.337,-77.241c-6.284,10.881 -9.962,23.601 -9.962,37.088c0,25.594 13.027,48.276 32.95,61.456c-12.107,-0.307 -23.448,-3.678 -33.41,-9.196l0,0.92c0,35.862 25.441,65.594 59.311,72.49c-6.13,1.686 -12.72,2.606 -19.464,2.606c-4.751,0 -9.348,-0.46 -13.946,-1.38c9.349,29.426 36.628,50.728 68.965,51.341c-25.287,19.771 -57.164,31.571 -91.8,31.571c-5.977,0 -11.801,-0.306 -17.625,-1.073c32.337,21.15 71.264,33.41 112.95,33.41Z" />
+        </svg>
+    </a>
+    <a target="_blank" rel="noopener noreferrer" aria-label="share uva 202 - Repeating Decimals（循环小数） on telegram"
+        href="https://telegram.me/share/url?text=uva%20202%20-%20Repeating%20Decimals%ef%bc%88%e5%be%aa%e7%8e%af%e5%b0%8f%e6%95%b0%ef%bc%89&amp;url=https%3a%2f%2fsucicada.github.io%2fblog%2fposts%2fuvaoj%2fuva-202-repeating-decimals%25E5%25BE%25AA%25E7%258E%25AF%25E5%25B0%258F%25E6%2595%25B0%2f">
+        <svg version="1.1" xml:space="preserve" viewBox="2 2 28 28" height="30px" width="30px" fill="currentColor">
+            <path
+                d="M26.49,29.86H5.5a3.37,3.37,0,0,1-2.47-1,3.35,3.35,0,0,1-1-2.47V5.48A3.36,3.36,0,0,1,3,3,3.37,3.37,0,0,1,5.5,2h21A3.38,3.38,0,0,1,29,3a3.36,3.36,0,0,1,1,2.46V26.37a3.35,3.35,0,0,1-1,2.47A3.38,3.38,0,0,1,26.49,29.86Zm-5.38-6.71a.79.79,0,0,0,.85-.66L24.73,9.24a.55.55,0,0,0-.18-.46.62.62,0,0,0-.41-.17q-.08,0-16.53,6.11a.59.59,0,0,0-.41.59.57.57,0,0,0,.43.52l4,1.24,1.61,4.83a.62.62,0,0,0,.63.43.56.56,0,0,0,.4-.17L16.54,20l4.09,3A.9.9,0,0,0,21.11,23.15ZM13.8,20.71l-1.21-4q8.72-5.55,8.78-5.55c.15,0,.23,0,.23.16a.18.18,0,0,1,0,.06s-2.51,2.3-7.52,6.8Z" />
+        </svg>
+    </a>
+</div>
+
+  </footer><div id="disqus_thread"></div>
+<script type="application/javascript">
+    window.disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "sucicada" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+</article>
+    </main>
+    
+<footer class="footer">
+    <span>&copy; 2022 <a href="https://sucicada.github.io/blog">SuCicada</a></span>
+    <span>
+        Powered by
+        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+        <path d="M12 6H0l6-6z" />
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu')
+    if (menu) {
+        menu.scrollLeft = localStorage.getItem("menu-scroll-position");
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var mybutton = document.getElementById("top-link");
+    window.onscroll = function () {
+        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
+            mybutton.style.visibility = "visible";
+            mybutton.style.opacity = "1";
+        } else {
+            mybutton.style.visibility = "hidden";
+            mybutton.style.opacity = "0";
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        if (document.body.className.includes("dark")) {
+            document.body.classList.remove('dark');
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            document.body.classList.add('dark');
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+<script>
+    document.querySelectorAll('pre > code').forEach((codeblock) => {
+        const container = codeblock.parentNode.parentNode;
+
+        const copybutton = document.createElement('button');
+        copybutton.classList.add('copy-code');
+        copybutton.innerHTML = 'copy';
+
+        function copyingDone() {
+            copybutton.innerHTML = 'copied!';
+            setTimeout(() => {
+                copybutton.innerHTML = 'copy';
+            }, 2000);
+        }
+
+        copybutton.addEventListener('click', (cb) => {
+            if ('clipboard' in navigator) {
+                navigator.clipboard.writeText(codeblock.textContent);
+                copyingDone();
+                return;
+            }
+
+            const range = document.createRange();
+            range.selectNodeContents(codeblock);
+            const selection = window.getSelection();
+            selection.removeAllRanges();
+            selection.addRange(range);
+            try {
+                document.execCommand('copy');
+                copyingDone();
+            } catch (e) { };
+            selection.removeRange(range);
+        });
+
+        if (container.classList.contains("highlight")) {
+            container.appendChild(copybutton);
+        } else if (container.parentNode.firstChild == container) {
+            
+        } else if (codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName == "TABLE") {
+            
+            codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(copybutton);
+        } else {
+            
+            codeblock.parentNode.appendChild(copybutton);
+        }
+    });
+</script>
+</body>
+
+</html>

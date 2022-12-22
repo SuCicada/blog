@@ -1,0 +1,743 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto">
+
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>UVA 816 - Abbott‘s Revenge (Abbott的复仇) By SuCicada | SuCicada</title>
+<meta name="keywords" content="UVaOJ">
+<meta name="description" content="例题6-14 Abbott的复仇（Abbott&rsquo;s Revenge, ACM/ICPC World Finals 2000, UVa 816）
+有一个最多包含9*9个交叉点的迷宫。输入起点、离开起点时的朝向和终点，求一条最
+短路（多解时任意输出一个即可）。
+图6-14 迷宫及走向
+这个迷宫的特殊之处在于：进入一个交叉点
+的方向（用NEWS这4个字母分别表示北东西
+南，即上右左下）不同，允许出去的方向也不
+同。例如，1 2 WLF NR ER 表示交叉点(1,2)
+（上数第1行，左数第2列）有3个路标（字
+符“”只是结束标志），如果进入该交叉点时的
+朝向为W（即朝左），则可以左转（L）或者直
+行（F）；如果进入时朝向为N或者E则只能右转
+（R），如图6-14所示。
+注意：初始状态是“刚刚离开入口”，所以即
+使出口和入口重合，最短路也不为空。例如，图
+6-14中的一条最短路为(3,1) (2,1) (1,1) (1,2)
+(2,2) (2,3) (1,3) (1,2) (1,1) (2,1) (2,2) (1,2) (1,3) (2,3) (3,3)。
+Sample Input
+SAMPLE
+3 1 N 3 3
+1 1 WL NR *
+1 2 WLF NR ER *
+1 3 NL ER *
+2 1 SL WR NF *">
+<meta name="author" content="SuCicada">
+<link rel="canonical" href="https://sucicada.github.io/blog/posts/uvaoj/uva-816-abbotts-revenge-abbott%E7%9A%84%E5%A4%8D%E4%BB%87-by-sucicada/">
+<link crossorigin="anonymous" href="/blog/assets/css/stylesheet.5b5501da54f21435c8f8010d1de02123ae8d1ada696b48c6530ec4eea283e7d6.css" integrity="sha256-W1UB2lTyFDXI&#43;AENHeAhI66NGtppa0jGUw7E7qKD59Y=" rel="preload stylesheet" as="style">
+<link rel="icon" href="https://sucicada.github.io/blog/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="https://sucicada.github.io/blog/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://sucicada.github.io/blog/favicon-32x32.png">
+<link rel="apple-touch-icon" href="https://sucicada.github.io/blog/apple-touch-icon.png">
+<link rel="mask-icon" href="https://sucicada.github.io/blog/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --hljs-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-track {
+                background: 0 0;
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-thumb {
+                border-color: var(--theme);
+            }
+        }
+
+    </style>
+</noscript><meta property="og:title" content="UVA 816 - Abbott‘s Revenge (Abbott的复仇) By SuCicada" />
+<meta property="og:description" content="例题6-14 Abbott的复仇（Abbott&rsquo;s Revenge, ACM/ICPC World Finals 2000, UVa 816）
+有一个最多包含9*9个交叉点的迷宫。输入起点、离开起点时的朝向和终点，求一条最
+短路（多解时任意输出一个即可）。
+图6-14 迷宫及走向
+这个迷宫的特殊之处在于：进入一个交叉点
+的方向（用NEWS这4个字母分别表示北东西
+南，即上右左下）不同，允许出去的方向也不
+同。例如，1 2 WLF NR ER 表示交叉点(1,2)
+（上数第1行，左数第2列）有3个路标（字
+符“”只是结束标志），如果进入该交叉点时的
+朝向为W（即朝左），则可以左转（L）或者直
+行（F）；如果进入时朝向为N或者E则只能右转
+（R），如图6-14所示。
+注意：初始状态是“刚刚离开入口”，所以即
+使出口和入口重合，最短路也不为空。例如，图
+6-14中的一条最短路为(3,1) (2,1) (1,1) (1,2)
+(2,2) (2,3) (1,3) (1,2) (1,1) (2,1) (2,2) (1,2) (1,3) (2,3) (3,3)。
+Sample Input
+SAMPLE
+3 1 N 3 3
+1 1 WL NR *
+1 2 WLF NR ER *
+1 3 NL ER *
+2 1 SL WR NF *" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://sucicada.github.io/blog/posts/uvaoj/uva-816-abbotts-revenge-abbott%E7%9A%84%E5%A4%8D%E4%BB%87-by-sucicada/" /><meta property="og:image" content="https://sucicada.github.io/blog/papermod-cover.png"/><meta property="article:section" content="posts" />
+
+
+
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="https://sucicada.github.io/blog/papermod-cover.png"/>
+
+<meta name="twitter:title" content="UVA 816 - Abbott‘s Revenge (Abbott的复仇) By SuCicada"/>
+<meta name="twitter:description" content="例题6-14 Abbott的复仇（Abbott&rsquo;s Revenge, ACM/ICPC World Finals 2000, UVa 816）
+有一个最多包含9*9个交叉点的迷宫。输入起点、离开起点时的朝向和终点，求一条最
+短路（多解时任意输出一个即可）。
+图6-14 迷宫及走向
+这个迷宫的特殊之处在于：进入一个交叉点
+的方向（用NEWS这4个字母分别表示北东西
+南，即上右左下）不同，允许出去的方向也不
+同。例如，1 2 WLF NR ER 表示交叉点(1,2)
+（上数第1行，左数第2列）有3个路标（字
+符“”只是结束标志），如果进入该交叉点时的
+朝向为W（即朝左），则可以左转（L）或者直
+行（F）；如果进入时朝向为N或者E则只能右转
+（R），如图6-14所示。
+注意：初始状态是“刚刚离开入口”，所以即
+使出口和入口重合，最短路也不为空。例如，图
+6-14中的一条最短路为(3,1) (2,1) (1,1) (1,2)
+(2,2) (2,3) (1,3) (1,2) (1,1) (2,1) (2,2) (1,2) (1,3) (2,3) (3,3)。
+Sample Input
+SAMPLE
+3 1 N 3 3
+1 1 WL NR *
+1 2 WLF NR ER *
+1 3 NL ER *
+2 1 SL WR NF *"/>
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "Posts",
+      "item": "https://sucicada.github.io/blog/posts/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  3 ,
+      "name": "UVA 816 - Abbott‘s Revenge (Abbott的复仇) By SuCicada",
+      "item": "https://sucicada.github.io/blog/posts/uvaoj/uva-816-abbotts-revenge-abbott%E7%9A%84%E5%A4%8D%E4%BB%87-by-sucicada/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "UVA 816 - Abbott‘s Revenge (Abbott的复仇) By SuCicada",
+  "name": "UVA 816 - Abbott‘s Revenge (Abbott的复仇) By SuCicada",
+  "description": "例题6-14 Abbott的复仇（Abbott\u0026rsquo;s Revenge, ACM/ICPC World Finals 2000, UVa 816）\n有一个最多包含9*9个交叉点的迷宫。输入起点、离开起点时的朝向和终点，求一条最\n短路（多解时任意输出一个即可）。\n图6-14 迷宫及走向\n这个迷宫的特殊之处在于：进入一个交叉点\n的方向（用NEWS这4个字母分别表示北东西\n南，即上右左下）不同，允许出去的方向也不\n同。例如，1 2 WLF NR ER 表示交叉点(1,2)\n（上数第1行，左数第2列）有3个路标（字\n符“”只是结束标志），如果进入该交叉点时的\n朝向为W（即朝左），则可以左转（L）或者直\n行（F）；如果进入时朝向为N或者E则只能右转\n（R），如图6-14所示。\n注意：初始状态是“刚刚离开入口”，所以即\n使出口和入口重合，最短路也不为空。例如，图\n6-14中的一条最短路为(3,1) (2,1) (1,1) (1,2)\n(2,2) (2,3) (1,3) (1,2) (1,1) (2,1) (2,2) (1,2) (1,3) (2,3) (3,3)。\nSample Input\nSAMPLE\n3 1 N 3 3\n1 1 WL NR *\n1 2 WLF NR ER *\n1 3 NL ER *\n2 1 SL WR NF *",
+  "keywords": [
+    "UVaOJ"
+  ],
+  "articleBody": " 例题6-14 Abbott的复仇（Abbott’s Revenge, ACM/ICPC World Finals 2000, UVa 816）\n有一个最多包含9*9个交叉点的迷宫。输入起点、离开起点时的朝向和终点，求一条最\n短路（多解时任意输出一个即可）。\n图6-14 迷宫及走向\n这个迷宫的特殊之处在于：进入一个交叉点\n的方向（用NEWS这4个字母分别表示北东西\n南，即上右左下）不同，允许出去的方向也不\n同。例如，1 2 WLF NR ER 表示交叉点(1,2)\n（上数第1行，左数第2列）有3个路标（字\n符“”只是结束标志），如果进入该交叉点时的\n朝向为W（即朝左），则可以左转（L）或者直\n行（F）；如果进入时朝向为N或者E则只能右转\n（R），如图6-14所示。\n注意：初始状态是“刚刚离开入口”，所以即\n使出口和入口重合，最短路也不为空。例如，图\n6-14中的一条最短路为(3,1) (2,1) (1,1) (1,2)\n(2,2) (2,3) (1,3) (1,2) (1,1) (2,1) (2,2) (1,2) (1,3) (2,3) (3,3)。\nSample Input\nSAMPLE\n3 1 N 3 3\n1 1 WL NR *\n1 2 WLF NR ER *\n1 3 NL ER *\n2 1 SL WR NF *\n2 2 SL WF ELF *\n2 3 SFR EL *\n0\nNOSOLUTION\n3 1 N 3 2\n1 1 WL NR *\n1 2 NL ER *\n2 1 SL WR NFR *\n2 2 SR EL *\n0\nEND\nSample Output\nSAMPLE\n(3,1) (2,1) (1,1) (1,2) (2,2) (2,3) (1,3) (1,2) (1,1) (2,1)\n(2,2) (1,2) (1,3) (2,3) (3,3)\nNOSOLUTION\nNo Solution Possible\n本家地址\n思路和刘汝佳的如出一辙。\n#include #include #include #include #include #include #include using namespace std; class Site{ public: int x,y,inDir; Site(){} Site(int x,int y,int i):x(x),y(y),inDir(i){} friend ostream \u0026 operator\u003c\u003c(ostream \u0026out, Site \u0026site){ out\u003c\u003csite.x\u003c\u003c\" \"\u003c\u003csite.y\u003c\u003c\" \"\u003c\u003csite.inDir; return out; } }; /* 9*9*4(direction)*4(direction) */ /* | ^ */ /* |-------------| */ int maz[11][11][6][6]; /* 9*9*4(direction)*3(x,y,dir) */ /* log[i][j][k] 值 site, 记录 i,y, dir(进入方向) 点由site*/ Site log[11][11][6]; int dis[11][11][6]; /* up, right, down, left */ char dirMap[4] = {'N','E','S','W'}; int getInDirMapIndex(char c){ /* 进入方向 */ for(int i=0;i\u003c4;i++){ if(dirMap[i] == c){ return i; } } return -1; } /* in L R 0 3 1 1 0 2 2 1 3 3 2 0 */ int getOutDirMapIndex(int inIndex,char dir){ /* 出向方向 */ if(dir == 'F'){ return inIndex; }else if(dir == 'L'){ return (inIndex-1+4)%4; }else if(dir == 'R'){ return (inIndex +1)%4; } return -1; } void show(){ cout\u003c\u003c\" N \\nW E\\n S \"\u003c\u003cendl; cout\u003c\u003c\" \"; for(int i=1;i\u003c=9;i++){ cout\u003c\u003c\" NESW\"; } cout\u003c\u003cendl; for(int i=1;i\u003c=9;i++){ for(int k=0;k\u003c4;k++){ cout\u003c\u003cdirMap[k]; for(int j=1;j\u003c=9;j++){ cout\u003c\u003c\" \"; for(int p=0;p\u003c4;p++){ cout\u003c\u003cmaz[i][j][k][p]; } } cout\u003c\u003cendl; } cout\u003c\u003cendl; } } void addRule(int x,int y,string rule){ for(int i=1;i\u003crule.size();i++){ /* x,y 位置的 rule[0] -\u003e rule[i] 走向的规则建立了 */ int inIndex = getInDirMapIndex(rule[0]); int outIndex = getOutDirMapIndex(inIndex, rule[i]); maz[x][y][inIndex][outIndex] = 1; } } int beginX,beginY; char beginDir; int endX,endY; void showLog(){ for(int i=1;i\u003c=3;i++){ for(int k=0;k\u003c4;k++){ for(int j=1;j\u003c=3;j++){ Site site = log[i][j][k]; cout\u003c\u003csite.x\u003c\u003c\",\"\u003c\u003csite.y\u003c\u003c\" \"\u003c\u003csite.inDir\u003c\u003c\" | \"; }cout\u003c\u003cendl; }cout\u003c\u003cendl; }cout\u003c\u003cendl; } void showDis(){ for(int i=1;i\u003c=3;i++){ for(int j=1;j\u003c=3;j++){ for(int k=0;k\u003c4;k++){ int n = dis[i][j][k]; cout\u003c\u003cn\u003c\u003c\" \"; }cout\u003c\u003c\" | \"; }cout\u003c\u003cendl; }cout\u003c\u003cendl; } Site getNextSite(int x,int y,int outDir){ /* x y n 0 -1 0 e 1 0 1 s 2 1 0 w 3 0 -1 */ return Site( x+(outDir%2?0:outDir-1), y+(outDir%2?2-outDir:0), outDir); } void bfs(){ queue\u003cSite\u003e que; int beginDirN = getInDirMapIndex(beginDir); Site beginSite(beginX,beginY,beginDirN); Site nextSite = getNextSite(beginX,beginY,beginDirN); que.push(nextSite); log[nextSite.x][nextSite.y][nextSite.inDir] = beginSite; dis[nextSite.x][nextSite.y][nextSite.inDir] = 0; /* 一步跨到 */ int isSolu=0; int overDir; while(!que.empty()){ Site site = que.front(); que.pop();/* 当前块块 */ int x = site.x; int y = site.y; int inDir = site.inDir; if(x == endX \u0026\u0026 y==endY){ isSolu = 1; overDir = inDir; break; } for(int i=0;i\u003c4;i++){ if(maz[x][y][inDir][i]==1){ /* 这个出方向 能走 */ Site newSite = getNextSite(x,y,i); /* 下一步必须是一个新步才行 */ Site newLogSite = log[newSite.x][newSite.y][newSite.inDir]; if(newSite.x \u003e=1 \u0026\u0026 newSite.x \u003c=9 \u0026\u0026 newSite.y \u003e= 1 \u0026\u0026 newSite.y \u003c=9 \u0026\u0026 dis[newSite.x][newSite.y][newSite.inDir] == -1 /* 未被走过 */ ){ /* 记录从哪里过来的 */ log[newSite.x][newSite.y][newSite.inDir] = site; /* 记录距离 */ dis[newSite.x][newSite.y][newSite.inDir] = dis[x][y][inDir] + 1; que.push(newSite); } } } } if(isSolu){ vector\u003cSite\u003e res; Site lastSite = Site(endX,endY,overDir); while(1){ res.push_back(lastSite); if(!dis[lastSite.x][lastSite.y][lastSite.inDir]){ break; } lastSite = log[lastSite.x][lastSite.y][lastSite.inDir]; } res.push_back(Site(beginX,beginY,beginDirN)); int sum = 0; for(int i=res.size()-1;i\u003e=0;i--){ if(sum % 10 ==0){ if(sum){ cout\u003c\u003cendl; } cout\u003c\u003c\" \"; } printf(\" (%d,%d)\",res[i].x,res[i].y); sum++; } cout\u003c\u003cendl; }else{ cout\u003c\u003c\" No Solution Possible\"\u003c\u003cendl;; } } int main(){ while(1){ memset(maz,0,sizeof(maz)); memset(log,0,sizeof(log)); memset(dis,-1,sizeof(dis)); beginX = beginY = endX = endY = 0; string name; cin\u003e\u003ename; if(name == \"END\"){ break; } cin\u003e\u003ebeginX\u003e\u003ebeginY\u003e\u003ebeginDir\u003e\u003eendX\u003e\u003eendY; while(1){ /* 一个点 */ int x,y; cin\u003e\u003ex; if(x==0){ break; } cin\u003e\u003ey; while(1){ /* 一个规则 */ string rule; cin\u003e\u003erule; if(rule==\"*\"){ break; } addRule(x,y,rule); } } cout\u003c\u003cname\u003c\u003cendl; bfs(); } return 0; } // AC at 2020/08/02 ps：太傻了，居然想要手动实现队列和栈，然后还给写错了，本地调试没有任何问题。但是一提交就是WA。昨天的一个下午，要疯了。\n最近台风要来了，云都被吹散了在晚上，月亮特别圆特别亮特别好看。\n",
+  "wordCount" : "638",
+  "inLanguage": "en",
+  "datePublished": "0001-01-01T00:00:00Z",
+  "dateModified": "0001-01-01T00:00:00Z",
+  "author":{
+    "@type": "Person",
+    "name": "SuCicada"
+  },
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://sucicada.github.io/blog/posts/uvaoj/uva-816-abbotts-revenge-abbott%E7%9A%84%E5%A4%8D%E4%BB%87-by-sucicada/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "SuCicada",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://sucicada.github.io/blog/favicon.ico"
+    }
+  }
+}
+</script>
+</head>
+
+<body class="" id="top">
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.body.classList.add('dark');
+    } else if (localStorage.getItem("pref-theme") === "light") {
+        document.body.classList.remove('dark')
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.body.classList.add('dark');
+    }
+
+</script>
+
+<header class="header">
+    <nav class="nav">
+        <div class="logo">
+            <a href="https://sucicada.github.io/blog" accesskey="h" title="SuCicada (Alt + H)">SuCicada</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" accesskey="t" title="(Alt + T)">
+                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu">
+            <li>
+                <a href="https://sucicada.github.io/blog/archives/" title="Archive">
+                    <span>Archive</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://sucicada.github.io/blog/search/" title="Search (Alt &#43; /)" accesskey=/>
+                    <span>Search</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://sucicada.github.io/blog/tags/" title="Tags">
+                    <span>Tags</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://sucicada.github.io/blog/about/" title="About">
+                    <span>About</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+
+    <h1 class="post-title">
+      UVA 816 - Abbott‘s Revenge (Abbott的复仇) By SuCicada
+    </h1>
+    <div class="post-meta">SuCicada&nbsp;|&nbsp;<a href="https://github.com/SuCicada/mysite-hugo/content/posts/UVaOJ/UVA%20816%20-%20Abbott%e2%80%98s%20Revenge%20%28Abbott%e7%9a%84%e5%a4%8d%e4%bb%87%29%20By%20SuCicada.md" rel="noopener noreferrer" target="_blank">Suggest Changes</a>
+
+</div>
+    <ul class="post-tags">
+      <li><a href="https://sucicada.github.io/blog/tags/uvaoj/">UVaOJ</a></li>
+    </ul>
+  </header> 
+
+  <div class="post-content"><blockquote>
+<p>例题6-14 Abbott的复仇（Abbott&rsquo;s Revenge, ACM/ICPC World Finals 2000, UVa 816）<br>
+有一个最多包含9*9个交叉点的迷宫。输入起点、离开起点时的朝向和终点，求一条最<br>
+短路（多解时任意输出一个即可）。<br>
+
+
+
+
+<img loading="lazy" src="https://img-blog.csdnimg.cn/20200803232356961.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3N1X2NpY2FkYQ==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"  />
+<br>
+图6-14 迷宫及走向<br>
+这个迷宫的特殊之处在于：进入一个交叉点<br>
+的方向（用NEWS这4个字母分别表示北东西<br>
+南，即上右左下）不同，允许出去的方向也不<br>
+同。例如，1 2 WLF NR ER <em>表示交叉点(1,2)<br>
+（上数第1行，左数第2列）有3个路标（字<br>
+符“</em>”只是结束标志），如果进入该交叉点时的<br>
+朝向为W（即朝左），则可以左转（L）或者直<br>
+行（F）；如果进入时朝向为N或者E则只能右转<br>
+（R），如图6-14所示。<br>
+注意：初始状态是“刚刚离开入口”，所以即<br>
+使出口和入口重合，最短路也不为空。例如，图<br>
+6-14中的一条最短路为(3,1) (2,1) (1,1) (1,2)<br>
+(2,2) (2,3) (1,3) (1,2) (1,1) (2,1) (2,2) (1,2) (1,3) (2,3) (3,3)。<br>
+<strong>Sample Input</strong><br>
+SAMPLE<br>
+3 1 N 3 3<br>
+1 1 WL NR *<br>
+1 2 WLF NR ER *<br>
+1 3 NL ER *<br>
+2 1 SL WR NF *<br>
+2 2 SL WF ELF *<br>
+2 3 SFR EL *<br>
+0<br>
+NOSOLUTION<br>
+3 1 N 3 2<br>
+1 1 WL NR *<br>
+1 2 NL ER *<br>
+2 1 SL WR NFR *<br>
+2 2 SR EL *<br>
+0<br>
+END<br>
+<strong>Sample Output</strong><br>
+SAMPLE<br>
+(3,1) (2,1) (1,1) (1,2) (2,2) (2,3) (1,3) (1,2) (1,1) (2,1)<br>
+(2,2) (1,2) (1,3) (2,3) (3,3)<br>
+NOSOLUTION<br>
+No Solution Possible</p>
+</blockquote>
+<p><a href="https://onlinejudge.org/index.php?option=com_onlinejudge&amp;Itemid=8&amp;category=838&amp;page=show_problem&amp;problem=757">本家地址</a></p>
+<hr>
+<p>思路和刘汝佳的如出一辙。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="cp">#include</span><span class="cpf">&lt;iostream&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span><span class="cpf">&lt;string&gt;    </span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span><span class="cpf">&lt;cstdio&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span><span class="cpf">&lt;cstring&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span><span class="cpf">&lt;sstream&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span><span class="cpf">&lt;queue&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span><span class="cpf">&lt;vector&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp"></span><span class="k">using</span> <span class="k">namespace</span> <span class="n">std</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">class</span> <span class="nc">Site</span><span class="p">{</span>
+</span></span><span class="line"><span class="cl"><span class="k">public</span><span class="o">:</span> 
+</span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">,</span><span class="n">inDir</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">Site</span><span class="p">(){}</span>
+</span></span><span class="line"><span class="cl">    <span class="n">Site</span><span class="p">(</span><span class="kt">int</span> <span class="n">x</span><span class="p">,</span><span class="kt">int</span> <span class="n">y</span><span class="p">,</span><span class="kt">int</span> <span class="n">i</span><span class="p">)</span><span class="o">:</span><span class="n">x</span><span class="p">(</span><span class="n">x</span><span class="p">),</span><span class="n">y</span><span class="p">(</span><span class="n">y</span><span class="p">),</span><span class="n">inDir</span><span class="p">(</span><span class="n">i</span><span class="p">){}</span>
+</span></span><span class="line"><span class="cl">    <span class="k">friend</span> <span class="n">ostream</span> <span class="o">&amp;</span> <span class="k">operator</span><span class="o">&lt;&lt;</span><span class="p">(</span><span class="n">ostream</span> <span class="o">&amp;</span><span class="n">out</span><span class="p">,</span> <span class="n">Site</span> <span class="o">&amp;</span><span class="n">site</span><span class="p">){</span>
+</span></span><span class="line"><span class="cl">        <span class="n">out</span><span class="o">&lt;&lt;</span><span class="n">site</span><span class="p">.</span><span class="n">x</span><span class="o">&lt;&lt;</span><span class="s">&#34; &#34;</span><span class="o">&lt;&lt;</span><span class="n">site</span><span class="p">.</span><span class="n">y</span><span class="o">&lt;&lt;</span><span class="s">&#34; &#34;</span><span class="o">&lt;&lt;</span><span class="n">site</span><span class="p">.</span><span class="n">inDir</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="n">out</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="p">};</span>
+</span></span><span class="line"><span class="cl"><span class="cm">/* 9*9*4(direction)*4(direction) */</span>
+</span></span><span class="line"><span class="cl"><span class="cm">/*         |             ^       */</span>
+</span></span><span class="line"><span class="cl"><span class="cm">/*         |-------------|       */</span>
+</span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="n">maz</span><span class="p">[</span><span class="mi">11</span><span class="p">][</span><span class="mi">11</span><span class="p">][</span><span class="mi">6</span><span class="p">][</span><span class="mi">6</span><span class="p">];</span> 
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="cm">/* 9*9*4(direction)*3(x,y,dir) */</span>
+</span></span><span class="line"><span class="cl"><span class="cm">/* log[i][j][k] 值 site, 记录 i,y, dir(进入方向) 点由site*/</span>
+</span></span><span class="line"><span class="cl"><span class="n">Site</span> <span class="n">log</span><span class="p">[</span><span class="mi">11</span><span class="p">][</span><span class="mi">11</span><span class="p">][</span><span class="mi">6</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="n">dis</span><span class="p">[</span><span class="mi">11</span><span class="p">][</span><span class="mi">11</span><span class="p">][</span><span class="mi">6</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="cm">/* up, right, down, left */</span>
+</span></span><span class="line"><span class="cl"><span class="kt">char</span> <span class="n">dirMap</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="sc">&#39;N&#39;</span><span class="p">,</span><span class="sc">&#39;E&#39;</span><span class="p">,</span><span class="sc">&#39;S&#39;</span><span class="p">,</span><span class="sc">&#39;W&#39;</span><span class="p">};</span>
+</span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="nf">getInDirMapIndex</span><span class="p">(</span><span class="kt">char</span> <span class="n">c</span><span class="p">){</span>
+</span></span><span class="line"><span class="cl">    <span class="cm">/* 进入方向  */</span>
+</span></span><span class="line"><span class="cl">    <span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span><span class="n">i</span><span class="o">&lt;</span><span class="mi">4</span><span class="p">;</span><span class="n">i</span><span class="o">++</span><span class="p">){</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span><span class="p">(</span><span class="n">dirMap</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">==</span> <span class="n">c</span><span class="p">){</span>
+</span></span><span class="line"><span class="cl">            <span class="k">return</span> <span class="n">i</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="cm">/*
+</span></span></span><span class="line"><span class="cl"><span class="cm">in L  R
+</span></span></span><span class="line"><span class="cl"><span class="cm">0  3  1
+</span></span></span><span class="line"><span class="cl"><span class="cm">1  0  2
+</span></span></span><span class="line"><span class="cl"><span class="cm">2  1  3
+</span></span></span><span class="line"><span class="cl"><span class="cm">3  2  0
+</span></span></span><span class="line"><span class="cl"><span class="cm">*/</span>
+</span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="nf">getOutDirMapIndex</span><span class="p">(</span><span class="kt">int</span> <span class="n">inIndex</span><span class="p">,</span><span class="kt">char</span> <span class="n">dir</span><span class="p">){</span>
+</span></span><span class="line"><span class="cl">    <span class="cm">/* 出向方向 */</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span><span class="p">(</span><span class="n">dir</span> <span class="o">==</span> <span class="sc">&#39;F&#39;</span><span class="p">){</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="n">inIndex</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span><span class="k">else</span> <span class="k">if</span><span class="p">(</span><span class="n">dir</span> <span class="o">==</span> <span class="sc">&#39;L&#39;</span><span class="p">){</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="p">(</span><span class="n">inIndex</span><span class="o">-</span><span class="mi">1</span><span class="o">+</span><span class="mi">4</span><span class="p">)</span><span class="o">%</span><span class="mi">4</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span><span class="k">else</span> <span class="k">if</span><span class="p">(</span><span class="n">dir</span> <span class="o">==</span> <span class="sc">&#39;R&#39;</span><span class="p">){</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="p">(</span><span class="n">inIndex</span> <span class="o">+</span><span class="mi">1</span><span class="p">)</span><span class="o">%</span><span class="mi">4</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">show</span><span class="p">(){</span>
+</span></span><span class="line"><span class="cl">    <span class="n">cout</span><span class="o">&lt;&lt;</span><span class="s">&#34; N </span><span class="se">\n</span><span class="s">W E</span><span class="se">\n</span><span class="s"> S &#34;</span><span class="o">&lt;&lt;</span><span class="n">endl</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">cout</span><span class="o">&lt;&lt;</span><span class="s">&#34; &#34;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">i</span><span class="o">=</span><span class="mi">1</span><span class="p">;</span><span class="n">i</span><span class="o">&lt;=</span><span class="mi">9</span><span class="p">;</span><span class="n">i</span><span class="o">++</span><span class="p">){</span>
+</span></span><span class="line"><span class="cl">        <span class="n">cout</span><span class="o">&lt;&lt;</span><span class="s">&#34; NESW&#34;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="n">cout</span><span class="o">&lt;&lt;</span><span class="n">endl</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">i</span><span class="o">=</span><span class="mi">1</span><span class="p">;</span><span class="n">i</span><span class="o">&lt;=</span><span class="mi">9</span><span class="p">;</span><span class="n">i</span><span class="o">++</span><span class="p">){</span>
+</span></span><span class="line"><span class="cl">        <span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">k</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span><span class="n">k</span><span class="o">&lt;</span><span class="mi">4</span><span class="p">;</span><span class="n">k</span><span class="o">++</span><span class="p">){</span>     
+</span></span><span class="line"><span class="cl">            <span class="n">cout</span><span class="o">&lt;&lt;</span><span class="n">dirMap</span><span class="p">[</span><span class="n">k</span><span class="p">];</span>          
+</span></span><span class="line"><span class="cl">            <span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">j</span><span class="o">=</span><span class="mi">1</span><span class="p">;</span><span class="n">j</span><span class="o">&lt;=</span><span class="mi">9</span><span class="p">;</span><span class="n">j</span><span class="o">++</span><span class="p">){</span>
+</span></span><span class="line"><span class="cl">                <span class="n">cout</span><span class="o">&lt;&lt;</span><span class="s">&#34; &#34;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">                <span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">p</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span><span class="n">p</span><span class="o">&lt;</span><span class="mi">4</span><span class="p">;</span><span class="n">p</span><span class="o">++</span><span class="p">){</span>
+</span></span><span class="line"><span class="cl">                    <span class="n">cout</span><span class="o">&lt;&lt;</span><span class="n">maz</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">][</span><span class="n">k</span><span class="p">][</span><span class="n">p</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl">                <span class="p">}</span>
+</span></span><span class="line"><span class="cl">            <span class="p">}</span>
+</span></span><span class="line"><span class="cl">            <span class="n">cout</span><span class="o">&lt;&lt;</span><span class="n">endl</span><span class="p">;</span>    
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">        <span class="n">cout</span><span class="o">&lt;&lt;</span><span class="n">endl</span><span class="p">;</span> 
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">addRule</span><span class="p">(</span><span class="kt">int</span> <span class="n">x</span><span class="p">,</span><span class="kt">int</span> <span class="n">y</span><span class="p">,</span><span class="n">string</span> <span class="n">rule</span><span class="p">){</span>
+</span></span><span class="line"><span class="cl">    <span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">i</span><span class="o">=</span><span class="mi">1</span><span class="p">;</span><span class="n">i</span><span class="o">&lt;</span><span class="n">rule</span><span class="p">.</span><span class="n">size</span><span class="p">();</span><span class="n">i</span><span class="o">++</span><span class="p">){</span>
+</span></span><span class="line"><span class="cl">        <span class="cm">/* x,y 位置的 rule[0] -&gt; rule[i] 走向的规则建立了  */</span>
+</span></span><span class="line"><span class="cl">        <span class="kt">int</span> <span class="n">inIndex</span> <span class="o">=</span> <span class="n">getInDirMapIndex</span><span class="p">(</span><span class="n">rule</span><span class="p">[</span><span class="mi">0</span><span class="p">]);</span> 
+</span></span><span class="line"><span class="cl">        <span class="kt">int</span> <span class="n">outIndex</span> <span class="o">=</span> <span class="n">getOutDirMapIndex</span><span class="p">(</span><span class="n">inIndex</span><span class="p">,</span> <span class="n">rule</span><span class="p">[</span><span class="n">i</span><span class="p">]);</span>
+</span></span><span class="line"><span class="cl">        <span class="n">maz</span><span class="p">[</span><span class="n">x</span><span class="p">][</span><span class="n">y</span><span class="p">][</span><span class="n">inIndex</span><span class="p">][</span><span class="n">outIndex</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span> 
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="n">beginX</span><span class="p">,</span><span class="n">beginY</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="kt">char</span> <span class="n">beginDir</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="n">endX</span><span class="p">,</span><span class="n">endY</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">showLog</span><span class="p">(){</span>
+</span></span><span class="line"><span class="cl">    <span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">i</span><span class="o">=</span><span class="mi">1</span><span class="p">;</span><span class="n">i</span><span class="o">&lt;=</span><span class="mi">3</span><span class="p">;</span><span class="n">i</span><span class="o">++</span><span class="p">){</span>
+</span></span><span class="line"><span class="cl">        <span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">k</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span><span class="n">k</span><span class="o">&lt;</span><span class="mi">4</span><span class="p">;</span><span class="n">k</span><span class="o">++</span><span class="p">){</span>
+</span></span><span class="line"><span class="cl">            <span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">j</span><span class="o">=</span><span class="mi">1</span><span class="p">;</span><span class="n">j</span><span class="o">&lt;=</span><span class="mi">3</span><span class="p">;</span><span class="n">j</span><span class="o">++</span><span class="p">){</span>
+</span></span><span class="line"><span class="cl">                <span class="n">Site</span> <span class="n">site</span> <span class="o">=</span> <span class="n">log</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">][</span><span class="n">k</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl">                <span class="n">cout</span><span class="o">&lt;&lt;</span><span class="n">site</span><span class="p">.</span><span class="n">x</span><span class="o">&lt;&lt;</span><span class="s">&#34;,&#34;</span><span class="o">&lt;&lt;</span><span class="n">site</span><span class="p">.</span><span class="n">y</span><span class="o">&lt;&lt;</span><span class="s">&#34; &#34;</span><span class="o">&lt;&lt;</span><span class="n">site</span><span class="p">.</span><span class="n">inDir</span><span class="o">&lt;&lt;</span><span class="s">&#34; | &#34;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">            <span class="p">}</span><span class="n">cout</span><span class="o">&lt;&lt;</span><span class="n">endl</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span><span class="n">cout</span><span class="o">&lt;&lt;</span><span class="n">endl</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span><span class="n">cout</span><span class="o">&lt;&lt;</span><span class="n">endl</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">showDis</span><span class="p">(){</span>
+</span></span><span class="line"><span class="cl">    <span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">i</span><span class="o">=</span><span class="mi">1</span><span class="p">;</span><span class="n">i</span><span class="o">&lt;=</span><span class="mi">3</span><span class="p">;</span><span class="n">i</span><span class="o">++</span><span class="p">){</span>
+</span></span><span class="line"><span class="cl">        <span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">j</span><span class="o">=</span><span class="mi">1</span><span class="p">;</span><span class="n">j</span><span class="o">&lt;=</span><span class="mi">3</span><span class="p">;</span><span class="n">j</span><span class="o">++</span><span class="p">){</span>
+</span></span><span class="line"><span class="cl">            <span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">k</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span><span class="n">k</span><span class="o">&lt;</span><span class="mi">4</span><span class="p">;</span><span class="n">k</span><span class="o">++</span><span class="p">){</span>
+</span></span><span class="line"><span class="cl">                <span class="kt">int</span> <span class="n">n</span> <span class="o">=</span> <span class="n">dis</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">][</span><span class="n">k</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl">                <span class="n">cout</span><span class="o">&lt;&lt;</span><span class="n">n</span><span class="o">&lt;&lt;</span><span class="s">&#34; &#34;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">            <span class="p">}</span><span class="n">cout</span><span class="o">&lt;&lt;</span><span class="s">&#34; | &#34;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span><span class="n">cout</span><span class="o">&lt;&lt;</span><span class="n">endl</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span><span class="n">cout</span><span class="o">&lt;&lt;</span><span class="n">endl</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="n">Site</span> <span class="nf">getNextSite</span><span class="p">(</span><span class="kt">int</span> <span class="n">x</span><span class="p">,</span><span class="kt">int</span> <span class="n">y</span><span class="p">,</span><span class="kt">int</span> <span class="n">outDir</span><span class="p">){</span>
+</span></span><span class="line"><span class="cl">    <span class="cm">/*   x  y 
+</span></span></span><span class="line"><span class="cl"><span class="cm">    n 0 -1  0 
+</span></span></span><span class="line"><span class="cl"><span class="cm">    e 1  0  1 
+</span></span></span><span class="line"><span class="cl"><span class="cm">    s 2  1  0 
+</span></span></span><span class="line"><span class="cl"><span class="cm">    w 3  0 -1 
+</span></span></span><span class="line"><span class="cl"><span class="cm">    */</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="n">Site</span><span class="p">(</span>
+</span></span><span class="line"><span class="cl">        <span class="n">x</span><span class="o">+</span><span class="p">(</span><span class="n">outDir</span><span class="o">%</span><span class="mi">2</span><span class="o">?</span><span class="mi">0</span><span class="o">:</span><span class="n">outDir</span><span class="o">-</span><span class="mi">1</span><span class="p">),</span>
+</span></span><span class="line"><span class="cl">        <span class="n">y</span><span class="o">+</span><span class="p">(</span><span class="n">outDir</span><span class="o">%</span><span class="mi">2</span><span class="o">?</span><span class="mi">2</span><span class="o">-</span><span class="nl">outDir</span><span class="p">:</span><span class="mi">0</span><span class="p">),</span>
+</span></span><span class="line"><span class="cl">        <span class="n">outDir</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">bfs</span><span class="p">(){</span>
+</span></span><span class="line"><span class="cl">    <span class="n">queue</span><span class="o">&lt;</span><span class="n">Site</span><span class="o">&gt;</span> <span class="n">que</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="n">beginDirN</span> <span class="o">=</span> <span class="n">getInDirMapIndex</span><span class="p">(</span><span class="n">beginDir</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="n">Site</span> <span class="n">beginSite</span><span class="p">(</span><span class="n">beginX</span><span class="p">,</span><span class="n">beginY</span><span class="p">,</span><span class="n">beginDirN</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="n">Site</span> <span class="n">nextSite</span> <span class="o">=</span> <span class="n">getNextSite</span><span class="p">(</span><span class="n">beginX</span><span class="p">,</span><span class="n">beginY</span><span class="p">,</span><span class="n">beginDirN</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="n">que</span><span class="p">.</span><span class="n">push</span><span class="p">(</span><span class="n">nextSite</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="n">log</span><span class="p">[</span><span class="n">nextSite</span><span class="p">.</span><span class="n">x</span><span class="p">][</span><span class="n">nextSite</span><span class="p">.</span><span class="n">y</span><span class="p">][</span><span class="n">nextSite</span><span class="p">.</span><span class="n">inDir</span><span class="p">]</span> <span class="o">=</span> <span class="n">beginSite</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">dis</span><span class="p">[</span><span class="n">nextSite</span><span class="p">.</span><span class="n">x</span><span class="p">][</span><span class="n">nextSite</span><span class="p">.</span><span class="n">y</span><span class="p">][</span><span class="n">nextSite</span><span class="p">.</span><span class="n">inDir</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="cm">/* 一步跨到 */</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="n">isSolu</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="n">overDir</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="k">while</span><span class="p">(</span><span class="o">!</span><span class="n">que</span><span class="p">.</span><span class="n">empty</span><span class="p">()){</span>
+</span></span><span class="line"><span class="cl">        <span class="n">Site</span> <span class="n">site</span> <span class="o">=</span> <span class="n">que</span><span class="p">.</span><span class="n">front</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">        <span class="n">que</span><span class="p">.</span><span class="n">pop</span><span class="p">();</span><span class="cm">/* 当前块块 */</span>
+</span></span><span class="line"><span class="cl">        <span class="kt">int</span> <span class="n">x</span> <span class="o">=</span> <span class="n">site</span><span class="p">.</span><span class="n">x</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="kt">int</span> <span class="n">y</span> <span class="o">=</span> <span class="n">site</span><span class="p">.</span><span class="n">y</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="kt">int</span> <span class="n">inDir</span> <span class="o">=</span> <span class="n">site</span><span class="p">.</span><span class="n">inDir</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span><span class="p">(</span><span class="n">x</span> <span class="o">==</span> <span class="n">endX</span> <span class="o">&amp;&amp;</span> <span class="n">y</span><span class="o">==</span><span class="n">endY</span><span class="p">){</span>
+</span></span><span class="line"><span class="cl">            <span class="n">isSolu</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">            <span class="n">overDir</span> <span class="o">=</span> <span class="n">inDir</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">            <span class="k">break</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span><span class="n">i</span><span class="o">&lt;</span><span class="mi">4</span><span class="p">;</span><span class="n">i</span><span class="o">++</span><span class="p">){</span>
+</span></span><span class="line"><span class="cl">            <span class="k">if</span><span class="p">(</span><span class="n">maz</span><span class="p">[</span><span class="n">x</span><span class="p">][</span><span class="n">y</span><span class="p">][</span><span class="n">inDir</span><span class="p">][</span><span class="n">i</span><span class="p">]</span><span class="o">==</span><span class="mi">1</span><span class="p">){</span>
+</span></span><span class="line"><span class="cl">                <span class="cm">/* 这个出方向 能走 */</span>
+</span></span><span class="line"><span class="cl">                <span class="n">Site</span> <span class="n">newSite</span> <span class="o">=</span> <span class="n">getNextSite</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">,</span><span class="n">i</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">                <span class="cm">/* 下一步必须是一个新步才行 */</span>
+</span></span><span class="line"><span class="cl">                <span class="n">Site</span> <span class="n">newLogSite</span> <span class="o">=</span> <span class="n">log</span><span class="p">[</span><span class="n">newSite</span><span class="p">.</span><span class="n">x</span><span class="p">][</span><span class="n">newSite</span><span class="p">.</span><span class="n">y</span><span class="p">][</span><span class="n">newSite</span><span class="p">.</span><span class="n">inDir</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl">                <span class="k">if</span><span class="p">(</span><span class="n">newSite</span><span class="p">.</span><span class="n">x</span> <span class="o">&gt;=</span><span class="mi">1</span> <span class="o">&amp;&amp;</span> <span class="n">newSite</span><span class="p">.</span><span class="n">x</span> <span class="o">&lt;=</span><span class="mi">9</span> <span class="o">&amp;&amp;</span> <span class="n">newSite</span><span class="p">.</span><span class="n">y</span> <span class="o">&gt;=</span> <span class="mi">1</span> <span class="o">&amp;&amp;</span> <span class="n">newSite</span><span class="p">.</span><span class="n">y</span> <span class="o">&lt;=</span><span class="mi">9</span> <span class="o">&amp;&amp;</span>
+</span></span><span class="line"><span class="cl">                <span class="n">dis</span><span class="p">[</span><span class="n">newSite</span><span class="p">.</span><span class="n">x</span><span class="p">][</span><span class="n">newSite</span><span class="p">.</span><span class="n">y</span><span class="p">][</span><span class="n">newSite</span><span class="p">.</span><span class="n">inDir</span><span class="p">]</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span> <span class="cm">/* 未被走过 */</span>
+</span></span><span class="line"><span class="cl">                    <span class="p">){</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">                    <span class="cm">/* 记录从哪里过来的 */</span>
+</span></span><span class="line"><span class="cl">                    <span class="n">log</span><span class="p">[</span><span class="n">newSite</span><span class="p">.</span><span class="n">x</span><span class="p">][</span><span class="n">newSite</span><span class="p">.</span><span class="n">y</span><span class="p">][</span><span class="n">newSite</span><span class="p">.</span><span class="n">inDir</span><span class="p">]</span> <span class="o">=</span> <span class="n">site</span><span class="p">;</span> 
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">                    <span class="cm">/* 记录距离 */</span>
+</span></span><span class="line"><span class="cl">                    <span class="n">dis</span><span class="p">[</span><span class="n">newSite</span><span class="p">.</span><span class="n">x</span><span class="p">][</span><span class="n">newSite</span><span class="p">.</span><span class="n">y</span><span class="p">][</span><span class="n">newSite</span><span class="p">.</span><span class="n">inDir</span><span class="p">]</span> <span class="o">=</span> <span class="n">dis</span><span class="p">[</span><span class="n">x</span><span class="p">][</span><span class="n">y</span><span class="p">][</span><span class="n">inDir</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">                    <span class="n">que</span><span class="p">.</span><span class="n">push</span><span class="p">(</span><span class="n">newSite</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">                <span class="p">}</span>
+</span></span><span class="line"><span class="cl">            <span class="p">}</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span><span class="p">(</span><span class="n">isSolu</span><span class="p">){</span>
+</span></span><span class="line"><span class="cl">        <span class="n">vector</span><span class="o">&lt;</span><span class="n">Site</span><span class="o">&gt;</span> <span class="n">res</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="n">Site</span> <span class="n">lastSite</span> <span class="o">=</span> <span class="n">Site</span><span class="p">(</span><span class="n">endX</span><span class="p">,</span><span class="n">endY</span><span class="p">,</span><span class="n">overDir</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="k">while</span><span class="p">(</span><span class="mi">1</span><span class="p">){</span>
+</span></span><span class="line"><span class="cl">            <span class="n">res</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">lastSite</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">            <span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="n">dis</span><span class="p">[</span><span class="n">lastSite</span><span class="p">.</span><span class="n">x</span><span class="p">][</span><span class="n">lastSite</span><span class="p">.</span><span class="n">y</span><span class="p">][</span><span class="n">lastSite</span><span class="p">.</span><span class="n">inDir</span><span class="p">]){</span>
+</span></span><span class="line"><span class="cl">                <span class="k">break</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">            <span class="p">}</span>
+</span></span><span class="line"><span class="cl">            <span class="n">lastSite</span> <span class="o">=</span> <span class="n">log</span><span class="p">[</span><span class="n">lastSite</span><span class="p">.</span><span class="n">x</span><span class="p">][</span><span class="n">lastSite</span><span class="p">.</span><span class="n">y</span><span class="p">][</span><span class="n">lastSite</span><span class="p">.</span><span class="n">inDir</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">        <span class="n">res</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">Site</span><span class="p">(</span><span class="n">beginX</span><span class="p">,</span><span class="n">beginY</span><span class="p">,</span><span class="n">beginDirN</span><span class="p">));</span>
+</span></span><span class="line"><span class="cl">        <span class="kt">int</span> <span class="n">sum</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">i</span><span class="o">=</span><span class="n">res</span><span class="p">.</span><span class="n">size</span><span class="p">()</span><span class="o">-</span><span class="mi">1</span><span class="p">;</span><span class="n">i</span><span class="o">&gt;=</span><span class="mi">0</span><span class="p">;</span><span class="n">i</span><span class="o">--</span><span class="p">){</span>
+</span></span><span class="line"><span class="cl">            <span class="k">if</span><span class="p">(</span><span class="n">sum</span> <span class="o">%</span> <span class="mi">10</span> <span class="o">==</span><span class="mi">0</span><span class="p">){</span>
+</span></span><span class="line"><span class="cl">                <span class="k">if</span><span class="p">(</span><span class="n">sum</span><span class="p">){</span>
+</span></span><span class="line"><span class="cl">                    <span class="n">cout</span><span class="o">&lt;&lt;</span><span class="n">endl</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">                <span class="p">}</span>
+</span></span><span class="line"><span class="cl">                <span class="n">cout</span><span class="o">&lt;&lt;</span><span class="s">&#34; &#34;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">            <span class="p">}</span>
+</span></span><span class="line"><span class="cl">            <span class="n">printf</span><span class="p">(</span><span class="s">&#34; (%d,%d)&#34;</span><span class="p">,</span><span class="n">res</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">x</span><span class="p">,</span><span class="n">res</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">y</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">            <span class="n">sum</span><span class="o">++</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">        <span class="n">cout</span><span class="o">&lt;&lt;</span><span class="n">endl</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span><span class="k">else</span><span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">cout</span><span class="o">&lt;&lt;</span><span class="s">&#34;  No Solution Possible&#34;</span><span class="o">&lt;&lt;</span><span class="n">endl</span><span class="p">;;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="nf">main</span><span class="p">(){</span>
+</span></span><span class="line"><span class="cl">    <span class="k">while</span><span class="p">(</span><span class="mi">1</span><span class="p">){</span>
+</span></span><span class="line"><span class="cl">        <span class="n">memset</span><span class="p">(</span><span class="n">maz</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="k">sizeof</span><span class="p">(</span><span class="n">maz</span><span class="p">));</span>
+</span></span><span class="line"><span class="cl">        <span class="n">memset</span><span class="p">(</span><span class="n">log</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="k">sizeof</span><span class="p">(</span><span class="n">log</span><span class="p">));</span>
+</span></span><span class="line"><span class="cl">        <span class="n">memset</span><span class="p">(</span><span class="n">dis</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="k">sizeof</span><span class="p">(</span><span class="n">dis</span><span class="p">));</span>
+</span></span><span class="line"><span class="cl">        <span class="n">beginX</span> <span class="o">=</span> <span class="n">beginY</span> <span class="o">=</span> <span class="n">endX</span> <span class="o">=</span> <span class="n">endY</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="n">string</span> <span class="n">name</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="n">cin</span><span class="o">&gt;&gt;</span><span class="n">name</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span><span class="p">(</span><span class="n">name</span> <span class="o">==</span> <span class="s">&#34;END&#34;</span><span class="p">){</span>
+</span></span><span class="line"><span class="cl">            <span class="k">break</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">        <span class="n">cin</span><span class="o">&gt;&gt;</span><span class="n">beginX</span><span class="o">&gt;&gt;</span><span class="n">beginY</span><span class="o">&gt;&gt;</span><span class="n">beginDir</span><span class="o">&gt;&gt;</span><span class="n">endX</span><span class="o">&gt;&gt;</span><span class="n">endY</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="k">while</span><span class="p">(</span><span class="mi">1</span><span class="p">){</span>
+</span></span><span class="line"><span class="cl">            <span class="cm">/* 一个点 */</span>
+</span></span><span class="line"><span class="cl">            <span class="kt">int</span> <span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">            <span class="n">cin</span><span class="o">&gt;&gt;</span><span class="n">x</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">            <span class="k">if</span><span class="p">(</span><span class="n">x</span><span class="o">==</span><span class="mi">0</span><span class="p">){</span>
+</span></span><span class="line"><span class="cl">                <span class="k">break</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">            <span class="p">}</span>
+</span></span><span class="line"><span class="cl">            <span class="n">cin</span><span class="o">&gt;&gt;</span><span class="n">y</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">            <span class="k">while</span><span class="p">(</span><span class="mi">1</span><span class="p">){</span>
+</span></span><span class="line"><span class="cl">                <span class="cm">/* 一个规则 */</span>
+</span></span><span class="line"><span class="cl">                <span class="n">string</span> <span class="n">rule</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">                <span class="n">cin</span><span class="o">&gt;&gt;</span><span class="n">rule</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">                <span class="k">if</span><span class="p">(</span><span class="n">rule</span><span class="o">==</span><span class="s">&#34;*&#34;</span><span class="p">){</span>
+</span></span><span class="line"><span class="cl">                    <span class="k">break</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">                <span class="p">}</span>
+</span></span><span class="line"><span class="cl">                <span class="n">addRule</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">,</span><span class="n">rule</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">            <span class="p">}</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">        <span class="n">cout</span><span class="o">&lt;&lt;</span><span class="n">name</span><span class="o">&lt;&lt;</span><span class="n">endl</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="n">bfs</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// AC at 2020/08/02
+</span></span></span></code></pre></div><hr>
+<p>ps：太傻了，居然想要手动实现队列和栈，然后还给写错了，本地调试没有任何问题。但是一提交就是WA。昨天的一个下午，要疯了。<br>
+最近台风要来了，云都被吹散了在晚上，月亮特别圆特别亮特别好看。</p>
+
+
+  </div>
+
+  <footer class="post-footer">
+<nav class="paginav">
+  <a class="prev" href="https://sucicada.github.io/blog/posts/uvaoj/uva-699-the-falling-leaves-%E8%90%BD%E5%8F%B6-by-sucicada/">
+    <span class="title">« Prev</span>
+    <br>
+    <span>UVA 699 - The Falling Leaves (落叶) By SuCicada</span>
+  </a>
+  <a class="next" href="https://sucicada.github.io/blog/posts/uvaoj/uva-839-not-so-mobile-%E5%A4%A9%E5%B9%B3by-sucicada/">
+    <span class="title">Next »</span>
+    <br>
+    <span>UVA 839 - Not so Mobile （天平）By SuCicada</span>
+  </a>
+</nav>
+
+
+<div class="share-buttons">
+    <a target="_blank" rel="noopener noreferrer" aria-label="share UVA 816 - Abbott‘s Revenge (Abbott的复仇) By SuCicada on twitter"
+        href="https://twitter.com/intent/tweet/?text=UVA%20816%20-%20Abbott%e2%80%98s%20Revenge%20%28Abbott%e7%9a%84%e5%a4%8d%e4%bb%87%29%20By%20SuCicada&amp;url=https%3a%2f%2fsucicada.github.io%2fblog%2fposts%2fuvaoj%2fuva-816-abbotts-revenge-abbott%25E7%259A%2584%25E5%25A4%258D%25E4%25BB%2587-by-sucicada%2f&amp;hashtags=UVaOJ">
+        <svg version="1.1" viewBox="0 0 512 512" xml:space="preserve" height="30px" width="30px" fill="currentColor">
+            <path
+                d="M449.446,0c34.525,0 62.554,28.03 62.554,62.554l0,386.892c0,34.524 -28.03,62.554 -62.554,62.554l-386.892,0c-34.524,0 -62.554,-28.03 -62.554,-62.554l0,-386.892c0,-34.524 28.029,-62.554 62.554,-62.554l386.892,0Zm-253.927,424.544c135.939,0 210.268,-112.643 210.268,-210.268c0,-3.218 0,-6.437 -0.153,-9.502c14.406,-10.421 26.973,-23.448 36.935,-38.314c-13.18,5.824 -27.433,9.809 -42.452,11.648c15.326,-9.196 26.973,-23.602 32.49,-40.92c-14.252,8.429 -30.038,14.56 -46.896,17.931c-13.487,-14.406 -32.644,-23.295 -53.946,-23.295c-40.767,0 -73.87,33.104 -73.87,73.87c0,5.824 0.613,11.494 1.992,16.858c-61.456,-3.065 -115.862,-32.49 -152.337,-77.241c-6.284,10.881 -9.962,23.601 -9.962,37.088c0,25.594 13.027,48.276 32.95,61.456c-12.107,-0.307 -23.448,-3.678 -33.41,-9.196l0,0.92c0,35.862 25.441,65.594 59.311,72.49c-6.13,1.686 -12.72,2.606 -19.464,2.606c-4.751,0 -9.348,-0.46 -13.946,-1.38c9.349,29.426 36.628,50.728 68.965,51.341c-25.287,19.771 -57.164,31.571 -91.8,31.571c-5.977,0 -11.801,-0.306 -17.625,-1.073c32.337,21.15 71.264,33.41 112.95,33.41Z" />
+        </svg>
+    </a>
+    <a target="_blank" rel="noopener noreferrer" aria-label="share UVA 816 - Abbott‘s Revenge (Abbott的复仇) By SuCicada on telegram"
+        href="https://telegram.me/share/url?text=UVA%20816%20-%20Abbott%e2%80%98s%20Revenge%20%28Abbott%e7%9a%84%e5%a4%8d%e4%bb%87%29%20By%20SuCicada&amp;url=https%3a%2f%2fsucicada.github.io%2fblog%2fposts%2fuvaoj%2fuva-816-abbotts-revenge-abbott%25E7%259A%2584%25E5%25A4%258D%25E4%25BB%2587-by-sucicada%2f">
+        <svg version="1.1" xml:space="preserve" viewBox="2 2 28 28" height="30px" width="30px" fill="currentColor">
+            <path
+                d="M26.49,29.86H5.5a3.37,3.37,0,0,1-2.47-1,3.35,3.35,0,0,1-1-2.47V5.48A3.36,3.36,0,0,1,3,3,3.37,3.37,0,0,1,5.5,2h21A3.38,3.38,0,0,1,29,3a3.36,3.36,0,0,1,1,2.46V26.37a3.35,3.35,0,0,1-1,2.47A3.38,3.38,0,0,1,26.49,29.86Zm-5.38-6.71a.79.79,0,0,0,.85-.66L24.73,9.24a.55.55,0,0,0-.18-.46.62.62,0,0,0-.41-.17q-.08,0-16.53,6.11a.59.59,0,0,0-.41.59.57.57,0,0,0,.43.52l4,1.24,1.61,4.83a.62.62,0,0,0,.63.43.56.56,0,0,0,.4-.17L16.54,20l4.09,3A.9.9,0,0,0,21.11,23.15ZM13.8,20.71l-1.21-4q8.72-5.55,8.78-5.55c.15,0,.23,0,.23.16a.18.18,0,0,1,0,.06s-2.51,2.3-7.52,6.8Z" />
+        </svg>
+    </a>
+</div>
+
+  </footer><div id="disqus_thread"></div>
+<script type="application/javascript">
+    window.disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "sucicada" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+</article>
+    </main>
+    
+<footer class="footer">
+    <span>&copy; 2022 <a href="https://sucicada.github.io/blog">SuCicada</a></span>
+    <span>
+        Powered by
+        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+        <path d="M12 6H0l6-6z" />
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu')
+    if (menu) {
+        menu.scrollLeft = localStorage.getItem("menu-scroll-position");
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var mybutton = document.getElementById("top-link");
+    window.onscroll = function () {
+        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
+            mybutton.style.visibility = "visible";
+            mybutton.style.opacity = "1";
+        } else {
+            mybutton.style.visibility = "hidden";
+            mybutton.style.opacity = "0";
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        if (document.body.className.includes("dark")) {
+            document.body.classList.remove('dark');
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            document.body.classList.add('dark');
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+<script>
+    document.querySelectorAll('pre > code').forEach((codeblock) => {
+        const container = codeblock.parentNode.parentNode;
+
+        const copybutton = document.createElement('button');
+        copybutton.classList.add('copy-code');
+        copybutton.innerHTML = 'copy';
+
+        function copyingDone() {
+            copybutton.innerHTML = 'copied!';
+            setTimeout(() => {
+                copybutton.innerHTML = 'copy';
+            }, 2000);
+        }
+
+        copybutton.addEventListener('click', (cb) => {
+            if ('clipboard' in navigator) {
+                navigator.clipboard.writeText(codeblock.textContent);
+                copyingDone();
+                return;
+            }
+
+            const range = document.createRange();
+            range.selectNodeContents(codeblock);
+            const selection = window.getSelection();
+            selection.removeAllRanges();
+            selection.addRange(range);
+            try {
+                document.execCommand('copy');
+                copyingDone();
+            } catch (e) { };
+            selection.removeRange(range);
+        });
+
+        if (container.classList.contains("highlight")) {
+            container.appendChild(copybutton);
+        } else if (container.parentNode.firstChild == container) {
+            
+        } else if (codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName == "TABLE") {
+            
+            codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(copybutton);
+        } else {
+            
+            codeblock.parentNode.appendChild(copybutton);
+        }
+    });
+</script>
+</body>
+
+</html>

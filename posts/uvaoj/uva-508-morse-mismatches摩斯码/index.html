@@ -1,0 +1,733 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto">
+
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>uva 508 - Morse Mismatches（摩斯码） | SuCicada</title>
+<meta name="keywords" content="UVaOJ">
+<meta name="description" content="习题4-6 莫尔斯电码（Morse Mismatches, ACM/ICPC World Finals 1997, UVa508）
+输入每个字母的Morse编码，一个词典以及若干个编码。对于每个编码，判断它可能是
+哪个单词。如果有多个单词精确匹配，选取字典序第一个再加上“!”；如果无法精确匹
+配，可以在编码尾部增加或删除一些字符以后匹配某个单词（增加或删除的字符应尽量少）。如果有多个单词可以这样匹配上，选取字典序第一个输出并且在后面加上“?”。
+。
+提供一个样例
+Sample Input
+A .-
+B -&hellip;
+C -.-.
+D -..
+E .
+F ..-.
+G &ndash;.
+H &hellip;.
+I ..
+J .&mdash;
+K -.-
+L .-..
+M &ndash;
+N -.
+O &mdash;
+P .&ndash;.
+Q &ndash;.-
+R .-.
+S &hellip;
+T -
+U ..-
+V &hellip;-
+W .&ndash;
+X -..-
+Y -.&ndash;
+Z &ndash;..
+0 &mdash;&mdash;">
+<meta name="author" content="SuCicada">
+<link rel="canonical" href="https://sucicada.github.io/blog/posts/uvaoj/uva-508-morse-mismatches%E6%91%A9%E6%96%AF%E7%A0%81/">
+<link crossorigin="anonymous" href="/blog/assets/css/stylesheet.5b5501da54f21435c8f8010d1de02123ae8d1ada696b48c6530ec4eea283e7d6.css" integrity="sha256-W1UB2lTyFDXI&#43;AENHeAhI66NGtppa0jGUw7E7qKD59Y=" rel="preload stylesheet" as="style">
+<link rel="icon" href="https://sucicada.github.io/blog/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="https://sucicada.github.io/blog/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://sucicada.github.io/blog/favicon-32x32.png">
+<link rel="apple-touch-icon" href="https://sucicada.github.io/blog/apple-touch-icon.png">
+<link rel="mask-icon" href="https://sucicada.github.io/blog/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --hljs-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-track {
+                background: 0 0;
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-thumb {
+                border-color: var(--theme);
+            }
+        }
+
+    </style>
+</noscript><meta property="og:title" content="uva 508 - Morse Mismatches（摩斯码）" />
+<meta property="og:description" content="习题4-6 莫尔斯电码（Morse Mismatches, ACM/ICPC World Finals 1997, UVa508）
+输入每个字母的Morse编码，一个词典以及若干个编码。对于每个编码，判断它可能是
+哪个单词。如果有多个单词精确匹配，选取字典序第一个再加上“!”；如果无法精确匹
+配，可以在编码尾部增加或删除一些字符以后匹配某个单词（增加或删除的字符应尽量少）。如果有多个单词可以这样匹配上，选取字典序第一个输出并且在后面加上“?”。
+。
+提供一个样例
+Sample Input
+A .-
+B -&hellip;
+C -.-.
+D -..
+E .
+F ..-.
+G &ndash;.
+H &hellip;.
+I ..
+J .&mdash;
+K -.-
+L .-..
+M &ndash;
+N -.
+O &mdash;
+P .&ndash;.
+Q &ndash;.-
+R .-.
+S &hellip;
+T -
+U ..-
+V &hellip;-
+W .&ndash;
+X -..-
+Y -.&ndash;
+Z &ndash;..
+0 &mdash;&mdash;" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://sucicada.github.io/blog/posts/uvaoj/uva-508-morse-mismatches%E6%91%A9%E6%96%AF%E7%A0%81/" /><meta property="og:image" content="https://sucicada.github.io/blog/papermod-cover.png"/><meta property="article:section" content="posts" />
+
+
+
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="https://sucicada.github.io/blog/papermod-cover.png"/>
+
+<meta name="twitter:title" content="uva 508 - Morse Mismatches（摩斯码）"/>
+<meta name="twitter:description" content="习题4-6 莫尔斯电码（Morse Mismatches, ACM/ICPC World Finals 1997, UVa508）
+输入每个字母的Morse编码，一个词典以及若干个编码。对于每个编码，判断它可能是
+哪个单词。如果有多个单词精确匹配，选取字典序第一个再加上“!”；如果无法精确匹
+配，可以在编码尾部增加或删除一些字符以后匹配某个单词（增加或删除的字符应尽量少）。如果有多个单词可以这样匹配上，选取字典序第一个输出并且在后面加上“?”。
+。
+提供一个样例
+Sample Input
+A .-
+B -&hellip;
+C -.-.
+D -..
+E .
+F ..-.
+G &ndash;.
+H &hellip;.
+I ..
+J .&mdash;
+K -.-
+L .-..
+M &ndash;
+N -.
+O &mdash;
+P .&ndash;.
+Q &ndash;.-
+R .-.
+S &hellip;
+T -
+U ..-
+V &hellip;-
+W .&ndash;
+X -..-
+Y -.&ndash;
+Z &ndash;..
+0 &mdash;&mdash;"/>
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "Posts",
+      "item": "https://sucicada.github.io/blog/posts/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  3 ,
+      "name": "uva 508 - Morse Mismatches（摩斯码）",
+      "item": "https://sucicada.github.io/blog/posts/uvaoj/uva-508-morse-mismatches%E6%91%A9%E6%96%AF%E7%A0%81/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "uva 508 - Morse Mismatches（摩斯码）",
+  "name": "uva 508 - Morse Mismatches（摩斯码）",
+  "description": "习题4-6 莫尔斯电码（Morse Mismatches, ACM/ICPC World Finals 1997, UVa508）\n输入每个字母的Morse编码，一个词典以及若干个编码。对于每个编码，判断它可能是\n哪个单词。如果有多个单词精确匹配，选取字典序第一个再加上“!”；如果无法精确匹\n配，可以在编码尾部增加或删除一些字符以后匹配某个单词（增加或删除的字符应尽量少）。如果有多个单词可以这样匹配上，选取字典序第一个输出并且在后面加上“?”。\n。\n提供一个样例\nSample Input\nA .-\nB -\u0026hellip;\nC -.-.\nD -..\nE .\nF ..-.\nG \u0026ndash;.\nH \u0026hellip;.\nI ..\nJ .\u0026mdash;\nK -.-\nL .-..\nM \u0026ndash;\nN -.\nO \u0026mdash;\nP .\u0026ndash;.\nQ \u0026ndash;.-\nR .-.\nS \u0026hellip;\nT -\nU ..-\nV \u0026hellip;-\nW .\u0026ndash;\nX -..-\nY -.\u0026ndash;\nZ \u0026ndash;..\n0 \u0026mdash;\u0026mdash;",
+  "keywords": [
+    "UVaOJ"
+  ],
+  "articleBody": " 习题4-6 莫尔斯电码（Morse Mismatches, ACM/ICPC World Finals 1997, UVa508）\n输入每个字母的Morse编码，一个词典以及若干个编码。对于每个编码，判断它可能是\n哪个单词。如果有多个单词精确匹配，选取字典序第一个再加上“!”；如果无法精确匹\n配，可以在编码尾部增加或删除一些字符以后匹配某个单词（增加或删除的字符应尽量少）。如果有多个单词可以这样匹配上，选取字典序第一个输出并且在后面加上“?”。\n。\n提供一个样例\nSample Input\nA .-\nB -…\nC -.-.\nD -..\nE .\nF ..-.\nG –.\nH ….\nI ..\nJ .—\nK -.-\nL .-..\nM –\nN -.\nO —\nP .–.\nQ –.-\nR .-.\nS …\nT -\nU ..-\nV …-\nW .–\nX -..-\nY -.–\nZ –..\n0 ——\n1 .—–\n2 ..—\n3 …–\n4 ….-\n5 …..\n6 -….\n7 –…\n8 —..\n9 —-.\nAN\nEARTHQUAKE\nEAT\nGOD\nHATH\nIM\nREADY\nTO\nWHAT\nWROTH\n*\n.–…..– …..–….\n–.—-.. .–.-.—-..\n.–…..– .–.\n..-.-.-….–.-..-.–.-.\n..– .-…–..-.–\n—- ..–\n*\nSample Output\nWHAT\nHATH\nGOD\nWROTH?\nWHAT\nAN\nEARTHQUAKE\nEAT!\nREADY\nTO\nEAT!\nhttps://uva.onlinejudge.org/index.php?option=com_onlinejudge\u0026Itemid=8\u0026page=show_problem\u0026category=833\u0026problem=449\u0026mosmsg=Submission+received+with+ID+21190426\n解释一下阅读题：输入：\n先输入字符与摩斯码的对应，以 * 结束 ，\n再输入字典（字典的意思就是你解密的词语只能从这里选取），以 * 结束，\n在输入需要解密的摩斯码 ，以 * 结束。\n几个注意点：\n1、经过多方求证，第二个输入的字典，需要以字典序排列好，这样在查找词组时才能按照字典序查找。\n2、刘汝佳书中写的书错的，不是任意选取一个输出，是按照字典序选取\n3、udebug中有一个样例输出结果有问题\n4、只要是模糊匹配，就加上 ？ ，无论匹配到几个合适的\n思路：\n1、使用两个map映射，或者四个两对vector，来分别存储‘真实字符’和‘每个真实字符的摩斯码’，‘字典里的每个词组’和‘字典里每个词组对应的摩斯码’（这个需要经过加密运算后进行存储）\n（因为是要存的数组中每个元素都是字符串型，所以我选取了vector string\u003e来进行存储）\n（可以使用map来进行存储，而且map默认字典序存储）\n2、一个函数加密，一个函数解密，通过遍历边比来进行比对出模糊匹配中最小的增删字符长度\n附赠样例对照表一份\n/* AN .--. EARTHQUAKE ..-.-.-....--.-..-.--.-. EAT ..-- GOD --.----.. HATH .....--.... IM ..-- READY .-...--..-.-- TO ---- WHAT .--.....-- WROTH .--.-.----.... */ //在匹配到的中，应选择字符最少的词组 //比如：A . B - C.- 那么.-xx就应该是C #include #include #include #include #include #include using namespace std; char word[50]; //存真实字符 vector morse; //存字符的摩斯码 vector dict; //存词组的字典 vector puzzle; //存字典对应的摩斯码 vector question; //存要解的摩斯码 string zip(string str) //词组加密成摩斯码 { string ans; for(int i=0;i",
+  "wordCount" : "383",
+  "inLanguage": "en",
+  "datePublished": "0001-01-01T00:00:00Z",
+  "dateModified": "0001-01-01T00:00:00Z",
+  "author":{
+    "@type": "Person",
+    "name": "SuCicada"
+  },
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://sucicada.github.io/blog/posts/uvaoj/uva-508-morse-mismatches%E6%91%A9%E6%96%AF%E7%A0%81/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "SuCicada",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://sucicada.github.io/blog/favicon.ico"
+    }
+  }
+}
+</script>
+</head>
+
+<body class="" id="top">
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.body.classList.add('dark');
+    } else if (localStorage.getItem("pref-theme") === "light") {
+        document.body.classList.remove('dark')
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.body.classList.add('dark');
+    }
+
+</script>
+
+<header class="header">
+    <nav class="nav">
+        <div class="logo">
+            <a href="https://sucicada.github.io/blog" accesskey="h" title="SuCicada (Alt + H)">SuCicada</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" accesskey="t" title="(Alt + T)">
+                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu">
+            <li>
+                <a href="https://sucicada.github.io/blog/archives/" title="Archive">
+                    <span>Archive</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://sucicada.github.io/blog/search/" title="Search (Alt &#43; /)" accesskey=/>
+                    <span>Search</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://sucicada.github.io/blog/tags/" title="Tags">
+                    <span>Tags</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://sucicada.github.io/blog/about/" title="About">
+                    <span>About</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+
+    <h1 class="post-title">
+      uva 508 - Morse Mismatches（摩斯码）
+    </h1>
+    <div class="post-meta">SuCicada&nbsp;|&nbsp;<a href="https://github.com/SuCicada/mysite-hugo/content/posts/UVaOJ/uva%20508%20-%20Morse%20Mismatches%ef%bc%88%e6%91%a9%e6%96%af%e7%a0%81%ef%bc%89.md" rel="noopener noreferrer" target="_blank">Suggest Changes</a>
+
+</div>
+    <ul class="post-tags">
+      <li><a href="https://sucicada.github.io/blog/tags/uvaoj/">UVaOJ</a></li>
+    </ul>
+  </header> 
+
+  <div class="post-content"><blockquote>
+<p>习题4-6 莫尔斯电码（Morse Mismatches, ACM/ICPC World Finals 1997, UVa508）<br>
+输入每个字母的Morse编码，一个词典以及若干个编码。对于每个编码，判断它可能是<br>
+哪个单词。如果有多个单词精确匹配，<strong>选取字典序第一个</strong>再加上“!”；如果无法精确匹<br>
+配，可以在编码尾部增加或删除一些字符以后匹配某个单词（增加或删除的字符应尽量少）。如果有多个单词可以这样匹配上，<strong>选取字典序第一个</strong>输出并且在后面加上“?”。<br>
+。<br>
+提供一个样例<br>
+<strong>Sample Input</strong><br>
+A .-<br>
+B -&hellip;<br>
+C -.-.<br>
+D -..<br>
+E .<br>
+F ..-.<br>
+G &ndash;.<br>
+H &hellip;.<br>
+I ..<br>
+J .&mdash;<br>
+K -.-<br>
+L .-..<br>
+M &ndash;<br>
+N -.<br>
+O &mdash;<br>
+P .&ndash;.<br>
+Q &ndash;.-<br>
+R .-.<br>
+S &hellip;<br>
+T -<br>
+U ..-<br>
+V &hellip;-<br>
+W .&ndash;<br>
+X -..-<br>
+Y -.&ndash;<br>
+Z &ndash;..<br>
+0 &mdash;&mdash;<br>
+1 .&mdash;&ndash;<br>
+2 ..&mdash;<br>
+3 &hellip;&ndash;<br>
+4 &hellip;.-<br>
+5 &hellip;..<br>
+6 -&hellip;.<br>
+7 &ndash;&hellip;<br>
+8 &mdash;..<br>
+9 &mdash;-.</p>
+</blockquote>
+<ul>
+<li></li>
+</ul>
+<p>AN<br>
+EARTHQUAKE<br>
+EAT<br>
+GOD<br>
+HATH<br>
+IM<br>
+READY<br>
+TO<br>
+WHAT<br>
+WROTH<br>
+*<br>
+.&ndash;&hellip;..&ndash;         &hellip;..&ndash;&hellip;.<br>
+&ndash;.&mdash;-..        .&ndash;.-.&mdash;-..<br>
+.&ndash;&hellip;..&ndash;          .&ndash;.<br>
+..-.-.-&hellip;.&ndash;.-..-.&ndash;.-.<br>
+..&ndash;            .-&hellip;&ndash;..-.&ndash;<br>
+&mdash;-            ..&ndash;<br>
+*<br>
+<strong>Sample Output</strong><br>
+WHAT<br>
+HATH<br>
+GOD<br>
+WROTH?<br>
+WHAT<br>
+AN<br>
+EARTHQUAKE<br>
+EAT!<br>
+READY<br>
+TO<br>
+EAT!</p>
+<p><a href="https://uva.onlinejudge.org/index.php?option=com_onlinejudge&amp;Itemid=8&amp;page=show_problem&amp;category=833&amp;problem=449&amp;mosmsg=Submission+received+with+ID+21190426">https://uva.onlinejudge.org/index.php?option=com_onlinejudge&amp;Itemid=8&amp;page=show_problem&amp;category=833&amp;problem=449&amp;mosmsg=Submission+received+with+ID+21190426</a></p>
+<p>解释一下阅读题：输入：<br>
+先输入字符与摩斯码的对应，以 * 结束 ，<br>
+再输入字典（字典的意思就是你解密的词语只能从这里选取），以 * 结束，<br>
+在输入需要解密的摩斯码 ，以 * 结束。<br>
+几个注意点：<br>
+1、经过多方求证，第二个输入的字典，需要以字典序排列好，这样在查找词组时才能按照字典序查找。<br>
+2、刘汝佳书中写的书错的，不是任意选取一个输出，是按照字典序选取<br>
+3、udebug中有一个样例输出结果有问题<br>
+4、只要是模糊匹配，就加上 ？ ，无论匹配到几个合适的</p>
+<p>思路：<br>
+1、使用两个map映射，或者四个两对vector，来分别存储‘真实字符’和‘每个真实字符的摩斯码’，‘字典里的每个词组’和‘字典里每个词组对应的摩斯码’（这个需要经过加密运算后进行存储）<br>
+（因为是要存的数组中每个元素都是字符串型，所以我选取了vector string&gt;来进行存储）<br>
+（可以使用map来进行存储，而且map默认字典序存储）<br>
+2、一个函数加密，一个函数解密，通过遍历边比来进行比对出模糊匹配中最小的增删字符长度</p>
+<p>附赠样例对照表一份</p>
+<pre tabindex="0"><code>/*
+AN           .--.
+EARTHQUAKE   ..-.-.-....--.-..-.--.-.
+EAT          ..--
+GOD          --.----..
+HATH         .....--....
+IM           ..--
+READY        .-...--..-.--
+TO           ----
+WHAT         .--.....--
+WROTH        .--.-.----....
+*/
+</code></pre><pre tabindex="0"><code>//在匹配到的中，应选择字符最少的词组
+//比如：A . B - C.-  那么.-xx就应该是C
+#include&lt;iostream&gt;
+#include&lt;string&gt;
+#include&lt;vector&gt;
+#include&lt;cstdio&gt;
+#include&lt;cmath&gt;
+#include&lt;algorithm&gt;
+using namespace std;
+
+char word[50];           //存真实字符
+vector&lt;string&gt; morse;    //存字符的摩斯码
+vector&lt;string&gt; dict;     //存词组的字典
+vector&lt;string&gt; puzzle;   //存字典对应的摩斯码
+vector&lt;string&gt; question; //存要解的摩斯码
+
+string zip(string str)   //词组加密成摩斯码
+{
+    string ans;
+    for(int i=0;i&lt;str.size();i++)
+    {
+        for(int j=0;j&lt;26+10;j++)
+        {
+            if(str[i]==word[j])
+            {
+                ans = ans +morse[j];
+                break;
+            }
+        }
+    }
+    return ans;
+}
+
+string solove(string mos)  //从摩斯解密为词组
+{
+    int jingzhun_n=-1,jingzhun=0;  //精准匹配的下标，个数
+    int mohu_n=-1,mohu=0,mohu_len=999; //模糊匹配的下标，个数，模糊字符长度
+    int yes;//匹配位数
+    int length=mos.size();
+    int puzz_len; //遍历中的词组的长度
+
+    for(int i=0;i&lt;puzzle.size();i++)   //遍历所有的词语
+    {
+        puzz_len=puzzle[i].size();
+        yes =0;   //匹配的字符数量
+        //cout&lt;&lt;length&lt;&lt;&#34;   &#34;&lt;&lt;puzz_len&lt;&lt;endl;
+        for(int j=0;j&lt;puzz_len&amp;&amp;j&lt;length;j++)  //遍历每个词语摩斯码的每一位
+        {
+            if(mos[j]==puzzle[i].at(j))
+            {
+                yes++;
+                //cout&lt;&lt;yes&lt;&lt;&#34;||||&#34;&lt;&lt;endl;
+            }
+            else
+                break;
+        }//for(j
+        if(yes==puzz_len&amp;&amp;length==puzz_len) //精准匹配
+        {
+            if(jingzhun&lt;1)
+                jingzhun_n=i;
+            jingzhun++;
+        }
+        else if(yes==puzz_len&amp;&amp;length&gt;yes|| //模糊匹配，mose长
+                yes&lt;puzz_len&amp;&amp;yes==length)  //当前词组长
+        {
+            if(mohu_len&gt;abs(puzz_len-length))
+            {
+                mohu_len= abs(puzz_len-length);
+//    cout&lt;&lt;&#34;\||||&#34;&lt;&lt;endl&lt;&lt;mohu&lt;&lt;&#34;  &#34;&lt;&lt;dict[mohu_n]&lt;&lt;endl&lt;&lt;endl;
+                    mohu_n= i;
+                mohu++;
+            }
+        }
+    }//for(i
+
+    if(jingzhun&gt;0)
+    {
+        if(jingzhun&gt;1)
+            return dict[jingzhun_n]+&#34;!&#34;;
+        return dict[jingzhun_n];
+    }
+    else if(mohu&gt;0)
+    {
+        return dict[mohu_n]+&#34;?&#34;;
+    }
+    else
+        return dict[0];
+}
+int main()
+{
+    //输入字符和对应的摩斯码
+    for(int i=0;;i++)
+    {
+        string temp;
+        char c;
+        cin&gt;&gt;c;
+        if(c==&#39;*&#39;)
+            break;
+        word[i]=c;
+        cin&gt;&gt;temp;
+        morse.push_back(temp);
+    }
+
+    //输入词组的字典
+    string temp;
+    while(cin&gt;&gt;temp&amp;&amp;temp!=&#34;*&#34;)
+    {
+        dict.push_back(temp);
+    }
+    sort(dict.begin(),dict.end());
+
+    //输入要解密的摩斯码
+    while(cin&gt;&gt;temp&amp;&amp;temp!=&#34;*&#34;)
+    {
+        question.push_back(temp);
+    }
+
+    //输入结束
+
+    //计算加密后的字典中的词组
+    for(int i=0;i&lt;dict.size();i++)
+    {
+        string temp2 =zip(dict[i]);
+        puzzle.push_back(temp2);
+    }
+
+
+    //开始解密
+    for(int i=0;i&lt;question.size();i++)
+    {
+        //cout&lt;&lt;question[i]&lt;&lt;&#34;????&#34;&lt;&lt;endl;
+        cout&lt;&lt;solove(question[i])&lt;&lt;endl;
+    }
+
+
+//    cout&lt;&lt;dict.size()&lt;&lt;&#34;   &#34;&lt;&lt;puzzle.size()&lt;&lt;endl;
+//    for(int i=0;i&lt;puzzle.size();i++)
+//    {
+//        cout&lt;&lt;dict[i]&lt;&lt;&#34;   &#34;;
+//        cout&lt;&lt;puzzle[i]&lt;&lt;endl;
+//    }
+    return 0;
+}
+//AC at 2018/4/23
+</code></pre><hr>
+<p>（题外话：解出题目的时候是很高兴的，写出程序是很高兴的，不能写程序的话我就要死了，这道题我早上开始做，不知不觉占用了所有的空闲时间，导致别人分配给我的任务都没有做，我真的是。）</p>
+
+
+  </div>
+
+  <footer class="post-footer">
+<nav class="paginav">
+  <a class="prev" href="https://sucicada.github.io/blog/posts/uvaoj/uva-489-hangman-judge%E5%90%8A%E4%BA%BA%E6%B8%B8%E6%88%8F/">
+    <span class="title">« Prev</span>
+    <br>
+    <span>uva 489 - Hangman Judge（吊人游戏）</span>
+  </a>
+  <a class="next" href="https://sucicada.github.io/blog/posts/uvaoj/uva-509-raid%E7%A3%81%E7%9B%98%E6%95%B0%E6%8D%AE/">
+    <span class="title">Next »</span>
+    <br>
+    <span>uva 509 RAID!（磁盘数据）</span>
+  </a>
+</nav>
+
+
+<div class="share-buttons">
+    <a target="_blank" rel="noopener noreferrer" aria-label="share uva 508 - Morse Mismatches（摩斯码） on twitter"
+        href="https://twitter.com/intent/tweet/?text=uva%20508%20-%20Morse%20Mismatches%ef%bc%88%e6%91%a9%e6%96%af%e7%a0%81%ef%bc%89&amp;url=https%3a%2f%2fsucicada.github.io%2fblog%2fposts%2fuvaoj%2fuva-508-morse-mismatches%25E6%2591%25A9%25E6%2596%25AF%25E7%25A0%2581%2f&amp;hashtags=UVaOJ">
+        <svg version="1.1" viewBox="0 0 512 512" xml:space="preserve" height="30px" width="30px" fill="currentColor">
+            <path
+                d="M449.446,0c34.525,0 62.554,28.03 62.554,62.554l0,386.892c0,34.524 -28.03,62.554 -62.554,62.554l-386.892,0c-34.524,0 -62.554,-28.03 -62.554,-62.554l0,-386.892c0,-34.524 28.029,-62.554 62.554,-62.554l386.892,0Zm-253.927,424.544c135.939,0 210.268,-112.643 210.268,-210.268c0,-3.218 0,-6.437 -0.153,-9.502c14.406,-10.421 26.973,-23.448 36.935,-38.314c-13.18,5.824 -27.433,9.809 -42.452,11.648c15.326,-9.196 26.973,-23.602 32.49,-40.92c-14.252,8.429 -30.038,14.56 -46.896,17.931c-13.487,-14.406 -32.644,-23.295 -53.946,-23.295c-40.767,0 -73.87,33.104 -73.87,73.87c0,5.824 0.613,11.494 1.992,16.858c-61.456,-3.065 -115.862,-32.49 -152.337,-77.241c-6.284,10.881 -9.962,23.601 -9.962,37.088c0,25.594 13.027,48.276 32.95,61.456c-12.107,-0.307 -23.448,-3.678 -33.41,-9.196l0,0.92c0,35.862 25.441,65.594 59.311,72.49c-6.13,1.686 -12.72,2.606 -19.464,2.606c-4.751,0 -9.348,-0.46 -13.946,-1.38c9.349,29.426 36.628,50.728 68.965,51.341c-25.287,19.771 -57.164,31.571 -91.8,31.571c-5.977,0 -11.801,-0.306 -17.625,-1.073c32.337,21.15 71.264,33.41 112.95,33.41Z" />
+        </svg>
+    </a>
+    <a target="_blank" rel="noopener noreferrer" aria-label="share uva 508 - Morse Mismatches（摩斯码） on telegram"
+        href="https://telegram.me/share/url?text=uva%20508%20-%20Morse%20Mismatches%ef%bc%88%e6%91%a9%e6%96%af%e7%a0%81%ef%bc%89&amp;url=https%3a%2f%2fsucicada.github.io%2fblog%2fposts%2fuvaoj%2fuva-508-morse-mismatches%25E6%2591%25A9%25E6%2596%25AF%25E7%25A0%2581%2f">
+        <svg version="1.1" xml:space="preserve" viewBox="2 2 28 28" height="30px" width="30px" fill="currentColor">
+            <path
+                d="M26.49,29.86H5.5a3.37,3.37,0,0,1-2.47-1,3.35,3.35,0,0,1-1-2.47V5.48A3.36,3.36,0,0,1,3,3,3.37,3.37,0,0,1,5.5,2h21A3.38,3.38,0,0,1,29,3a3.36,3.36,0,0,1,1,2.46V26.37a3.35,3.35,0,0,1-1,2.47A3.38,3.38,0,0,1,26.49,29.86Zm-5.38-6.71a.79.79,0,0,0,.85-.66L24.73,9.24a.55.55,0,0,0-.18-.46.62.62,0,0,0-.41-.17q-.08,0-16.53,6.11a.59.59,0,0,0-.41.59.57.57,0,0,0,.43.52l4,1.24,1.61,4.83a.62.62,0,0,0,.63.43.56.56,0,0,0,.4-.17L16.54,20l4.09,3A.9.9,0,0,0,21.11,23.15ZM13.8,20.71l-1.21-4q8.72-5.55,8.78-5.55c.15,0,.23,0,.23.16a.18.18,0,0,1,0,.06s-2.51,2.3-7.52,6.8Z" />
+        </svg>
+    </a>
+</div>
+
+  </footer><div id="disqus_thread"></div>
+<script type="application/javascript">
+    window.disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "sucicada" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+</article>
+    </main>
+    
+<footer class="footer">
+    <span>&copy; 2022 <a href="https://sucicada.github.io/blog">SuCicada</a></span>
+    <span>
+        Powered by
+        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+        <path d="M12 6H0l6-6z" />
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu')
+    if (menu) {
+        menu.scrollLeft = localStorage.getItem("menu-scroll-position");
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var mybutton = document.getElementById("top-link");
+    window.onscroll = function () {
+        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
+            mybutton.style.visibility = "visible";
+            mybutton.style.opacity = "1";
+        } else {
+            mybutton.style.visibility = "hidden";
+            mybutton.style.opacity = "0";
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        if (document.body.className.includes("dark")) {
+            document.body.classList.remove('dark');
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            document.body.classList.add('dark');
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+<script>
+    document.querySelectorAll('pre > code').forEach((codeblock) => {
+        const container = codeblock.parentNode.parentNode;
+
+        const copybutton = document.createElement('button');
+        copybutton.classList.add('copy-code');
+        copybutton.innerHTML = 'copy';
+
+        function copyingDone() {
+            copybutton.innerHTML = 'copied!';
+            setTimeout(() => {
+                copybutton.innerHTML = 'copy';
+            }, 2000);
+        }
+
+        copybutton.addEventListener('click', (cb) => {
+            if ('clipboard' in navigator) {
+                navigator.clipboard.writeText(codeblock.textContent);
+                copyingDone();
+                return;
+            }
+
+            const range = document.createRange();
+            range.selectNodeContents(codeblock);
+            const selection = window.getSelection();
+            selection.removeAllRanges();
+            selection.addRange(range);
+            try {
+                document.execCommand('copy');
+                copyingDone();
+            } catch (e) { };
+            selection.removeRange(range);
+        });
+
+        if (container.classList.contains("highlight")) {
+            container.appendChild(copybutton);
+        } else if (container.parentNode.firstChild == container) {
+            
+        } else if (codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName == "TABLE") {
+            
+            codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(copybutton);
+        } else {
+            
+            codeblock.parentNode.appendChild(copybutton);
+        }
+    });
+</script>
+</body>
+
+</html>

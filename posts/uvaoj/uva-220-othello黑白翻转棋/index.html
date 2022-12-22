@@ -1,0 +1,721 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto">
+
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>uva 220 - Othello（黑白翻转棋） | SuCicada</title>
+<meta name="keywords" content="UVaOJ">
+<meta name="description" content="习题4-3 黑白棋（Othello, ACM/ICPC World Finals 1992, UVa220）
+你的任务是模拟黑白棋游戏的进程。黑白棋的规则为：黑白双方轮流放棋子，每次必须
+让新放的棋子“夹住”至少一枚对方棋子，然后把所有被新放棋子“夹住”的对方棋子替换成己
+方棋子。一段连续（横、竖或者斜向）的同色棋子被“夹住”的条件是两端都是对方棋子（不
+能是空位）。如图4-6（a）所示，白棋有6个合法操作，分别为(2,3),(3,3),(3,5), (6,2),(7,3),
+(7,4)。选择在(7,3)放白棋后变成如图4-6（b）所示效果（注意有竖向和斜向的共两枚黑棋变
+白）。注意(4,6)的黑色棋子虽然被夹住，但不是被新放的棋子夹住，因此不变白。
+（a） （b）
+图4-6 黑白棋
+输入一个8*8的棋盘以及当前下一次操作的游戏者，处理3种指令：
+L指令打印所有合法操作，按照从上到下，从左到右的顺序排列（没有合法操作时输出No legal move）。
+Mrc指令放一枚棋子在(r,c)。如果当前游戏者没有合法操作，则是先切换游戏者再操作。输入保证这个操作是合法的。输出操作完毕后黑白方的棋子总数。
+Q指令退出游戏，并打印当前棋盘（格式同输入）。
+Sample Input
+2
+-&mdash;&mdash;-
+-&mdash;&mdash;-
+-&mdash;&mdash;-
+&mdash;WB&mdash;
+-&ndash;BW&mdash;
+-&mdash;&mdash;-
+-&mdash;&mdash;-
+-&mdash;&mdash;-
+W
+L
+M35
+L
+Q
+WWWWB&mdash;
+WWWB&mdash;-
+WWB&mdash;&ndash;
+WB&mdash;&mdash;
+-&mdash;&mdash;-
+-&mdash;&mdash;-
+-&mdash;&mdash;-
+-&mdash;&mdash;-
+B
+L
+M25
+L
+Q
+Sample Output
+(3,5) (4,6) (5,3) (6,4)
+Black - 1 White - 4
+(3,4) (3,6) (5,6)
+-&mdash;&mdash;-">
+<meta name="author" content="SuCicada">
+<link rel="canonical" href="https://sucicada.github.io/blog/posts/uvaoj/uva-220-othello%E9%BB%91%E7%99%BD%E7%BF%BB%E8%BD%AC%E6%A3%8B/">
+<link crossorigin="anonymous" href="/blog/assets/css/stylesheet.5b5501da54f21435c8f8010d1de02123ae8d1ada696b48c6530ec4eea283e7d6.css" integrity="sha256-W1UB2lTyFDXI&#43;AENHeAhI66NGtppa0jGUw7E7qKD59Y=" rel="preload stylesheet" as="style">
+<link rel="icon" href="https://sucicada.github.io/blog/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="https://sucicada.github.io/blog/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://sucicada.github.io/blog/favicon-32x32.png">
+<link rel="apple-touch-icon" href="https://sucicada.github.io/blog/apple-touch-icon.png">
+<link rel="mask-icon" href="https://sucicada.github.io/blog/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --hljs-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-track {
+                background: 0 0;
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-thumb {
+                border-color: var(--theme);
+            }
+        }
+
+    </style>
+</noscript><meta property="og:title" content="uva 220 - Othello（黑白翻转棋）" />
+<meta property="og:description" content="习题4-3 黑白棋（Othello, ACM/ICPC World Finals 1992, UVa220）
+你的任务是模拟黑白棋游戏的进程。黑白棋的规则为：黑白双方轮流放棋子，每次必须
+让新放的棋子“夹住”至少一枚对方棋子，然后把所有被新放棋子“夹住”的对方棋子替换成己
+方棋子。一段连续（横、竖或者斜向）的同色棋子被“夹住”的条件是两端都是对方棋子（不
+能是空位）。如图4-6（a）所示，白棋有6个合法操作，分别为(2,3),(3,3),(3,5), (6,2),(7,3),
+(7,4)。选择在(7,3)放白棋后变成如图4-6（b）所示效果（注意有竖向和斜向的共两枚黑棋变
+白）。注意(4,6)的黑色棋子虽然被夹住，但不是被新放的棋子夹住，因此不变白。
+（a） （b）
+图4-6 黑白棋
+输入一个8*8的棋盘以及当前下一次操作的游戏者，处理3种指令：
+L指令打印所有合法操作，按照从上到下，从左到右的顺序排列（没有合法操作时输出No legal move）。
+Mrc指令放一枚棋子在(r,c)。如果当前游戏者没有合法操作，则是先切换游戏者再操作。输入保证这个操作是合法的。输出操作完毕后黑白方的棋子总数。
+Q指令退出游戏，并打印当前棋盘（格式同输入）。
+Sample Input
+2
+-&mdash;&mdash;-
+-&mdash;&mdash;-
+-&mdash;&mdash;-
+&mdash;WB&mdash;
+-&ndash;BW&mdash;
+-&mdash;&mdash;-
+-&mdash;&mdash;-
+-&mdash;&mdash;-
+W
+L
+M35
+L
+Q
+WWWWB&mdash;
+WWWB&mdash;-
+WWB&mdash;&ndash;
+WB&mdash;&mdash;
+-&mdash;&mdash;-
+-&mdash;&mdash;-
+-&mdash;&mdash;-
+-&mdash;&mdash;-
+B
+L
+M25
+L
+Q
+Sample Output
+(3,5) (4,6) (5,3) (6,4)
+Black - 1 White - 4
+(3,4) (3,6) (5,6)
+-&mdash;&mdash;-" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://sucicada.github.io/blog/posts/uvaoj/uva-220-othello%E9%BB%91%E7%99%BD%E7%BF%BB%E8%BD%AC%E6%A3%8B/" /><meta property="og:image" content="https://sucicada.github.io/blog/papermod-cover.png"/><meta property="article:section" content="posts" />
+
+
+
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="https://sucicada.github.io/blog/papermod-cover.png"/>
+
+<meta name="twitter:title" content="uva 220 - Othello（黑白翻转棋）"/>
+<meta name="twitter:description" content="习题4-3 黑白棋（Othello, ACM/ICPC World Finals 1992, UVa220）
+你的任务是模拟黑白棋游戏的进程。黑白棋的规则为：黑白双方轮流放棋子，每次必须
+让新放的棋子“夹住”至少一枚对方棋子，然后把所有被新放棋子“夹住”的对方棋子替换成己
+方棋子。一段连续（横、竖或者斜向）的同色棋子被“夹住”的条件是两端都是对方棋子（不
+能是空位）。如图4-6（a）所示，白棋有6个合法操作，分别为(2,3),(3,3),(3,5), (6,2),(7,3),
+(7,4)。选择在(7,3)放白棋后变成如图4-6（b）所示效果（注意有竖向和斜向的共两枚黑棋变
+白）。注意(4,6)的黑色棋子虽然被夹住，但不是被新放的棋子夹住，因此不变白。
+（a） （b）
+图4-6 黑白棋
+输入一个8*8的棋盘以及当前下一次操作的游戏者，处理3种指令：
+L指令打印所有合法操作，按照从上到下，从左到右的顺序排列（没有合法操作时输出No legal move）。
+Mrc指令放一枚棋子在(r,c)。如果当前游戏者没有合法操作，则是先切换游戏者再操作。输入保证这个操作是合法的。输出操作完毕后黑白方的棋子总数。
+Q指令退出游戏，并打印当前棋盘（格式同输入）。
+Sample Input
+2
+-&mdash;&mdash;-
+-&mdash;&mdash;-
+-&mdash;&mdash;-
+&mdash;WB&mdash;
+-&ndash;BW&mdash;
+-&mdash;&mdash;-
+-&mdash;&mdash;-
+-&mdash;&mdash;-
+W
+L
+M35
+L
+Q
+WWWWB&mdash;
+WWWB&mdash;-
+WWB&mdash;&ndash;
+WB&mdash;&mdash;
+-&mdash;&mdash;-
+-&mdash;&mdash;-
+-&mdash;&mdash;-
+-&mdash;&mdash;-
+B
+L
+M25
+L
+Q
+Sample Output
+(3,5) (4,6) (5,3) (6,4)
+Black - 1 White - 4
+(3,4) (3,6) (5,6)
+-&mdash;&mdash;-"/>
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "Posts",
+      "item": "https://sucicada.github.io/blog/posts/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  3 ,
+      "name": "uva 220 - Othello（黑白翻转棋）",
+      "item": "https://sucicada.github.io/blog/posts/uvaoj/uva-220-othello%E9%BB%91%E7%99%BD%E7%BF%BB%E8%BD%AC%E6%A3%8B/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "uva 220 - Othello（黑白翻转棋）",
+  "name": "uva 220 - Othello（黑白翻转棋）",
+  "description": "习题4-3 黑白棋（Othello, ACM/ICPC World Finals 1992, UVa220）\n你的任务是模拟黑白棋游戏的进程。黑白棋的规则为：黑白双方轮流放棋子，每次必须\n让新放的棋子“夹住”至少一枚对方棋子，然后把所有被新放棋子“夹住”的对方棋子替换成己\n方棋子。一段连续（横、竖或者斜向）的同色棋子被“夹住”的条件是两端都是对方棋子（不\n能是空位）。如图4-6（a）所示，白棋有6个合法操作，分别为(2,3),(3,3),(3,5), (6,2),(7,3),\n(7,4)。选择在(7,3)放白棋后变成如图4-6（b）所示效果（注意有竖向和斜向的共两枚黑棋变\n白）。注意(4,6)的黑色棋子虽然被夹住，但不是被新放的棋子夹住，因此不变白。\n（a） （b）\n图4-6 黑白棋\n输入一个8*8的棋盘以及当前下一次操作的游戏者，处理3种指令：\nL指令打印所有合法操作，按照从上到下，从左到右的顺序排列（没有合法操作时输出No legal move）。\nMrc指令放一枚棋子在(r,c)。如果当前游戏者没有合法操作，则是先切换游戏者再操作。输入保证这个操作是合法的。输出操作完毕后黑白方的棋子总数。\nQ指令退出游戏，并打印当前棋盘（格式同输入）。\nSample Input\n2\n-\u0026mdash;\u0026mdash;-\n-\u0026mdash;\u0026mdash;-\n-\u0026mdash;\u0026mdash;-\n\u0026mdash;WB\u0026mdash;\n-\u0026ndash;BW\u0026mdash;\n-\u0026mdash;\u0026mdash;-\n-\u0026mdash;\u0026mdash;-\n-\u0026mdash;\u0026mdash;-\nW\nL\nM35\nL\nQ\nWWWWB\u0026mdash;\nWWWB\u0026mdash;-\nWWB\u0026mdash;\u0026ndash;\nWB\u0026mdash;\u0026mdash;\n-\u0026mdash;\u0026mdash;-\n-\u0026mdash;\u0026mdash;-\n-\u0026mdash;\u0026mdash;-\n-\u0026mdash;\u0026mdash;-\nB\nL\nM25\nL\nQ\nSample Output\n(3,5) (4,6) (5,3) (6,4)\nBlack - 1 White - 4\n(3,4) (3,6) (5,6)\n-\u0026mdash;\u0026mdash;-",
+  "keywords": [
+    "UVaOJ"
+  ],
+  "articleBody": " 习题4-3 黑白棋（Othello, ACM/ICPC World Finals 1992, UVa220）\n你的任务是模拟黑白棋游戏的进程。黑白棋的规则为：黑白双方轮流放棋子，每次必须\n让新放的棋子“夹住”至少一枚对方棋子，然后把所有被新放棋子“夹住”的对方棋子替换成己\n方棋子。一段连续（横、竖或者斜向）的同色棋子被“夹住”的条件是两端都是对方棋子（不\n能是空位）。如图4-6（a）所示，白棋有6个合法操作，分别为(2,3),(3,3),(3,5), (6,2),(7,3),\n(7,4)。选择在(7,3)放白棋后变成如图4-6（b）所示效果（注意有竖向和斜向的共两枚黑棋变\n白）。注意(4,6)的黑色棋子虽然被夹住，但不是被新放的棋子夹住，因此不变白。\n（a） （b）\n图4-6 黑白棋\n输入一个8*8的棋盘以及当前下一次操作的游戏者，处理3种指令：\nL指令打印所有合法操作，按照从上到下，从左到右的顺序排列（没有合法操作时输出No legal move）。\nMrc指令放一枚棋子在(r,c)。如果当前游戏者没有合法操作，则是先切换游戏者再操作。输入保证这个操作是合法的。输出操作完毕后黑白方的棋子总数。\nQ指令退出游戏，并打印当前棋盘（格式同输入）。\nSample Input\n2\n-——-\n-——-\n-——-\n—WB—\n-–BW—\n-——-\n-——-\n-——-\nW\nL\nM35\nL\nQ\nWWWWB—\nWWWB—-\nWWB—–\nWB——\n-——-\n-——-\n-——-\n-——-\nB\nL\nM25\nL\nQ\nSample Output\n(3,5) (4,6) (5,3) (6,4)\nBlack - 1 White - 4\n(3,4) (3,6) (5,6)\n-——-\n-——-\n—-W—\n—WW—\n—BW—\n-——-\n-——-\n-——-\nNo legal move.\nBlack - 3 White - 12\n(3,5)\nWWWWB—\nWWWWW—\nWWB—–\nWB——\n-——-\n-——-\n-——-\n-——-\nhttps://uva.onlinejudge.org/index.php?option=com_onlinejudge\u0026Itemid=8\u0026page=show_problem\u0026category=833\u0026problem=156\u0026mosmsg=Submission+received+with+ID+20901787\n挺复杂的题，题目就比较难弄懂，要不是我会玩黑白翻转棋（笑），可能就很难办了吧。\n思路：\n1、用一个二维数组存储棋盘的状态，\n2、通过一个函数来翻转棋子，传进去的两个参数是落子的坐标\n#include #include using namespace std; char board[10][10]; int yesnum=0;//输出空格的格式 char disk,nodisk;//要走的棋，被翻的棋 //int exceed(int i,int j)//判断越界 //{ // if(i\u003e=1\u0026\u0026i\u003c=8\u0026\u0026j\u003e=1\u0026\u0026j\u003c=8) // return 1; // else // return 0; //} int reverse(int i,int j,int con)//(i,j)上应该是空的 { for(int in=-1;in\u003c=1;in++)//八个方位的循环 { for(int jn=-1;jn\u003c=1;jn++)//八个方位的循环用于翻棋子 { if(in==0\u0026\u0026jn==0) continue;//中间的棋不用管它先 // if(i+in\u003e=1\u0026\u0026i+in\u003c=8\u0026\u0026j+jn\u003e=1\u0026\u0026j+jn\u003c=8\u0026\u0026/*exceed(i+in,j+jn)\u0026\u0026*/ // board[i+in][j+jn]==nodisk)//可翻 //board[i+in][j+jn]=='-')//有空位能放子 // { //cout\u003c\u003c\"board \"\u003c",
+  "wordCount" : "294",
+  "inLanguage": "en",
+  "datePublished": "0001-01-01T00:00:00Z",
+  "dateModified": "0001-01-01T00:00:00Z",
+  "author":{
+    "@type": "Person",
+    "name": "SuCicada"
+  },
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://sucicada.github.io/blog/posts/uvaoj/uva-220-othello%E9%BB%91%E7%99%BD%E7%BF%BB%E8%BD%AC%E6%A3%8B/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "SuCicada",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://sucicada.github.io/blog/favicon.ico"
+    }
+  }
+}
+</script>
+</head>
+
+<body class="" id="top">
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.body.classList.add('dark');
+    } else if (localStorage.getItem("pref-theme") === "light") {
+        document.body.classList.remove('dark')
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.body.classList.add('dark');
+    }
+
+</script>
+
+<header class="header">
+    <nav class="nav">
+        <div class="logo">
+            <a href="https://sucicada.github.io/blog" accesskey="h" title="SuCicada (Alt + H)">SuCicada</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" accesskey="t" title="(Alt + T)">
+                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu">
+            <li>
+                <a href="https://sucicada.github.io/blog/archives/" title="Archive">
+                    <span>Archive</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://sucicada.github.io/blog/search/" title="Search (Alt &#43; /)" accesskey=/>
+                    <span>Search</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://sucicada.github.io/blog/tags/" title="Tags">
+                    <span>Tags</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://sucicada.github.io/blog/about/" title="About">
+                    <span>About</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+
+    <h1 class="post-title">
+      uva 220 - Othello（黑白翻转棋）
+    </h1>
+    <div class="post-meta">SuCicada&nbsp;|&nbsp;<a href="https://github.com/SuCicada/mysite-hugo/content/posts/UVaOJ/uva%20220%20-%20Othello%ef%bc%88%e9%bb%91%e7%99%bd%e7%bf%bb%e8%bd%ac%e6%a3%8b%ef%bc%89.md" rel="noopener noreferrer" target="_blank">Suggest Changes</a>
+
+</div>
+    <ul class="post-tags">
+      <li><a href="https://sucicada.github.io/blog/tags/uvaoj/">UVaOJ</a></li>
+    </ul>
+  </header> 
+
+  <div class="post-content"><blockquote>
+<p>习题4-3 黑白棋（Othello, ACM/ICPC World Finals 1992, UVa220）<br>
+你的任务是模拟黑白棋游戏的进程。黑白棋的规则为：黑白双方轮流放棋子，每次必须<br>
+让新放的棋子“夹住”至少一枚对方棋子，然后把所有被新放棋子“夹住”的对方棋子替换成己<br>
+方棋子。一段连续（横、竖或者斜向）的同色棋子被“夹住”的条件是两端都是对方棋子（不<br>
+能是空位）。如图4-6（a）所示，白棋有6个合法操作，分别为(2,3),(3,3),(3,5), (6,2),(7,3),<br>
+(7,4)。选择在(7,3)放白棋后变成如图4-6（b）所示效果（注意有竖向和斜向的共两枚黑棋变<br>
+白）。注意(4,6)的黑色棋子虽然被夹住，但不是被新放的棋子夹住，因此不变白。<br>
+
+
+
+
+<img loading="lazy" src="https://img-blog.csdn.net/20180415191510220?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvc3VfY2ljYWRh/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="这里写图片描述"  />
+<br>
+（a） （b）<br>
+图4-6 黑白棋<br>
+输入一个8*8的棋盘以及当前下一次操作的游戏者，处理3种指令：<br>
+<strong>L</strong>指令打印所有合法操作，按照从上到下，从左到右的顺序排列（没有合法操作时输出No legal move）。<br>
+<strong>Mrc</strong>指令放一枚棋子在(r,c)。如果当前游戏者没有合法操作，则是先切换游戏者再操作。输入保证这个操作是合法的。输出操作完毕后黑白方的棋子总数。<br>
+<strong>Q</strong>指令退出游戏，并打印当前棋盘（格式同输入）。<br>
+<strong>Sample Input</strong><br>
+2<br>
+-&mdash;&mdash;-<br>
+-&mdash;&mdash;-<br>
+-&mdash;&mdash;-<br>
+&mdash;WB&mdash;<br>
+-&ndash;BW&mdash;<br>
+-&mdash;&mdash;-<br>
+-&mdash;&mdash;-<br>
+-&mdash;&mdash;-<br>
+W<br>
+L<br>
+M35<br>
+L<br>
+Q<br>
+WWWWB&mdash;<br>
+WWWB&mdash;-<br>
+WWB&mdash;&ndash;<br>
+WB&mdash;&mdash;<br>
+-&mdash;&mdash;-<br>
+-&mdash;&mdash;-<br>
+-&mdash;&mdash;-<br>
+-&mdash;&mdash;-<br>
+B<br>
+L<br>
+M25<br>
+L<br>
+Q<br>
+<strong>Sample Output</strong><br>
+(3,5) (4,6) (5,3) (6,4)<br>
+Black - 1 White - 4<br>
+(3,4) (3,6) (5,6)<br>
+-&mdash;&mdash;-<br>
+-&mdash;&mdash;-<br>
+&mdash;-W&mdash;<br>
+&mdash;WW&mdash;<br>
+&mdash;BW&mdash;<br>
+-&mdash;&mdash;-<br>
+-&mdash;&mdash;-<br>
+-&mdash;&mdash;-<br>
+No legal move.<br>
+Black - 3 White - 12<br>
+(3,5)<br>
+WWWWB&mdash;<br>
+WWWWW&mdash;<br>
+WWB&mdash;&ndash;<br>
+WB&mdash;&mdash;<br>
+-&mdash;&mdash;-<br>
+-&mdash;&mdash;-<br>
+-&mdash;&mdash;-<br>
+-&mdash;&mdash;-</p>
+</blockquote>
+<p><a href="https://uva.onlinejudge.org/index.php?option=com_onlinejudge&amp;Itemid=8&amp;page=show_problem&amp;category=833&amp;problem=156&amp;mosmsg=Submission+received+with+ID+20901787">https://uva.onlinejudge.org/index.php?option=com_onlinejudge&amp;Itemid=8&amp;page=show_problem&amp;category=833&amp;problem=156&amp;mosmsg=Submission+received+with+ID+20901787</a></p>
+<p>挺复杂的题，题目就比较难弄懂，要不是我会玩黑白翻转棋（笑），可能就很难办了吧。<br>
+思路：<br>
+1、用一个二维数组存储棋盘的状态，<br>
+2、通过一个函数来翻转棋子，传进去的两个参数是落子的坐标</p>
+<pre tabindex="0"><code>#include&lt;iostream&gt;
+#include&lt;iomanip&gt;
+using namespace std;
+char board[10][10];
+int yesnum=0;//输出空格的格式
+char disk,nodisk;//要走的棋，被翻的棋
+//int exceed(int i,int j)//判断越界
+//{
+//    if(i&gt;=1&amp;&amp;i&lt;=8&amp;&amp;j&gt;=1&amp;&amp;j&lt;=8)
+//        return 1;
+//    else
+//        return 0;
+//}
+int reverse(int i,int j,int con)//(i,j)上应该是空的
+{
+    for(int in=-1;in&lt;=1;in++)//八个方位的循环
+    {
+        for(int jn=-1;jn&lt;=1;jn++)//八个方位的循环用于翻棋子
+        {
+            if(in==0&amp;&amp;jn==0) continue;//中间的棋不用管它先
+//            if(i+in&gt;=1&amp;&amp;i+in&lt;=8&amp;&amp;j+jn&gt;=1&amp;&amp;j+jn&lt;=8&amp;&amp;/*exceed(i+in,j+jn)&amp;&amp;*/
+//               board[i+in][j+jn]==nodisk)//可翻  //board[i+in][j+jn]==&#39;-&#39;)//有空位能放子
+//            {
+                //cout&lt;&lt;&#34;board  &#34;&lt;&lt;board[i+in][j+jn]&lt;&lt;endl;
+            int n=1;//用于能翻的子的包的界限标志（说不懂，见下面第一个if）
+            while((i+in*n&gt;=1&amp;&amp;i+in*n&lt;=8&amp;&amp;j+jn*n&gt;=1&amp;&amp;j+jn*n&lt;=8)&amp;&amp;/*exceed(i-in*n,j-jn*n)*///判断越界
+                  board[i+in*n][j+jn*n]==nodisk)//还能继续翻
+            {
+                n++;
+            }
+            if(board[i+in*n][j+jn*n]==disk&amp;&amp;n&gt;1)//包住了，就翻这么多
+            {
+                //cout&lt;&lt;i+in*n&lt;&lt;&#34;_&#34;&lt;&lt;j+jn*n&lt;&lt;&#34;_&#34;&lt;&lt;board[i+in*n][j+jn*n]&lt;&lt;&#34; &#34;&lt;&lt;endl;
+                if(con==&#39;L&#39;)
+                {
+                    if(yesnum&gt;0) cout&lt;&lt;&#34; &#34;;
+                    cout&lt;&lt;&#34;(&#34;&lt;&lt;i&lt;&lt;&#34;,&#34;&lt;&lt;j&lt;&lt;&#34;)&#34;;
+                    yesnum++;
+                    return 0;
+                }
+                else
+                {
+                    for(int n2=0;n2&lt;n;n2++)//翻转操作，--n为了不bang掉最后的disk
+                    {
+                        board[i+in*n2][j+jn*n2]=disk;
+                    }
+                }
+                //break;
+            }
+            //}
+        }
+    }
+}
+
+int main()
+{
+    int T;
+    cin&gt;&gt;T;
+    while(T--)
+    {
+        for(int i=1;i&lt;=8;i++)//存表
+            for(int j=1;j&lt;=8;j++)
+                cin&gt;&gt;board[i][j];
+        char con;//下一个子，操作
+        cin&gt;&gt;disk;
+        int Wnum=0,Bnum=0;
+        while(cin&gt;&gt;con&amp;&amp;con!=&#39;Q&#39;)
+        {
+            if(disk==&#39;W&#39;) nodisk = &#39;B&#39;;
+            else nodisk = &#39;W&#39;;
+            //cout&lt;&lt;&#34;disk &#34;&lt;&lt;disk&lt;&lt;endl;
+            if(con==&#39;L&#39;)//显示下一步可走子
+            {
+                yesnum=0;
+                for(int i=1;i&lt;=8;i++)//全地图遍历
+                {
+                    for(int j=1;j&lt;=8;j++)//全地图遍历
+                    {
+                        if(board[i][j]==&#39;-&#39;)//如果可以翻
+                        {
+                            //cout&lt;&lt;disk&lt;&lt;&#34;  &#34;&lt;&lt;i&lt;&lt;&#34; ij &#34;&lt;&lt;j&lt;&lt;endl;
+                            reverse(i,j,&#39;L&#39;);
+                        }
+                    }
+                }
+                if(!yesnum)
+                {
+                    cout&lt;&lt;&#34;No legal move.&#34;;
+                    if(disk==&#39;W&#39;) disk=&#39;B&#39;;
+                    else disk = &#39;W&#39;;
+                }
+                cout&lt;&lt;endl;
+            }
+            else
+            {
+                int x;
+                cin&gt;&gt;x;
+                reverse(x/10,x%10,&#39;M&#39;);
+                Bnum=Wnum=0;
+                for(int i=1;i&lt;=8;i++)
+                    for(int j=1;j&lt;=8;j++)
+                        if(board[i][j]==&#39;B&#39;)
+                            Bnum++;
+                        else if(board[i][j]==&#39;W&#39;)
+                            Wnum++;
+                cout&lt;&lt;&#34;Black -&#34;&lt;&lt;setw(3)&lt;&lt;Bnum&lt;&lt;&#34; White -&#34;&lt;&lt;setw(3)&lt;&lt;Wnum&lt;&lt;endl;
+
+                if(disk==&#39;W&#39;) disk=&#39;B&#39;;
+                else disk = &#39;W&#39;;
+            }
+
+        }
+        for(int i=1;i&lt;=8;i++)
+        {
+            for(int j=1;j&lt;=8;j++)
+                cout&lt;&lt;board[i][j];
+            cout&lt;&lt;endl;
+        }
+        if(T&gt;=1)
+            cout&lt;&lt;endl;
+    }
+    return 0;
+}
+//AC at 2018/3/9
+</code></pre><hr>
+<p>（题外话：这个题一个月多前就通过了，但是一直拖到现在才写博客，我都忘了当时遇到的困难和当时的思路了。那时是因为要准备蓝桥杯，所以就没再做这本书上的题了，这一个月里发生了不少事，团队天梯赛，蓝桥杯，清明，英语活动。<br>
+又去了两趟医院去看眼睛，对于要靠电脑吃饭的人来说，眼睛是绝对不能出问题的，但是啊哎，好希望若要研究程序的话，能抛开肉体的限制就好了。存在于网络上的文化乐园也岌岌可危，我无能为力，我要争取机会去往乐园能深深扎根的地方）</p>
+
+
+  </div>
+
+  <footer class="post-footer">
+<nav class="paginav">
+  <a class="prev" href="https://sucicada.github.io/blog/posts/uvaoj/uva-213-message-decoding%E4%BA%8C%E8%BF%9B%E5%88%B6%E7%BC%96%E7%A0%81/">
+    <span class="title">« Prev</span>
+    <br>
+    <span>uva 213 - Message Decoding（二进制编码）</span>
+  </a>
+  <a class="next" href="https://sucicada.github.io/blog/posts/uvaoj/uva-221-urban-elevations%E5%9F%8E%E5%B8%82%E6%AD%A3%E8%A7%86%E5%9B%BE-by-sucicada/">
+    <span class="title">Next »</span>
+    <br>
+    <span>UVA 221 - Urban Elevations(城市正视图) By SuCicada</span>
+  </a>
+</nav>
+
+
+<div class="share-buttons">
+    <a target="_blank" rel="noopener noreferrer" aria-label="share uva 220 - Othello（黑白翻转棋） on twitter"
+        href="https://twitter.com/intent/tweet/?text=uva%20220%20-%20Othello%ef%bc%88%e9%bb%91%e7%99%bd%e7%bf%bb%e8%bd%ac%e6%a3%8b%ef%bc%89&amp;url=https%3a%2f%2fsucicada.github.io%2fblog%2fposts%2fuvaoj%2fuva-220-othello%25E9%25BB%2591%25E7%2599%25BD%25E7%25BF%25BB%25E8%25BD%25AC%25E6%25A3%258B%2f&amp;hashtags=UVaOJ">
+        <svg version="1.1" viewBox="0 0 512 512" xml:space="preserve" height="30px" width="30px" fill="currentColor">
+            <path
+                d="M449.446,0c34.525,0 62.554,28.03 62.554,62.554l0,386.892c0,34.524 -28.03,62.554 -62.554,62.554l-386.892,0c-34.524,0 -62.554,-28.03 -62.554,-62.554l0,-386.892c0,-34.524 28.029,-62.554 62.554,-62.554l386.892,0Zm-253.927,424.544c135.939,0 210.268,-112.643 210.268,-210.268c0,-3.218 0,-6.437 -0.153,-9.502c14.406,-10.421 26.973,-23.448 36.935,-38.314c-13.18,5.824 -27.433,9.809 -42.452,11.648c15.326,-9.196 26.973,-23.602 32.49,-40.92c-14.252,8.429 -30.038,14.56 -46.896,17.931c-13.487,-14.406 -32.644,-23.295 -53.946,-23.295c-40.767,0 -73.87,33.104 -73.87,73.87c0,5.824 0.613,11.494 1.992,16.858c-61.456,-3.065 -115.862,-32.49 -152.337,-77.241c-6.284,10.881 -9.962,23.601 -9.962,37.088c0,25.594 13.027,48.276 32.95,61.456c-12.107,-0.307 -23.448,-3.678 -33.41,-9.196l0,0.92c0,35.862 25.441,65.594 59.311,72.49c-6.13,1.686 -12.72,2.606 -19.464,2.606c-4.751,0 -9.348,-0.46 -13.946,-1.38c9.349,29.426 36.628,50.728 68.965,51.341c-25.287,19.771 -57.164,31.571 -91.8,31.571c-5.977,0 -11.801,-0.306 -17.625,-1.073c32.337,21.15 71.264,33.41 112.95,33.41Z" />
+        </svg>
+    </a>
+    <a target="_blank" rel="noopener noreferrer" aria-label="share uva 220 - Othello（黑白翻转棋） on telegram"
+        href="https://telegram.me/share/url?text=uva%20220%20-%20Othello%ef%bc%88%e9%bb%91%e7%99%bd%e7%bf%bb%e8%bd%ac%e6%a3%8b%ef%bc%89&amp;url=https%3a%2f%2fsucicada.github.io%2fblog%2fposts%2fuvaoj%2fuva-220-othello%25E9%25BB%2591%25E7%2599%25BD%25E7%25BF%25BB%25E8%25BD%25AC%25E6%25A3%258B%2f">
+        <svg version="1.1" xml:space="preserve" viewBox="2 2 28 28" height="30px" width="30px" fill="currentColor">
+            <path
+                d="M26.49,29.86H5.5a3.37,3.37,0,0,1-2.47-1,3.35,3.35,0,0,1-1-2.47V5.48A3.36,3.36,0,0,1,3,3,3.37,3.37,0,0,1,5.5,2h21A3.38,3.38,0,0,1,29,3a3.36,3.36,0,0,1,1,2.46V26.37a3.35,3.35,0,0,1-1,2.47A3.38,3.38,0,0,1,26.49,29.86Zm-5.38-6.71a.79.79,0,0,0,.85-.66L24.73,9.24a.55.55,0,0,0-.18-.46.62.62,0,0,0-.41-.17q-.08,0-16.53,6.11a.59.59,0,0,0-.41.59.57.57,0,0,0,.43.52l4,1.24,1.61,4.83a.62.62,0,0,0,.63.43.56.56,0,0,0,.4-.17L16.54,20l4.09,3A.9.9,0,0,0,21.11,23.15ZM13.8,20.71l-1.21-4q8.72-5.55,8.78-5.55c.15,0,.23,0,.23.16a.18.18,0,0,1,0,.06s-2.51,2.3-7.52,6.8Z" />
+        </svg>
+    </a>
+</div>
+
+  </footer><div id="disqus_thread"></div>
+<script type="application/javascript">
+    window.disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "sucicada" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+</article>
+    </main>
+    
+<footer class="footer">
+    <span>&copy; 2022 <a href="https://sucicada.github.io/blog">SuCicada</a></span>
+    <span>
+        Powered by
+        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+        <path d="M12 6H0l6-6z" />
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu')
+    if (menu) {
+        menu.scrollLeft = localStorage.getItem("menu-scroll-position");
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var mybutton = document.getElementById("top-link");
+    window.onscroll = function () {
+        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
+            mybutton.style.visibility = "visible";
+            mybutton.style.opacity = "1";
+        } else {
+            mybutton.style.visibility = "hidden";
+            mybutton.style.opacity = "0";
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        if (document.body.className.includes("dark")) {
+            document.body.classList.remove('dark');
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            document.body.classList.add('dark');
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+<script>
+    document.querySelectorAll('pre > code').forEach((codeblock) => {
+        const container = codeblock.parentNode.parentNode;
+
+        const copybutton = document.createElement('button');
+        copybutton.classList.add('copy-code');
+        copybutton.innerHTML = 'copy';
+
+        function copyingDone() {
+            copybutton.innerHTML = 'copied!';
+            setTimeout(() => {
+                copybutton.innerHTML = 'copy';
+            }, 2000);
+        }
+
+        copybutton.addEventListener('click', (cb) => {
+            if ('clipboard' in navigator) {
+                navigator.clipboard.writeText(codeblock.textContent);
+                copyingDone();
+                return;
+            }
+
+            const range = document.createRange();
+            range.selectNodeContents(codeblock);
+            const selection = window.getSelection();
+            selection.removeAllRanges();
+            selection.addRange(range);
+            try {
+                document.execCommand('copy');
+                copyingDone();
+            } catch (e) { };
+            selection.removeRange(range);
+        });
+
+        if (container.classList.contains("highlight")) {
+            container.appendChild(copybutton);
+        } else if (container.parentNode.firstChild == container) {
+            
+        } else if (codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName == "TABLE") {
+            
+            codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(copybutton);
+        } else {
+            
+            codeblock.parentNode.appendChild(copybutton);
+        }
+    });
+</script>
+</body>
+
+</html>

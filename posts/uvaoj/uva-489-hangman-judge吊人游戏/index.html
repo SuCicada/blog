@@ -1,0 +1,612 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto">
+
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>uva 489 - Hangman Judge（吊人游戏） | SuCicada</title>
+<meta name="keywords" content="UVaOJ">
+<meta name="description" content="例题4-2 刽子手游戏（Hangman Judge, UVa 489）
+刽子手游戏其实是一款猜单词游戏，如图4-
+1所示。游戏规则是这样的：计算机想一个单词
+让你猜，你每次可以猜一个字母。如果单词里有
+那个字母，所有该字母会显示出来；如果没有那
+个字母，则计算机会在一幅“刽子手”画上填一
+笔。这幅画一共需要7笔就能完成，因此你最多
+只能错6次。注意，猜一个已经猜过的字母不！算
+错。
+在本题中，你的任务是编写一个“裁判”程
+序，输入单词和玩家的猜测，判断玩家赢了
+（You win.）、输了（You lose.）还是放弃了
+（You chickened out.）。每组数据包含3行，第1
+行是游戏编号（-1为输入结束标记），第2行是
+计算机想的单词，第3行是玩家的猜测。后两行
+保证只含小写字母。
+注意，猜一个已经猜过的字母不算
+错。！
+Sample Input
+1
+cheese
+chese
+2
+cheese
+abcdefg
+3
+cheese
+abcdefgij
+-1
+Sample Output
+Round 1
+You win.
+Round 2
+You chickened out.
+Round 3
+You lose.
+https://uva.onlinejudge.org/index.php?option=com_onlinejudge&amp;Itemid=8&amp;category=832&amp;page=show_problem&amp;problem=430
+用两个整型来记录当前还允许错的次数，和原始字符串的总字符数
+1，因为重复猜测不算错，所以我们先将guess字符串中的重复字符消去，用循环和string::erase()
+2，外循环猜测字符串，内循环原始字符串，如果相同，就将原始字符串的此元素变成‘ * ’。
+3，没猜中一次就记录，内循环结束后来更新记录。若果win或lose就return函数，否则循环都结束之后就说明是‘弃权’。
+#include&lt;iostream&gt; #include&lt;string&gt; using namespace std; string orig,guess; int hang(int num,int right) { for(int i=0;i&lt;guess.">
+<meta name="author" content="SuCicada">
+<link rel="canonical" href="https://sucicada.github.io/blog/posts/uvaoj/uva-489-hangman-judge%E5%90%8A%E4%BA%BA%E6%B8%B8%E6%88%8F/">
+<link crossorigin="anonymous" href="/blog/assets/css/stylesheet.5b5501da54f21435c8f8010d1de02123ae8d1ada696b48c6530ec4eea283e7d6.css" integrity="sha256-W1UB2lTyFDXI&#43;AENHeAhI66NGtppa0jGUw7E7qKD59Y=" rel="preload stylesheet" as="style">
+<link rel="icon" href="https://sucicada.github.io/blog/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="https://sucicada.github.io/blog/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://sucicada.github.io/blog/favicon-32x32.png">
+<link rel="apple-touch-icon" href="https://sucicada.github.io/blog/apple-touch-icon.png">
+<link rel="mask-icon" href="https://sucicada.github.io/blog/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --hljs-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-track {
+                background: 0 0;
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-thumb {
+                border-color: var(--theme);
+            }
+        }
+
+    </style>
+</noscript><meta property="og:title" content="uva 489 - Hangman Judge（吊人游戏）" />
+<meta property="og:description" content="例题4-2 刽子手游戏（Hangman Judge, UVa 489）
+刽子手游戏其实是一款猜单词游戏，如图4-
+1所示。游戏规则是这样的：计算机想一个单词
+让你猜，你每次可以猜一个字母。如果单词里有
+那个字母，所有该字母会显示出来；如果没有那
+个字母，则计算机会在一幅“刽子手”画上填一
+笔。这幅画一共需要7笔就能完成，因此你最多
+只能错6次。注意，猜一个已经猜过的字母不！算
+错。
+在本题中，你的任务是编写一个“裁判”程
+序，输入单词和玩家的猜测，判断玩家赢了
+（You win.）、输了（You lose.）还是放弃了
+（You chickened out.）。每组数据包含3行，第1
+行是游戏编号（-1为输入结束标记），第2行是
+计算机想的单词，第3行是玩家的猜测。后两行
+保证只含小写字母。
+注意，猜一个已经猜过的字母不算
+错。！
+Sample Input
+1
+cheese
+chese
+2
+cheese
+abcdefg
+3
+cheese
+abcdefgij
+-1
+Sample Output
+Round 1
+You win.
+Round 2
+You chickened out.
+Round 3
+You lose.
+https://uva.onlinejudge.org/index.php?option=com_onlinejudge&amp;Itemid=8&amp;category=832&amp;page=show_problem&amp;problem=430
+用两个整型来记录当前还允许错的次数，和原始字符串的总字符数
+1，因为重复猜测不算错，所以我们先将guess字符串中的重复字符消去，用循环和string::erase()
+2，外循环猜测字符串，内循环原始字符串，如果相同，就将原始字符串的此元素变成‘ * ’。
+3，没猜中一次就记录，内循环结束后来更新记录。若果win或lose就return函数，否则循环都结束之后就说明是‘弃权’。
+#include&lt;iostream&gt; #include&lt;string&gt; using namespace std; string orig,guess; int hang(int num,int right) { for(int i=0;i&lt;guess." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://sucicada.github.io/blog/posts/uvaoj/uva-489-hangman-judge%E5%90%8A%E4%BA%BA%E6%B8%B8%E6%88%8F/" /><meta property="og:image" content="https://sucicada.github.io/blog/papermod-cover.png"/><meta property="article:section" content="posts" />
+
+
+
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="https://sucicada.github.io/blog/papermod-cover.png"/>
+
+<meta name="twitter:title" content="uva 489 - Hangman Judge（吊人游戏）"/>
+<meta name="twitter:description" content="例题4-2 刽子手游戏（Hangman Judge, UVa 489）
+刽子手游戏其实是一款猜单词游戏，如图4-
+1所示。游戏规则是这样的：计算机想一个单词
+让你猜，你每次可以猜一个字母。如果单词里有
+那个字母，所有该字母会显示出来；如果没有那
+个字母，则计算机会在一幅“刽子手”画上填一
+笔。这幅画一共需要7笔就能完成，因此你最多
+只能错6次。注意，猜一个已经猜过的字母不！算
+错。
+在本题中，你的任务是编写一个“裁判”程
+序，输入单词和玩家的猜测，判断玩家赢了
+（You win.）、输了（You lose.）还是放弃了
+（You chickened out.）。每组数据包含3行，第1
+行是游戏编号（-1为输入结束标记），第2行是
+计算机想的单词，第3行是玩家的猜测。后两行
+保证只含小写字母。
+注意，猜一个已经猜过的字母不算
+错。！
+Sample Input
+1
+cheese
+chese
+2
+cheese
+abcdefg
+3
+cheese
+abcdefgij
+-1
+Sample Output
+Round 1
+You win.
+Round 2
+You chickened out.
+Round 3
+You lose.
+https://uva.onlinejudge.org/index.php?option=com_onlinejudge&amp;Itemid=8&amp;category=832&amp;page=show_problem&amp;problem=430
+用两个整型来记录当前还允许错的次数，和原始字符串的总字符数
+1，因为重复猜测不算错，所以我们先将guess字符串中的重复字符消去，用循环和string::erase()
+2，外循环猜测字符串，内循环原始字符串，如果相同，就将原始字符串的此元素变成‘ * ’。
+3，没猜中一次就记录，内循环结束后来更新记录。若果win或lose就return函数，否则循环都结束之后就说明是‘弃权’。
+#include&lt;iostream&gt; #include&lt;string&gt; using namespace std; string orig,guess; int hang(int num,int right) { for(int i=0;i&lt;guess."/>
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "Posts",
+      "item": "https://sucicada.github.io/blog/posts/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  3 ,
+      "name": "uva 489 - Hangman Judge（吊人游戏）",
+      "item": "https://sucicada.github.io/blog/posts/uvaoj/uva-489-hangman-judge%E5%90%8A%E4%BA%BA%E6%B8%B8%E6%88%8F/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "uva 489 - Hangman Judge（吊人游戏）",
+  "name": "uva 489 - Hangman Judge（吊人游戏）",
+  "description": "例题4-2 刽子手游戏（Hangman Judge, UVa 489）\n刽子手游戏其实是一款猜单词游戏，如图4-\n1所示。游戏规则是这样的：计算机想一个单词\n让你猜，你每次可以猜一个字母。如果单词里有\n那个字母，所有该字母会显示出来；如果没有那\n个字母，则计算机会在一幅“刽子手”画上填一\n笔。这幅画一共需要7笔就能完成，因此你最多\n只能错6次。注意，猜一个已经猜过的字母不！算\n错。\n在本题中，你的任务是编写一个“裁判”程\n序，输入单词和玩家的猜测，判断玩家赢了\n（You win.）、输了（You lose.）还是放弃了\n（You chickened out.）。每组数据包含3行，第1\n行是游戏编号（-1为输入结束标记），第2行是\n计算机想的单词，第3行是玩家的猜测。后两行\n保证只含小写字母。\n注意，猜一个已经猜过的字母不算\n错。！\nSample Input\n1\ncheese\nchese\n2\ncheese\nabcdefg\n3\ncheese\nabcdefgij\n-1\nSample Output\nRound 1\nYou win.\nRound 2\nYou chickened out.\nRound 3\nYou lose.\nhttps://uva.onlinejudge.org/index.php?option=com_onlinejudge\u0026amp;Itemid=8\u0026amp;category=832\u0026amp;page=show_problem\u0026amp;problem=430\n用两个整型来记录当前还允许错的次数，和原始字符串的总字符数\n1，因为重复猜测不算错，所以我们先将guess字符串中的重复字符消去，用循环和string::erase()\n2，外循环猜测字符串，内循环原始字符串，如果相同，就将原始字符串的此元素变成‘ * ’。\n3，没猜中一次就记录，内循环结束后来更新记录。若果win或lose就return函数，否则循环都结束之后就说明是‘弃权’。\n#include\u0026lt;iostream\u0026gt; #include\u0026lt;string\u0026gt; using namespace std; string orig,guess; int hang(int num,int right) { for(int i=0;i\u0026lt;guess.",
+  "keywords": [
+    "UVaOJ"
+  ],
+  "articleBody": " 例题4-2 刽子手游戏（Hangman Judge, UVa 489）\n刽子手游戏其实是一款猜单词游戏，如图4-\n1所示。游戏规则是这样的：计算机想一个单词\n让你猜，你每次可以猜一个字母。如果单词里有\n那个字母，所有该字母会显示出来；如果没有那\n个字母，则计算机会在一幅“刽子手”画上填一\n笔。这幅画一共需要7笔就能完成，因此你最多\n只能错6次。注意，猜一个已经猜过的字母不！算\n错。\n在本题中，你的任务是编写一个“裁判”程\n序，输入单词和玩家的猜测，判断玩家赢了\n（You win.）、输了（You lose.）还是放弃了\n（You chickened out.）。每组数据包含3行，第1\n行是游戏编号（-1为输入结束标记），第2行是\n计算机想的单词，第3行是玩家的猜测。后两行\n保证只含小写字母。\n注意，猜一个已经猜过的字母不算\n错。！\nSample Input\n1\ncheese\nchese\n2\ncheese\nabcdefg\n3\ncheese\nabcdefgij\n-1\nSample Output\nRound 1\nYou win.\nRound 2\nYou chickened out.\nRound 3\nYou lose.\nhttps://uva.onlinejudge.org/index.php?option=com_onlinejudge\u0026Itemid=8\u0026category=832\u0026page=show_problem\u0026problem=430\n用两个整型来记录当前还允许错的次数，和原始字符串的总字符数\n1，因为重复猜测不算错，所以我们先将guess字符串中的重复字符消去，用循环和string::erase()\n2，外循环猜测字符串，内循环原始字符串，如果相同，就将原始字符串的此元素变成‘ * ’。\n3，没猜中一次就记录，内循环结束后来更新记录。若果win或lose就return函数，否则循环都结束之后就说明是‘弃权’。\n#include #include using namespace std; string orig,guess; int hang(int num,int right) { for(int i=0;i",
+  "wordCount" : "153",
+  "inLanguage": "en",
+  "datePublished": "0001-01-01T00:00:00Z",
+  "dateModified": "0001-01-01T00:00:00Z",
+  "author":{
+    "@type": "Person",
+    "name": "SuCicada"
+  },
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://sucicada.github.io/blog/posts/uvaoj/uva-489-hangman-judge%E5%90%8A%E4%BA%BA%E6%B8%B8%E6%88%8F/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "SuCicada",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://sucicada.github.io/blog/favicon.ico"
+    }
+  }
+}
+</script>
+</head>
+
+<body class="" id="top">
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.body.classList.add('dark');
+    } else if (localStorage.getItem("pref-theme") === "light") {
+        document.body.classList.remove('dark')
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.body.classList.add('dark');
+    }
+
+</script>
+
+<header class="header">
+    <nav class="nav">
+        <div class="logo">
+            <a href="https://sucicada.github.io/blog" accesskey="h" title="SuCicada (Alt + H)">SuCicada</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" accesskey="t" title="(Alt + T)">
+                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu">
+            <li>
+                <a href="https://sucicada.github.io/blog/archives/" title="Archive">
+                    <span>Archive</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://sucicada.github.io/blog/search/" title="Search (Alt &#43; /)" accesskey=/>
+                    <span>Search</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://sucicada.github.io/blog/tags/" title="Tags">
+                    <span>Tags</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://sucicada.github.io/blog/about/" title="About">
+                    <span>About</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+
+    <h1 class="post-title">
+      uva 489 - Hangman Judge（吊人游戏）
+    </h1>
+    <div class="post-meta">SuCicada&nbsp;|&nbsp;<a href="https://github.com/SuCicada/mysite-hugo/content/posts/UVaOJ/uva%20489%20-%20Hangman%20Judge%ef%bc%88%e5%90%8a%e4%ba%ba%e6%b8%b8%e6%88%8f%ef%bc%89.md" rel="noopener noreferrer" target="_blank">Suggest Changes</a>
+
+</div>
+    <ul class="post-tags">
+      <li><a href="https://sucicada.github.io/blog/tags/uvaoj/">UVaOJ</a></li>
+    </ul>
+  </header> 
+
+  <div class="post-content"><blockquote>
+<p>例题4-2 刽子手游戏（Hangman Judge, UVa 489）<br>
+刽子手游戏其实是一款猜单词游戏，如图4-<br>
+1所示。游戏规则是这样的：计算机想一个单词<br>
+让你猜，你每次可以猜一个字母。如果单词里有<br>
+那个字母，所有该字母会显示出来；如果没有那<br>
+个字母，则计算机会在一幅“刽子手”画上填一<br>
+笔。这幅画一共需要7笔就能完成，因此你最多<br>
+只能错6次。注意，猜一个已经猜过的字母不！算<br>
+错。<br>
+在本题中，你的任务是编写一个“裁判”程<br>
+序，输入单词和玩家的猜测，判断玩家赢了<br>
+（You win.）、输了（You lose.）还是放弃了<br>
+（You chickened out.）。每组数据包含3行，第1<br>
+行是游戏编号（-1为输入结束标记），第2行是<br>
+计算机想的单词，第3行是玩家的猜测。后两行<br>
+保证只含小写字母。<br>
+注意，猜一个已经猜过的字母不算<br>
+错。！<br>
+<strong>Sample Input</strong><br>
+1<br>
+cheese<br>
+chese<br>
+2<br>
+cheese<br>
+abcdefg<br>
+3<br>
+cheese<br>
+abcdefgij<br>
+-1<br>
+<strong>Sample Output</strong><br>
+Round 1<br>
+You win.<br>
+Round 2<br>
+You chickened out.<br>
+Round 3<br>
+You lose.</p>
+</blockquote>
+<p><a href="https://uva.onlinejudge.org/index.php?option=com_onlinejudge&amp;Itemid=8&amp;category=832&amp;page=show_problem&amp;problem=430">https://uva.onlinejudge.org/index.php?option=com_onlinejudge&amp;Itemid=8&amp;category=832&amp;page=show_problem&amp;problem=430</a></p>
+<p>用两个整型来记录当前还允许错的次数，和原始字符串的总字符数<br>
+1，因为重复猜测不算错，所以我们先将guess字符串中的重复字符消去，用循环和string::erase()<br>
+2，外循环猜测字符串，内循环原始字符串，如果相同，就将原始字符串的此元素变成‘ * ’。<br>
+3，没猜中一次就记录，内循环结束后来更新记录。若果win或lose就return函数，否则循环都结束之后就说明是‘弃权’。</p>
+<hr>
+<pre tabindex="0"><code>#include&lt;iostream&gt;
+#include&lt;string&gt;
+using namespace std;
+    string orig,guess;
+int hang(int num,int right)
+{
+    for(int i=0;i&lt;guess.size();i++)
+    {
+        int iff=0;
+        for(int j=0;j&lt;orig.size();j++)
+        {
+            if(orig[j]==guess[i])
+            {
+                orig[j]=&#39;*&#39;;
+                iff=1;
+                num--;
+            }
+            if(num==0)
+            {
+                cout&lt;&lt;&#34;You win.&#34;&lt;&lt;endl;
+                return 1;//break;
+            }
+        }
+        if(iff==0)
+        {
+            right--;
+        }
+        if(right&lt;0)
+        {
+            cout&lt;&lt;&#34;You lose.&#34;&lt;&lt;endl;
+            return -1;
+        }
+//        if(num==0)
+//        {
+//            cout&lt;&lt;&#34;win&#34;&lt;&lt;endl;
+//            break;
+//        }
+    }
+    cout&lt;&lt;&#34;You chickened out.&#34;&lt;&lt;endl;
+}
+int main()
+{
+    int T;
+    while(cin&gt;&gt;T&amp;&amp;T!=-1)
+    {
+        cin&gt;&gt;orig&gt;&gt;guess;
+        for(int i=0;i&lt;guess.size();i++)
+        {
+            for(int j=i+1;j&lt;guess.size();j++)
+            {
+                if(guess[j]==guess[i])
+                    guess.erase(guess.begin()+j);
+            }
+        }
+        //cout&lt;&lt;guess&lt;&lt;endl;
+        int right=6;//错误次数
+        int num=orig.size();//要猜的个数
+        cout&lt;&lt;&#34;Round &#34;&lt;&lt;T&lt;&lt;endl;
+        hang(num,right);
+    }
+    return 0;
+}
+//AC at 2018/2/7
+</code></pre>
+
+  </div>
+
+  <footer class="post-footer">
+<nav class="paginav">
+  <a class="prev" href="https://sucicada.github.io/blog/posts/uvaoj/uva-455-periodic-strings-%E6%89%BE%E5%AD%97%E7%AC%A6%E4%B8%B2%E5%91%A8%E6%9C%9F/">
+    <span class="title">« Prev</span>
+    <br>
+    <span>uva 455 - Periodic Strings （找字符串周期）</span>
+  </a>
+  <a class="next" href="https://sucicada.github.io/blog/posts/uvaoj/uva-508-morse-mismatches%E6%91%A9%E6%96%AF%E7%A0%81/">
+    <span class="title">Next »</span>
+    <br>
+    <span>uva 508 - Morse Mismatches（摩斯码）</span>
+  </a>
+</nav>
+
+
+<div class="share-buttons">
+    <a target="_blank" rel="noopener noreferrer" aria-label="share uva 489 - Hangman Judge（吊人游戏） on twitter"
+        href="https://twitter.com/intent/tweet/?text=uva%20489%20-%20Hangman%20Judge%ef%bc%88%e5%90%8a%e4%ba%ba%e6%b8%b8%e6%88%8f%ef%bc%89&amp;url=https%3a%2f%2fsucicada.github.io%2fblog%2fposts%2fuvaoj%2fuva-489-hangman-judge%25E5%2590%258A%25E4%25BA%25BA%25E6%25B8%25B8%25E6%2588%258F%2f&amp;hashtags=UVaOJ">
+        <svg version="1.1" viewBox="0 0 512 512" xml:space="preserve" height="30px" width="30px" fill="currentColor">
+            <path
+                d="M449.446,0c34.525,0 62.554,28.03 62.554,62.554l0,386.892c0,34.524 -28.03,62.554 -62.554,62.554l-386.892,0c-34.524,0 -62.554,-28.03 -62.554,-62.554l0,-386.892c0,-34.524 28.029,-62.554 62.554,-62.554l386.892,0Zm-253.927,424.544c135.939,0 210.268,-112.643 210.268,-210.268c0,-3.218 0,-6.437 -0.153,-9.502c14.406,-10.421 26.973,-23.448 36.935,-38.314c-13.18,5.824 -27.433,9.809 -42.452,11.648c15.326,-9.196 26.973,-23.602 32.49,-40.92c-14.252,8.429 -30.038,14.56 -46.896,17.931c-13.487,-14.406 -32.644,-23.295 -53.946,-23.295c-40.767,0 -73.87,33.104 -73.87,73.87c0,5.824 0.613,11.494 1.992,16.858c-61.456,-3.065 -115.862,-32.49 -152.337,-77.241c-6.284,10.881 -9.962,23.601 -9.962,37.088c0,25.594 13.027,48.276 32.95,61.456c-12.107,-0.307 -23.448,-3.678 -33.41,-9.196l0,0.92c0,35.862 25.441,65.594 59.311,72.49c-6.13,1.686 -12.72,2.606 -19.464,2.606c-4.751,0 -9.348,-0.46 -13.946,-1.38c9.349,29.426 36.628,50.728 68.965,51.341c-25.287,19.771 -57.164,31.571 -91.8,31.571c-5.977,0 -11.801,-0.306 -17.625,-1.073c32.337,21.15 71.264,33.41 112.95,33.41Z" />
+        </svg>
+    </a>
+    <a target="_blank" rel="noopener noreferrer" aria-label="share uva 489 - Hangman Judge（吊人游戏） on telegram"
+        href="https://telegram.me/share/url?text=uva%20489%20-%20Hangman%20Judge%ef%bc%88%e5%90%8a%e4%ba%ba%e6%b8%b8%e6%88%8f%ef%bc%89&amp;url=https%3a%2f%2fsucicada.github.io%2fblog%2fposts%2fuvaoj%2fuva-489-hangman-judge%25E5%2590%258A%25E4%25BA%25BA%25E6%25B8%25B8%25E6%2588%258F%2f">
+        <svg version="1.1" xml:space="preserve" viewBox="2 2 28 28" height="30px" width="30px" fill="currentColor">
+            <path
+                d="M26.49,29.86H5.5a3.37,3.37,0,0,1-2.47-1,3.35,3.35,0,0,1-1-2.47V5.48A3.36,3.36,0,0,1,3,3,3.37,3.37,0,0,1,5.5,2h21A3.38,3.38,0,0,1,29,3a3.36,3.36,0,0,1,1,2.46V26.37a3.35,3.35,0,0,1-1,2.47A3.38,3.38,0,0,1,26.49,29.86Zm-5.38-6.71a.79.79,0,0,0,.85-.66L24.73,9.24a.55.55,0,0,0-.18-.46.62.62,0,0,0-.41-.17q-.08,0-16.53,6.11a.59.59,0,0,0-.41.59.57.57,0,0,0,.43.52l4,1.24,1.61,4.83a.62.62,0,0,0,.63.43.56.56,0,0,0,.4-.17L16.54,20l4.09,3A.9.9,0,0,0,21.11,23.15ZM13.8,20.71l-1.21-4q8.72-5.55,8.78-5.55c.15,0,.23,0,.23.16a.18.18,0,0,1,0,.06s-2.51,2.3-7.52,6.8Z" />
+        </svg>
+    </a>
+</div>
+
+  </footer><div id="disqus_thread"></div>
+<script type="application/javascript">
+    window.disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "sucicada" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+</article>
+    </main>
+    
+<footer class="footer">
+    <span>&copy; 2022 <a href="https://sucicada.github.io/blog">SuCicada</a></span>
+    <span>
+        Powered by
+        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+        <path d="M12 6H0l6-6z" />
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu')
+    if (menu) {
+        menu.scrollLeft = localStorage.getItem("menu-scroll-position");
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var mybutton = document.getElementById("top-link");
+    window.onscroll = function () {
+        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
+            mybutton.style.visibility = "visible";
+            mybutton.style.opacity = "1";
+        } else {
+            mybutton.style.visibility = "hidden";
+            mybutton.style.opacity = "0";
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        if (document.body.className.includes("dark")) {
+            document.body.classList.remove('dark');
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            document.body.classList.add('dark');
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+<script>
+    document.querySelectorAll('pre > code').forEach((codeblock) => {
+        const container = codeblock.parentNode.parentNode;
+
+        const copybutton = document.createElement('button');
+        copybutton.classList.add('copy-code');
+        copybutton.innerHTML = 'copy';
+
+        function copyingDone() {
+            copybutton.innerHTML = 'copied!';
+            setTimeout(() => {
+                copybutton.innerHTML = 'copy';
+            }, 2000);
+        }
+
+        copybutton.addEventListener('click', (cb) => {
+            if ('clipboard' in navigator) {
+                navigator.clipboard.writeText(codeblock.textContent);
+                copyingDone();
+                return;
+            }
+
+            const range = document.createRange();
+            range.selectNodeContents(codeblock);
+            const selection = window.getSelection();
+            selection.removeAllRanges();
+            selection.addRange(range);
+            try {
+                document.execCommand('copy');
+                copyingDone();
+            } catch (e) { };
+            selection.removeRange(range);
+        });
+
+        if (container.classList.contains("highlight")) {
+            container.appendChild(copybutton);
+        } else if (container.parentNode.firstChild == container) {
+            
+        } else if (codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName == "TABLE") {
+            
+            codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(copybutton);
+        } else {
+            
+            codeblock.parentNode.appendChild(copybutton);
+        }
+    });
+</script>
+</body>
+
+</html>

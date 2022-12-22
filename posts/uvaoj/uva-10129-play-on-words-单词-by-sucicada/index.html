@@ -1,0 +1,568 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto">
+
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>UVA 10129 - Play on Words (单词) By SuCicada | SuCicada</title>
+<meta name="keywords" content="UVaOJ">
+<meta name="description" content="例题6-16 单词（Play On Words, UVa 10129）
+输入n（n≤100000）个单词，是否可以把所有这些单词排成一个序列，使得每个单词的
+第一个字母和上一个单词的最后一个字母相同（例如acm、malform、mouse）。每个单词最多包含1000个小写字母。输入中可以有重复单词。
+Sample Input
+3
+2
+acm
+ibm
+3
+acm
+malform
+mouse
+2
+ok
+ok
+Sample Output
+The door cannot be opened.
+Ordering is possible.
+The door cannot be opened.
+本家链接
+将一个单词看做是首字母到尾字母的一条路，所以这条路我们只关心头尾，即首尾两个字母，不关心中间字母。
+所以我们可以构造一个图，26*26的图，有向的。其中的边即是一个单词。由此我们便无需关心重复以及首尾字母相同的具体单词了，只关心具有同样首尾的单词的数量。
+所以这道题就成为了：构造了一个图，是否存在欧拉回路。
+存在欧拉回路条件：
+图连通 除了起点和终点，其余每个点的出入度都必须一样。 起点和终点的出入度之差为0或各为1。 用dfs判断连通，用数组记录各个点的出入度。
+#include&lt;iostream&gt; #include&lt;string&gt; #include&lt;cstring&gt; using namespace std; /* x --&gt; y */ int dict[33][33]; int inDegree[33]; int outDegree[33]; int N; int SUM = 26; int dfs(int w){ /* start at w */ int road = 0; for(int i=0;i&lt;SUM;i&#43;&#43;){ /* 找到了对应的尾字母，即存在一个单词，一条路 */ if(dict[w][i]==1){ dict[w][i] = 2; /* 走过了 */ road = 1; /* 路标记 */ dfs(i); /* 找下一个 */ } return road; } int main(){ int T; cin&gt;&gt;T; while(T--){ cin&gt;&gt;N; int n=N; memset(dict,0,sizeof(dict)); memset(inDegree,0,sizeof(inDegree)); memset(outDegree,0,sizeof(outDegree)); string s; while(n--){ cin&gt;&gt;s; int x = s[0]-&#39;a&#39;; int y = s[s.">
+<meta name="author" content="SuCicada">
+<link rel="canonical" href="https://sucicada.github.io/blog/posts/uvaoj/uva-10129-play-on-words-%E5%8D%95%E8%AF%8D-by-sucicada/">
+<link crossorigin="anonymous" href="/blog/assets/css/stylesheet.5b5501da54f21435c8f8010d1de02123ae8d1ada696b48c6530ec4eea283e7d6.css" integrity="sha256-W1UB2lTyFDXI&#43;AENHeAhI66NGtppa0jGUw7E7qKD59Y=" rel="preload stylesheet" as="style">
+<link rel="icon" href="https://sucicada.github.io/blog/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="https://sucicada.github.io/blog/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://sucicada.github.io/blog/favicon-32x32.png">
+<link rel="apple-touch-icon" href="https://sucicada.github.io/blog/apple-touch-icon.png">
+<link rel="mask-icon" href="https://sucicada.github.io/blog/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --hljs-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-track {
+                background: 0 0;
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-thumb {
+                border-color: var(--theme);
+            }
+        }
+
+    </style>
+</noscript><meta property="og:title" content="UVA 10129 - Play on Words (单词) By SuCicada" />
+<meta property="og:description" content="例题6-16 单词（Play On Words, UVa 10129）
+输入n（n≤100000）个单词，是否可以把所有这些单词排成一个序列，使得每个单词的
+第一个字母和上一个单词的最后一个字母相同（例如acm、malform、mouse）。每个单词最多包含1000个小写字母。输入中可以有重复单词。
+Sample Input
+3
+2
+acm
+ibm
+3
+acm
+malform
+mouse
+2
+ok
+ok
+Sample Output
+The door cannot be opened.
+Ordering is possible.
+The door cannot be opened.
+本家链接
+将一个单词看做是首字母到尾字母的一条路，所以这条路我们只关心头尾，即首尾两个字母，不关心中间字母。
+所以我们可以构造一个图，26*26的图，有向的。其中的边即是一个单词。由此我们便无需关心重复以及首尾字母相同的具体单词了，只关心具有同样首尾的单词的数量。
+所以这道题就成为了：构造了一个图，是否存在欧拉回路。
+存在欧拉回路条件：
+图连通 除了起点和终点，其余每个点的出入度都必须一样。 起点和终点的出入度之差为0或各为1。 用dfs判断连通，用数组记录各个点的出入度。
+#include&lt;iostream&gt; #include&lt;string&gt; #include&lt;cstring&gt; using namespace std; /* x --&gt; y */ int dict[33][33]; int inDegree[33]; int outDegree[33]; int N; int SUM = 26; int dfs(int w){ /* start at w */ int road = 0; for(int i=0;i&lt;SUM;i&#43;&#43;){ /* 找到了对应的尾字母，即存在一个单词，一条路 */ if(dict[w][i]==1){ dict[w][i] = 2; /* 走过了 */ road = 1; /* 路标记 */ dfs(i); /* 找下一个 */ } return road; } int main(){ int T; cin&gt;&gt;T; while(T--){ cin&gt;&gt;N; int n=N; memset(dict,0,sizeof(dict)); memset(inDegree,0,sizeof(inDegree)); memset(outDegree,0,sizeof(outDegree)); string s; while(n--){ cin&gt;&gt;s; int x = s[0]-&#39;a&#39;; int y = s[s." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://sucicada.github.io/blog/posts/uvaoj/uva-10129-play-on-words-%E5%8D%95%E8%AF%8D-by-sucicada/" /><meta property="og:image" content="https://sucicada.github.io/blog/papermod-cover.png"/><meta property="article:section" content="posts" />
+
+
+
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="https://sucicada.github.io/blog/papermod-cover.png"/>
+
+<meta name="twitter:title" content="UVA 10129 - Play on Words (单词) By SuCicada"/>
+<meta name="twitter:description" content="例题6-16 单词（Play On Words, UVa 10129）
+输入n（n≤100000）个单词，是否可以把所有这些单词排成一个序列，使得每个单词的
+第一个字母和上一个单词的最后一个字母相同（例如acm、malform、mouse）。每个单词最多包含1000个小写字母。输入中可以有重复单词。
+Sample Input
+3
+2
+acm
+ibm
+3
+acm
+malform
+mouse
+2
+ok
+ok
+Sample Output
+The door cannot be opened.
+Ordering is possible.
+The door cannot be opened.
+本家链接
+将一个单词看做是首字母到尾字母的一条路，所以这条路我们只关心头尾，即首尾两个字母，不关心中间字母。
+所以我们可以构造一个图，26*26的图，有向的。其中的边即是一个单词。由此我们便无需关心重复以及首尾字母相同的具体单词了，只关心具有同样首尾的单词的数量。
+所以这道题就成为了：构造了一个图，是否存在欧拉回路。
+存在欧拉回路条件：
+图连通 除了起点和终点，其余每个点的出入度都必须一样。 起点和终点的出入度之差为0或各为1。 用dfs判断连通，用数组记录各个点的出入度。
+#include&lt;iostream&gt; #include&lt;string&gt; #include&lt;cstring&gt; using namespace std; /* x --&gt; y */ int dict[33][33]; int inDegree[33]; int outDegree[33]; int N; int SUM = 26; int dfs(int w){ /* start at w */ int road = 0; for(int i=0;i&lt;SUM;i&#43;&#43;){ /* 找到了对应的尾字母，即存在一个单词，一条路 */ if(dict[w][i]==1){ dict[w][i] = 2; /* 走过了 */ road = 1; /* 路标记 */ dfs(i); /* 找下一个 */ } return road; } int main(){ int T; cin&gt;&gt;T; while(T--){ cin&gt;&gt;N; int n=N; memset(dict,0,sizeof(dict)); memset(inDegree,0,sizeof(inDegree)); memset(outDegree,0,sizeof(outDegree)); string s; while(n--){ cin&gt;&gt;s; int x = s[0]-&#39;a&#39;; int y = s[s."/>
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "Posts",
+      "item": "https://sucicada.github.io/blog/posts/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  3 ,
+      "name": "UVA 10129 - Play on Words (单词) By SuCicada",
+      "item": "https://sucicada.github.io/blog/posts/uvaoj/uva-10129-play-on-words-%E5%8D%95%E8%AF%8D-by-sucicada/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "UVA 10129 - Play on Words (单词) By SuCicada",
+  "name": "UVA 10129 - Play on Words (单词) By SuCicada",
+  "description": "例题6-16 单词（Play On Words, UVa 10129）\n输入n（n≤100000）个单词，是否可以把所有这些单词排成一个序列，使得每个单词的\n第一个字母和上一个单词的最后一个字母相同（例如acm、malform、mouse）。每个单词最多包含1000个小写字母。输入中可以有重复单词。\nSample Input\n3\n2\nacm\nibm\n3\nacm\nmalform\nmouse\n2\nok\nok\nSample Output\nThe door cannot be opened.\nOrdering is possible.\nThe door cannot be opened.\n本家链接\n将一个单词看做是首字母到尾字母的一条路，所以这条路我们只关心头尾，即首尾两个字母，不关心中间字母。\n所以我们可以构造一个图，26*26的图，有向的。其中的边即是一个单词。由此我们便无需关心重复以及首尾字母相同的具体单词了，只关心具有同样首尾的单词的数量。\n所以这道题就成为了：构造了一个图，是否存在欧拉回路。\n存在欧拉回路条件：\n图连通 除了起点和终点，其余每个点的出入度都必须一样。 起点和终点的出入度之差为0或各为1。 用dfs判断连通，用数组记录各个点的出入度。\n#include\u0026lt;iostream\u0026gt; #include\u0026lt;string\u0026gt; #include\u0026lt;cstring\u0026gt; using namespace std; /* x --\u0026gt; y */ int dict[33][33]; int inDegree[33]; int outDegree[33]; int N; int SUM = 26; int dfs(int w){ /* start at w */ int road = 0; for(int i=0;i\u0026lt;SUM;i++){ /* 找到了对应的尾字母，即存在一个单词，一条路 */ if(dict[w][i]==1){ dict[w][i] = 2; /* 走过了 */ road = 1; /* 路标记 */ dfs(i); /* 找下一个 */ } return road; } int main(){ int T; cin\u0026gt;\u0026gt;T; while(T--){ cin\u0026gt;\u0026gt;N; int n=N; memset(dict,0,sizeof(dict)); memset(inDegree,0,sizeof(inDegree)); memset(outDegree,0,sizeof(outDegree)); string s; while(n--){ cin\u0026gt;\u0026gt;s; int x = s[0]-\u0026#39;a\u0026#39;; int y = s[s.",
+  "keywords": [
+    "UVaOJ"
+  ],
+  "articleBody": " 例题6-16 单词（Play On Words, UVa 10129）\n输入n（n≤100000）个单词，是否可以把所有这些单词排成一个序列，使得每个单词的\n第一个字母和上一个单词的最后一个字母相同（例如acm、malform、mouse）。每个单词最多包含1000个小写字母。输入中可以有重复单词。\nSample Input\n3\n2\nacm\nibm\n3\nacm\nmalform\nmouse\n2\nok\nok\nSample Output\nThe door cannot be opened.\nOrdering is possible.\nThe door cannot be opened.\n本家链接\n将一个单词看做是首字母到尾字母的一条路，所以这条路我们只关心头尾，即首尾两个字母，不关心中间字母。\n所以我们可以构造一个图，26*26的图，有向的。其中的边即是一个单词。由此我们便无需关心重复以及首尾字母相同的具体单词了，只关心具有同样首尾的单词的数量。\n所以这道题就成为了：构造了一个图，是否存在欧拉回路。\n存在欧拉回路条件：\n图连通 除了起点和终点，其余每个点的出入度都必须一样。 起点和终点的出入度之差为0或各为1。 用dfs判断连通，用数组记录各个点的出入度。\n#include #include #include using namespace std; /* x --\u003e y */ int dict[33][33]; int inDegree[33]; int outDegree[33]; int N; int SUM = 26; int dfs(int w){ /* start at w */ int road = 0; for(int i=0;i\u003cSUM;i++){ /* 找到了对应的尾字母，即存在一个单词，一条路 */ if(dict[w][i]==1){ dict[w][i] = 2; /* 走过了 */ road = 1; /* 路标记 */ dfs(i); /* 找下一个 */ } return road; } int main(){ int T; cin\u003e\u003eT; while(T--){ cin\u003e\u003eN; int n=N; memset(dict,0,sizeof(dict)); memset(inDegree,0,sizeof(inDegree)); memset(outDegree,0,sizeof(outDegree)); string s; while(n--){ cin\u003e\u003es; int x = s[0]-'a'; int y = s[s.size()-1]-'a'; dict[x][y] = dict[y][x] = 1; outDegree[x] ++; inDegree[y] ++; } int res = 0; int odd = 0; int inOdd = 0; int outOdd = 0; int ok = 1; for(int i=0;i\u003cSUM;i++){ res += dfs('a'+i-'a'); if(outDegree[i]!=inDegree[i]){ if((outDegree[i] - inDegree[i])==1){ outOdd ++; }else if((outDegree[i] - inDegree[i])==-1){ inOdd ++; }else{ ok = 0; } } } if(res == 1 \u0026\u0026 ok == 1 \u0026\u0026 ((inOdd+outOdd==0) || (inOdd==1 \u0026\u0026 outOdd==1))){ cout\u003c\u003c\"Ordering is possible.\"\u003c\u003cendl; }else{ cout\u003c\u003c\"The door cannot be opened.\"\u003c\u003cendl; } } return 0; } // AC at 2020/08/12 （ps：拖了实在太久了）\n",
+  "wordCount" : "216",
+  "inLanguage": "en",
+  "datePublished": "0001-01-01T00:00:00Z",
+  "dateModified": "0001-01-01T00:00:00Z",
+  "author":{
+    "@type": "Person",
+    "name": "SuCicada"
+  },
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://sucicada.github.io/blog/posts/uvaoj/uva-10129-play-on-words-%E5%8D%95%E8%AF%8D-by-sucicada/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "SuCicada",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://sucicada.github.io/blog/favicon.ico"
+    }
+  }
+}
+</script>
+</head>
+
+<body class="" id="top">
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.body.classList.add('dark');
+    } else if (localStorage.getItem("pref-theme") === "light") {
+        document.body.classList.remove('dark')
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.body.classList.add('dark');
+    }
+
+</script>
+
+<header class="header">
+    <nav class="nav">
+        <div class="logo">
+            <a href="https://sucicada.github.io/blog" accesskey="h" title="SuCicada (Alt + H)">SuCicada</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" accesskey="t" title="(Alt + T)">
+                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu">
+            <li>
+                <a href="https://sucicada.github.io/blog/archives/" title="Archive">
+                    <span>Archive</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://sucicada.github.io/blog/search/" title="Search (Alt &#43; /)" accesskey=/>
+                    <span>Search</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://sucicada.github.io/blog/tags/" title="Tags">
+                    <span>Tags</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://sucicada.github.io/blog/about/" title="About">
+                    <span>About</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+
+    <h1 class="post-title">
+      UVA 10129 - Play on Words (单词) By SuCicada
+    </h1>
+    <div class="post-meta">SuCicada&nbsp;|&nbsp;<a href="https://github.com/SuCicada/mysite-hugo/content/posts/UVaOJ/UVA%2010129%20-%20Play%20on%20Words%20%28%e5%8d%95%e8%af%8d%29%20By%20SuCicada.md" rel="noopener noreferrer" target="_blank">Suggest Changes</a>
+
+</div>
+    <ul class="post-tags">
+      <li><a href="https://sucicada.github.io/blog/tags/uvaoj/">UVaOJ</a></li>
+    </ul>
+  </header> 
+
+  <div class="post-content"><blockquote>
+<p>例题6-16 单词（Play On Words, UVa 10129）<br>
+输入n（n≤100000）个单词，是否可以把所有这些单词排成一个序列，使得每个单词的<br>
+第一个字母和上一个单词的最后一个字母相同（例如acm、malform、mouse）。每个单词最多包含1000个小写字母。输入中可以有重复单词。<br>
+<strong>Sample Input</strong><br>
+3<br>
+2<br>
+acm<br>
+ibm<br>
+3<br>
+acm<br>
+malform<br>
+mouse<br>
+2<br>
+ok<br>
+ok<br>
+<strong>Sample Output</strong><br>
+The door cannot be opened.<br>
+Ordering is possible.<br>
+The door cannot be opened.</p>
+</blockquote>
+<p><a href="https://onlinejudge.org/index.php?option=com_onlinejudge&amp;Itemid=8&amp;category=838&amp;page=show_problem&amp;problem=1070">本家链接</a></p>
+<hr>
+<p>将一个单词看做是首字母到尾字母的一条路，所以这条路我们只关心头尾，即首尾两个字母，不关心中间字母。<br>
+所以我们可以构造一个图，26*26的图，有向的。其中的边即是一个单词。由此我们便无需关心重复以及首尾字母相同的具体单词了，只关心具有同样首尾的单词的数量。<br>
+所以这道题就成为了：构造了一个图，是否存在欧拉回路。</p>
+<p>存在欧拉回路条件：</p>
+<ol>
+<li>图连通</li>
+<li>除了起点和终点，其余每个点的出入度都必须一样。</li>
+<li>起点和终点的出入度之差为0或各为1。</li>
+</ol>
+<p>用dfs判断连通，用数组记录各个点的出入度。</p>
+<hr>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="cp">#include</span><span class="cpf">&lt;iostream&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span><span class="cpf">&lt;string&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span><span class="cpf">&lt;cstring&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp"></span><span class="k">using</span> <span class="k">namespace</span> <span class="n">std</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="cm">/* x --&gt; y */</span>
+</span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="n">dict</span><span class="p">[</span><span class="mi">33</span><span class="p">][</span><span class="mi">33</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="n">inDegree</span><span class="p">[</span><span class="mi">33</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="n">outDegree</span><span class="p">[</span><span class="mi">33</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="n">N</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="n">SUM</span> <span class="o">=</span> <span class="mi">26</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="nf">dfs</span><span class="p">(</span><span class="kt">int</span> <span class="n">w</span><span class="p">){</span>
+</span></span><span class="line"><span class="cl">    <span class="cm">/* start at w */</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="n">road</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span><span class="n">i</span><span class="o">&lt;</span><span class="n">SUM</span><span class="p">;</span><span class="n">i</span><span class="o">++</span><span class="p">){</span>
+</span></span><span class="line"><span class="cl">        <span class="cm">/* 找到了对应的尾字母，即存在一个单词，一条路 */</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span><span class="p">(</span><span class="n">dict</span><span class="p">[</span><span class="n">w</span><span class="p">][</span><span class="n">i</span><span class="p">]</span><span class="o">==</span><span class="mi">1</span><span class="p">){</span>
+</span></span><span class="line"><span class="cl">            <span class="n">dict</span><span class="p">[</span><span class="n">w</span><span class="p">][</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="mi">2</span><span class="p">;</span> <span class="cm">/* 走过了 */</span>
+</span></span><span class="line"><span class="cl">            <span class="n">road</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>       <span class="cm">/* 路标记 */</span>
+</span></span><span class="line"><span class="cl">            <span class="n">dfs</span><span class="p">(</span><span class="n">i</span><span class="p">);</span>         <span class="cm">/* 找下一个 */</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="n">road</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="n">main</span><span class="p">(){</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="n">T</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">cin</span><span class="o">&gt;&gt;</span><span class="n">T</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="k">while</span><span class="p">(</span><span class="n">T</span><span class="o">--</span><span class="p">){</span>
+</span></span><span class="line"><span class="cl">        <span class="n">cin</span><span class="o">&gt;&gt;</span><span class="n">N</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="kt">int</span> <span class="n">n</span><span class="o">=</span><span class="n">N</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="n">memset</span><span class="p">(</span><span class="n">dict</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="k">sizeof</span><span class="p">(</span><span class="n">dict</span><span class="p">));</span>
+</span></span><span class="line"><span class="cl">        <span class="n">memset</span><span class="p">(</span><span class="n">inDegree</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="k">sizeof</span><span class="p">(</span><span class="n">inDegree</span><span class="p">));</span>
+</span></span><span class="line"><span class="cl">        <span class="n">memset</span><span class="p">(</span><span class="n">outDegree</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="k">sizeof</span><span class="p">(</span><span class="n">outDegree</span><span class="p">));</span>
+</span></span><span class="line"><span class="cl">        <span class="n">string</span> <span class="n">s</span><span class="p">;</span>   
+</span></span><span class="line"><span class="cl">        <span class="k">while</span><span class="p">(</span><span class="n">n</span><span class="o">--</span><span class="p">){</span>
+</span></span><span class="line"><span class="cl">            <span class="n">cin</span><span class="o">&gt;&gt;</span><span class="n">s</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">            <span class="kt">int</span> <span class="n">x</span> <span class="o">=</span> <span class="n">s</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">-</span><span class="sc">&#39;a&#39;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">            <span class="kt">int</span> <span class="n">y</span> <span class="o">=</span> <span class="n">s</span><span class="p">[</span><span class="n">s</span><span class="p">.</span><span class="n">size</span><span class="p">()</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">-</span><span class="sc">&#39;a&#39;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">            <span class="n">dict</span><span class="p">[</span><span class="n">x</span><span class="p">][</span><span class="n">y</span><span class="p">]</span> <span class="o">=</span> <span class="n">dict</span><span class="p">[</span><span class="n">y</span><span class="p">][</span><span class="n">x</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">            <span class="n">outDegree</span><span class="p">[</span><span class="n">x</span><span class="p">]</span> <span class="o">++</span><span class="p">;</span> 
+</span></span><span class="line"><span class="cl">            <span class="n">inDegree</span><span class="p">[</span><span class="n">y</span><span class="p">]</span> <span class="o">++</span><span class="p">;</span> 
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="kt">int</span> <span class="n">res</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="kt">int</span> <span class="n">odd</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="kt">int</span> <span class="n">inOdd</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="kt">int</span> <span class="n">outOdd</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="kt">int</span> <span class="n">ok</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span><span class="n">i</span><span class="o">&lt;</span><span class="n">SUM</span><span class="p">;</span><span class="n">i</span><span class="o">++</span><span class="p">){</span>
+</span></span><span class="line"><span class="cl">            <span class="n">res</span> <span class="o">+=</span> <span class="n">dfs</span><span class="p">(</span><span class="sc">&#39;a&#39;</span><span class="o">+</span><span class="n">i</span><span class="o">-</span><span class="sc">&#39;a&#39;</span><span class="p">);</span>   
+</span></span><span class="line"><span class="cl">            <span class="k">if</span><span class="p">(</span><span class="n">outDegree</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">!=</span><span class="n">inDegree</span><span class="p">[</span><span class="n">i</span><span class="p">]){</span>
+</span></span><span class="line"><span class="cl">                <span class="k">if</span><span class="p">((</span><span class="n">outDegree</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">-</span> <span class="n">inDegree</span><span class="p">[</span><span class="n">i</span><span class="p">])</span><span class="o">==</span><span class="mi">1</span><span class="p">){</span>
+</span></span><span class="line"><span class="cl">                    <span class="n">outOdd</span> <span class="o">++</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">                <span class="p">}</span><span class="k">else</span> <span class="k">if</span><span class="p">((</span><span class="n">outDegree</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">-</span> <span class="n">inDegree</span><span class="p">[</span><span class="n">i</span><span class="p">])</span><span class="o">==-</span><span class="mi">1</span><span class="p">){</span>
+</span></span><span class="line"><span class="cl">                    <span class="n">inOdd</span> <span class="o">++</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">                <span class="p">}</span><span class="k">else</span><span class="p">{</span>
+</span></span><span class="line"><span class="cl">                    <span class="n">ok</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">                <span class="p">}</span>
+</span></span><span class="line"><span class="cl">            <span class="p">}</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span><span class="p">(</span><span class="n">res</span> <span class="o">==</span> <span class="mi">1</span> <span class="o">&amp;&amp;</span> 
+</span></span><span class="line"><span class="cl">            <span class="n">ok</span> <span class="o">==</span> <span class="mi">1</span> <span class="o">&amp;&amp;</span>
+</span></span><span class="line"><span class="cl">            <span class="p">((</span><span class="n">inOdd</span><span class="o">+</span><span class="n">outOdd</span><span class="o">==</span><span class="mi">0</span><span class="p">)</span> <span class="o">||</span> <span class="p">(</span><span class="n">inOdd</span><span class="o">==</span><span class="mi">1</span> <span class="o">&amp;&amp;</span> <span class="n">outOdd</span><span class="o">==</span><span class="mi">1</span><span class="p">))){</span>
+</span></span><span class="line"><span class="cl">            <span class="n">cout</span><span class="o">&lt;&lt;</span><span class="s">&#34;Ordering is possible.&#34;</span><span class="o">&lt;&lt;</span><span class="n">endl</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span><span class="k">else</span><span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="n">cout</span><span class="o">&lt;&lt;</span><span class="s">&#34;The door cannot be opened.&#34;</span><span class="o">&lt;&lt;</span><span class="n">endl</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// AC at 2020/08/12
+</span></span></span></code></pre></div><hr>
+<p>（ps：拖了实在太久了）</p>
+
+
+  </div>
+
+  <footer class="post-footer">
+<nav class="paginav">
+  <a class="prev" href="https://sucicada.github.io/blog/posts/uvaoj/uva-10082-wertyu%E9%94%99%E4%BD%8D%E9%94%AE/">
+    <span class="title">« Prev</span>
+    <br>
+    <span>uva 10082 WERTYU（错位键）</span>
+  </a>
+  <a class="next" href="https://sucicada.github.io/blog/posts/uvaoj/uva-1030-delta-wave/">
+    <span class="title">Next »</span>
+    <br>
+    <span>UVA 1030  Delta-wave</span>
+  </a>
+</nav>
+
+
+<div class="share-buttons">
+    <a target="_blank" rel="noopener noreferrer" aria-label="share UVA 10129 - Play on Words (单词) By SuCicada on twitter"
+        href="https://twitter.com/intent/tweet/?text=UVA%2010129%20-%20Play%20on%20Words%20%28%e5%8d%95%e8%af%8d%29%20By%20SuCicada&amp;url=https%3a%2f%2fsucicada.github.io%2fblog%2fposts%2fuvaoj%2fuva-10129-play-on-words-%25E5%258D%2595%25E8%25AF%258D-by-sucicada%2f&amp;hashtags=UVaOJ">
+        <svg version="1.1" viewBox="0 0 512 512" xml:space="preserve" height="30px" width="30px" fill="currentColor">
+            <path
+                d="M449.446,0c34.525,0 62.554,28.03 62.554,62.554l0,386.892c0,34.524 -28.03,62.554 -62.554,62.554l-386.892,0c-34.524,0 -62.554,-28.03 -62.554,-62.554l0,-386.892c0,-34.524 28.029,-62.554 62.554,-62.554l386.892,0Zm-253.927,424.544c135.939,0 210.268,-112.643 210.268,-210.268c0,-3.218 0,-6.437 -0.153,-9.502c14.406,-10.421 26.973,-23.448 36.935,-38.314c-13.18,5.824 -27.433,9.809 -42.452,11.648c15.326,-9.196 26.973,-23.602 32.49,-40.92c-14.252,8.429 -30.038,14.56 -46.896,17.931c-13.487,-14.406 -32.644,-23.295 -53.946,-23.295c-40.767,0 -73.87,33.104 -73.87,73.87c0,5.824 0.613,11.494 1.992,16.858c-61.456,-3.065 -115.862,-32.49 -152.337,-77.241c-6.284,10.881 -9.962,23.601 -9.962,37.088c0,25.594 13.027,48.276 32.95,61.456c-12.107,-0.307 -23.448,-3.678 -33.41,-9.196l0,0.92c0,35.862 25.441,65.594 59.311,72.49c-6.13,1.686 -12.72,2.606 -19.464,2.606c-4.751,0 -9.348,-0.46 -13.946,-1.38c9.349,29.426 36.628,50.728 68.965,51.341c-25.287,19.771 -57.164,31.571 -91.8,31.571c-5.977,0 -11.801,-0.306 -17.625,-1.073c32.337,21.15 71.264,33.41 112.95,33.41Z" />
+        </svg>
+    </a>
+    <a target="_blank" rel="noopener noreferrer" aria-label="share UVA 10129 - Play on Words (单词) By SuCicada on telegram"
+        href="https://telegram.me/share/url?text=UVA%2010129%20-%20Play%20on%20Words%20%28%e5%8d%95%e8%af%8d%29%20By%20SuCicada&amp;url=https%3a%2f%2fsucicada.github.io%2fblog%2fposts%2fuvaoj%2fuva-10129-play-on-words-%25E5%258D%2595%25E8%25AF%258D-by-sucicada%2f">
+        <svg version="1.1" xml:space="preserve" viewBox="2 2 28 28" height="30px" width="30px" fill="currentColor">
+            <path
+                d="M26.49,29.86H5.5a3.37,3.37,0,0,1-2.47-1,3.35,3.35,0,0,1-1-2.47V5.48A3.36,3.36,0,0,1,3,3,3.37,3.37,0,0,1,5.5,2h21A3.38,3.38,0,0,1,29,3a3.36,3.36,0,0,1,1,2.46V26.37a3.35,3.35,0,0,1-1,2.47A3.38,3.38,0,0,1,26.49,29.86Zm-5.38-6.71a.79.79,0,0,0,.85-.66L24.73,9.24a.55.55,0,0,0-.18-.46.62.62,0,0,0-.41-.17q-.08,0-16.53,6.11a.59.59,0,0,0-.41.59.57.57,0,0,0,.43.52l4,1.24,1.61,4.83a.62.62,0,0,0,.63.43.56.56,0,0,0,.4-.17L16.54,20l4.09,3A.9.9,0,0,0,21.11,23.15ZM13.8,20.71l-1.21-4q8.72-5.55,8.78-5.55c.15,0,.23,0,.23.16a.18.18,0,0,1,0,.06s-2.51,2.3-7.52,6.8Z" />
+        </svg>
+    </a>
+</div>
+
+  </footer><div id="disqus_thread"></div>
+<script type="application/javascript">
+    window.disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "sucicada" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+</article>
+    </main>
+    
+<footer class="footer">
+    <span>&copy; 2022 <a href="https://sucicada.github.io/blog">SuCicada</a></span>
+    <span>
+        Powered by
+        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+        <path d="M12 6H0l6-6z" />
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu')
+    if (menu) {
+        menu.scrollLeft = localStorage.getItem("menu-scroll-position");
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var mybutton = document.getElementById("top-link");
+    window.onscroll = function () {
+        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
+            mybutton.style.visibility = "visible";
+            mybutton.style.opacity = "1";
+        } else {
+            mybutton.style.visibility = "hidden";
+            mybutton.style.opacity = "0";
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        if (document.body.className.includes("dark")) {
+            document.body.classList.remove('dark');
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            document.body.classList.add('dark');
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+<script>
+    document.querySelectorAll('pre > code').forEach((codeblock) => {
+        const container = codeblock.parentNode.parentNode;
+
+        const copybutton = document.createElement('button');
+        copybutton.classList.add('copy-code');
+        copybutton.innerHTML = 'copy';
+
+        function copyingDone() {
+            copybutton.innerHTML = 'copied!';
+            setTimeout(() => {
+                copybutton.innerHTML = 'copy';
+            }, 2000);
+        }
+
+        copybutton.addEventListener('click', (cb) => {
+            if ('clipboard' in navigator) {
+                navigator.clipboard.writeText(codeblock.textContent);
+                copyingDone();
+                return;
+            }
+
+            const range = document.createRange();
+            range.selectNodeContents(codeblock);
+            const selection = window.getSelection();
+            selection.removeAllRanges();
+            selection.addRange(range);
+            try {
+                document.execCommand('copy');
+                copyingDone();
+            } catch (e) { };
+            selection.removeRange(range);
+        });
+
+        if (container.classList.contains("highlight")) {
+            container.appendChild(copybutton);
+        } else if (container.parentNode.firstChild == container) {
+            
+        } else if (codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName == "TABLE") {
+            
+            codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(copybutton);
+        } else {
+            
+            codeblock.parentNode.appendChild(copybutton);
+        }
+    });
+</script>
+</body>
+
+</html>

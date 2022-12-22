@@ -10,7 +10,7 @@
 <meta name="description" content="Posts - SuCicada">
 <meta name="author" content="SuCicada">
 <link rel="canonical" href="https://sucicada.github.io/blog/posts/">
-<link crossorigin="anonymous" href="/blog/assets/css/stylesheet.4398b09e795c3aac93a04f4160281925a588bcdf14941ead87ab7bfe555ba854.css" integrity="sha256-Q5iwnnlcOqyToE9BYCgZJaWIvN8UlB6th6t7/lVbqFQ=" rel="preload stylesheet" as="style">
+<link crossorigin="anonymous" href="/blog/assets/css/stylesheet.5b5501da54f21435c8f8010d1de02123ae8d1ada696b48c6530ec4eea283e7d6.css" integrity="sha256-W1UB2lTyFDXI&#43;AENHeAhI66NGtppa0jGUw7E7qKD59Y=" rel="preload stylesheet" as="style">
 <link rel="icon" href="https://sucicada.github.io/blog/favicon.ico">
 <link rel="icon" type="image/png" sizes="16x16" href="https://sucicada.github.io/blog/favicon-16x16.png">
 <link rel="icon" type="image/png" sizes="32x32" href="https://sucicada.github.io/blog/favicon-32x32.png">
@@ -56,7 +56,7 @@
 
     </style>
 </noscript><meta property="og:title" content="Posts" />
-<meta property="og:description" content="Theme PaperMod - https://github.com/adityatelange/hugo-PaperMod" />
+<meta property="og:description" content="SuCicada - https://github.com/SuCicada" />
 <meta property="og:type" content="website" />
 <meta property="og:url" content="https://sucicada.github.io/blog/posts/" /><meta property="og:image" content="https://sucicada.github.io/blog/papermod-cover.png"/>
 
@@ -64,7 +64,7 @@
 <meta name="twitter:image" content="https://sucicada.github.io/blog/papermod-cover.png"/>
 
 <meta name="twitter:title" content="Posts"/>
-<meta name="twitter:description" content="Theme PaperMod - https://github.com/adityatelange/hugo-PaperMod"/>
+<meta name="twitter:description" content="SuCicada - https://github.com/SuCicada"/>
 
 
 <script type="application/ld+json">
@@ -124,7 +124,7 @@
         </div>
         <ul id="menu">
             <li>
-                <a href="https://sucicada.github.io/blog/archives" title="Archive">
+                <a href="https://sucicada.github.io/blog/archives/" title="Archive">
                     <span>Archive</span>
                 </a>
             </li>
@@ -139,25 +139,8 @@
                 </a>
             </li>
             <li>
-                <a href="https://discord.gg/ahpmTvhVmp" title="Discord">
-                    <span>Discord</span>&nbsp;
-                    <svg fill="none" shape-rendering="geometricPrecision" stroke="currentColor" stroke-linecap="round"
-                        stroke-linejoin="round" stroke-width="2.5" viewBox="0 0 24 24" height="12" width="12">
-                        <path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"></path>
-                        <path d="M15 3h6v6"></path>
-                        <path d="M10 14L21 3"></path>
-                    </svg>
-                </a>
-            </li>
-            <li>
-                <a href="https://github.com/adityatelange/hugo-PaperMod/wiki/" title="WiKi">
-                    <span>WiKi</span>&nbsp;
-                    <svg fill="none" shape-rendering="geometricPrecision" stroke="currentColor" stroke-linecap="round"
-                        stroke-linejoin="round" stroke-width="2.5" viewBox="0 0 24 24" height="12" width="12">
-                        <path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"></path>
-                        <path d="M15 3h6v6"></path>
-                        <path d="M10 14L21 3"></path>
-                    </svg>
+                <a href="https://sucicada.github.io/blog/about/" title="About">
+                    <span>About</span>
                 </a>
             </li>
         </ul>
@@ -180,37 +163,661 @@
 
 <article class="post-entry"> 
   <header class="entry-header">
-    <h2>理想路径（Ideal Path, NEERC 2010, UVa1599）
+    <h2>hugo建站感想
     </h2>
   </header>
   <div class="entry-content">
-    <p>例题6-20 理想路径（Ideal Path, NEERC 2010, UVa1599）
-给一个n个点m条边（2≤n≤100000，1≤m≤200000）的无向图，每条边上都涂有一种颜
-色。求从结点1到结点n的一条路径，使得经过的边数尽量少，在此前提下，经过边的颜色序
-列的字典序最小。一对结点间可能有多条边，一条边可能连接两个相同结点。输入保证结点
-1可以达到结点n。颜色为1～10
-9的整数。
-Sample Input
-4 6
-1 2 1
-1 3 2
-3 4 3
-2 3 1
-2 4 4
-3 1 1
-Sample Output
-2
-1 3
-本家链接
-先找最短路：倒序从终点bfs找。
-在此认为倒序和正序效果一样。只是某些处理逻辑相反。
-bfs之后，可能存在多条最短路，所以再需要一次bfs，来选出颜色最小的路。 降低时间的注意点：
-选择合适的数据结构存储图。 一开始使用了map作为存储图的结构，后来在遍历过程中实在比vector慢了太多。 使用标记记录走过的结点，减少bfs重复计算。 对了2:00 - 2:30 期间uva oj 判题特别慢特别慢。尽量避开。
-#include&lt;iostream&gt; #include&lt;vector&gt; #include&lt;map&gt; #include&lt;queue&gt; #include&lt;cmath&gt; #include&lt;cstring&gt; #include&lt;set&gt; using namespace std; #define mapiter map&lt;int,int&gt;::iterator const int MAX_N = 100005; /* 先找最短路：倒序从终点bfs找。 - 在此认为倒序和正序效果一样。只是某些处理逻辑相反。 bfs之后，可能存在多条最短路，所以再需要一次bfs，来选出颜色最小的路。 一开始使用了map作为存储图的结构，后来在遍历过程中实在比vector慢了太多。 */ /* a-&gt;b map[a][b] == color */ class Node{ public: int next; int color; }; // map&lt;int,int&gt; door[MAX_N]; vector&lt;Node&gt; door[MAX_N]; /* 存储无向图，因为结点太多了 */ int book[MAX_N]; /* 记录每个点距离终点`的最小距离 */ int visit[MAX_N]; /* 记录走过的点 */ int big = (1L&lt;&lt;31)-1; int res[MAX_N]; int N,M; /* n下各点 到n 的距离取最短&#43;1 door[a][b] a -&gt; b log[b] = min(log[b], log[a]&#43;1) */ void bfs(){ queue&lt;int&gt; tmp; tmp....</p>
+    <p>初次尝试使用hugo建站，已经管不了那么多了，不能再继续耽误下去了。
+然后</p>
   </div>
-  <footer class="entry-footer"><span title='2022-12-13 16:23:31 +0900 +0900'>December 13, 2022</span>&nbsp;·&nbsp;2 min&nbsp;·&nbsp;SuCicada</footer>
-  <a class="entry-link" aria-label="post link to 理想路径（Ideal Path, NEERC 2010, UVa1599）" href="https://sucicada.github.io/blog/posts/uvaoj/%E7%90%86%E6%83%B3%E8%B7%AF%E5%BE%84ideal-path-neerc-2010-uva1599/"></a>
+  <footer class="entry-footer"><span title='2022-12-22 14:17:00 +0900 +0900'>2022-12-22</span>&nbsp;·&nbsp;SuCicada</footer>
+  <a class="entry-link" aria-label="post link to hugo建站感想" href="https://sucicada.github.io/blog/posts/%E6%97%A5%E8%A8%98/hugo%E5%BB%BA%E7%AB%99%E6%84%9F%E6%83%B3/"></a>
 </article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2>UVA 1103 - Ancient Messages（古代象形符号） By SuCicada
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>本题的目的是识别3000年前古埃及用到的6种象形文字，如图6-10所示。
+图6-10 古代象形符号
+每组数据包含一个H行W列的字符矩阵（H≤200，W≤50），每个字符为4个相邻像素点的
+十六进制（例如，10011100对应的字符就是9c）。转化为二进制后1表示黑点，0表示白点。
+输入满足：
+不会出现上述6种符号之外的其他符号。
+输入至少包含一个符号，且每个黑像素都属于一个符号。
+每个符号都是一个四连块，并且不同符号不会相互接触，也不会相互包含。
+如果两个黑像素有公共顶点，则它们一定有一个相同的相邻黑像素（有公共边）。
+符号的形状一定和表6-9中的图形拓扑等价（可以随意拉伸但不能拉断）。
+要求按照字典序输出所有符号。例如，图6-11中的输出应为AKW。
+样例参见 https://www.udebug.com/UVa/1103
+本家连接
+分为以下几个步骤：
+关键在于辨识每个图形中的空白四连块的数量。就是UVA 572 - Oil Deposits (油田) By SuCicada的升级版。
+好就好在每个图形的白块数量不同，然而如何区分图形内的空白和图形外的空白是个问题。所以我在一开始就把外面的空白都涂黑了。
+然后遍历，遍历到文字就将其当作油田求内部连通白块。
+（最后的排序是手动实现的插入（:P）
+/*
+1. 16进制 转 2进制
+2. 从最外围开始融化 白纸
+3. 遍历到文字黑色边缘,
+4. 向内遍历找&#34;油田&#34;, 即4连块
+5. 计算每个文字的4连块数量
+6. 结束文字们, 根据4连块数量映射文字, 排序
+*/
+#include&lt;iostream&gt; #include&lt;string&gt; #include&lt;algorithm&gt; #include&lt;cstring&gt; using namespace std; /* 1. 16进制 转 2进制 2. 从最外围开始融化 白纸 3. 遍历到文字黑色边缘, 4. 向内遍历找&#34;油田&#34;, 即4连块 5. 计算每个文字的4连块数量 6....</p>
+  </div>
+  <footer class="entry-footer"><span title='2020-08-01 00:00:00 +0000 UTC'>2020-08-01</span>&nbsp;·&nbsp;SuCicada</footer>
+  <a class="entry-link" aria-label="post link to UVA 1103 - Ancient Messages（古代象形符号） By SuCicada" href="https://sucicada.github.io/blog/posts/uvaoj/uva-1103-ancient-messages%E5%8F%A4%E4%BB%A3%E8%B1%A1%E5%BD%A2%E7%AC%A6%E5%8F%B7-by-sucicada/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2>UUA 506 - System Dependencies(系统依赖) By SuCicada
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>例题6-21 系统依赖（System Dependencies, ACM/ICPC World Finals 1997, UVa506）
+软件组件之间可能会有依赖关系，例如，TELNET和FTP都依赖于TCP/IP。你的任务是
+模拟安装和卸载软件组件的过程。首先是一些DEPEND指令，说明软件之间的依赖关系（保
+证不存在循环依赖），然后是一些INSTALL、REMOVE和LIST指令，如表6-1所示。
+表6-1 指令说明
+指令 说明 DEPEND item1 item2 [item3 …] item1依赖组件item2, item3, … INSTALL item1 安装item1和它的依赖（已安装过的不用重新安装） REMOVE item1 卸载item1和它的依赖（如果某组件还被其他显式安装的组件所依赖，则不能卸载这个组件） LIST 输出所有已安装组件 在INSTALL指令中提到的组件称为显式安装，这些组件必须用REMOVE指令显式删除。
+同样地，被这些显式安装组件所直接或间接依赖的其他组件也不能在REMOVE指令中删除。
+每行指令包含不超过80个字符，所有组件名称都是大小写敏感的。指令名称均为大写字母。
+Sample Input
+DEPEND TELNET TCPIP NETCARD
+DEPEND TCPIP NETCARD
+DEPEND DNS TCPIP NETCARD
+DEPEND BROWSER TCPIP HTML
+INSTALL NETCARD
+INSTALL TELNET
+INSTALL foo
+REMOVE NETCARD
+INSTALL BROWSER
+INSTALL DNS
+LIST
+REMOVE TELNET
+REMOVE NETCARD
+REMOVE DNS...</p>
+  </div>
+  <footer class="entry-footer">SuCicada</footer>
+  <a class="entry-link" aria-label="post link to UUA 506 - System Dependencies(系统依赖) By SuCicada" href="https://sucicada.github.io/blog/posts/uvaoj/uua-506-system-dependencies%E7%B3%BB%E7%BB%9F%E4%BE%9D%E8%B5%96-by-sucicada/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2>uva 10082 WERTYU（错位键）
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>https://uva.onlinejudge.org/index.php?option=com_onlinejudge&amp;Itemid=8&amp;page=show_problem&amp;category=829&amp;problem=1023&amp;mosmsg=Submission&#43;received&#43;with&#43;ID&#43;20388214
+A common typing error is to place the
+hands on the keyboard one row to the
+right of the correct position. So ‘Q’ is
+typed as ‘W’ and ‘J’ is typed as ‘K’ and
+so on. You are to decode a message typed in this manner.
+Input
+Input consists of several lines of text. Each line may contain digits, spaces, upper case letters (except
+Q, A, Z), or punctuation shown above [except back-quote (‘)]....</p>
+  </div>
+  <footer class="entry-footer">SuCicada</footer>
+  <a class="entry-link" aria-label="post link to uva 10082 WERTYU（错位键）" href="https://sucicada.github.io/blog/posts/uvaoj/uva-10082-wertyu%E9%94%99%E4%BD%8D%E9%94%AE/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2>UVA 10129 - Play on Words (单词) By SuCicada
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>例题6-16 单词（Play On Words, UVa 10129）
+输入n（n≤100000）个单词，是否可以把所有这些单词排成一个序列，使得每个单词的
+第一个字母和上一个单词的最后一个字母相同（例如acm、malform、mouse）。每个单词最多包含1000个小写字母。输入中可以有重复单词。
+Sample Input
+3
+2
+acm
+ibm
+3
+acm
+malform
+mouse
+2
+ok
+ok
+Sample Output
+The door cannot be opened.
+Ordering is possible.
+The door cannot be opened.
+本家链接
+将一个单词看做是首字母到尾字母的一条路，所以这条路我们只关心头尾，即首尾两个字母，不关心中间字母。
+所以我们可以构造一个图，26*26的图，有向的。其中的边即是一个单词。由此我们便无需关心重复以及首尾字母相同的具体单词了，只关心具有同样首尾的单词的数量。
+所以这道题就成为了：构造了一个图，是否存在欧拉回路。
+存在欧拉回路条件：
+图连通 除了起点和终点，其余每个点的出入度都必须一样。 起点和终点的出入度之差为0或各为1。 用dfs判断连通，用数组记录各个点的出入度。
+#include&lt;iostream&gt; #include&lt;string&gt; #include&lt;cstring&gt; using namespace std; /* x --&gt; y */ int dict[33][33]; int inDegree[33]; int outDegree[33]; int N; int SUM = 26; int dfs(int w){ /* start at w */ int road = 0; for(int i=0;i&lt;SUM;i&#43;&#43;){ /* 找到了对应的尾字母，即存在一个单词，一条路 */ if(dict[w][i]==1){ dict[w][i] = 2; /* 走过了 */ road = 1; /* 路标记 */ dfs(i); /* 找下一个 */ } return road; } int main(){ int T; cin&gt;&gt;T; while(T--){ cin&gt;&gt;N; int n=N; memset(dict,0,sizeof(dict)); memset(inDegree,0,sizeof(inDegree)); memset(outDegree,0,sizeof(outDegree)); string s; while(n--){ cin&gt;&gt;s; int x = s[0]-&#39;a&#39;; int y = s[s....</p>
+  </div>
+  <footer class="entry-footer">SuCicada</footer>
+  <a class="entry-link" aria-label="post link to UVA 10129 - Play on Words (单词) By SuCicada" href="https://sucicada.github.io/blog/posts/uvaoj/uva-10129-play-on-words-%E5%8D%95%E8%AF%8D-by-sucicada/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2>UVA 1030  Delta-wave
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>两格子之间的距离
+http://acm.hdu.edu.cn/showproblem.php?pid=1030
+走一步判断一下 下一步走哪里
+是走下面呢（前提要能走）
+还是走左边
+还是走右边
+设定一个格子，代表当前走到的地方
+如果能直接向下走，就向下走
+不能的话：
+如果终点在当前格子的哪一边（只看左右方向，不看上下），就走哪一边
+#include&lt;iostream&gt; #include&lt;cmath&gt; using namespace std; // 同一行 相邻的能通过 // 上下行 上行的第奇数个能和下行中第偶数个过 //1 3 5 7 //1 2*1-1 2*n-1 //(1&#43; 2*n-1)*n/2 = int(a) //第 sqrt(a) &#43;1 行 //第 a - sqrt(a)^2 个 // 向左走，向右走？ int which(int a){ int n = sqrt(a-1); int ge = a-n*n; n &#43;&#43;; return n; } int getmid(int a){ int n = which(a); return pow(n-1,2) &#43; n; } int main(){ int a,b; while(cin&gt;&gt;a&gt;&gt;b){ if(a&gt;b) a^=b^=a^=b; int go = a; int b_n = which(b);// 行 int b_mid = getmid(b); int go_mid; int go_n; int sum = 0; while(go !...</p>
+  </div>
+  <footer class="entry-footer">SuCicada</footer>
+  <a class="entry-link" aria-label="post link to UVA 1030  Delta-wave" href="https://sucicada.github.io/blog/posts/uvaoj/uva-1030-delta-wave/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2>UVA 10305 - Ordering Tasks (给任务排序) By SuCicada
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>例题6-15 给任务排序（Ordering Tasks, UVa 10305）
+假设有n个变量，还有m个二元组(u, v)，分别表示变量u小于v。那么，所有变量从小到
+大排列起来应该是什么样子的呢？例如，有4个变量a, b, c, d，若已知a &lt; b，c &lt; b，d &lt; c，则
+这4个变量的排序可能是a &lt; d &lt; c &lt; b。尽管还有其他可能（如d &lt; a &lt; c &lt; b），你只需找出其
+中一个即可。
+Sample Input
+5 4
+1 2
+2 3
+1 3
+1 5
+0 0
+Sample Output
+1 4 2 5 3
+本家连接
+dfs(n) 从n开始找上级
+循环找上级
+如果没有上级，break
+如果有上级，
+if 上级 is execute: continue
+else if 上级 not execute. then dfs(上级),...</p>
+  </div>
+  <footer class="entry-footer">SuCicada</footer>
+  <a class="entry-link" aria-label="post link to UVA 10305 - Ordering Tasks (给任务排序) By SuCicada" href="https://sucicada.github.io/blog/posts/uvaoj/uva-10305-ordering-tasks-%E7%BB%99%E4%BB%BB%E5%8A%A1%E6%8E%92%E5%BA%8F-by-sucicada/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2>uva 10340 - All in All（子序列）
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>习题3-9 子序列（All in All, UVa 10340）
+输入两个字符串s和t，判断是否可以从t中删除0个或多个字符（其他字符顺序不变），
+得到字符串s。例如，abcde可以得到bce，但无法得到dc。
+Sample Input
+sequence subsequence
+person compression
+VERDI vivaVittorioEmanueleReDiItalia
+caseDoesMatter CaseDoesMatter
+Sample Output
+Yes
+No
+Yes
+No
+https://uva.onlinejudge.org/index.php?option=com_onlinejudge&amp;Itemid=8&amp;page=show_problem&amp;category=830&amp;problem=1281&amp;mosmsg=Submission&#43;received&#43;with&#43;ID&#43;20551262
+循环大的 从第一位小的开始 判断是否匹配，若是小的下标&#43;1，若非大的&#43;1，继续循环。
+#include&lt;iostream&gt; #include&lt;string&gt; using namespace std; int main() { string s,a; while(cin&gt;&gt;s&gt;&gt;a) { int sn=0; for(int i=0;i&lt;a.size()&amp;&amp;sn&lt;s.size();i&#43;&#43;) { if(a[i]==s[sn]) { sn&#43;&#43;; //cout&lt;&lt;sn&lt;&lt;&#34;!!&#34;&lt;&lt;endl; } } if(sn==s.size()) cout&lt;&lt;&#34;Yes&#34;&lt;&lt;endl; else cout&lt;&lt;&#34;No&#34;&lt;&lt;endl; } return 0; } //AC at 2017/12/30 （没想到居然一下就过了，总共十分钟？这还是在同一天的）</p>
+  </div>
+  <footer class="entry-footer">SuCicada</footer>
+  <a class="entry-link" aria-label="post link to uva 10340 - All in All（子序列）" href="https://sucicada.github.io/blog/posts/uvaoj/uva-10340-all-in-all%E5%AD%90%E5%BA%8F%E5%88%97/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2>UVA 10562 - Undraw the Trees(看图写树) By SuCicada
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>例题6-17 看图写树（Undraw the Trees, UVa 10562）
+你的任务是将多叉树转化为括号表示法。如图6-16所示，每个结点用除了“-”、“|”和空格
+的其他字符表示，每个非叶结点的正下方总会有一个“|”字符，然后下方是一排“-”字符，恰
+好覆盖所有子结点的上方。单独的一行“#”为数据结束标记。
+Sample Input
+2 A | -------- B C D | | ----- - E F G # e | ---- f g # Sample Output
+(A(B()C(E()F())D(G())))
+(e(f()g()))
+本家地址
+先记录树，然后从头开始递归遍历树，并且构造先序遍历字串。
+非叶子结点字母下方必有竖线。竖线下方必有若干横线，横线下方必有若干字母，即子节点。
+#include&lt;iostream&gt; #include&lt;string&gt; #include&lt;cstdio&gt; #include&lt;cstring&gt; using namespace std; char tree[222][222]; int isRightChar(char c){ return c &amp;&amp; c!=&#39;-&#39; &amp;&amp; c!=&#39;|&#39; &amp;&amp; c!=&#39; &#39; &amp;&amp; c!=&#39;#&#39;; } int loop(int x,int y){ cout&lt;&lt;tree[x][y]; cout&lt;&lt;&#34;(&#34;; if(tree[x&#43;1][y]!...</p>
+  </div>
+  <footer class="entry-footer">SuCicada</footer>
+  <a class="entry-link" aria-label="post link to UVA 10562 - Undraw the Trees(看图写树) By SuCicada" href="https://sucicada.github.io/blog/posts/uvaoj/uva-10562-undraw-the-trees%E7%9C%8B%E5%9B%BE%E5%86%99%E6%A0%91-by-sucicada/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2>uva 11809 - Floating-Point Numbers（浮点数）
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>习题3-12 浮点数（Floating-Point Numbers, UVa11809）
+计算机常用阶码-尾数的方法保存浮点数。如图3-9所示，如果阶码有6位，尾数有8位，可以表达的最大浮点数为0.1111111112×2
+1111112。注意小数点后第一位必须为1，所以一共有9位小数。
+图3-9 阶码-尾数保存浮点数
+这个数换算成十进制之后就是0.9980468752^63=9.20535763834529410^18。你的任务是根据这个最大浮点数，求出阶码的位数E和尾数的位数M。输入格式为AeB，表示最大浮点数为A*10B。0&lt; A&lt;10，并且恰好包含15位有效数字。输 入结束标志为0e0。对于每组数据，输
+出M和E。输入保证有唯一解，且0≤M≤9，1≤E≤30。在本题中，M&#43;E&#43;2不必为8的整数倍。
+Sample Input
+5.699141892149156e76
+9.205357638345294e18
+0e0
+Sample Output
+5 8
+8 6
+https://uva.onlinejudge.org/index.php?option=com_onlinejudge&amp;Itemid=8&amp;page=show_problem&amp;category=830&amp;problem=2909&amp;mosmsg=Submission&#43;received&#43;with&#43;ID&#43;20702100
+我们只要算：m*2^(2^n-1)=f *10^t (m是浮点数位，n是阶码位数，求f和t；) 而f=10^log10(f)：即左边=10^t1=10^(t&#43;log10(f)); t1=log10(m*2^(2^n-1))=log10(m)&#43;(2^n-1) *log10(2) t=(int)t1; f=10^(t1-t);
+感谢参考来自http://blog.csdn.net/crazysillynerd/article/details/43339157 #include&lt;iostream&gt; #include&lt;cstdio&gt; #include&lt;cmath&gt; using namespace std; double flo[10][30]; int expstr[10][30]; int main() { int twoe; double twom; double temp; for(int i=0;i&lt;10;i&#43;&#43;) { twom=1-pow(2,-i-1); for(int j=0;j&lt;30;j&#43;&#43;) { twoe = pow(2,j&#43;1)-1; temp = log10(twom)&#43;twoe*log10(2); expstr[i][j]=temp; flo[i][j]=pow(10,(temp-expstr[i][j])); } } while(1) { double flo1; int exp1; char str[25]={0};//存输入的浮点数字符串 int iff=0; //输入浮点数 char c; for(int i=0;(c=getchar())!...</p>
+  </div>
+  <footer class="entry-footer">SuCicada</footer>
+  <a class="entry-link" aria-label="post link to uva 11809 - Floating-Point Numbers（浮点数）" href="https://sucicada.github.io/blog/posts/uvaoj/uva-11809-floating-point-numbers%E6%B5%AE%E7%82%B9%E6%95%B0/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2>UVA 11853 - Paintbal(战场) By SuCicada
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>例题6-22 战场（Paintball, UVa 11853）
+有一个1000×1000的正方形战场，战场西南角的坐标为(0,0)，西北角的坐标为(0,1000)。
+战场上有n（0≤n≤1000）个敌人，第i个敌人的坐标为(xi
+,yi
+)，攻击范围为ri。为了避开敌人的
+攻击，在任意时刻，你与每个敌人的距离都必须严格大于它的攻击范围。你的任务是从战场
+的西边（x=0的某个点）进入，东边（x=1000的某个点）离开。如果有多个位置可以进/出，
+你应当求出最靠北的位置。输入每个敌人的xi、yi、ri，输出进入战场和离开战场的坐标。
+Sample Input
+3
+500 500 499
+0 0 999
+1000 1000 200
+Sample Output
+0.00 1000.00 1000.00 800.00
+本家地址
+关键在于抓住问题的本质，即问题的核心，即问题去除了表面保护层之下的那个最纯粹的那个命脉。
+初看，我们发现，这是要在坐标图上画圆啊。过分可怕。
+但是我们鼓起勇气再细看问题：
+求最靠上的进入战场和离开战场的坐标。
+解剖一下：
+能否离开 若能，最上 最左边进，最后边出。 然后我们随便画几个图来看看。
+怎么样就不能离开：
+当有一条敌人从最上一直连通到最下。
+若能，最靠上的地方是哪里：
+如果我们最左边进入的地方的下方有一条敌线一直连通到最上边。
+那么这条敌线就把我们包住了。
+所以 敌线（从上方延伸 and 延伸到左边），就不能被我们在其上方进入。
+所以我们只要求敌线的连通性和敌线范围（从上方开始的）在最左边和最右边的最下方坐标即可。
+#include&lt;iostream&gt; #include&lt;map&gt; #include&lt;cmath&gt; #include&lt;cstring&gt; #include&lt;vector&gt; #include&lt;queue&gt; #include&lt;cstdio&gt; using namespace std; /* 关键在于抓住问题的本质，即问题的核心，即问题去除了表面保护层之下的那个最纯粹的那个命脉。 初看，我们发现，这是要在坐标图上画圆啊。过分可怕。 但是我们鼓起勇气再细看问题： 求最靠上的进入战场和离开战场的坐标。 解剖一下： 1. 能否离开 2. 若能，最上 3....</p>
+  </div>
+  <footer class="entry-footer">SuCicada</footer>
+  <a class="entry-link" aria-label="post link to UVA 11853 - Paintbal(战场) By SuCicada" href="https://sucicada.github.io/blog/posts/uvaoj/uva-11853-paintbal%E6%88%98%E5%9C%BA-by-sucicada/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2>uva 12096 - The SetStack Computer（集合栈）
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>例题5-5
+集合栈计算机(The
+Set
+Stack
+Computer,ACM/ICPC
+NWERC
+2006,UVa12096)
+有一个专门为了集合运算而设计的“集合栈”计算机。该机器有一个初始为空的栈,并且
+支持以下操作。
+PUSH:空集“{}”入栈。
+DUP:把当前栈顶元素复制一份后再入栈。
+UNION:出栈两个集合,然后把二者的并集入栈。
+INTERSECT:出栈两个集合,然后把二者的交集入栈。ADD:出栈两个集合,然后把先出栈的集合加入到后出栈的集合中,把结果入栈。
+每次操作后,输出栈顶集合的大小(即元素个数)。例如,栈顶元素是A={{},
+{{}}},下一个元素是B={{},{{{}}}},则:
+UNION操作将得到{{},{{}},{{{}}}},输出3。
+INTERSECT操作将得到{{}},输出1。
+ADD操作将得到{{},{{{}}},{{},{{}}}},输出3。
+输入不超过2000个操作,并且保证操作均能顺利进行(不需要对空栈执行出栈操作)。
+Sample Input
+2
+9
+PUSH
+DUP
+ADD
+PUSH
+ADD
+DUP
+ADD
+DUP
+UNION
+5
+PUSH
+PUSH
+ADD
+PUSH
+INTERSECT
+Sample Output
+0
+0
+1
+0
+1
+1
+2
+2
+2
+***
+0
+0
+1
+0
+0
+***
+https://uva.onlinejudge.org/index.php?option=com_onlinejudge&amp;Itemid=8&amp;page=show_problem&amp;category=835&amp;problem=3248&amp;mosmsg=Submission&#43;received&#43;with&#43;ID&#43;21273791
+性质：
+１、set&lt; int &gt;　代表是集合
+２、idcache 是集合与其编号的映射，每一个集合都有唯一的编号。
+３、setcache是向量，即下标与其存的是集合的元素相映射。
+４、每一个集合都只在以上容器中存在一个。
+５、栈里存的只是集合的编号。
+#include &lt;iostream&gt; #include &lt;set&gt; #include &lt;map&gt; #include &lt;stack&gt; #include &lt;vector&gt; using namespace std; map&lt; set&lt;int&gt; ,int&gt; idcache; //每一个集合对应一个编号 vector&lt; set&lt;int&gt; &gt; setcache; //每一个编号对应一个集合 int getid(set&lt;int&gt; s) { if(idcache....</p>
+  </div>
+  <footer class="entry-footer">SuCicada</footer>
+  <a class="entry-link" aria-label="post link to uva 12096 - The SetStack Computer（集合栈）" href="https://sucicada.github.io/blog/posts/uvaoj/uva-12096-the-setstack-computer%E9%9B%86%E5%90%88%E6%A0%88/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2>UVA 12171 - Sculpture(雕塑) By SuCicada
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>例题6-18 雕塑（Sculpture, ACM/ICPC NWERC 2008, UVa12171）
+某雕塑由n（n≤50）个边平行于坐标轴的长方体组成。每个长方体用6个整
+数x0，y0，z0，x，y，z表示（均为1～500的整数），其中x0为长方体的顶点中x坐标的最小
+值，x表示长方体在x方向的总长度。其他4个值类似定义。你的任务是统计这个雕像的体积
+和表面积。注意，雕塑内部可能会有密闭的空间，其体积应计算在总体积中，但从“外部”看
+不见的面不应计入表面积。雕塑可能会由多个连通块组成。
+Sample Input
+2
+2
+1 2 3 3 4 5
+6 2 3 3 4 5
+7
+1 1 1 5 5 1
+1 1 10 5 5 1
+1 1 2 1 4 8
+2 1 2 4 1 8
+5 2 2 1 4 8
+1 5 2 4 1 8
+3 3 4 1 1 1...</p>
+  </div>
+  <footer class="entry-footer">SuCicada</footer>
+  <a class="entry-link" aria-label="post link to UVA 12171 - Sculpture(雕塑) By SuCicada" href="https://sucicada.github.io/blog/posts/uvaoj/uva-12171-sculpture%E9%9B%95%E5%A1%91-by-sucicada/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2>UVA 122 - Trees on the level, Duke 1993 (树的层次遍历)
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>例题6-7 树的层次遍历（Trees on the level, Duke 1993, UVa 122）
+输入一棵二叉树，你的任务是按从上到下、从左到右的顺序输出各个结点的值。每个结
+点都按照从根结点到它的移动序列给出（L表示左，R表示右）。在输入中，每个结点的左
+括号和右括号之间没有空格，相邻结点之间用一个空格隔开。每棵树的输入用一对空括
+号“()”结束（这对括号本身不代表一个结点），如图6-3所示。
+图6-3 一棵二叉树
+注意，如果从根到某个叶结点的路径上有的结点没有在输入中给出，或者给出超过一
+次，应当输出-1。结点个数不超过256。
+样例输入：
+(11,LL) (7,LLL) (8,R)
+(5,) (4,L) (13,RL) (2,LLR) (1,RRR) (4,RR) ()
+(3,L) (4,R) ()
+样例输出：
+5 4 8 11 13 4 7 2 1
+not complete
+本家地址
+祭出对象大法
+#include&lt;iostream&gt; #include&lt;sstream&gt; #include&lt;string&gt; #include&lt;cstring&gt; #include&lt;cstdio&gt; #include&lt;cstdlib&gt; using namespace std; class Node{ public: int value; Node* left; Node* right; }; Node* queue[256]; void show(Node* root){ memset(queue,0,sizeof(queue)); int qbegin=0; int qend=0; int qlen = sizeof(queue)/sizeof(Node*); stringstream out; queue[qend] = root; qend = (qend&#43;1) % qlen; while(qbegin!...</p>
+  </div>
+  <footer class="entry-footer">SuCicada</footer>
+  <a class="entry-link" aria-label="post link to UVA 122 - Trees on the level, Duke 1993 (树的层次遍历)" href="https://sucicada.github.io/blog/posts/uvaoj/uva-122-trees-on-the-level-duke-1993-%E6%A0%91%E7%9A%84%E5%B1%82%E6%AC%A1%E9%81%8D%E5%8E%86/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2>uva 1225 - Digit Counting（数数）
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p> 把前n（n≤10000）个整数顺次写在一起：123456789101112…数一数0～9各出现多少次
+（输出10个整数，分别是0，1，…，9出现的次数）。
+Sample Input
+2
+3
+13
+Sample Output
+0 1 1 1 0 0 0 0 0 0
+1 6 2 2 1 1 1 1 1 1
+（注：输出的最后一个数后面没有空格）
+https://uva.onlinejudge.org/index.php?option=com_onlinejudge&amp;Itemid=8&amp;page=show_problem&amp;category=830&amp;problem=3666&amp;mosmsg=Submission&#43;received&#43;with&#43;ID&#43;20469369
+//判断一个数各个位的数字，存于一个数组中，倒的来循环也无妨 #include&lt;iostream&gt; #include&lt;cstdio&gt; using namespace std; int main() { int T; cin&gt;&gt;T; getchar(); while(T--) { int num[10]={0}; int N; cin&gt;&gt;N; getchar(); while(N--) { int ni=N&#43;1; while(ni) { num[ni%10]&#43;&#43;; ni/=10; } } for(int i=0;i&lt;9;i&#43;&#43;) cout&lt;&lt;num[i]&lt;&lt;&#34; &#34;; cout&lt;&lt;num[9]&lt;&lt;endl; } return 0; } //AC at 2017/12/10 </p>
+  </div>
+  <footer class="entry-footer">SuCicada</footer>
+  <a class="entry-link" aria-label="post link to uva 1225 - Digit Counting（数数）" href="https://sucicada.github.io/blog/posts/uvaoj/uva-1225-digit-counting%E6%95%B0%E6%95%B0/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2>UVA 12333 - Revenge of Fibonacci (斐波那契的复仇) 【后日谈】by SuCicada
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>正篇以及正确解题思路和代码参见 UVA 12333 - Revenge of Fibonacci (斐波那契的复仇) by SuCicada 此篇为后日谈 要说为什么专门开一篇来记录想法呢，主要是因为想说的太多了。首先从UVA的提交记录上来看，上一次答题是在足足1年之前了。
+这么久以来都没有再好好做算法，感觉快要忘本了。而且出来之后脑子也不是那么灵光了，虽然更理性，但是却少了些抽象的想象力。
+再说这道题，一开始我根本不知道什么字典序，完全是打表暴力比对的。把前40位算出来那里都是没错的。
+但是之后我想的是：用map排个序，然后二分查找。但是这样会有问题，因为二分找到的可能并不是最小的，所以找到之后还需要分别找到同样匹配前缀的那一区域的数字，因为是map排过序的，所以他们都是挨着的。
+但是之后在极端痛苦了两个晚上之后，我放弃了这种做法，经过测试计算，发现我电脑中g&#43;&#43;在一秒钟可以进行4亿次运算，假设有5万个40位数字需要比对，4亿除以5万除以40 有20万呢，或者保险点我们取个1000。（一直到当时我都以为这道题的时间限制是1秒）
+然后我就在死灰复燃的状态下在下2天晚上把位数比对写出了（暴力）。为了减少比对量，我打表了前3位，也就是记录下前三位的数字第一次出现的序数，而且这个序数是map中的序数，map中的序数和fibo的序数可是不同的。
+而且map不能随机读取，怎么办，我又创造了两个数组专门存放键和值。
+后来我还发现个位数的搜索起来比较慢，因为他们要暴力比对的数是最多的，所以我又用一个map来记录已经查找过的结果。
+我真的是要疯，一直到昨天晚上我把这套模型整通。本地一跑，通过，time测下来 1.2秒，我巨喜。提交，time limit exceeded。把udebug上的样例全部跑了一遍，没有超过1.5秒的。我随机生成各种5万个数的组合，2秒之内绝对能过。
+但是 time limit exceeded， time limit exceeded，time limit exceeded，time limit exceeded，time limit exceeded。
+”难道是表打的太小了？“我又将打表位数升到4，升到5。然而为什么更慢了。
+那会已经3点钟了，我感到生命力的衰减，在极度无望的情况下，我打开百度，UVA 12333，我真特么被这道题23333了，
+这道题考大数&#43;字典树
+我惊住，一个新的窗子仿佛打开了，一查，全懂了，完全懂了。我缩在床上颤抖不已，脑子瞬间就明白了我该怎么做，但是身体已经无法支撑下去，为了能保持住自己的生命力。我艰难的进入睡眠。
+第二天我写，真的很快，因为我已经知道了，虽然遇到了oj离奇而严厉的 runtime error错误。但是我很冷静，因为我知道这个方法肯定是没错的，这条路一定是对的。就是这种知道目的的坚定。
+当Accepted出现在屏幕上，我想哭了。太痛苦了，太刺激了，太疯狂了。再加上17个小时没有进食带来的虚弱感让我恍惚，感觉我活下来了。
+劫后余生的感激之情。
+而现在已经5点怅然若失感时不时在席卷我，跨时两个星期，4个夜晚的崩溃，20余小时的挣扎，20多次的错误。我太弱了，我为我的弱小感到伤心，但是我又为我的成功感到高兴。
+算法拯救我，算法伤害我，算法摧残我，算法安慰我。
+我时尝为我的自艾感到痛苦。
+但是我害怕痛苦吗，不如说我正喜欢痛苦。
+附赠更快的却更错的代码：
+#include&lt;iostream&gt; #include&lt;algorithm&gt; #include&lt;iterator&gt; #include&lt;vector&gt; #include&lt;string&gt; #include&lt;cstdio&gt; #include&lt;iomanip&gt; #include&lt;map&gt; #include&lt;cmath&gt; #include&lt;cstring&gt; using namespace std; vector&lt;string&gt; fibonacci(100005); map&lt;string,int&gt; fiboSorted; vector&lt;string&gt; fiboName(100005); vector&lt;int&gt; fiboIndex(100005); int limitSite = 52; string add(string a,string b){ int aLen = a....</p>
+  </div>
+  <footer class="entry-footer">SuCicada</footer>
+  <a class="entry-link" aria-label="post link to UVA 12333 - Revenge of Fibonacci (斐波那契的复仇) 【后日谈】by SuCicada" href="https://sucicada.github.io/blog/posts/uvaoj/uva-12333-revenge-of-fibonacci-%E6%96%90%E6%B3%A2%E9%82%A3%E5%A5%91%E7%9A%84%E5%A4%8D%E4%BB%87-%E5%90%8E%E6%97%A5%E8%B0%88by-sucicada/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2>UVA 12333 - Revenge of Fibonacci (斐波那契的复仇) by SuCicada
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>合适的思路 大数加法 字典树 代码 注意点 附录 后日谈 习题5-15 Fibonacci的复仇（Revenge of Fibonacci, ACM/ICPC Shanghai 2011,
+UVa12333）
+Fibonacci数的定义为：F(0)=F(1)=1，然后从F(2)开始，F(i)=F(i-1)&#43;F(i-2)。例如，前10
+项Fibonacci数分别为1, 1, 2, 3, 5, 8, 13, 21, 34, 55……
+有一天晚上，你梦到了Fibonacci，它告诉你一个有趣的Fibonacci数。醒来以后，你只记
+得了它的开头几个数字。你的任务是找出以它开头的最小Fibonacci数的序号。例如以12开头
+的最小Fibonacci数是F(25)。输入不超过40个数字，输出满足条件的序号。
+如果序号小于100000的Fibonacci数均不满足条件，输出-1。
+提示：本题有一定效率要求。如果高精度代码比较慢，可能会超时。
+原题链接 合适的思路 首先想我们该怎么样能匹配前缀，首先我们不知道完整的数字是什么，所以我们要先得到符合要求的数字数据集。
+然后将这些数据集放入字典树中
+所以我们要做的就是
+使用大数加法技巧，计算前100000个fibonacci 将每一个fibo数存入字典树中 大数加法 首先先做大数加法，使用字符串存储数字，两个字符串（数字）从最后一位即个位开始一位一位加。
+问题在于：
+100000个fibo数字，到后期位数是相当恐怖的，测试时发现第10万个数字有足足2万多位。这会造成在运算时时间和空间的非常糟糕的消耗。
+所以我们就可以遵从题意，只关心前40位，我们只截取每个数字的前面一部分做计算。这就要引出第2个和第3个问题。 如果我们使用40位，不论后面多少位，就把第40位当作个位。这会产生一个误差的问题。 比如两个数字 11001 和88999，如果我们只取他们的前2位算出来下一个数的前2位是99，但是实际上下一个数的前2位是10。这就是误差。 在解决第1个问题的时候，我们需要考虑数字进位的情况，因为我们只能看到数字的前一部分，不知道两个相加的数字是否位数相等，比如1234和345相加，假设取前2位，那么我们只能看到12和34，这样直接相加是不对的。 解决
+问题:3：先解决位数问题，我们可以将位数记录在字符串中，比如加入一个最后一位专门用来放位数。但是这样我们只能放256个无符号数字（因为使用char型元素存储）。那么换个思路，因为我们的问题在于两个数字位数不等，而不是位数究竟多少，所以可以只记录位数的奇偶即可。
+（另：其他办法，因为是Fibo数，位数不等的情况下，后一个数是大的数字，位数肯定多，而且第一位肯定是1，可以用这些关键点来解决） 问题:2：为了解决误差问题，我们就不能只选取前40位，那么应该选几位呢，经过测试发现最小能保证前40位没有问题的位数是52，测试方法见附录。
+不过要是不能测试的时候可以以10位为单位扩大范围，反正50和60位的差距远比50和2万的差距小。 字典树 每一个结点中存有
+从根节点到此结点的最小的Fibo序数，即最小前缀数字。 一个map，存有下一位的数字到下一位所在的结点的位置映射关系。 结点之间的关系如下图
+在存储的时候，存入的字符串在经过每一个结点的时候，都要比一下这个结点中存储的minIndex（FIbo最小前缀序号），并将其替换成两者中更小的。
+这样就能保证按照字典树的脉络寻找，寻找到的结点中的序号，一定是前缀数所在的最小的Fibo序号。
+注意点 不知道现在的UVA 编译器是怎么回事，我定义的 int型返回值函数没有给返回值，返回判我 Runtime error。我一开始压根不明觉厉，一行一行注释，然后一次次提交看看哪部分代码没有才会不报 re，以此来判断问题出在哪部分。光是这样就提交了十几次。
+我愿称之为绝活。
+在 线 O J ，现 场 调 试。...</p>
+  </div>
+  <footer class="entry-footer">SuCicada</footer>
+  <a class="entry-link" aria-label="post link to UVA 12333 - Revenge of Fibonacci (斐波那契的复仇) by SuCicada" href="https://sucicada.github.io/blog/posts/uvaoj/uva-12333-revenge-of-fibonacci-%E6%96%90%E6%B3%A2%E9%82%A3%E5%A5%91%E7%9A%84%E5%A4%8D%E4%BB%87-by-sucicada/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2>uva 133 - The Dole Queue（救济金点人）
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>例题4-3 救济金发放（The Dole Queue, UVa 133）
+n(n&lt;20)个人站成一圈，逆时针编号为1～n。有两个官员，A从1开始逆时针数，B从n开
+始顺时针数。在每一轮中，官员A数k个就停下来，官员B数m个就停下来（注意有可能两个
+官员停在同一个人上）。接下来被官员选中的人（1个或者2个）离开队伍。
+输入n，k，m输出每轮里被选中的人的编号（如果有两个人，先输出被A选中的）。例
+如，n=10，k=4，m=3，输出为4 8, 9 5, 3 1, 2 6, 10, 7。注意：输出的每个数应当恰好占3格。（即setw(3)）
+Sample Input
+10 4 3
+0 0 0
+Sample Output
+␣␣4␣␣8,␣␣9␣␣5,␣␣3␣␣1,␣␣2␣␣6,␣10,␣␣7
+https://uva.onlinejudge.org/index.php?option=com_onlinejudge&amp;Itemid=8&amp;category=832&amp;page=show_problem&amp;problem=69
+有一个数组来表示队列里的人，然后分别用两个循环，从头和尾开始依次过，并且记录下每一轮最后的落脚点，在下一轮中就当做是起始点了。点出来的人的位置可以直接用0代替。
+#include&lt;iostream&gt; #include&lt;iomanip&gt; using namespace std; int dole[25]; int n,a,b; int cycle(int j)//int n,int ab) { //int j=0; for(int i=0;i&lt;a;i&#43;&#43;) { do { j&#43;&#43;; if(j==n) j=0; continue; } while(dole[j]==0); //j&#43;&#43;; } return j; } int cycle2(int j)//int n,int b) { //int j=n-1; for(int i=0;i&lt;b;i&#43;&#43;) { do { j--; if(j&lt;0) j=n-1; continue; } while(dole[j]==0); } //cout&lt;&lt;&#34;j &#34;&lt;&lt;j&lt;&lt;endl; return j; } int main() { while(cin&gt;&gt;n&gt;&gt;a&gt;&gt;b&amp;&amp;(n!...</p>
+  </div>
+  <footer class="entry-footer">SuCicada</footer>
+  <a class="entry-link" aria-label="post link to uva 133 - The Dole Queue（救济金点人）" href="https://sucicada.github.io/blog/posts/uvaoj/uva-133-the-dole-queue%E6%95%91%E6%B5%8E%E9%87%91%E7%82%B9%E4%BA%BA/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2>uva 1339 - Ancient Cipher（映射密码）
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>例题4-1 古老的密码（Ancient Cipher, NEERC 2004, UVa1339）
+给定两个长度相同且不超过100的字符串，判断是否能把其中一个字符串的各个字母重
+排，然后对26个字母做一个一一映射，使得两个字符串相同。例如，JWPUDJSTVP重排后可
+以得到WJDUPSJPVT，然后把每个字母映射到它前一个字母（B-&gt;A, C-&gt;B, …, Z-&gt;Y, A-
+Z），得到VICTORIOUS。输入两个字符串，输出YES或者NO。
+Sample Input
+JWPUDJSTVP
+VICTORIOUS
+MAMA
+ROME
+HAHA
+HEHE
+AAA
+AAA
+NEERCISTHEBEST
+SECRETMESSAGES
+Sample Output
+YES
+NO
+YES
+YES
+NO
+https://uva.onlinejudge.org/index.php?option=com_onlinejudge&amp;Itemid=8&amp;page=show_problem&amp;category=832&amp;problem=4085&amp;mosmsg=Submission&#43;received&#43;with&#43;ID&#43;20728592
+//1、我们只需要分别记录两个字串里出现的各个字母的数量， //2、然后从小到大或从大到小排序， //3、之后进行比较，如果两个字串对应，那么他们的字母数量表相同下标的元素值（代表字母的数量）也应该相同。 #include&lt;iostream&gt; #include&lt;string&gt; using namespace std; void ssqrt(int *str) { //cout&lt;&lt;str&lt;&lt;endl; for(int i=0;i&lt;26;i&#43;&#43;) for(int j=i&#43;1;j&lt;26;j&#43;&#43;) if(str[i]&gt;str[j]) { int temp=str[i]; str[i]=str[j]; str[j]=temp; } //cout&lt;&lt;str&lt;&lt;endl; } int main() { string str,guess;//输入的两个字串 while(cin&gt;&gt;str&gt;&gt;guess) { int cha1[26]={0},cha2[26]={0};//分别记录两个字串里的各个字母的数量 for(int i=0;i&lt;str....</p>
+  </div>
+  <footer class="entry-footer">SuCicada</footer>
+  <a class="entry-link" aria-label="post link to uva 1339 - Ancient Cipher（映射密码）" href="https://sucicada.github.io/blog/posts/uvaoj/uva-1339-ancient-cipher%E6%98%A0%E5%B0%84%E5%AF%86%E7%A0%81/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2>uva 1368 - DNA Consensus String（DNA汉明距离）
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>习题3-7 DNA序列（DNA Consensus String, ACM/ICPC Seoul 2006, UVa1368）
+输入m个长度均为n的DNA序列，求一个DNA序列，到所有序列的总Hamming距离尽量
+小。两个等长字符串的Hamming距离等于字符不同的位置个数，例如，ACGT和GCGA的
+Hamming距离为2（左数第1, 4个字符不同）。
+输入整数m和n（4≤m≤50, 4≤n≤1000），以及m个长度为n的DNA序列（只包含字母
+A，C，G，T），输出到m个序列的Hamming距离和最小的DNA序列和对应的距离。如有多
+解，要求为字典序最小的解。例如，对于下面5个DNA序列，最优解为TAAGATAC。
+TATGATAC
+TAAGCTAC
+AAAGATCC
+TGAGATAC
+TAAGATGT
+（汉明距离：算出 每列与 此列最多量的字符 不同的字符的个数 ，各个列相加）
+Sample Input
+3
+5 8
+TATGATAC
+TAAGCTAC
+AAAGATCC
+TGAGATAC
+TAAGATGT
+4 10
+ACGTACGTAC
+CCGTACGTAG
+GCGTACGTAT
+TCGTACGTAA
+6 10
+ATGTTACCAT
+AAGTTACGAT
+AACAAAGCAA
+AAGTTACCTT
+AAGTTACCAA
+TACTTACCAA
+Sample Output
+TAAGATAC
+7
+ACGTACGTAA
+6
+AAGTTACCAA
+12
+https://uva.onlinejudge.org/index.php?option=com_onlinejudge&amp;Itemid=8&amp;page=show_problem&amp;category=830&amp;problem=4114&amp;mosmsg=Submission&#43;received&#43;with&#43;ID&#43;20524214
+//能解出来就是好的，有时候略微繁琐一些是在所难免的。 //It&#39;s not necessary to tack such a toxic attitude around that it&#39;s slightly difficult....</p>
+  </div>
+  <footer class="entry-footer">SuCicada</footer>
+  <a class="entry-link" aria-label="post link to uva 1368 - DNA Consensus String（DNA汉明距离）" href="https://sucicada.github.io/blog/posts/uvaoj/uva-1368-dna-consensus-stringdna%E6%B1%89%E6%98%8E%E8%B7%9D%E7%A6%BB/"></a>
+</article>
+<footer class="page-footer">
+  <nav class="pagination">
+    <a class="next" href="https://sucicada.github.io/blog/posts/page/2/">Next&nbsp;&nbsp;»
+    </a>
+  </nav>
+</footer>
     </main>
     
 <footer class="footer">

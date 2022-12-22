@@ -1,0 +1,815 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto">
+
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>uva 512 - Spreadsheet Tracking（Excel表格） | SuCicada</title>
+<meta name="keywords" content="UVaOJ">
+<meta name="description" content="例题4-5 踪电子表格中的单元格（Spreadsheet Tracking, ACM/ICPC World Finals
+1997, UVa512）
+有一个r行c列（1≤r，c≤50）的电子表格，行从上到下编号为1～r，列从左到右编号为1
+～c。如图4-2（a）所示，如果先删除第1、5行，然后删除第3, 6, 7, 9列，结果如图4-2（b）
+所示。
+（a） （b）
+图4-2 删除行、列
+接下来在第2、3、5行前各插入一个空行，然后在第3列前插入一个空列，会得到如图4-
+3所示结果。
+图4-3 插入行、列
+你的任务是模拟这样的n个操作。具体来说一共有5种操作：
+EX r1 c1 r2 c2交换单元格(r1,c1),(r2,c2)。
+A x1 x2 … xA 插入或删除A行或列（DC-删除列，DR-删除行，IC-插入
+列，IR-插入行，1≤A≤10）。
+在插入／删除指令后，各个x值不同，且顺序任意。接下来是q个查询，每个查询格式
+为“r c”，表示查询原始表格的单元格(r,c)。对于每个查询，输出操作执行完后该单元格的新
+位置。输入保证在任意时刻行列数均不超过50。
+Sample Input
+7 9
+5
+DR 2 1 5
+DC 4 3 6 7 9
+IC 1 3
+IR 2 2 4
+EX 1 2 6 5
+4
+4 8">
+<meta name="author" content="SuCicada">
+<link rel="canonical" href="https://sucicada.github.io/blog/posts/uvaoj/uva-512-spreadsheet-trackingexcel%E8%A1%A8%E6%A0%BC/">
+<link crossorigin="anonymous" href="/blog/assets/css/stylesheet.5b5501da54f21435c8f8010d1de02123ae8d1ada696b48c6530ec4eea283e7d6.css" integrity="sha256-W1UB2lTyFDXI&#43;AENHeAhI66NGtppa0jGUw7E7qKD59Y=" rel="preload stylesheet" as="style">
+<link rel="icon" href="https://sucicada.github.io/blog/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="https://sucicada.github.io/blog/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://sucicada.github.io/blog/favicon-32x32.png">
+<link rel="apple-touch-icon" href="https://sucicada.github.io/blog/apple-touch-icon.png">
+<link rel="mask-icon" href="https://sucicada.github.io/blog/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --hljs-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-track {
+                background: 0 0;
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-thumb {
+                border-color: var(--theme);
+            }
+        }
+
+    </style>
+</noscript><meta property="og:title" content="uva 512 - Spreadsheet Tracking（Excel表格）" />
+<meta property="og:description" content="例题4-5 踪电子表格中的单元格（Spreadsheet Tracking, ACM/ICPC World Finals
+1997, UVa512）
+有一个r行c列（1≤r，c≤50）的电子表格，行从上到下编号为1～r，列从左到右编号为1
+～c。如图4-2（a）所示，如果先删除第1、5行，然后删除第3, 6, 7, 9列，结果如图4-2（b）
+所示。
+（a） （b）
+图4-2 删除行、列
+接下来在第2、3、5行前各插入一个空行，然后在第3列前插入一个空列，会得到如图4-
+3所示结果。
+图4-3 插入行、列
+你的任务是模拟这样的n个操作。具体来说一共有5种操作：
+EX r1 c1 r2 c2交换单元格(r1,c1),(r2,c2)。
+A x1 x2 … xA 插入或删除A行或列（DC-删除列，DR-删除行，IC-插入
+列，IR-插入行，1≤A≤10）。
+在插入／删除指令后，各个x值不同，且顺序任意。接下来是q个查询，每个查询格式
+为“r c”，表示查询原始表格的单元格(r,c)。对于每个查询，输出操作执行完后该单元格的新
+位置。输入保证在任意时刻行列数均不超过50。
+Sample Input
+7 9
+5
+DR 2 1 5
+DC 4 3 6 7 9
+IC 1 3
+IR 2 2 4
+EX 1 2 6 5
+4
+4 8" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://sucicada.github.io/blog/posts/uvaoj/uva-512-spreadsheet-trackingexcel%E8%A1%A8%E6%A0%BC/" /><meta property="og:image" content="https://sucicada.github.io/blog/papermod-cover.png"/><meta property="article:section" content="posts" />
+
+
+
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="https://sucicada.github.io/blog/papermod-cover.png"/>
+
+<meta name="twitter:title" content="uva 512 - Spreadsheet Tracking（Excel表格）"/>
+<meta name="twitter:description" content="例题4-5 踪电子表格中的单元格（Spreadsheet Tracking, ACM/ICPC World Finals
+1997, UVa512）
+有一个r行c列（1≤r，c≤50）的电子表格，行从上到下编号为1～r，列从左到右编号为1
+～c。如图4-2（a）所示，如果先删除第1、5行，然后删除第3, 6, 7, 9列，结果如图4-2（b）
+所示。
+（a） （b）
+图4-2 删除行、列
+接下来在第2、3、5行前各插入一个空行，然后在第3列前插入一个空列，会得到如图4-
+3所示结果。
+图4-3 插入行、列
+你的任务是模拟这样的n个操作。具体来说一共有5种操作：
+EX r1 c1 r2 c2交换单元格(r1,c1),(r2,c2)。
+A x1 x2 … xA 插入或删除A行或列（DC-删除列，DR-删除行，IC-插入
+列，IR-插入行，1≤A≤10）。
+在插入／删除指令后，各个x值不同，且顺序任意。接下来是q个查询，每个查询格式
+为“r c”，表示查询原始表格的单元格(r,c)。对于每个查询，输出操作执行完后该单元格的新
+位置。输入保证在任意时刻行列数均不超过50。
+Sample Input
+7 9
+5
+DR 2 1 5
+DC 4 3 6 7 9
+IC 1 3
+IR 2 2 4
+EX 1 2 6 5
+4
+4 8"/>
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "Posts",
+      "item": "https://sucicada.github.io/blog/posts/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  3 ,
+      "name": "uva 512 - Spreadsheet Tracking（Excel表格）",
+      "item": "https://sucicada.github.io/blog/posts/uvaoj/uva-512-spreadsheet-trackingexcel%E8%A1%A8%E6%A0%BC/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "uva 512 - Spreadsheet Tracking（Excel表格）",
+  "name": "uva 512 - Spreadsheet Tracking（Excel表格）",
+  "description": "例题4-5 踪电子表格中的单元格（Spreadsheet Tracking, ACM/ICPC World Finals\n1997, UVa512）\n有一个r行c列（1≤r，c≤50）的电子表格，行从上到下编号为1～r，列从左到右编号为1\n～c。如图4-2（a）所示，如果先删除第1、5行，然后删除第3, 6, 7, 9列，结果如图4-2（b）\n所示。\n（a） （b）\n图4-2 删除行、列\n接下来在第2、3、5行前各插入一个空行，然后在第3列前插入一个空列，会得到如图4-\n3所示结果。\n图4-3 插入行、列\n你的任务是模拟这样的n个操作。具体来说一共有5种操作：\nEX r1 c1 r2 c2交换单元格(r1,c1),(r2,c2)。\nA x1 x2 … xA 插入或删除A行或列（DC-删除列，DR-删除行，IC-插入\n列，IR-插入行，1≤A≤10）。\n在插入／删除指令后，各个x值不同，且顺序任意。接下来是q个查询，每个查询格式\n为“r c”，表示查询原始表格的单元格(r,c)。对于每个查询，输出操作执行完后该单元格的新\n位置。输入保证在任意时刻行列数均不超过50。\nSample Input\n7 9\n5\nDR 2 1 5\nDC 4 3 6 7 9\nIC 1 3\nIR 2 2 4\nEX 1 2 6 5\n4\n4 8",
+  "keywords": [
+    "UVaOJ"
+  ],
+  "articleBody": " 例题4-5 踪电子表格中的单元格（Spreadsheet Tracking, ACM/ICPC World Finals\n1997, UVa512）\n有一个r行c列（1≤r，c≤50）的电子表格，行从上到下编号为1～r，列从左到右编号为1\n～c。如图4-2（a）所示，如果先删除第1、5行，然后删除第3, 6, 7, 9列，结果如图4-2（b）\n所示。\n（a） （b）\n图4-2 删除行、列\n接下来在第2、3、5行前各插入一个空行，然后在第3列前插入一个空列，会得到如图4-\n3所示结果。\n图4-3 插入行、列\n你的任务是模拟这样的n个操作。具体来说一共有5种操作：\nEX r1 c1 r2 c2交换单元格(r1,c1),(r2,c2)。\nA x1 x2 … xA 插入或删除A行或列（DC-删除列，DR-删除行，IC-插入\n列，IR-插入行，1≤A≤10）。\n在插入／删除指令后，各个x值不同，且顺序任意。接下来是q个查询，每个查询格式\n为“r c”，表示查询原始表格的单元格(r,c)。对于每个查询，输出操作执行完后该单元格的新\n位置。输入保证在任意时刻行列数均不超过50。\nSample Input\n7 9\n5\nDR 2 1 5\nDC 4 3 6 7 9\nIC 1 3\nIR 2 2 4\nEX 1 2 6 5\n4\n4 8\n5 5\n7 8\n6 5\n0 0\nSample Output\nSpreadsheet #1\nCell data in (4,8) moved to (4,6)\nCell data in (5,5) GONE\nCell data in (7,8) moved to (7,6)\nCell data in (6,5) moved to (1,2)\nhttps://uva.onlinejudge.org/index.php?option=com_onlinejudge\u0026Itemid=8\u0026page=show_problem\u0026category=832\u0026problem=453\u0026mosmsg=Submission+received+with+ID+20782890\n注意：\n输入注意以 0 0 结束，输出每两次输出间以一行空行隔开，最后一次输出后不能有空行\n移动前\n移动后\n这道题很繁琐，最后一直过不了参考了例题的代码，简单说一下思路。\n**-1、**我们先定义两个二维数组，一个用于操作（我们称其为 原始数组），另一个用于将操作完的数据拷贝过来（我们将其称为 临时数组），再将整理好的数据考回第一个数组，用于下次操作\n**0、*而且我们的每个元素的数值也是有蹊跷的，最好是要看着元素的值就能知道它起初的位置。我们可以用，\n① 第 i 行 第 j 列元素 =（i - 1） 总列数 + j - 1;之所以要减一是因为我的数组计数是从下标0开始，其实这样不太好，容易混乱，像书上一样从1开始就不错\n②书上是这个意思：先定义一个大数BIG=10000；第 i 行 第 j 列元素 = i * BIG +j ；这样的话 行数就是在万位以上了，和列数分开了。我们只要用 元素 / BIG 和 元素 % BIG 就能得到 行和列的序号。\n**1、**删除：先记录要删除的行（列）序号，再在原始数组中将这一行（列）的数据变成0，然后在复制给临时数组时，判断不是0的拷贝即可\n**2、**复制：这个方法是采用了书上的，之后我再说我的不好的方法。\n我们事先定义一个一维数组，用这个数组记录下要加的行（列），要加的行（列）序号就在 对应的一维数组的下标的元素记为1，然后在拷贝时，我们依次判断一维数组的各个元素是不是1，是则停止原始数组的拷贝，加入一行（列）元素都为0的行，否则拷贝一行（列）原始数组\n**3、**交换：直接交换\n**4、**判断坐标：\n①我一开始的方法是先通过原始坐标 算出那个位置上的原始元素值，然后依次遍历更改后的数组，找到了就输出当前所遍历到的行和列的序号，没找到就是GONE了\n②书上的意思是：又创建了一个二维数组用此数组记录改变的情况：\tans[此元素的][原始位置] = 代表“改变后的位置”的数值\n所以我们分析一个原始位置，就可以直接通过下标来找到改变后的位置。\n这两种方法各有好坏，前者费时节省空间，后者费空间省时；不过你也可以不用创建新的数组，用临时数组来记录应该也行。这样的话就不比前者方法费空间了\n#include #include #include #include #include using namespace std; const int MAX = 100; int oper_list[MAX][MAX],temp_list[MAX][MAX],ans_list[MAX][MAX]; int cols[MAX]; int rnum,cnum;//行数，列数 void Roper_to_temp(int T=0) { memset(temp_list,0,sizeof(temp_list)); int in=0;//记录增加到第几个了 int temp_r=0; for(int i=0;i",
+  "wordCount" : "632",
+  "inLanguage": "en",
+  "datePublished": "0001-01-01T00:00:00Z",
+  "dateModified": "0001-01-01T00:00:00Z",
+  "author":{
+    "@type": "Person",
+    "name": "SuCicada"
+  },
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://sucicada.github.io/blog/posts/uvaoj/uva-512-spreadsheet-trackingexcel%E8%A1%A8%E6%A0%BC/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "SuCicada",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://sucicada.github.io/blog/favicon.ico"
+    }
+  }
+}
+</script>
+</head>
+
+<body class="" id="top">
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.body.classList.add('dark');
+    } else if (localStorage.getItem("pref-theme") === "light") {
+        document.body.classList.remove('dark')
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.body.classList.add('dark');
+    }
+
+</script>
+
+<header class="header">
+    <nav class="nav">
+        <div class="logo">
+            <a href="https://sucicada.github.io/blog" accesskey="h" title="SuCicada (Alt + H)">SuCicada</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" accesskey="t" title="(Alt + T)">
+                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu">
+            <li>
+                <a href="https://sucicada.github.io/blog/archives/" title="Archive">
+                    <span>Archive</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://sucicada.github.io/blog/search/" title="Search (Alt &#43; /)" accesskey=/>
+                    <span>Search</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://sucicada.github.io/blog/tags/" title="Tags">
+                    <span>Tags</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://sucicada.github.io/blog/about/" title="About">
+                    <span>About</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+
+    <h1 class="post-title">
+      uva 512 - Spreadsheet Tracking（Excel表格）
+    </h1>
+    <div class="post-meta">SuCicada&nbsp;|&nbsp;<a href="https://github.com/SuCicada/mysite-hugo/content/posts/UVaOJ/uva%20512%20-%20Spreadsheet%20Tracking%ef%bc%88Excel%e8%a1%a8%e6%a0%bc%ef%bc%89.md" rel="noopener noreferrer" target="_blank">Suggest Changes</a>
+
+</div>
+    <ul class="post-tags">
+      <li><a href="https://sucicada.github.io/blog/tags/uvaoj/">UVaOJ</a></li>
+    </ul>
+  </header> 
+
+  <div class="post-content"><blockquote>
+<p>例题4-5 踪电子表格中的单元格（Spreadsheet Tracking, ACM/ICPC World Finals<br>
+1997, UVa512）<br>
+有一个r行c列（1≤r，c≤50）的电子表格，行从上到下编号为1～r，列从左到右编号为1<br>
+～c。如图4-2（a）所示，如果先删除第1、5行，然后删除第3, 6, 7, 9列，结果如图4-2（b）<br>
+所示。<br>
+（a） （b）<br>
+图4-2 删除行、列<br>
+接下来在第2、3、5行前各插入一个空行，然后在第3列前插入一个空列，会得到如图4-<br>
+3所示结果。<br>
+图4-3 插入行、列<br>
+你的任务是模拟这样的n个操作。具体来说一共有5种操作：<br>
+EX r1 c1 r2 c2交换单元格(r1,c1),(r2,c2)。<br>
+<command> A x1 x2 … xA 插入或删除A行或列（DC-删除列，DR-删除行，IC-插入<br>
+列，IR-插入行，1≤A≤10）。<br>
+在插入／删除指令后，各个x值不同，且顺序任意。接下来是q个查询，每个查询格式<br>
+为“r c”，表示查询原始表格的单元格(r,c)。对于每个查询，输出操作执行完后该单元格的新<br>
+位置。输入保证在任意时刻行列数均不超过50。<br>
+<strong>Sample Input</strong><br>
+7 9<br>
+5<br>
+DR 2 1 5<br>
+DC 4 3 6 7 9<br>
+IC 1 3<br>
+IR 2 2 4<br>
+EX 1 2 6 5<br>
+4<br>
+4 8<br>
+5 5<br>
+7 8<br>
+6 5<br>
+0 0<br>
+<strong>Sample Output</strong><br>
+Spreadsheet #1<br>
+Cell data in (4,8) moved to (4,6)<br>
+Cell data in (5,5) GONE<br>
+Cell data in (7,8) moved to (7,6)<br>
+Cell data in (6,5) moved to (1,2)</p>
+</blockquote>
+<p><a href="https://uva.onlinejudge.org/index.php?option=com_onlinejudge&amp;Itemid=8&amp;page=show_problem&amp;category=832&amp;problem=453&amp;mosmsg=Submission+received+with+ID+20782890">https://uva.onlinejudge.org/index.php?option=com_onlinejudge&amp;Itemid=8&amp;page=show_problem&amp;category=832&amp;problem=453&amp;mosmsg=Submission+received+with+ID+20782890</a></p>
+<p>注意：<br>
+输入注意以 0 0 结束，输出每两次输出间以一行空行隔开，最后一次输出后不能有空行</p>
+<p>移动前<br>
+
+
+
+
+<img loading="lazy" src="https://img-blog.csdn.net/20180221213217439?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvc3VfY2ljYWRh/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="这里写图片描述"  />
+<br>
+移动后<br>
+
+
+
+
+<img loading="lazy" src="https://img-blog.csdn.net/20180221213157532?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvc3VfY2ljYWRh/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="这里写图片描述"  />
+</p>
+<p>这道题很繁琐，最后一直过不了参考了例题的代码，简单说一下思路。<br>
+**-1、**我们先定义两个二维数组，一个用于操作（我们称其为 原始数组），另一个用于将操作完的数据拷贝过来（我们将其称为 临时数组），再将整理好的数据考回第一个数组，用于下次操作<br>
+**0、*<em>而且我们的每个元素的数值也是有蹊跷的，最好是要看着元素的值就能知道它起初的位置。我们可以用，<br>
+① 第 i 行 第 j 列元素 =（i - 1）</em> 总列数 + j - 1;之所以要减一是因为我的数组计数是从下标0开始，其实这样不太好，容易混乱，像书上一样从1开始就不错<br>
+②书上是这个意思：先定义一个大数BIG=10000；第 i 行 第 j 列元素 = i * BIG +j  ；这样的话 行数就是在万位以上了，和列数分开了。我们只要用 元素 / BIG 和 元素 % BIG 就能得到 行和列的序号。<br>
+**1、**删除：先记录要删除的行（列）序号，再在原始数组中将这一行（列）的数据变成0，然后在复制给临时数组时，判断不是0的拷贝即可<br>
+**2、**复制：这个方法是采用了书上的，之后我再说我的不好的方法。<br>
+我们事先定义一个一维数组，用这个数组记录下要加的行（列），要加的行（列）序号就在 对应的一维数组的下标的元素记为1，然后在拷贝时，我们依次判断一维数组的各个元素是不是1，是则停止原始数组的拷贝，加入一行（列）元素都为0的行，否则拷贝一行（列）原始数组<br>
+**3、**交换：直接交换<br>
+**4、**判断坐标：<br>
+①我一开始的方法是先通过原始坐标 算出那个位置上的原始元素值，然后依次遍历更改后的数组，找到了就输出当前所遍历到的行和列的序号，没找到就是GONE了<br>
+②书上的意思是：又创建了一个二维数组用此数组记录改变的情况：			<br>
+ans[此元素的][原始位置] = 代表“改变后的位置”的数值<br>
+所以我们分析一个原始位置，就可以直接通过下标来找到改变后的位置。<br>
+这两种方法各有好坏，前者费时节省空间，后者费空间省时；不过你也可以不用创建新的数组，用临时数组来记录应该也行。这样的话就不比前者方法费空间了</p>
+<pre tabindex="0"><code>#include&lt;iostream&gt;
+#include&lt;string&gt;
+#include&lt;iomanip&gt;
+#include&lt;cstdio&gt;
+#include&lt;cstring&gt;
+using namespace std;
+const int MAX = 100;
+
+int oper_list[MAX][MAX],temp_list[MAX][MAX],ans_list[MAX][MAX];
+int cols[MAX];
+int rnum,cnum;//行数，列数
+void Roper_to_temp(int T=0)
+{
+    memset(temp_list,0,sizeof(temp_list));
+    int in=0;//记录增加到第几个了
+    int temp_r=0;
+    for(int i=0;i&lt;rnum;i++)
+    {
+        //cout&lt;&lt;i&lt;&lt;&#34; =?= &#34;&lt;&lt;rnum+in&lt;&lt;&#34;  &#34;&lt;&lt;oper_list[rnum+in][0]&lt;&lt;endl;
+        if(T&amp;&amp;cols[i]==1)
+        {
+            for(int j=0;j&lt;cnum;j++)
+                temp_list[temp_r][j]=0;
+            temp_r++;
+        }
+//        if(T&amp;&amp;in&lt;T&amp;&amp;i+1==oper_list[rnum+in][0])//若当前行是要增加的行
+//        {
+//            in++;
+//            //cout&lt;&lt;in&lt;&lt;&#34;  !! &#34;&lt;&lt;temp_r&lt;&lt;endl;
+//            for(int j=0;j&lt;cnum;j++)
+//                temp_list[temp_r][j] = 0;
+//            temp_r++;
+//            i--;
+//            continue;
+//        }
+        if(oper_list[i][0]==-1)//代表这一行要删掉
+            continue;
+        for(int j=0;j&lt;cnum;j++)
+            temp_list[temp_r][j] = oper_list[i][j];
+        temp_r++;
+    }
+}
+//void Roper_to_temp(int T=0)
+//{
+//    int n=0;
+//    for(int i=0;i&lt;rnum+T;i++)
+//    {
+//        if(i==temp_list[rnum+n][0])
+//        {
+//            n++;
+//  `         i++;
+//            continue;
+//        }
+//        for(int j=0;j&lt;cnum;j++)
+//            temp_list[i][j] = oper_list[i][j];
+//    }
+//}
+void Coper_to_temp(int T=0)
+{
+    memset(temp_list,0,sizeof(temp_list));
+    int in=0;
+    int temp_c=0;
+    //cout&lt;&lt;&#34;ttt &#34;&lt;&lt;T&lt;&lt;endl;
+    for(int i=0;i&lt;cnum;i++)//注意 +T
+    {
+//        cout&lt;&lt;&#34;copy temp &#34;&lt;&lt;temp_c&lt;&lt;endl;
+//        cout&lt;&lt;&#34;in &#34;&lt;&lt;in&lt;&lt;&#34;  operlist  &#34;&lt;&lt;oper_list[0][cnum+in]&lt;&lt;endl;
+        if(T&amp;&amp;cols[i]==1)
+        {
+            for(int j=0;j&lt;rnum;j++)
+                temp_list[j][temp_c]=0;
+            temp_c++;
+        }
+//        if(T&amp;&amp;in&lt;T&amp;&amp;i+1==oper_list[0][cnum+in])//若当前列是要增加的行
+//        {
+//            in++;
+//            for(int j=0;j&lt;rnum;j++)
+//                temp_list[j][temp_c] = 0;
+//            temp_c++;
+//            i--;
+//            continue;
+//        }
+        if(oper_list[0][i]==-1)//代表这一列要删掉
+            continue;
+        for(int j=0;j&lt;rnum;j++)
+            temp_list[j][temp_c] = oper_list[j][i];
+        temp_c++;
+    }
+}
+void temp_to_oper()
+{
+    memcpy(oper_list,temp_list,sizeof(temp_list));
+//    for(int i=0;i&lt;rnum;i++)
+//        for(int j=0;j&lt;cnum;j++)
+//            oper_list[i][j] = temp_list[i][j];
+}
+void dr_oper()
+{
+    int T;
+    cin&gt;&gt;T;//增加的次数
+    int oper;//oper[15];
+    for(int i=0;i&lt;T;i++)
+    {
+        cin&gt;&gt;oper;//[i];
+        for(int j=0;j&lt;cnum;j++)//删除的行中的值变成 -1
+            oper_list[oper-1][j]= -1;
+    }
+    Roper_to_temp();
+    rnum-=T;//行数少T
+    temp_to_oper();
+
+}
+void dc_oper()
+{
+    int T;
+    cin&gt;&gt;T;
+    int oper;
+    for(int i=0;i&lt;T;i++)
+    {
+        cin&gt;&gt;oper;
+        for(int j=0;j&lt;rnum;j++)//删除的列中值变成 -1
+            oper_list[j][oper-1]=-1;
+    }
+
+    Coper_to_temp();
+    cnum-=T;//列数少T
+    temp_to_oper();
+
+}
+
+void ir_oper()
+{
+    memset(cols,0,sizeof(cols));
+    int T;
+    cin&gt;&gt;T;
+    int oper;
+    for(int i=0;i&lt;T;i++)
+    {
+        cin&gt;&gt;oper;
+        cols[oper-1]=1;
+        //oper_list[rnum+i][0]=oper;//最后加一行，第一个元素值是要加的行号
+    }
+
+
+    Roper_to_temp(T);
+    rnum+=T;//行数多T
+    temp_to_oper();
+}
+void ic_oper()
+{
+    memset(cols,0,sizeof(cols));
+    int T;
+    cin&gt;&gt;T;
+    int oper;
+    for(int i=0;i&lt;T;i++)
+    {
+        cin&gt;&gt;oper;
+        cols[oper-1]=1;
+        //oper_list[0][cnum+i]=oper;
+        //cout&lt;&lt;&#34;oper  &#34;&lt;&lt;cnum+i&lt;&lt;&#34; &#34;&lt;&lt;oper_list[0][cnum+i]&lt;&lt;endl;
+    }
+
+    Coper_to_temp(T);
+    cnum+=T;//列数多T
+    temp_to_oper();
+
+
+
+
+}
+void exc_oper()
+{
+    int r1,c1,r2,c2;
+    cin&gt;&gt;r1&gt;&gt;c1&gt;&gt;r2&gt;&gt;c2;
+    int temp = oper_list[r1-1][c1-1];
+    oper_list[r1-1][c1-1] = oper_list[r2-1][c2-1];
+    oper_list[r2-1][c2-1] = temp;
+}
+void visit(int Cn)//遍历的方法
+{
+    int x,y;
+    int iff=0;
+    cin&gt;&gt;x&gt;&gt;y;
+    //cout&lt;&lt;&#34;!!&#34;&lt;&lt;(x-1)*Rn+y&lt;&lt;endl;
+    for(int i=0;i&lt;rnum;i++)
+        for(int j=0;j&lt;cnum;j++)
+        {
+            if(oper_list[i][j]==(x-1)*Cn+y)
+            {
+                iff=1;
+                printf(&#34;Cell data in (%d,%d) moved to (%d,%d)\n&#34;,x,y,i+1,j+1);
+                return;
+            }
+        }
+    if(iff==0)
+    {
+        printf(&#34;Cell data in (%d,%d) GONE\n&#34;,x,y);
+    }
+
+}
+
+
+const int BIG = 10000;
+void visit2()//数组按址索迹
+{
+    int x,y;
+    cin&gt;&gt;x&gt;&gt;y;
+    printf(&#34;Cell data in (%d,%d) &#34;,x,y);
+    if(ans_list[x][y]==0)
+        cout&lt;&lt;&#34;GONE&#34;&lt;&lt;endl;
+    else
+        printf(&#34;moved to (%d,%d)\n&#34;,ans_list[x][y]/BIG,ans_list[x][y]%BIG);
+}
+int main()
+{
+    int T=1;
+    while(cin&gt;&gt;rnum&gt;&gt;cnum&amp;&amp;rnum!=0&amp;&amp;cnum!=0)
+    {
+
+        memset(oper_list,0,sizeof(oper_list));
+//        if(rnum==0&amp;&amp;cnum==0)
+//            break;
+
+        int Cn=cnum;//用于遍历时留存的列数
+        for(int i=0;i&lt;rnum;i++)
+            for(int j=0;j&lt;cnum;j++)
+                oper_list[i][j]=(i+1)*BIG+j+1;//i*cnum+j+1;//从1开始依次给值
+
+//        for(int i=0;i&lt;rnum;i++)
+//        {
+//            for(int j=0;j&lt;cnum;j++)
+//                cout&lt;&lt;setw(3)&lt;&lt;oper_list[i][j];
+//            cout&lt;&lt;endl;
+//        }
+
+        int T_DI;//操作数
+        cin&gt;&gt;T_DI;
+        while(T_DI--)
+        {
+            string DIRC;//char DIRC[4];
+            //int DI_num;
+            cin&gt;&gt;DIRC;
+            if(DIRC==&#34;DR&#34;)
+                dr_oper();
+            else if(DIRC==&#34;DC&#34;)
+                dc_oper();
+            else if(DIRC==&#34;IR&#34;)
+                ir_oper();
+            else if(DIRC==&#34;IC&#34;)
+                ic_oper();
+            else if(DIRC==&#34;EX&#34;)
+                exc_oper();
+
+//        cout&lt;&lt;endl&lt;&lt;rnum&lt;&lt;&#34; * &#34;&lt;&lt;cnum&lt;&lt;endl;
+//        for(int i=0;i&lt;rnum;i++)
+//        {
+//            for(int j=0;j&lt;cnum;j++)
+//                cout&lt;&lt;setw(3)&lt;&lt;oper_list[i][j];
+//            cout&lt;&lt;endl;
+//        }
+        }
+
+        memset(ans_list,0,sizeof(ans_list));
+        for(int i=1;i&lt;=rnum;i++)//打表，记录元素先后位置
+            for(int j=1;j&lt;=cnum;j++)
+                ans_list[oper_list[i-1][j-1]/BIG][oper_list[i-1][j-1]%BIG]=(i)*BIG+j;
+				//ans[此元素的][原始位置] = 代表’改变后的位置‘的 数值
+        if(T&gt;1)
+            cout&lt;&lt;endl;
+        cout&lt;&lt;&#34;Spreadsheet #&#34;&lt;&lt;T++&lt;&lt;endl;
+        int T_xy;
+        cin&gt;&gt;T_xy;
+        while(T_xy--)
+            visit2();
+            //visit(Cn);//认祖归宗
+    }
+    return 0;
+}
+//AC at 2018/2/16
+</code></pre><p>这篇文章就这吧，太累了，这道题遇到几个坎：1、不理解题，2、提交不过<br>
+一旦理解题目，思路不难，写，然后通过样例改代码。<br>
+最后就连udebug上面的100个案例都过了，还是通过不能，想死。后来采用忒休斯船法，将书上的代码一部分一部分换，看换成什么样的时候能通过，最后换了增加行列的函数时通过，喜极而嚎。<br>
+udebug上的样例最大直到行列20，还是小。<br>
+<a href="https://www.udebug.com">www.udebug.com</a>还是太棒了，不写了不写了，感冒头晕不想看见代码，时间不早还有英语要背</p>
+
+
+  </div>
+
+  <footer class="post-footer">
+<nav class="paginav">
+  <a class="prev" href="https://sucicada.github.io/blog/posts/uvaoj/uva-509-raid%E7%A3%81%E7%9B%98%E6%95%B0%E6%8D%AE/">
+    <span class="title">« Prev</span>
+    <br>
+    <span>uva 509 RAID!（磁盘数据）</span>
+  </a>
+  <a class="next" href="https://sucicada.github.io/blog/posts/uvaoj/uva-514-rails-%E9%93%81%E8%BD%A8/">
+    <span class="title">Next »</span>
+    <br>
+    <span>UVA 514 - Rails ( 铁轨)</span>
+  </a>
+</nav>
+
+
+<div class="share-buttons">
+    <a target="_blank" rel="noopener noreferrer" aria-label="share uva 512 - Spreadsheet Tracking（Excel表格） on twitter"
+        href="https://twitter.com/intent/tweet/?text=uva%20512%20-%20Spreadsheet%20Tracking%ef%bc%88Excel%e8%a1%a8%e6%a0%bc%ef%bc%89&amp;url=https%3a%2f%2fsucicada.github.io%2fblog%2fposts%2fuvaoj%2fuva-512-spreadsheet-trackingexcel%25E8%25A1%25A8%25E6%25A0%25BC%2f&amp;hashtags=UVaOJ">
+        <svg version="1.1" viewBox="0 0 512 512" xml:space="preserve" height="30px" width="30px" fill="currentColor">
+            <path
+                d="M449.446,0c34.525,0 62.554,28.03 62.554,62.554l0,386.892c0,34.524 -28.03,62.554 -62.554,62.554l-386.892,0c-34.524,0 -62.554,-28.03 -62.554,-62.554l0,-386.892c0,-34.524 28.029,-62.554 62.554,-62.554l386.892,0Zm-253.927,424.544c135.939,0 210.268,-112.643 210.268,-210.268c0,-3.218 0,-6.437 -0.153,-9.502c14.406,-10.421 26.973,-23.448 36.935,-38.314c-13.18,5.824 -27.433,9.809 -42.452,11.648c15.326,-9.196 26.973,-23.602 32.49,-40.92c-14.252,8.429 -30.038,14.56 -46.896,17.931c-13.487,-14.406 -32.644,-23.295 -53.946,-23.295c-40.767,0 -73.87,33.104 -73.87,73.87c0,5.824 0.613,11.494 1.992,16.858c-61.456,-3.065 -115.862,-32.49 -152.337,-77.241c-6.284,10.881 -9.962,23.601 -9.962,37.088c0,25.594 13.027,48.276 32.95,61.456c-12.107,-0.307 -23.448,-3.678 -33.41,-9.196l0,0.92c0,35.862 25.441,65.594 59.311,72.49c-6.13,1.686 -12.72,2.606 -19.464,2.606c-4.751,0 -9.348,-0.46 -13.946,-1.38c9.349,29.426 36.628,50.728 68.965,51.341c-25.287,19.771 -57.164,31.571 -91.8,31.571c-5.977,0 -11.801,-0.306 -17.625,-1.073c32.337,21.15 71.264,33.41 112.95,33.41Z" />
+        </svg>
+    </a>
+    <a target="_blank" rel="noopener noreferrer" aria-label="share uva 512 - Spreadsheet Tracking（Excel表格） on telegram"
+        href="https://telegram.me/share/url?text=uva%20512%20-%20Spreadsheet%20Tracking%ef%bc%88Excel%e8%a1%a8%e6%a0%bc%ef%bc%89&amp;url=https%3a%2f%2fsucicada.github.io%2fblog%2fposts%2fuvaoj%2fuva-512-spreadsheet-trackingexcel%25E8%25A1%25A8%25E6%25A0%25BC%2f">
+        <svg version="1.1" xml:space="preserve" viewBox="2 2 28 28" height="30px" width="30px" fill="currentColor">
+            <path
+                d="M26.49,29.86H5.5a3.37,3.37,0,0,1-2.47-1,3.35,3.35,0,0,1-1-2.47V5.48A3.36,3.36,0,0,1,3,3,3.37,3.37,0,0,1,5.5,2h21A3.38,3.38,0,0,1,29,3a3.36,3.36,0,0,1,1,2.46V26.37a3.35,3.35,0,0,1-1,2.47A3.38,3.38,0,0,1,26.49,29.86Zm-5.38-6.71a.79.79,0,0,0,.85-.66L24.73,9.24a.55.55,0,0,0-.18-.46.62.62,0,0,0-.41-.17q-.08,0-16.53,6.11a.59.59,0,0,0-.41.59.57.57,0,0,0,.43.52l4,1.24,1.61,4.83a.62.62,0,0,0,.63.43.56.56,0,0,0,.4-.17L16.54,20l4.09,3A.9.9,0,0,0,21.11,23.15ZM13.8,20.71l-1.21-4q8.72-5.55,8.78-5.55c.15,0,.23,0,.23.16a.18.18,0,0,1,0,.06s-2.51,2.3-7.52,6.8Z" />
+        </svg>
+    </a>
+</div>
+
+  </footer><div id="disqus_thread"></div>
+<script type="application/javascript">
+    window.disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "sucicada" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+</article>
+    </main>
+    
+<footer class="footer">
+    <span>&copy; 2022 <a href="https://sucicada.github.io/blog">SuCicada</a></span>
+    <span>
+        Powered by
+        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+        <path d="M12 6H0l6-6z" />
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu')
+    if (menu) {
+        menu.scrollLeft = localStorage.getItem("menu-scroll-position");
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var mybutton = document.getElementById("top-link");
+    window.onscroll = function () {
+        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
+            mybutton.style.visibility = "visible";
+            mybutton.style.opacity = "1";
+        } else {
+            mybutton.style.visibility = "hidden";
+            mybutton.style.opacity = "0";
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        if (document.body.className.includes("dark")) {
+            document.body.classList.remove('dark');
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            document.body.classList.add('dark');
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+<script>
+    document.querySelectorAll('pre > code').forEach((codeblock) => {
+        const container = codeblock.parentNode.parentNode;
+
+        const copybutton = document.createElement('button');
+        copybutton.classList.add('copy-code');
+        copybutton.innerHTML = 'copy';
+
+        function copyingDone() {
+            copybutton.innerHTML = 'copied!';
+            setTimeout(() => {
+                copybutton.innerHTML = 'copy';
+            }, 2000);
+        }
+
+        copybutton.addEventListener('click', (cb) => {
+            if ('clipboard' in navigator) {
+                navigator.clipboard.writeText(codeblock.textContent);
+                copyingDone();
+                return;
+            }
+
+            const range = document.createRange();
+            range.selectNodeContents(codeblock);
+            const selection = window.getSelection();
+            selection.removeAllRanges();
+            selection.addRange(range);
+            try {
+                document.execCommand('copy');
+                copyingDone();
+            } catch (e) { };
+            selection.removeRange(range);
+        });
+
+        if (container.classList.contains("highlight")) {
+            container.appendChild(copybutton);
+        } else if (container.parentNode.firstChild == container) {
+            
+        } else if (codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName == "TABLE") {
+            
+            codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(copybutton);
+        } else {
+            
+            codeblock.parentNode.appendChild(copybutton);
+        }
+    });
+</script>
+</body>
+
+</html>

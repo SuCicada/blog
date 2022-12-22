@@ -1,0 +1,633 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto">
+
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>uva 1589 - Xiangqi（象棋） | SuCicada</title>
+<meta name="keywords" content="UVaOJ">
+<meta name="description" content="习题4-1 象棋（Xiangqi, ACM/ICPC Fuzhou 2011, UVa1589）
+考虑一个象棋残局，其中红方有n（2≤n≤7）个棋子，黑方只有一个将。红方除了有一个
+帅（G）之外还有3种可能的棋子：车（R），马（H），炮（C），并且需要考虑“蹩马
+腿”（如图4-4所示）与将和帅不能照面（将、帅如果同在一条直线上，中间又不隔着任何棋
+子的情况下，走子的一方获胜）的规则。
+输入所有棋子的位置，保证局面合法并且红方已经将军。你的任务是判断红方是否已经
+把黑方将死。
+Sample Input
+2 1 4
+G 10 5
+R 6 4
+3 1 5
+H 4 5
+G 10 5
+C 7 5
+0 0 0
+Sample Output
+YES
+NO
+https://uva.onlinejudge.org/index.php?option=com_onlinejudge&amp;Itemid=8&amp;page=show_problem&amp;category=833&amp;problem=4464&amp;mosmsg=Submission&#43;received&#43;with&#43;ID&#43;20833399
+注意：
+输入的第一行第一个为红子的数量，后两个是黑将的位置。接下来的是红子类型和位置。
+思路：
+1、黑将有四种走法，即上下左右。我们只要判断 是否这四种走法中合理的都是死路 即可判断将是否被将死 。
+2、先判断是否当前的黑将走子的位置是否合理，即当前的将子有没有超出九宫格。
+3、对于车炮帅的将军，我们可以一起判断，先从将的位置开始，依次往一条路过，比如从（1，4）向（10，4）竖的过，
+（1）如果路上遇到车或帅，那么就是将军了。
+（2）若是非车帅的子，就计数加一。（比如我用c_iff变量记录目前非车帅的子数量）。
+（3）若是炮，判断炮前是否有一个子（c_iff的值是不是一），若是，将军 。
+（4）关于如何将“顺次从黑将开始分别左一行，右一行，上一列，下一列遍历格子上的子”放在一个循环条件里，见代码，我是将本应四个循环的条件写在一个循环体里用 if 处理了
+4、关于马的将军，我们可以单独判断。看图,(x,y)位置为黑将，黑框位置为蹩马腿，如果此处没有子那么与其相邻的两个位置上有马的话就可以将军了。
+这里的技巧1：两层循环过完四个方向，见代码
+技巧2：黑框位置：（x&#43;i，y&#43;j），与其相邻的马（x&#43;i&#43;i，y&#43;j）和（x&#43;i，y&#43;j&#43;j）
+5、注意：还有一点陷阱，我们还要考虑一开始黑将就和红帅对面，那样的话黑将就可以直接击杀红帅。样例：
+2 1 5
+G 10 5">
+<meta name="author" content="SuCicada">
+<link rel="canonical" href="https://sucicada.github.io/blog/posts/uvaoj/uva-1589-xiangqi%E8%B1%A1%E6%A3%8B/">
+<link crossorigin="anonymous" href="/blog/assets/css/stylesheet.5b5501da54f21435c8f8010d1de02123ae8d1ada696b48c6530ec4eea283e7d6.css" integrity="sha256-W1UB2lTyFDXI&#43;AENHeAhI66NGtppa0jGUw7E7qKD59Y=" rel="preload stylesheet" as="style">
+<link rel="icon" href="https://sucicada.github.io/blog/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="https://sucicada.github.io/blog/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://sucicada.github.io/blog/favicon-32x32.png">
+<link rel="apple-touch-icon" href="https://sucicada.github.io/blog/apple-touch-icon.png">
+<link rel="mask-icon" href="https://sucicada.github.io/blog/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --hljs-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-track {
+                background: 0 0;
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-thumb {
+                border-color: var(--theme);
+            }
+        }
+
+    </style>
+</noscript><meta property="og:title" content="uva 1589 - Xiangqi（象棋）" />
+<meta property="og:description" content="习题4-1 象棋（Xiangqi, ACM/ICPC Fuzhou 2011, UVa1589）
+考虑一个象棋残局，其中红方有n（2≤n≤7）个棋子，黑方只有一个将。红方除了有一个
+帅（G）之外还有3种可能的棋子：车（R），马（H），炮（C），并且需要考虑“蹩马
+腿”（如图4-4所示）与将和帅不能照面（将、帅如果同在一条直线上，中间又不隔着任何棋
+子的情况下，走子的一方获胜）的规则。
+输入所有棋子的位置，保证局面合法并且红方已经将军。你的任务是判断红方是否已经
+把黑方将死。
+Sample Input
+2 1 4
+G 10 5
+R 6 4
+3 1 5
+H 4 5
+G 10 5
+C 7 5
+0 0 0
+Sample Output
+YES
+NO
+https://uva.onlinejudge.org/index.php?option=com_onlinejudge&amp;Itemid=8&amp;page=show_problem&amp;category=833&amp;problem=4464&amp;mosmsg=Submission&#43;received&#43;with&#43;ID&#43;20833399
+注意：
+输入的第一行第一个为红子的数量，后两个是黑将的位置。接下来的是红子类型和位置。
+思路：
+1、黑将有四种走法，即上下左右。我们只要判断 是否这四种走法中合理的都是死路 即可判断将是否被将死 。
+2、先判断是否当前的黑将走子的位置是否合理，即当前的将子有没有超出九宫格。
+3、对于车炮帅的将军，我们可以一起判断，先从将的位置开始，依次往一条路过，比如从（1，4）向（10，4）竖的过，
+（1）如果路上遇到车或帅，那么就是将军了。
+（2）若是非车帅的子，就计数加一。（比如我用c_iff变量记录目前非车帅的子数量）。
+（3）若是炮，判断炮前是否有一个子（c_iff的值是不是一），若是，将军 。
+（4）关于如何将“顺次从黑将开始分别左一行，右一行，上一列，下一列遍历格子上的子”放在一个循环条件里，见代码，我是将本应四个循环的条件写在一个循环体里用 if 处理了
+4、关于马的将军，我们可以单独判断。看图,(x,y)位置为黑将，黑框位置为蹩马腿，如果此处没有子那么与其相邻的两个位置上有马的话就可以将军了。
+这里的技巧1：两层循环过完四个方向，见代码
+技巧2：黑框位置：（x&#43;i，y&#43;j），与其相邻的马（x&#43;i&#43;i，y&#43;j）和（x&#43;i，y&#43;j&#43;j）
+5、注意：还有一点陷阱，我们还要考虑一开始黑将就和红帅对面，那样的话黑将就可以直接击杀红帅。样例：
+2 1 5
+G 10 5" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://sucicada.github.io/blog/posts/uvaoj/uva-1589-xiangqi%E8%B1%A1%E6%A3%8B/" /><meta property="og:image" content="https://sucicada.github.io/blog/papermod-cover.png"/><meta property="article:section" content="posts" />
+
+
+
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="https://sucicada.github.io/blog/papermod-cover.png"/>
+
+<meta name="twitter:title" content="uva 1589 - Xiangqi（象棋）"/>
+<meta name="twitter:description" content="习题4-1 象棋（Xiangqi, ACM/ICPC Fuzhou 2011, UVa1589）
+考虑一个象棋残局，其中红方有n（2≤n≤7）个棋子，黑方只有一个将。红方除了有一个
+帅（G）之外还有3种可能的棋子：车（R），马（H），炮（C），并且需要考虑“蹩马
+腿”（如图4-4所示）与将和帅不能照面（将、帅如果同在一条直线上，中间又不隔着任何棋
+子的情况下，走子的一方获胜）的规则。
+输入所有棋子的位置，保证局面合法并且红方已经将军。你的任务是判断红方是否已经
+把黑方将死。
+Sample Input
+2 1 4
+G 10 5
+R 6 4
+3 1 5
+H 4 5
+G 10 5
+C 7 5
+0 0 0
+Sample Output
+YES
+NO
+https://uva.onlinejudge.org/index.php?option=com_onlinejudge&amp;Itemid=8&amp;page=show_problem&amp;category=833&amp;problem=4464&amp;mosmsg=Submission&#43;received&#43;with&#43;ID&#43;20833399
+注意：
+输入的第一行第一个为红子的数量，后两个是黑将的位置。接下来的是红子类型和位置。
+思路：
+1、黑将有四种走法，即上下左右。我们只要判断 是否这四种走法中合理的都是死路 即可判断将是否被将死 。
+2、先判断是否当前的黑将走子的位置是否合理，即当前的将子有没有超出九宫格。
+3、对于车炮帅的将军，我们可以一起判断，先从将的位置开始，依次往一条路过，比如从（1，4）向（10，4）竖的过，
+（1）如果路上遇到车或帅，那么就是将军了。
+（2）若是非车帅的子，就计数加一。（比如我用c_iff变量记录目前非车帅的子数量）。
+（3）若是炮，判断炮前是否有一个子（c_iff的值是不是一），若是，将军 。
+（4）关于如何将“顺次从黑将开始分别左一行，右一行，上一列，下一列遍历格子上的子”放在一个循环条件里，见代码，我是将本应四个循环的条件写在一个循环体里用 if 处理了
+4、关于马的将军，我们可以单独判断。看图,(x,y)位置为黑将，黑框位置为蹩马腿，如果此处没有子那么与其相邻的两个位置上有马的话就可以将军了。
+这里的技巧1：两层循环过完四个方向，见代码
+技巧2：黑框位置：（x&#43;i，y&#43;j），与其相邻的马（x&#43;i&#43;i，y&#43;j）和（x&#43;i，y&#43;j&#43;j）
+5、注意：还有一点陷阱，我们还要考虑一开始黑将就和红帅对面，那样的话黑将就可以直接击杀红帅。样例：
+2 1 5
+G 10 5"/>
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "Posts",
+      "item": "https://sucicada.github.io/blog/posts/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  3 ,
+      "name": "uva 1589 - Xiangqi（象棋）",
+      "item": "https://sucicada.github.io/blog/posts/uvaoj/uva-1589-xiangqi%E8%B1%A1%E6%A3%8B/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "uva 1589 - Xiangqi（象棋）",
+  "name": "uva 1589 - Xiangqi（象棋）",
+  "description": "习题4-1 象棋（Xiangqi, ACM/ICPC Fuzhou 2011, UVa1589）\n考虑一个象棋残局，其中红方有n（2≤n≤7）个棋子，黑方只有一个将。红方除了有一个\n帅（G）之外还有3种可能的棋子：车（R），马（H），炮（C），并且需要考虑“蹩马\n腿”（如图4-4所示）与将和帅不能照面（将、帅如果同在一条直线上，中间又不隔着任何棋\n子的情况下，走子的一方获胜）的规则。\n输入所有棋子的位置，保证局面合法并且红方已经将军。你的任务是判断红方是否已经\n把黑方将死。\nSample Input\n2 1 4\nG 10 5\nR 6 4\n3 1 5\nH 4 5\nG 10 5\nC 7 5\n0 0 0\nSample Output\nYES\nNO\nhttps://uva.onlinejudge.org/index.php?option=com_onlinejudge\u0026amp;Itemid=8\u0026amp;page=show_problem\u0026amp;category=833\u0026amp;problem=4464\u0026amp;mosmsg=Submission+received+with+ID+20833399\n注意：\n输入的第一行第一个为红子的数量，后两个是黑将的位置。接下来的是红子类型和位置。\n思路：\n1、黑将有四种走法，即上下左右。我们只要判断 是否这四种走法中合理的都是死路 即可判断将是否被将死 。\n2、先判断是否当前的黑将走子的位置是否合理，即当前的将子有没有超出九宫格。\n3、对于车炮帅的将军，我们可以一起判断，先从将的位置开始，依次往一条路过，比如从（1，4）向（10，4）竖的过，\n（1）如果路上遇到车或帅，那么就是将军了。\n（2）若是非车帅的子，就计数加一。（比如我用c_iff变量记录目前非车帅的子数量）。\n（3）若是炮，判断炮前是否有一个子（c_iff的值是不是一），若是，将军 。\n（4）关于如何将“顺次从黑将开始分别左一行，右一行，上一列，下一列遍历格子上的子”放在一个循环条件里，见代码，我是将本应四个循环的条件写在一个循环体里用 if 处理了\n4、关于马的将军，我们可以单独判断。看图,(x,y)位置为黑将，黑框位置为蹩马腿，如果此处没有子那么与其相邻的两个位置上有马的话就可以将军了。\n这里的技巧1：两层循环过完四个方向，见代码\n技巧2：黑框位置：（x+i，y+j），与其相邻的马（x+i+i，y+j）和（x+i，y+j+j）\n5、注意：还有一点陷阱，我们还要考虑一开始黑将就和红帅对面，那样的话黑将就可以直接击杀红帅。样例：\n2 1 5\nG 10 5",
+  "keywords": [
+    "UVaOJ"
+  ],
+  "articleBody": " 习题4-1 象棋（Xiangqi, ACM/ICPC Fuzhou 2011, UVa1589）\n考虑一个象棋残局，其中红方有n（2≤n≤7）个棋子，黑方只有一个将。红方除了有一个\n帅（G）之外还有3种可能的棋子：车（R），马（H），炮（C），并且需要考虑“蹩马\n腿”（如图4-4所示）与将和帅不能照面（将、帅如果同在一条直线上，中间又不隔着任何棋\n子的情况下，走子的一方获胜）的规则。\n输入所有棋子的位置，保证局面合法并且红方已经将军。你的任务是判断红方是否已经\n把黑方将死。\nSample Input\n2 1 4\nG 10 5\nR 6 4\n3 1 5\nH 4 5\nG 10 5\nC 7 5\n0 0 0\nSample Output\nYES\nNO\nhttps://uva.onlinejudge.org/index.php?option=com_onlinejudge\u0026Itemid=8\u0026page=show_problem\u0026category=833\u0026problem=4464\u0026mosmsg=Submission+received+with+ID+20833399\n注意：\n输入的第一行第一个为红子的数量，后两个是黑将的位置。接下来的是红子类型和位置。\n思路：\n1、黑将有四种走法，即上下左右。我们只要判断 是否这四种走法中合理的都是死路 即可判断将是否被将死 。\n2、先判断是否当前的黑将走子的位置是否合理，即当前的将子有没有超出九宫格。\n3、对于车炮帅的将军，我们可以一起判断，先从将的位置开始，依次往一条路过，比如从（1，4）向（10，4）竖的过，\n（1）如果路上遇到车或帅，那么就是将军了。\n（2）若是非车帅的子，就计数加一。（比如我用c_iff变量记录目前非车帅的子数量）。\n（3）若是炮，判断炮前是否有一个子（c_iff的值是不是一），若是，将军 。\n（4）关于如何将“顺次从黑将开始分别左一行，右一行，上一列，下一列遍历格子上的子”放在一个循环条件里，见代码，我是将本应四个循环的条件写在一个循环体里用 if 处理了\n4、关于马的将军，我们可以单独判断。看图,(x,y)位置为黑将，黑框位置为蹩马腿，如果此处没有子那么与其相邻的两个位置上有马的话就可以将军了。\n这里的技巧1：两层循环过完四个方向，见代码\n技巧2：黑框位置：（x+i，y+j），与其相邻的马（x+i+i，y+j）和（x+i，y+j+j）\n5、注意：还有一点陷阱，我们还要考虑一开始黑将就和红帅对面，那样的话黑将就可以直接击杀红帅。样例：\n2 1 5\nG 10 5\nR 1 1\n#include #include using namespace std; char board[14][15];//9*10的棋盘 int checkmate(int rx,int ry) { //cout\u003c\u003c\"rx \"\u003c",
+  "wordCount" : "223",
+  "inLanguage": "en",
+  "datePublished": "0001-01-01T00:00:00Z",
+  "dateModified": "0001-01-01T00:00:00Z",
+  "author":{
+    "@type": "Person",
+    "name": "SuCicada"
+  },
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://sucicada.github.io/blog/posts/uvaoj/uva-1589-xiangqi%E8%B1%A1%E6%A3%8B/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "SuCicada",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://sucicada.github.io/blog/favicon.ico"
+    }
+  }
+}
+</script>
+</head>
+
+<body class="" id="top">
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.body.classList.add('dark');
+    } else if (localStorage.getItem("pref-theme") === "light") {
+        document.body.classList.remove('dark')
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.body.classList.add('dark');
+    }
+
+</script>
+
+<header class="header">
+    <nav class="nav">
+        <div class="logo">
+            <a href="https://sucicada.github.io/blog" accesskey="h" title="SuCicada (Alt + H)">SuCicada</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" accesskey="t" title="(Alt + T)">
+                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu">
+            <li>
+                <a href="https://sucicada.github.io/blog/archives/" title="Archive">
+                    <span>Archive</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://sucicada.github.io/blog/search/" title="Search (Alt &#43; /)" accesskey=/>
+                    <span>Search</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://sucicada.github.io/blog/tags/" title="Tags">
+                    <span>Tags</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://sucicada.github.io/blog/about/" title="About">
+                    <span>About</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+
+    <h1 class="post-title">
+      uva 1589 - Xiangqi（象棋）
+    </h1>
+    <div class="post-meta">SuCicada&nbsp;|&nbsp;<a href="https://github.com/SuCicada/mysite-hugo/content/posts/UVaOJ/uva%201589%20-%20Xiangqi%ef%bc%88%e8%b1%a1%e6%a3%8b%ef%bc%89.md" rel="noopener noreferrer" target="_blank">Suggest Changes</a>
+
+</div>
+    <ul class="post-tags">
+      <li><a href="https://sucicada.github.io/blog/tags/uvaoj/">UVaOJ</a></li>
+    </ul>
+  </header> 
+
+  <div class="post-content"><blockquote>
+<p>习题4-1 象棋（Xiangqi, ACM/ICPC Fuzhou 2011, UVa1589）<br>
+考虑一个象棋残局，其中红方有n（2≤n≤7）个棋子，黑方只有一个将。红方除了有一个<br>
+帅（G）之外还有3种可能的棋子：车（R），马（H），炮（C），并且需要考虑“蹩马<br>
+腿”（如图4-4所示）与将和帅不能照面（将、帅如果同在一条直线上，中间又不隔着任何棋<br>
+子的情况下，走子的一方获胜）的规则。<br>
+输入所有棋子的位置，保证局面合法并且红方已经将军。你的任务是判断红方是否已经<br>
+把黑方将死。<br>
+<strong>Sample Input</strong><br>
+2 1 4<br>
+G 10 5<br>
+R 6 4</p>
+</blockquote>
+<p>3 1 5<br>
+H 4 5<br>
+G 10 5<br>
+C 7 5</p>
+<blockquote>
+</blockquote>
+<p>0 0 0<br>
+<strong>Sample Output</strong><br>
+YES<br>
+NO</p>
+<p><a href="https://uva.onlinejudge.org/index.php?option=com_onlinejudge&amp;Itemid=8&amp;page=show_problem&amp;category=833&amp;problem=4464&amp;mosmsg=Submission+received+with+ID+20833399">https://uva.onlinejudge.org/index.php?option=com_onlinejudge&amp;Itemid=8&amp;page=show_problem&amp;category=833&amp;problem=4464&amp;mosmsg=Submission+received+with+ID+20833399</a><br>
+注意：<br>
+输入的第一行第一个为红子的数量，后两个是黑将的位置。接下来的是红子类型和位置。</p>
+<p>思路：<br>
+1、黑将有四种走法，即上下左右。我们只要判断 是否这四种走法中合理的都是死路 即可判断将是否被将死 。<br>
+2、先判断是否当前的黑将走子的位置是否合理，即当前的将子有没有超出九宫格。<br>
+3、对于车炮帅的将军，我们可以一起判断，先从将的位置开始，依次往一条路过，比如从（1，4）向（10，4）竖的过，<br>
+（1）如果路上遇到车或帅，那么就是将军了。<br>
+（2）若是非车帅的子，就计数加一。（比如我用c_iff变量记录目前非车帅的子数量）。<br>
+（3）若是炮，判断炮前是否有一个子（c_iff的值是不是一），若是，将军 。<br>
+（4）关于如何将“顺次从黑将开始分别左一行，右一行，上一列，下一列遍历格子上的子”放在一个循环条件里，见代码，我是将本应四个循环的条件写在一个循环体里用 if 处理了<br>
+4、关于马的将军，我们可以单独判断。看图,(x,y)位置为黑将，黑框位置为蹩马腿，如果此处没有子那么与其相邻的两个位置上有马的话就可以将军了。<br>
+
+
+
+
+<img loading="lazy" src="https://img-blog.csdn.net/20180226223117553?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvc3VfY2ljYWRh/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="这里写图片描述"  />
+<br>
+这里的技巧1：两层循环过完四个方向，见代码<br>
+技巧2：黑框位置：（x+i，y+j），与其相邻的马（x+i+i，y+j）和（x+i，y+j+j）<br>
+5、注意：还有一点陷阱，我们还要考虑一开始黑将就和红帅对面，那样的话黑将就可以直接击杀红帅。样例：<br>
+2 1 5<br>
+G 10 5<br>
+R 1 1</p>
+<pre tabindex="0"><code>#include&lt;iostream&gt;
+#include&lt;cstring&gt;
+using namespace std;
+char board[14][15];//9*10的棋盘
+int checkmate(int rx,int ry)
+{
+    //cout&lt;&lt;&#34;rx &#34;&lt;&lt;rx&lt;&lt;&#34;  ry  &#34;&lt;&lt;ry&lt;&lt;endl;
+    if((rx&lt;1||rx&gt;3)||(ry&lt;4||ry&gt;6))//出逃即越界，不合理走法
+    {
+        //cout&lt;&lt;&#34;escape&#34;&lt;&lt;endl;
+        return 1;
+    }
+
+    int c_iff=0;//炮前有子加1
+    int ix=-1,iy=0;
+    int x=rx+ix;//!注意：一开始的位置就是将的位置，所以要先避开，同时模拟了吃子
+    int y=ry;
+    //int xy,rc_n=10;
+//    for(;y&lt;=9;y+=ic)
+//    for(;/*x&gt;=1&amp;&amp;*/x&lt;=10;x+=ic)
+    for(;y&lt;=9;x+=ix,y+=iy)//3.(4)的技巧见33--54行
+    {
+        //cout&lt;&lt;&#34;x &#34;&lt;&lt;x&lt;&lt;&#34; y &#34;&lt;&lt;y&lt;&lt;endl;
+        if(x&lt;1)//上边过完了，就该过下边的列
+            {ix=1;x=rx;c_iff=0;continue;}
+        
+		if(x&gt;10)//该遍历竖列了，先左行
+        {
+            ix=0;//注意：接下来x就不能动了
+            iy=-1;
+            x=rx;
+            c_iff=0;
+            continue;
+        }
+        if(y&lt;1)//左行遍历结束，该右行
+            {iy=1;y=ry;c_iff=0;continue;}
+
+        if(board[x][y]==&#39;0&#39;)//没有子
+            continue;
+			
+        //如果当前是炮或将且之前没有过 子
+        if((c_iff==0&amp;&amp;(board[x][y]==&#39;R&#39;||board[x][y]==&#39;G&#39;))||//车决
+           (board[x][y]==&#39;C&#39;&amp;&amp;c_iff==1))//炮击身亡
+        {
+            //cout&lt;&lt;board[x][y]&lt;&lt;&#34;  &#34;&lt;&lt;x&lt;&lt;&#34; &#34;&lt;&lt;y&lt;&lt;&#34; dead&#34;&lt;&lt;endl;
+            return 1;//dead
+        }
+        else //若果不是炮或将，就加一
+            c_iff++;
+    }
+//    return 0;
+//}
+//int horse(int rx,int ry)
+//{
+	//判断马子是否将军
+    for(int ix=1;ix&gt;=-1;ix-=2)
+        for(int iy=1;iy&gt;=-1;iy-=2)//用于判断四个方位
+            if(((rx+ix)&lt;1||(rx+ix)&gt;10||(ry+iy)&lt;1||(ry+iy)&gt;9)==0)//不越界
+                if(board[rx+ix][ry+iy]==&#39;0&#39;)//不蹩马腿
+                    if(board[rx+ix*2][ry+iy]==&#39;H&#39;||board[rx+ix][ry+iy*2]==&#39;H&#39;)//那个致死位置上有马
+                        return 1;//马杀
+    //cout&lt;&lt;&#34;safe&#34;&lt;&lt;endl;
+    return 0;
+}
+int main()
+{
+    int T,rx,ry;
+    int cx,cy;
+    char chess;
+    while(cin&gt;&gt;T&gt;&gt;rx&gt;&gt;ry&amp;&amp;!(!T||!rx||!ry))
+    {
+        memset(board,&#39;0&#39;,sizeof(board));
+        while(T--)//摆棋子
+        {
+            cin&gt;&gt;chess;
+            cin&gt;&gt;cx&gt;&gt;cy;
+            board[cx][cy] = chess;
+        }
+
+        int i;
+        for(i=rx+1;rx&lt;=10&amp;&amp;board[i][ry]==&#39;0&#39;;i++);//判断一开始是否将对帅，是就NO，即思路5
+        if(board[i][ry]==&#39;G&#39;){cout&lt;&lt;&#34;NO&#34;&lt;&lt;endl;continue;}
+
+        int dead_sum=0;//记录死亡路线，为4就是将死
+        //cout&lt;&lt;&#34;rx &#34;&lt;&lt;rx&lt;&lt;&#34;  ry  &#34;&lt;&lt;ry&lt;&lt;endl;
+        dead_sum += checkmate(rx+1,ry);
+        dead_sum += checkmate(rx-1,ry);
+        dead_sum += checkmate(rx,ry+1);
+        dead_sum += checkmate(rx,ry-1);
+        //cout&lt;&lt;&#34;dead_sum  &#34;&lt;&lt;dead_sum&lt;&lt;endl;
+        if(dead_sum==4)
+            cout&lt;&lt;&#34;YES&#34;&lt;&lt;endl;
+        else
+            cout&lt;&lt;&#34;NO&#34;&lt;&lt;endl;
+    }
+    return 0;
+}
+//AC at 2018/2/26
+</code></pre><p>（题外话：终于病好了，赶紧交题，这个题比上一道用友好多了，感谢udebug，博客写的更累，头晕目眩不能再写了）</p>
+
+
+  </div>
+
+  <footer class="post-footer">
+<nav class="paginav">
+  <a class="prev" href="https://sucicada.github.io/blog/posts/uvaoj/uva-1588-kickdown%E6%8D%A2%E4%BD%8E%E6%8C%A1%E8%A3%85%E7%BD%AE/">
+    <span class="title">« Prev</span>
+    <br>
+    <span>uva 1588 - Kickdown（换低挡装置）</span>
+  </a>
+  <a class="next" href="https://sucicada.github.io/blog/posts/uvaoj/uva-1590-ip-networksip%E5%9C%B0%E5%9D%80/">
+    <span class="title">Next »</span>
+    <br>
+    <span>uva 1590 - IP Networks（IP地址）</span>
+  </a>
+</nav>
+
+
+<div class="share-buttons">
+    <a target="_blank" rel="noopener noreferrer" aria-label="share uva 1589 - Xiangqi（象棋） on twitter"
+        href="https://twitter.com/intent/tweet/?text=uva%201589%20-%20Xiangqi%ef%bc%88%e8%b1%a1%e6%a3%8b%ef%bc%89&amp;url=https%3a%2f%2fsucicada.github.io%2fblog%2fposts%2fuvaoj%2fuva-1589-xiangqi%25E8%25B1%25A1%25E6%25A3%258B%2f&amp;hashtags=UVaOJ">
+        <svg version="1.1" viewBox="0 0 512 512" xml:space="preserve" height="30px" width="30px" fill="currentColor">
+            <path
+                d="M449.446,0c34.525,0 62.554,28.03 62.554,62.554l0,386.892c0,34.524 -28.03,62.554 -62.554,62.554l-386.892,0c-34.524,0 -62.554,-28.03 -62.554,-62.554l0,-386.892c0,-34.524 28.029,-62.554 62.554,-62.554l386.892,0Zm-253.927,424.544c135.939,0 210.268,-112.643 210.268,-210.268c0,-3.218 0,-6.437 -0.153,-9.502c14.406,-10.421 26.973,-23.448 36.935,-38.314c-13.18,5.824 -27.433,9.809 -42.452,11.648c15.326,-9.196 26.973,-23.602 32.49,-40.92c-14.252,8.429 -30.038,14.56 -46.896,17.931c-13.487,-14.406 -32.644,-23.295 -53.946,-23.295c-40.767,0 -73.87,33.104 -73.87,73.87c0,5.824 0.613,11.494 1.992,16.858c-61.456,-3.065 -115.862,-32.49 -152.337,-77.241c-6.284,10.881 -9.962,23.601 -9.962,37.088c0,25.594 13.027,48.276 32.95,61.456c-12.107,-0.307 -23.448,-3.678 -33.41,-9.196l0,0.92c0,35.862 25.441,65.594 59.311,72.49c-6.13,1.686 -12.72,2.606 -19.464,2.606c-4.751,0 -9.348,-0.46 -13.946,-1.38c9.349,29.426 36.628,50.728 68.965,51.341c-25.287,19.771 -57.164,31.571 -91.8,31.571c-5.977,0 -11.801,-0.306 -17.625,-1.073c32.337,21.15 71.264,33.41 112.95,33.41Z" />
+        </svg>
+    </a>
+    <a target="_blank" rel="noopener noreferrer" aria-label="share uva 1589 - Xiangqi（象棋） on telegram"
+        href="https://telegram.me/share/url?text=uva%201589%20-%20Xiangqi%ef%bc%88%e8%b1%a1%e6%a3%8b%ef%bc%89&amp;url=https%3a%2f%2fsucicada.github.io%2fblog%2fposts%2fuvaoj%2fuva-1589-xiangqi%25E8%25B1%25A1%25E6%25A3%258B%2f">
+        <svg version="1.1" xml:space="preserve" viewBox="2 2 28 28" height="30px" width="30px" fill="currentColor">
+            <path
+                d="M26.49,29.86H5.5a3.37,3.37,0,0,1-2.47-1,3.35,3.35,0,0,1-1-2.47V5.48A3.36,3.36,0,0,1,3,3,3.37,3.37,0,0,1,5.5,2h21A3.38,3.38,0,0,1,29,3a3.36,3.36,0,0,1,1,2.46V26.37a3.35,3.35,0,0,1-1,2.47A3.38,3.38,0,0,1,26.49,29.86Zm-5.38-6.71a.79.79,0,0,0,.85-.66L24.73,9.24a.55.55,0,0,0-.18-.46.62.62,0,0,0-.41-.17q-.08,0-16.53,6.11a.59.59,0,0,0-.41.59.57.57,0,0,0,.43.52l4,1.24,1.61,4.83a.62.62,0,0,0,.63.43.56.56,0,0,0,.4-.17L16.54,20l4.09,3A.9.9,0,0,0,21.11,23.15ZM13.8,20.71l-1.21-4q8.72-5.55,8.78-5.55c.15,0,.23,0,.23.16a.18.18,0,0,1,0,.06s-2.51,2.3-7.52,6.8Z" />
+        </svg>
+    </a>
+</div>
+
+  </footer><div id="disqus_thread"></div>
+<script type="application/javascript">
+    window.disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "sucicada" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+</article>
+    </main>
+    
+<footer class="footer">
+    <span>&copy; 2022 <a href="https://sucicada.github.io/blog">SuCicada</a></span>
+    <span>
+        Powered by
+        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+        <path d="M12 6H0l6-6z" />
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu')
+    if (menu) {
+        menu.scrollLeft = localStorage.getItem("menu-scroll-position");
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var mybutton = document.getElementById("top-link");
+    window.onscroll = function () {
+        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
+            mybutton.style.visibility = "visible";
+            mybutton.style.opacity = "1";
+        } else {
+            mybutton.style.visibility = "hidden";
+            mybutton.style.opacity = "0";
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        if (document.body.className.includes("dark")) {
+            document.body.classList.remove('dark');
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            document.body.classList.add('dark');
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+<script>
+    document.querySelectorAll('pre > code').forEach((codeblock) => {
+        const container = codeblock.parentNode.parentNode;
+
+        const copybutton = document.createElement('button');
+        copybutton.classList.add('copy-code');
+        copybutton.innerHTML = 'copy';
+
+        function copyingDone() {
+            copybutton.innerHTML = 'copied!';
+            setTimeout(() => {
+                copybutton.innerHTML = 'copy';
+            }, 2000);
+        }
+
+        copybutton.addEventListener('click', (cb) => {
+            if ('clipboard' in navigator) {
+                navigator.clipboard.writeText(codeblock.textContent);
+                copyingDone();
+                return;
+            }
+
+            const range = document.createRange();
+            range.selectNodeContents(codeblock);
+            const selection = window.getSelection();
+            selection.removeAllRanges();
+            selection.addRange(range);
+            try {
+                document.execCommand('copy');
+                copyingDone();
+            } catch (e) { };
+            selection.removeRange(range);
+        });
+
+        if (container.classList.contains("highlight")) {
+            container.appendChild(copybutton);
+        } else if (container.parentNode.firstChild == container) {
+            
+        } else if (codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName == "TABLE") {
+            
+            codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(copybutton);
+        } else {
+            
+            codeblock.parentNode.appendChild(copybutton);
+        }
+    });
+</script>
+</body>
+
+</html>

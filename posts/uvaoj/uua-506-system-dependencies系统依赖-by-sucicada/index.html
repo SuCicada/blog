@@ -1,0 +1,756 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto">
+
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>UUA 506 - System Dependencies(系统依赖) By SuCicada | SuCicada</title>
+<meta name="keywords" content="UVaOJ">
+<meta name="description" content="例题6-21 系统依赖（System Dependencies, ACM/ICPC World Finals 1997, UVa506）
+软件组件之间可能会有依赖关系，例如，TELNET和FTP都依赖于TCP/IP。你的任务是
+模拟安装和卸载软件组件的过程。首先是一些DEPEND指令，说明软件之间的依赖关系（保
+证不存在循环依赖），然后是一些INSTALL、REMOVE和LIST指令，如表6-1所示。
+表6-1 指令说明
+指令 说明 DEPEND item1 item2 [item3 …] item1依赖组件item2, item3, … INSTALL item1 安装item1和它的依赖（已安装过的不用重新安装） REMOVE item1 卸载item1和它的依赖（如果某组件还被其他显式安装的组件所依赖，则不能卸载这个组件） LIST 输出所有已安装组件 在INSTALL指令中提到的组件称为显式安装，这些组件必须用REMOVE指令显式删除。
+同样地，被这些显式安装组件所直接或间接依赖的其他组件也不能在REMOVE指令中删除。
+每行指令包含不超过80个字符，所有组件名称都是大小写敏感的。指令名称均为大写字母。
+Sample Input
+DEPEND TELNET TCPIP NETCARD
+DEPEND TCPIP NETCARD
+DEPEND DNS TCPIP NETCARD
+DEPEND BROWSER TCPIP HTML
+INSTALL NETCARD
+INSTALL TELNET
+INSTALL foo
+REMOVE NETCARD
+INSTALL BROWSER
+INSTALL DNS
+LIST
+REMOVE TELNET
+REMOVE NETCARD
+REMOVE DNS">
+<meta name="author" content="SuCicada">
+<link rel="canonical" href="https://sucicada.github.io/blog/posts/uvaoj/uua-506-system-dependencies%E7%B3%BB%E7%BB%9F%E4%BE%9D%E8%B5%96-by-sucicada/">
+<link crossorigin="anonymous" href="/blog/assets/css/stylesheet.5b5501da54f21435c8f8010d1de02123ae8d1ada696b48c6530ec4eea283e7d6.css" integrity="sha256-W1UB2lTyFDXI&#43;AENHeAhI66NGtppa0jGUw7E7qKD59Y=" rel="preload stylesheet" as="style">
+<link rel="icon" href="https://sucicada.github.io/blog/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="https://sucicada.github.io/blog/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://sucicada.github.io/blog/favicon-32x32.png">
+<link rel="apple-touch-icon" href="https://sucicada.github.io/blog/apple-touch-icon.png">
+<link rel="mask-icon" href="https://sucicada.github.io/blog/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --hljs-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-track {
+                background: 0 0;
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-thumb {
+                border-color: var(--theme);
+            }
+        }
+
+    </style>
+</noscript><meta property="og:title" content="UUA 506 - System Dependencies(系统依赖) By SuCicada" />
+<meta property="og:description" content="例题6-21 系统依赖（System Dependencies, ACM/ICPC World Finals 1997, UVa506）
+软件组件之间可能会有依赖关系，例如，TELNET和FTP都依赖于TCP/IP。你的任务是
+模拟安装和卸载软件组件的过程。首先是一些DEPEND指令，说明软件之间的依赖关系（保
+证不存在循环依赖），然后是一些INSTALL、REMOVE和LIST指令，如表6-1所示。
+表6-1 指令说明
+指令 说明 DEPEND item1 item2 [item3 …] item1依赖组件item2, item3, … INSTALL item1 安装item1和它的依赖（已安装过的不用重新安装） REMOVE item1 卸载item1和它的依赖（如果某组件还被其他显式安装的组件所依赖，则不能卸载这个组件） LIST 输出所有已安装组件 在INSTALL指令中提到的组件称为显式安装，这些组件必须用REMOVE指令显式删除。
+同样地，被这些显式安装组件所直接或间接依赖的其他组件也不能在REMOVE指令中删除。
+每行指令包含不超过80个字符，所有组件名称都是大小写敏感的。指令名称均为大写字母。
+Sample Input
+DEPEND TELNET TCPIP NETCARD
+DEPEND TCPIP NETCARD
+DEPEND DNS TCPIP NETCARD
+DEPEND BROWSER TCPIP HTML
+INSTALL NETCARD
+INSTALL TELNET
+INSTALL foo
+REMOVE NETCARD
+INSTALL BROWSER
+INSTALL DNS
+LIST
+REMOVE TELNET
+REMOVE NETCARD
+REMOVE DNS" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://sucicada.github.io/blog/posts/uvaoj/uua-506-system-dependencies%E7%B3%BB%E7%BB%9F%E4%BE%9D%E8%B5%96-by-sucicada/" /><meta property="og:image" content="https://sucicada.github.io/blog/papermod-cover.png"/><meta property="article:section" content="posts" />
+
+
+
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="https://sucicada.github.io/blog/papermod-cover.png"/>
+
+<meta name="twitter:title" content="UUA 506 - System Dependencies(系统依赖) By SuCicada"/>
+<meta name="twitter:description" content="例题6-21 系统依赖（System Dependencies, ACM/ICPC World Finals 1997, UVa506）
+软件组件之间可能会有依赖关系，例如，TELNET和FTP都依赖于TCP/IP。你的任务是
+模拟安装和卸载软件组件的过程。首先是一些DEPEND指令，说明软件之间的依赖关系（保
+证不存在循环依赖），然后是一些INSTALL、REMOVE和LIST指令，如表6-1所示。
+表6-1 指令说明
+指令 说明 DEPEND item1 item2 [item3 …] item1依赖组件item2, item3, … INSTALL item1 安装item1和它的依赖（已安装过的不用重新安装） REMOVE item1 卸载item1和它的依赖（如果某组件还被其他显式安装的组件所依赖，则不能卸载这个组件） LIST 输出所有已安装组件 在INSTALL指令中提到的组件称为显式安装，这些组件必须用REMOVE指令显式删除。
+同样地，被这些显式安装组件所直接或间接依赖的其他组件也不能在REMOVE指令中删除。
+每行指令包含不超过80个字符，所有组件名称都是大小写敏感的。指令名称均为大写字母。
+Sample Input
+DEPEND TELNET TCPIP NETCARD
+DEPEND TCPIP NETCARD
+DEPEND DNS TCPIP NETCARD
+DEPEND BROWSER TCPIP HTML
+INSTALL NETCARD
+INSTALL TELNET
+INSTALL foo
+REMOVE NETCARD
+INSTALL BROWSER
+INSTALL DNS
+LIST
+REMOVE TELNET
+REMOVE NETCARD
+REMOVE DNS"/>
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "Posts",
+      "item": "https://sucicada.github.io/blog/posts/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  3 ,
+      "name": "UUA 506 - System Dependencies(系统依赖) By SuCicada",
+      "item": "https://sucicada.github.io/blog/posts/uvaoj/uua-506-system-dependencies%E7%B3%BB%E7%BB%9F%E4%BE%9D%E8%B5%96-by-sucicada/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "UUA 506 - System Dependencies(系统依赖) By SuCicada",
+  "name": "UUA 506 - System Dependencies(系统依赖) By SuCicada",
+  "description": "例题6-21 系统依赖（System Dependencies, ACM/ICPC World Finals 1997, UVa506）\n软件组件之间可能会有依赖关系，例如，TELNET和FTP都依赖于TCP/IP。你的任务是\n模拟安装和卸载软件组件的过程。首先是一些DEPEND指令，说明软件之间的依赖关系（保\n证不存在循环依赖），然后是一些INSTALL、REMOVE和LIST指令，如表6-1所示。\n表6-1 指令说明\n指令 说明 DEPEND item1 item2 [item3 …] item1依赖组件item2, item3, … INSTALL item1 安装item1和它的依赖（已安装过的不用重新安装） REMOVE item1 卸载item1和它的依赖（如果某组件还被其他显式安装的组件所依赖，则不能卸载这个组件） LIST 输出所有已安装组件 在INSTALL指令中提到的组件称为显式安装，这些组件必须用REMOVE指令显式删除。\n同样地，被这些显式安装组件所直接或间接依赖的其他组件也不能在REMOVE指令中删除。\n每行指令包含不超过80个字符，所有组件名称都是大小写敏感的。指令名称均为大写字母。\nSample Input\nDEPEND TELNET TCPIP NETCARD\nDEPEND TCPIP NETCARD\nDEPEND DNS TCPIP NETCARD\nDEPEND BROWSER TCPIP HTML\nINSTALL NETCARD\nINSTALL TELNET\nINSTALL foo\nREMOVE NETCARD\nINSTALL BROWSER\nINSTALL DNS\nLIST\nREMOVE TELNET\nREMOVE NETCARD\nREMOVE DNS",
+  "keywords": [
+    "UVaOJ"
+  ],
+  "articleBody": " 例题6-21 系统依赖（System Dependencies, ACM/ICPC World Finals 1997, UVa506）\n软件组件之间可能会有依赖关系，例如，TELNET和FTP都依赖于TCP/IP。你的任务是\n模拟安装和卸载软件组件的过程。首先是一些DEPEND指令，说明软件之间的依赖关系（保\n证不存在循环依赖），然后是一些INSTALL、REMOVE和LIST指令，如表6-1所示。\n表6-1 指令说明\n指令 说明 DEPEND item1 item2 [item3 …] item1依赖组件item2, item3, … INSTALL item1 安装item1和它的依赖（已安装过的不用重新安装） REMOVE item1 卸载item1和它的依赖（如果某组件还被其他显式安装的组件所依赖，则不能卸载这个组件） LIST 输出所有已安装组件 在INSTALL指令中提到的组件称为显式安装，这些组件必须用REMOVE指令显式删除。\n同样地，被这些显式安装组件所直接或间接依赖的其他组件也不能在REMOVE指令中删除。\n每行指令包含不超过80个字符，所有组件名称都是大小写敏感的。指令名称均为大写字母。\nSample Input\nDEPEND TELNET TCPIP NETCARD\nDEPEND TCPIP NETCARD\nDEPEND DNS TCPIP NETCARD\nDEPEND BROWSER TCPIP HTML\nINSTALL NETCARD\nINSTALL TELNET\nINSTALL foo\nREMOVE NETCARD\nINSTALL BROWSER\nINSTALL DNS\nLIST\nREMOVE TELNET\nREMOVE NETCARD\nREMOVE DNS\nREMOVE NETCARD\nINSTALL NETCARD\nREMOVE TCPIP\nREMOVE BROWSER\nREMOVE TCPIP\nEND\nSample Output\nDEPEND TELNET TCPIP NETCARD\nDEPEND TCPIP NETCARD\nDEPEND DNS TCPIP NETCARD\nDEPEND BROWSER TCPIP HTML\nINSTALL NETCARD\nInstalling NETCARD\nINSTALL TELNET\nInstalling TCPIP\nInstalling TELNET\nINSTALL foo\nInstalling foo\nREMOVE NETCARD\nNETCARD is still needed.\nINSTALL BROWSER\nInstalling HTML\nInstalling BROWSER\nINSTALL DNS\nInstalling DNS\nLIST\nNETCARD\nTCPIP\nTELNET\nfoo\nHTML\nBROWSER\nDNS\nREMOVE TELNET\nRemoving TELNET\nREMOVE NETCARD\nNETCARD is still needed.\nREMOVE DNS\nRemoving DNS\nREMOVE NETCARD\nNETCARD is still needed.\nINSTALL NETCARD\nNETCARD is already installed.\nREMOVE TCPIP\nTCPIP is still needed.\nREMOVE BROWSER\nRemoving BROWSER\nRemoving HTML\nRemoving TCPIP\nREMOVE TCPIP\nTCPIP is not installed.\nEND\n本家地址\n这道题挺好玩的，（主要是不难）。\nDAG什么的就行。具体设计都在注释里。\n果然这类工程性设计才适合我吗，（哭，我才不要（仅限于此）\n#include #include #include #include #include #include #include using namespace std; /* app -\u003e List(app) map\u003c string, vector\u003e install : 根据依赖关系, 递归找父节点, 从父节点开始依次安装, 父节点设置为被依赖 remove : 根据依赖关系, 先删自己, 在找父节点, 父节点若没有依赖-\u003e 删,递归找父节点 list : */ class App{ public: int install; // 1: 隐式安装 2:显式安装 set\u003cstring\u003e depended; // 被依赖 int id; // 安装id, 按照安装顺序递增 vector\u003cstring\u003e depend; // 依赖项 }; // 存储所有app name -\u003e App map\u003cstring,App\u003e table; // 安装的 map\u003cint,string\u003e installed; /* 依赖关系 k -dep-\u003e list(v) */ map\u003cstring,vector\u003cstring\u003e \u003e dep_table; // 被依赖 k \u003c-dep- list(v) map\u003cstring,vector\u003cstring\u003e \u003e deped_table; int installed_now_id = 0; // 用于记录最新app 的id void list(); void newapp(string app); // 存在未提及的app // 循环依赖app: 设置其为被依赖 // 若父app 已安装: 不管 // 若父app 未安装: 递归,参数中依赖为1 void install(string app, int depended){ App \u0026aaa = table[app]; if(aaa.install){ if(!depended){ cout\u003c\u003c\" \"\u003c\u003capp\u003c\u003c\" is already installed.\"\u003c\u003cendl; } return; } int size = aaa.depend.size(); for(int i=0;i\u003csize;i++){ string father_app = aaa.depend[i]; if(table[father_app].install == 0){ install(father_app, 1); } // table[father_app].depended += 1; table[father_app].depended.insert(app); } // 循环走完父app们就应该都好了.(安装以及设置依赖项) // 安装自己 cout\u003c\u003c\" Installing \"\u003c\u003capp\u003c\u003cendl; if(!depended) aaa.install = 2; else aaa.install = 1; // aaa.depended += depended; // 记录在安装列表, id==-1 代表之前未安装过. if(aaa.id==-1){ aaa.id = installed_now_id++; installed[aaa.id] = app; } } // 先判断有没有被依赖, 有则退出, 没有则 // 先删自己, 再对父app减一个依赖, 然后判断父app 若没有依赖就 递归remove int remove(string app, int depended){ App \u0026aaa = table[app]; if(!aaa.install){ cout\u003c\u003c\" \"\u003c\u003capp\u003c\u003c\" is not installed.\"\u003c\u003cendl; return 0; } int size = aaa.depend.size(); if(!aaa.depended.empty()){ cout\u003c\u003c\" \"\u003c\u003capp\u003c\u003c\" is still needed.\"\u003c\u003cendl; return 0; // no } if(depended \u0026\u0026 aaa.install==2){ /* 某app依赖删除 and 显式安装 -\u003e 不删 */ return 0; } cout\u003c\u003c\" Removing \"\u003c\u003capp\u003c\u003cendl; aaa.install = 0; for(int i=0;i\u003csize;i++){ string father_app = aaa.depend[i]; App \u0026faaa = table[father_app]; faaa.depended.erase(app) ; if(faaa.depended.empty()){ remove(father_app,1); // faaa.install = 0; } } // 清除在安装列表, id==-1 代表之前未安装过. installed.erase(aaa.id); aaa.id = -1; return 1; } void list(){ for(map\u003cint,string\u003e::iterator i=installed.begin();i!=installed.end();i++){ cout\u003c\u003c\" \"\u003c\u003c(i-\u003esecond)\u003c\u003cendl; } } void show(){ cout\u003c\u003c\"===========================\"\u003c\u003cendl; for(map\u003cstring,App\u003e::iterator i=table.begin();i!=table.end();i++){ cout\u003c\u003c\"[\"\u003c\u003ci-\u003efirst\u003c\u003c\"]\"\u003c\u003cendl; cout\u003c\u003c(i-\u003esecond).install\u003c\u003c\" \"\u003c\u003c(i-\u003esecond).id\u003c\u003cendl; for(int ii=0;ii\u003c(i-\u003esecond).depend.size();ii++){ cout\u003c\u003c(i-\u003esecond).depend[ii]\u003c\u003c\" \"; } cout\u003c\u003cendl; for(set\u003cstring\u003e::iterator ii=(i-\u003esecond).depended.begin();ii!=(i-\u003esecond).depended.end();ii++){ cout\u003c\u003c*ii\u003c\u003c\" \"; } cout\u003c\u003cendl; } cout\u003c\u003c\"--------------------\"\u003c\u003cendl; } void newapp(string app){ if(!table.count(app)){ App a; a.install=0; // a.depended=0; a.id=-1; table[app] = a; } } int main(){ string str; stringstream ss; while(getline(cin,str)){ do{ ss.clear(); ss\u003c\u003cstr; cout\u003c\u003c str \u003c\u003cendl;; string head; ss\u003e\u003ehead; string s; if(head == \"DEPEND\"){ string app; ss\u003e\u003eapp; newapp(app); while(ss\u003e\u003es){ table[app].depend.push_back(s); newapp(s); } }else if(head == \"INSTALL\"){ // show(); ss\u003e\u003es; if(!table.count(s)){ newapp(s); } install(s,0); }else if(head == \"REMOVE\"){ ss\u003e\u003es; remove(s,0); }else if(head == \"LIST\"){ list(); }else if(head == \"END\"){ break; } // show(); getline(cin,str); }while(1); } return 0; } // AC at 2020/09/20 ps：没什么好说的，好几天才一道题，简直没救\n",
+  "wordCount" : "578",
+  "inLanguage": "en",
+  "datePublished": "0001-01-01T00:00:00Z",
+  "dateModified": "0001-01-01T00:00:00Z",
+  "author":{
+    "@type": "Person",
+    "name": "SuCicada"
+  },
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://sucicada.github.io/blog/posts/uvaoj/uua-506-system-dependencies%E7%B3%BB%E7%BB%9F%E4%BE%9D%E8%B5%96-by-sucicada/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "SuCicada",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://sucicada.github.io/blog/favicon.ico"
+    }
+  }
+}
+</script>
+</head>
+
+<body class="" id="top">
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.body.classList.add('dark');
+    } else if (localStorage.getItem("pref-theme") === "light") {
+        document.body.classList.remove('dark')
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.body.classList.add('dark');
+    }
+
+</script>
+
+<header class="header">
+    <nav class="nav">
+        <div class="logo">
+            <a href="https://sucicada.github.io/blog" accesskey="h" title="SuCicada (Alt + H)">SuCicada</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" accesskey="t" title="(Alt + T)">
+                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu">
+            <li>
+                <a href="https://sucicada.github.io/blog/archives/" title="Archive">
+                    <span>Archive</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://sucicada.github.io/blog/search/" title="Search (Alt &#43; /)" accesskey=/>
+                    <span>Search</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://sucicada.github.io/blog/tags/" title="Tags">
+                    <span>Tags</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://sucicada.github.io/blog/about/" title="About">
+                    <span>About</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+
+    <h1 class="post-title">
+      UUA 506 - System Dependencies(系统依赖) By SuCicada
+    </h1>
+    <div class="post-meta">SuCicada&nbsp;|&nbsp;<a href="https://github.com/SuCicada/mysite-hugo/content/posts/UVaOJ/UUA%20506%20-%20System%20Dependencies%28%e7%b3%bb%e7%bb%9f%e4%be%9d%e8%b5%96%29%20By%20SuCicada.md" rel="noopener noreferrer" target="_blank">Suggest Changes</a>
+
+</div>
+    <ul class="post-tags">
+      <li><a href="https://sucicada.github.io/blog/tags/uvaoj/">UVaOJ</a></li>
+    </ul>
+  </header> 
+
+  <div class="post-content"><blockquote>
+<p>例题6-21 系统依赖（System Dependencies, ACM/ICPC World Finals 1997, UVa506）<br>
+软件组件之间可能会有依赖关系，例如，TELNET和FTP都依赖于TCP/IP。你的任务是<br>
+模拟安装和卸载软件组件的过程。首先是一些DEPEND指令，说明软件之间的依赖关系（保<br>
+证不存在循环依赖），然后是一些INSTALL、REMOVE和LIST指令，如表6-1所示。<br>
+表6-1 指令说明</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>指令</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>DEPEND item1 item2 [item3 …]</td>
+<td>item1依赖组件item2, item3, …</td>
+</tr>
+<tr>
+<td>INSTALL item1</td>
+<td>安装item1和它的依赖（已安装过的不用重新安装）</td>
+</tr>
+<tr>
+<td>REMOVE item1</td>
+<td>卸载item1和它的依赖（如果某组件还被其他显式安装的组件所依赖，则不能卸载这个组件）</td>
+</tr>
+<tr>
+<td>LIST</td>
+<td>输出所有已安装组件</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>在INSTALL指令中提到的组件称为显式安装，这些组件必须用REMOVE指令显式删除。<br>
+同样地，被这些显式安装组件所直接或间接依赖的其他组件也不能在REMOVE指令中删除。<br>
+每行指令包含不超过80个字符，所有组件名称都是大小写敏感的。指令名称均为大写字母。<br>
+<strong>Sample Input</strong><br>
+DEPEND TELNET TCPIP NETCARD<br>
+DEPEND TCPIP NETCARD<br>
+DEPEND DNS TCPIP NETCARD<br>
+DEPEND BROWSER TCPIP HTML<br>
+INSTALL NETCARD<br>
+INSTALL TELNET<br>
+INSTALL foo<br>
+REMOVE NETCARD<br>
+INSTALL BROWSER<br>
+INSTALL DNS<br>
+LIST<br>
+REMOVE TELNET<br>
+REMOVE NETCARD<br>
+REMOVE DNS<br>
+REMOVE NETCARD<br>
+INSTALL NETCARD<br>
+REMOVE TCPIP<br>
+REMOVE BROWSER<br>
+REMOVE TCPIP<br>
+END<br>
+<strong>Sample Output</strong><br>
+DEPEND TELNET TCPIP NETCARD<br>
+DEPEND TCPIP NETCARD<br>
+DEPEND DNS TCPIP NETCARD<br>
+DEPEND BROWSER TCPIP HTML<br>
+INSTALL NETCARD<br>
+Installing NETCARD<br>
+INSTALL TELNET<br>
+Installing TCPIP<br>
+Installing TELNET<br>
+INSTALL foo<br>
+Installing foo<br>
+REMOVE NETCARD<br>
+NETCARD is still needed.<br>
+INSTALL BROWSER<br>
+Installing HTML<br>
+Installing BROWSER<br>
+INSTALL DNS<br>
+Installing DNS<br>
+LIST<br>
+NETCARD<br>
+TCPIP<br>
+TELNET<br>
+foo<br>
+HTML<br>
+BROWSER<br>
+DNS<br>
+REMOVE TELNET<br>
+Removing TELNET<br>
+REMOVE NETCARD<br>
+NETCARD is still needed.<br>
+REMOVE DNS<br>
+Removing DNS<br>
+REMOVE NETCARD<br>
+NETCARD is still needed.<br>
+INSTALL NETCARD<br>
+NETCARD is already installed.<br>
+REMOVE TCPIP<br>
+TCPIP is still needed.<br>
+REMOVE BROWSER<br>
+Removing BROWSER<br>
+Removing HTML<br>
+Removing TCPIP<br>
+REMOVE TCPIP<br>
+TCPIP is not installed.<br>
+END</p>
+</blockquote>
+<p><a href="https://onlinejudge.org/index.php?option=com_onlinejudge&amp;Itemid=8&amp;category=838&amp;page=show_problem&amp;problem=447">本家地址</a></p>
+<hr>
+<p>这道题挺好玩的，（主要是不难）。<br>
+DAG什么的就行。具体设计都在注释里。<br>
+果然这类工程性设计才适合我吗，（哭，我才不要（仅限于此）</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="cp">#include</span><span class="cpf">&lt;iostream&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span><span class="cpf">&lt;string&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span><span class="cpf">&lt;vector&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span><span class="cpf">&lt;sstream&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span><span class="cpf">&lt;map&gt; </span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span><span class="cpf">&lt;set&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span><span class="cpf">&lt;deque&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp"></span><span class="k">using</span> <span class="k">namespace</span> <span class="n">std</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">                
+</span></span><span class="line"><span class="cl">              
+</span></span><span class="line"><span class="cl"><span class="cm">/*              
+</span></span></span><span class="line"><span class="cl"><span class="cm">    app -&gt; List(app)
+</span></span></span><span class="line"><span class="cl"><span class="cm">    map&lt; string, vector&lt;string&gt;&gt; 
+</span></span></span><span class="line"><span class="cl"><span class="cm">    install : 根据依赖关系, 递归找父节点, 从父节点开始依次安装, 父节点设置为被依赖 
+</span></span></span><span class="line"><span class="cl"><span class="cm">    remove  : 根据依赖关系, 先删自己, 在找父节点, 父节点若没有依赖-&gt; 删,递归找父节点
+</span></span></span><span class="line"><span class="cl"><span class="cm">    list    : 
+</span></span></span><span class="line"><span class="cl"><span class="cm">*/</span>            
+</span></span><span class="line"><span class="cl">                
+</span></span><span class="line"><span class="cl"><span class="k">class</span> <span class="nc">App</span><span class="p">{</span>
+</span></span><span class="line"><span class="cl"><span class="k">public</span><span class="o">:</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="n">install</span><span class="p">;</span>           <span class="c1">// 1: 隐式安装 2:显式安装
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="n">set</span><span class="o">&lt;</span><span class="n">string</span><span class="o">&gt;</span> <span class="n">depended</span><span class="p">;</span>  <span class="c1">// 被依赖 
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="kt">int</span> <span class="n">id</span><span class="p">;</span>                <span class="c1">// 安装id, 按照安装顺序递增
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="n">vector</span><span class="o">&lt;</span><span class="n">string</span><span class="o">&gt;</span> <span class="n">depend</span><span class="p">;</span> <span class="c1">// 依赖项
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="p">};</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// 存储所有app  name -&gt; App
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">map</span><span class="o">&lt;</span><span class="n">string</span><span class="p">,</span><span class="n">App</span><span class="o">&gt;</span> <span class="n">table</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// 安装的
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">map</span><span class="o">&lt;</span><span class="kt">int</span><span class="p">,</span><span class="n">string</span><span class="o">&gt;</span> <span class="n">installed</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="cm">/* 依赖关系 k -dep-&gt; list(v)  */</span>
+</span></span><span class="line"><span class="cl"><span class="n">map</span><span class="o">&lt;</span><span class="n">string</span><span class="p">,</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">string</span><span class="o">&gt;</span> <span class="o">&gt;</span> <span class="n">dep_table</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// 被依赖 k &lt;-dep- list(v)
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">map</span><span class="o">&lt;</span><span class="n">string</span><span class="p">,</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">string</span><span class="o">&gt;</span> <span class="o">&gt;</span> <span class="n">deped_table</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="n">installed_now_id</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="c1">// 用于记录最新app 的id
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
+</span></span><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">list</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">newapp</span><span class="p">(</span><span class="n">string</span> <span class="n">app</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// 存在未提及的app
+</span></span></span><span class="line"><span class="cl"><span class="c1">// 循环依赖app: 设置其为被依赖
+</span></span></span><span class="line"><span class="cl"><span class="c1">//      若父app 已安装: 不管
+</span></span></span><span class="line"><span class="cl"><span class="c1">//      若父app 未安装: 递归,参数中依赖为1
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kt">void</span> <span class="nf">install</span><span class="p">(</span><span class="n">string</span> <span class="n">app</span><span class="p">,</span> <span class="kt">int</span> <span class="n">depended</span><span class="p">){</span>
+</span></span><span class="line"><span class="cl">    <span class="n">App</span> <span class="o">&amp;</span><span class="n">aaa</span> <span class="o">=</span> <span class="n">table</span><span class="p">[</span><span class="n">app</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span><span class="p">(</span><span class="n">aaa</span><span class="p">.</span><span class="n">install</span><span class="p">){</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="n">depended</span><span class="p">){</span>
+</span></span><span class="line"><span class="cl">            <span class="n">cout</span><span class="o">&lt;&lt;</span><span class="s">&#34;   &#34;</span><span class="o">&lt;&lt;</span><span class="n">app</span><span class="o">&lt;&lt;</span><span class="s">&#34; is already installed.&#34;</span><span class="o">&lt;&lt;</span><span class="n">endl</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="n">size</span> <span class="o">=</span> <span class="n">aaa</span><span class="p">.</span><span class="n">depend</span><span class="p">.</span><span class="n">size</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">    <span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span><span class="n">i</span><span class="o">&lt;</span><span class="n">size</span><span class="p">;</span><span class="n">i</span><span class="o">++</span><span class="p">){</span>
+</span></span><span class="line"><span class="cl">        <span class="n">string</span> <span class="n">father_app</span> <span class="o">=</span> <span class="n">aaa</span><span class="p">.</span><span class="n">depend</span><span class="p">[</span><span class="n">i</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span><span class="p">(</span><span class="n">table</span><span class="p">[</span><span class="n">father_app</span><span class="p">].</span><span class="n">install</span> <span class="o">==</span> <span class="mi">0</span><span class="p">){</span>
+</span></span><span class="line"><span class="cl">            <span class="n">install</span><span class="p">(</span><span class="n">father_app</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">        <span class="c1">// table[father_app].depended += 1;
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="n">table</span><span class="p">[</span><span class="n">father_app</span><span class="p">].</span><span class="n">depended</span><span class="p">.</span><span class="n">insert</span><span class="p">(</span><span class="n">app</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="c1">// 循环走完父app们就应该都好了.(安装以及设置依赖项)
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="c1">// 安装自己
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="n">cout</span><span class="o">&lt;&lt;</span><span class="s">&#34;   Installing &#34;</span><span class="o">&lt;&lt;</span><span class="n">app</span><span class="o">&lt;&lt;</span><span class="n">endl</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="n">depended</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="n">aaa</span><span class="p">.</span><span class="n">install</span> <span class="o">=</span> <span class="mi">2</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="k">else</span>
+</span></span><span class="line"><span class="cl">        <span class="n">aaa</span><span class="p">.</span><span class="n">install</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="c1">// aaa.depended += depended;
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
+</span></span><span class="line"><span class="cl">    <span class="c1">// 记录在安装列表, id==-1 代表之前未安装过.
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="k">if</span><span class="p">(</span><span class="n">aaa</span><span class="p">.</span><span class="n">id</span><span class="o">==-</span><span class="mi">1</span><span class="p">){</span>
+</span></span><span class="line"><span class="cl">        <span class="n">aaa</span><span class="p">.</span><span class="n">id</span> <span class="o">=</span> <span class="n">installed_now_id</span><span class="o">++</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="n">installed</span><span class="p">[</span><span class="n">aaa</span><span class="p">.</span><span class="n">id</span><span class="p">]</span> <span class="o">=</span> <span class="n">app</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// 先判断有没有被依赖, 有则退出, 没有则
+</span></span></span><span class="line"><span class="cl"><span class="c1">//     先删自己, 再对父app减一个依赖, 然后判断父app 若没有依赖就 递归remove 
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kt">int</span> <span class="nf">remove</span><span class="p">(</span><span class="n">string</span> <span class="n">app</span><span class="p">,</span> <span class="kt">int</span> <span class="n">depended</span><span class="p">){</span>
+</span></span><span class="line"><span class="cl">    <span class="n">App</span> <span class="o">&amp;</span><span class="n">aaa</span> <span class="o">=</span> <span class="n">table</span><span class="p">[</span><span class="n">app</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="n">aaa</span><span class="p">.</span><span class="n">install</span><span class="p">){</span>
+</span></span><span class="line"><span class="cl">        <span class="n">cout</span><span class="o">&lt;&lt;</span><span class="s">&#34;   &#34;</span><span class="o">&lt;&lt;</span><span class="n">app</span><span class="o">&lt;&lt;</span><span class="s">&#34; is not installed.&#34;</span><span class="o">&lt;&lt;</span><span class="n">endl</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="n">size</span> <span class="o">=</span> <span class="n">aaa</span><span class="p">.</span><span class="n">depend</span><span class="p">.</span><span class="n">size</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="n">aaa</span><span class="p">.</span><span class="n">depended</span><span class="p">.</span><span class="n">empty</span><span class="p">()){</span>
+</span></span><span class="line"><span class="cl">        <span class="n">cout</span><span class="o">&lt;&lt;</span><span class="s">&#34;   &#34;</span><span class="o">&lt;&lt;</span><span class="n">app</span><span class="o">&lt;&lt;</span><span class="s">&#34; is still needed.&#34;</span><span class="o">&lt;&lt;</span><span class="n">endl</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>  <span class="c1">// no 
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span><span class="p">(</span><span class="n">depended</span> <span class="o">&amp;&amp;</span> <span class="n">aaa</span><span class="p">.</span><span class="n">install</span><span class="o">==</span><span class="mi">2</span><span class="p">){</span>
+</span></span><span class="line"><span class="cl">        <span class="cm">/* 某app依赖删除 and 显式安装 -&gt; 不删 */</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="n">cout</span><span class="o">&lt;&lt;</span><span class="s">&#34;   Removing &#34;</span><span class="o">&lt;&lt;</span><span class="n">app</span><span class="o">&lt;&lt;</span><span class="n">endl</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">aaa</span><span class="p">.</span><span class="n">install</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span><span class="n">i</span><span class="o">&lt;</span><span class="n">size</span><span class="p">;</span><span class="n">i</span><span class="o">++</span><span class="p">){</span>
+</span></span><span class="line"><span class="cl">        <span class="n">string</span> <span class="n">father_app</span> <span class="o">=</span> <span class="n">aaa</span><span class="p">.</span><span class="n">depend</span><span class="p">[</span><span class="n">i</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl">        <span class="n">App</span> <span class="o">&amp;</span><span class="n">faaa</span> <span class="o">=</span> <span class="n">table</span><span class="p">[</span><span class="n">father_app</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl">        <span class="n">faaa</span><span class="p">.</span><span class="n">depended</span><span class="p">.</span><span class="n">erase</span><span class="p">(</span><span class="n">app</span><span class="p">)</span> <span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="k">if</span><span class="p">(</span><span class="n">faaa</span><span class="p">.</span><span class="n">depended</span><span class="p">.</span><span class="n">empty</span><span class="p">()){</span>
+</span></span><span class="line"><span class="cl">            <span class="n">remove</span><span class="p">(</span><span class="n">father_app</span><span class="p">,</span><span class="mi">1</span><span class="p">);</span> 
+</span></span><span class="line"><span class="cl">            <span class="c1">// faaa.install = 0;
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="c1">// 清除在安装列表, id==-1 代表之前未安装过.
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="n">installed</span><span class="p">.</span><span class="n">erase</span><span class="p">(</span><span class="n">aaa</span><span class="p">.</span><span class="n">id</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="n">aaa</span><span class="p">.</span><span class="n">id</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="mi">1</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">list</span><span class="p">(){</span>
+</span></span><span class="line"><span class="cl">    <span class="k">for</span><span class="p">(</span><span class="n">map</span><span class="o">&lt;</span><span class="kt">int</span><span class="p">,</span><span class="n">string</span><span class="o">&gt;::</span><span class="n">iterator</span> <span class="n">i</span><span class="o">=</span><span class="n">installed</span><span class="p">.</span><span class="n">begin</span><span class="p">();</span><span class="n">i</span><span class="o">!=</span><span class="n">installed</span><span class="p">.</span><span class="n">end</span><span class="p">();</span><span class="n">i</span><span class="o">++</span><span class="p">){</span>
+</span></span><span class="line"><span class="cl">        <span class="n">cout</span><span class="o">&lt;&lt;</span><span class="s">&#34;   &#34;</span><span class="o">&lt;&lt;</span><span class="p">(</span><span class="n">i</span><span class="o">-&gt;</span><span class="n">second</span><span class="p">)</span><span class="o">&lt;&lt;</span><span class="n">endl</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">show</span><span class="p">(){</span>
+</span></span><span class="line"><span class="cl">    <span class="n">cout</span><span class="o">&lt;&lt;</span><span class="s">&#34;===========================&#34;</span><span class="o">&lt;&lt;</span><span class="n">endl</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="k">for</span><span class="p">(</span><span class="n">map</span><span class="o">&lt;</span><span class="n">string</span><span class="p">,</span><span class="n">App</span><span class="o">&gt;::</span><span class="n">iterator</span> <span class="n">i</span><span class="o">=</span><span class="n">table</span><span class="p">.</span><span class="n">begin</span><span class="p">();</span><span class="n">i</span><span class="o">!=</span><span class="n">table</span><span class="p">.</span><span class="n">end</span><span class="p">();</span><span class="n">i</span><span class="o">++</span><span class="p">){</span>
+</span></span><span class="line"><span class="cl">        <span class="n">cout</span><span class="o">&lt;&lt;</span><span class="s">&#34;[&#34;</span><span class="o">&lt;&lt;</span><span class="n">i</span><span class="o">-&gt;</span><span class="n">first</span><span class="o">&lt;&lt;</span><span class="s">&#34;]&#34;</span><span class="o">&lt;&lt;</span><span class="n">endl</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="n">cout</span><span class="o">&lt;&lt;</span><span class="p">(</span><span class="n">i</span><span class="o">-&gt;</span><span class="n">second</span><span class="p">).</span><span class="n">install</span><span class="o">&lt;&lt;</span><span class="s">&#34; &#34;</span><span class="o">&lt;&lt;</span><span class="p">(</span><span class="n">i</span><span class="o">-&gt;</span><span class="n">second</span><span class="p">).</span><span class="n">id</span><span class="o">&lt;&lt;</span><span class="n">endl</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">ii</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span><span class="n">ii</span><span class="o">&lt;</span><span class="p">(</span><span class="n">i</span><span class="o">-&gt;</span><span class="n">second</span><span class="p">).</span><span class="n">depend</span><span class="p">.</span><span class="n">size</span><span class="p">();</span><span class="n">ii</span><span class="o">++</span><span class="p">){</span>
+</span></span><span class="line"><span class="cl">            <span class="n">cout</span><span class="o">&lt;&lt;</span><span class="p">(</span><span class="n">i</span><span class="o">-&gt;</span><span class="n">second</span><span class="p">).</span><span class="n">depend</span><span class="p">[</span><span class="n">ii</span><span class="p">]</span><span class="o">&lt;&lt;</span><span class="s">&#34; &#34;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">        <span class="n">cout</span><span class="o">&lt;&lt;</span><span class="n">endl</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="k">for</span><span class="p">(</span><span class="n">set</span><span class="o">&lt;</span><span class="n">string</span><span class="o">&gt;::</span><span class="n">iterator</span> <span class="n">ii</span><span class="o">=</span><span class="p">(</span><span class="n">i</span><span class="o">-&gt;</span><span class="n">second</span><span class="p">).</span><span class="n">depended</span><span class="p">.</span><span class="n">begin</span><span class="p">();</span><span class="n">ii</span><span class="o">!=</span><span class="p">(</span><span class="n">i</span><span class="o">-&gt;</span><span class="n">second</span><span class="p">).</span><span class="n">depended</span><span class="p">.</span><span class="n">end</span><span class="p">();</span><span class="n">ii</span><span class="o">++</span><span class="p">){</span>
+</span></span><span class="line"><span class="cl">            <span class="n">cout</span><span class="o">&lt;&lt;*</span><span class="n">ii</span><span class="o">&lt;&lt;</span><span class="s">&#34; &#34;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">        <span class="n">cout</span><span class="o">&lt;&lt;</span><span class="n">endl</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="n">cout</span><span class="o">&lt;&lt;</span><span class="s">&#34;--------------------&#34;</span><span class="o">&lt;&lt;</span><span class="n">endl</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">newapp</span><span class="p">(</span><span class="n">string</span> <span class="n">app</span><span class="p">){</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="n">table</span><span class="p">.</span><span class="n">count</span><span class="p">(</span><span class="n">app</span><span class="p">)){</span>
+</span></span><span class="line"><span class="cl">        <span class="n">App</span> <span class="n">a</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="n">a</span><span class="p">.</span><span class="n">install</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="c1">// a.depended=0;
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="n">a</span><span class="p">.</span><span class="n">id</span><span class="o">=-</span><span class="mi">1</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="n">table</span><span class="p">[</span><span class="n">app</span><span class="p">]</span> <span class="o">=</span> <span class="n">a</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="nf">main</span><span class="p">(){</span>
+</span></span><span class="line"><span class="cl">    <span class="n">string</span> <span class="n">str</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">stringstream</span> <span class="n">ss</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="k">while</span><span class="p">(</span><span class="n">getline</span><span class="p">(</span><span class="n">cin</span><span class="p">,</span><span class="n">str</span><span class="p">)){</span>
+</span></span><span class="line"><span class="cl">        <span class="k">do</span><span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="n">ss</span><span class="p">.</span><span class="n">clear</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">            <span class="n">ss</span><span class="o">&lt;&lt;</span><span class="n">str</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">            <span class="n">cout</span><span class="o">&lt;&lt;</span> <span class="n">str</span> <span class="o">&lt;&lt;</span><span class="n">endl</span><span class="p">;;</span>
+</span></span><span class="line"><span class="cl">            <span class="n">string</span> <span class="n">head</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">            <span class="n">ss</span><span class="o">&gt;&gt;</span><span class="n">head</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">            <span class="n">string</span> <span class="n">s</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">            <span class="k">if</span><span class="p">(</span><span class="n">head</span> <span class="o">==</span> <span class="s">&#34;DEPEND&#34;</span><span class="p">){</span>
+</span></span><span class="line"><span class="cl">                <span class="n">string</span> <span class="n">app</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">                <span class="n">ss</span><span class="o">&gt;&gt;</span><span class="n">app</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">                <span class="n">newapp</span><span class="p">(</span><span class="n">app</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">                <span class="k">while</span><span class="p">(</span><span class="n">ss</span><span class="o">&gt;&gt;</span><span class="n">s</span><span class="p">){</span>
+</span></span><span class="line"><span class="cl">                    <span class="n">table</span><span class="p">[</span><span class="n">app</span><span class="p">].</span><span class="n">depend</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">s</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">                    <span class="n">newapp</span><span class="p">(</span><span class="n">s</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">                <span class="p">}</span>
+</span></span><span class="line"><span class="cl">            <span class="p">}</span><span class="k">else</span> <span class="k">if</span><span class="p">(</span><span class="n">head</span> <span class="o">==</span> <span class="s">&#34;INSTALL&#34;</span><span class="p">){</span>
+</span></span><span class="line"><span class="cl">                <span class="c1">// show();
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>                <span class="n">ss</span><span class="o">&gt;&gt;</span><span class="n">s</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">                <span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="n">table</span><span class="p">.</span><span class="n">count</span><span class="p">(</span><span class="n">s</span><span class="p">)){</span>
+</span></span><span class="line"><span class="cl">                    <span class="n">newapp</span><span class="p">(</span><span class="n">s</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">                <span class="p">}</span>
+</span></span><span class="line"><span class="cl">                <span class="n">install</span><span class="p">(</span><span class="n">s</span><span class="p">,</span><span class="mi">0</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">            <span class="p">}</span><span class="k">else</span> <span class="k">if</span><span class="p">(</span><span class="n">head</span> <span class="o">==</span> <span class="s">&#34;REMOVE&#34;</span><span class="p">){</span>
+</span></span><span class="line"><span class="cl">                <span class="n">ss</span><span class="o">&gt;&gt;</span><span class="n">s</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">                <span class="n">remove</span><span class="p">(</span><span class="n">s</span><span class="p">,</span><span class="mi">0</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">            <span class="p">}</span><span class="k">else</span> <span class="k">if</span><span class="p">(</span><span class="n">head</span> <span class="o">==</span> <span class="s">&#34;LIST&#34;</span><span class="p">){</span>
+</span></span><span class="line"><span class="cl">                <span class="n">list</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">            <span class="p">}</span><span class="k">else</span> <span class="k">if</span><span class="p">(</span><span class="n">head</span> <span class="o">==</span> <span class="s">&#34;END&#34;</span><span class="p">){</span>
+</span></span><span class="line"><span class="cl">                <span class="k">break</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">            <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">            <span class="c1">// show();
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">            <span class="n">getline</span><span class="p">(</span><span class="n">cin</span><span class="p">,</span><span class="n">str</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span><span class="k">while</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// AC at 2020/09/20
+</span></span></span></code></pre></div><hr>
+<p>ps：没什么好说的，好几天才一道题，简直没救</p>
+
+
+  </div>
+
+  <footer class="post-footer">
+<nav class="paginav">
+  <a class="prev" href="https://sucicada.github.io/blog/posts/uvaoj/uva-1103-ancient-messages%E5%8F%A4%E4%BB%A3%E8%B1%A1%E5%BD%A2%E7%AC%A6%E5%8F%B7-by-sucicada/">
+    <span class="title">« Prev</span>
+    <br>
+    <span>UVA 1103 - Ancient Messages（古代象形符号） By SuCicada</span>
+  </a>
+  <a class="next" href="https://sucicada.github.io/blog/posts/uvaoj/uva-10082-wertyu%E9%94%99%E4%BD%8D%E9%94%AE/">
+    <span class="title">Next »</span>
+    <br>
+    <span>uva 10082 WERTYU（错位键）</span>
+  </a>
+</nav>
+
+
+<div class="share-buttons">
+    <a target="_blank" rel="noopener noreferrer" aria-label="share UUA 506 - System Dependencies(系统依赖) By SuCicada on twitter"
+        href="https://twitter.com/intent/tweet/?text=UUA%20506%20-%20System%20Dependencies%28%e7%b3%bb%e7%bb%9f%e4%be%9d%e8%b5%96%29%20By%20SuCicada&amp;url=https%3a%2f%2fsucicada.github.io%2fblog%2fposts%2fuvaoj%2fuua-506-system-dependencies%25E7%25B3%25BB%25E7%25BB%259F%25E4%25BE%259D%25E8%25B5%2596-by-sucicada%2f&amp;hashtags=UVaOJ">
+        <svg version="1.1" viewBox="0 0 512 512" xml:space="preserve" height="30px" width="30px" fill="currentColor">
+            <path
+                d="M449.446,0c34.525,0 62.554,28.03 62.554,62.554l0,386.892c0,34.524 -28.03,62.554 -62.554,62.554l-386.892,0c-34.524,0 -62.554,-28.03 -62.554,-62.554l0,-386.892c0,-34.524 28.029,-62.554 62.554,-62.554l386.892,0Zm-253.927,424.544c135.939,0 210.268,-112.643 210.268,-210.268c0,-3.218 0,-6.437 -0.153,-9.502c14.406,-10.421 26.973,-23.448 36.935,-38.314c-13.18,5.824 -27.433,9.809 -42.452,11.648c15.326,-9.196 26.973,-23.602 32.49,-40.92c-14.252,8.429 -30.038,14.56 -46.896,17.931c-13.487,-14.406 -32.644,-23.295 -53.946,-23.295c-40.767,0 -73.87,33.104 -73.87,73.87c0,5.824 0.613,11.494 1.992,16.858c-61.456,-3.065 -115.862,-32.49 -152.337,-77.241c-6.284,10.881 -9.962,23.601 -9.962,37.088c0,25.594 13.027,48.276 32.95,61.456c-12.107,-0.307 -23.448,-3.678 -33.41,-9.196l0,0.92c0,35.862 25.441,65.594 59.311,72.49c-6.13,1.686 -12.72,2.606 -19.464,2.606c-4.751,0 -9.348,-0.46 -13.946,-1.38c9.349,29.426 36.628,50.728 68.965,51.341c-25.287,19.771 -57.164,31.571 -91.8,31.571c-5.977,0 -11.801,-0.306 -17.625,-1.073c32.337,21.15 71.264,33.41 112.95,33.41Z" />
+        </svg>
+    </a>
+    <a target="_blank" rel="noopener noreferrer" aria-label="share UUA 506 - System Dependencies(系统依赖) By SuCicada on telegram"
+        href="https://telegram.me/share/url?text=UUA%20506%20-%20System%20Dependencies%28%e7%b3%bb%e7%bb%9f%e4%be%9d%e8%b5%96%29%20By%20SuCicada&amp;url=https%3a%2f%2fsucicada.github.io%2fblog%2fposts%2fuvaoj%2fuua-506-system-dependencies%25E7%25B3%25BB%25E7%25BB%259F%25E4%25BE%259D%25E8%25B5%2596-by-sucicada%2f">
+        <svg version="1.1" xml:space="preserve" viewBox="2 2 28 28" height="30px" width="30px" fill="currentColor">
+            <path
+                d="M26.49,29.86H5.5a3.37,3.37,0,0,1-2.47-1,3.35,3.35,0,0,1-1-2.47V5.48A3.36,3.36,0,0,1,3,3,3.37,3.37,0,0,1,5.5,2h21A3.38,3.38,0,0,1,29,3a3.36,3.36,0,0,1,1,2.46V26.37a3.35,3.35,0,0,1-1,2.47A3.38,3.38,0,0,1,26.49,29.86Zm-5.38-6.71a.79.79,0,0,0,.85-.66L24.73,9.24a.55.55,0,0,0-.18-.46.62.62,0,0,0-.41-.17q-.08,0-16.53,6.11a.59.59,0,0,0-.41.59.57.57,0,0,0,.43.52l4,1.24,1.61,4.83a.62.62,0,0,0,.63.43.56.56,0,0,0,.4-.17L16.54,20l4.09,3A.9.9,0,0,0,21.11,23.15ZM13.8,20.71l-1.21-4q8.72-5.55,8.78-5.55c.15,0,.23,0,.23.16a.18.18,0,0,1,0,.06s-2.51,2.3-7.52,6.8Z" />
+        </svg>
+    </a>
+</div>
+
+  </footer><div id="disqus_thread"></div>
+<script type="application/javascript">
+    window.disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "sucicada" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+</article>
+    </main>
+    
+<footer class="footer">
+    <span>&copy; 2022 <a href="https://sucicada.github.io/blog">SuCicada</a></span>
+    <span>
+        Powered by
+        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+        <path d="M12 6H0l6-6z" />
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu')
+    if (menu) {
+        menu.scrollLeft = localStorage.getItem("menu-scroll-position");
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var mybutton = document.getElementById("top-link");
+    window.onscroll = function () {
+        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
+            mybutton.style.visibility = "visible";
+            mybutton.style.opacity = "1";
+        } else {
+            mybutton.style.visibility = "hidden";
+            mybutton.style.opacity = "0";
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        if (document.body.className.includes("dark")) {
+            document.body.classList.remove('dark');
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            document.body.classList.add('dark');
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+<script>
+    document.querySelectorAll('pre > code').forEach((codeblock) => {
+        const container = codeblock.parentNode.parentNode;
+
+        const copybutton = document.createElement('button');
+        copybutton.classList.add('copy-code');
+        copybutton.innerHTML = 'copy';
+
+        function copyingDone() {
+            copybutton.innerHTML = 'copied!';
+            setTimeout(() => {
+                copybutton.innerHTML = 'copy';
+            }, 2000);
+        }
+
+        copybutton.addEventListener('click', (cb) => {
+            if ('clipboard' in navigator) {
+                navigator.clipboard.writeText(codeblock.textContent);
+                copyingDone();
+                return;
+            }
+
+            const range = document.createRange();
+            range.selectNodeContents(codeblock);
+            const selection = window.getSelection();
+            selection.removeAllRanges();
+            selection.addRange(range);
+            try {
+                document.execCommand('copy');
+                copyingDone();
+            } catch (e) { };
+            selection.removeRange(range);
+        });
+
+        if (container.classList.contains("highlight")) {
+            container.appendChild(copybutton);
+        } else if (container.parentNode.firstChild == container) {
+            
+        } else if (codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName == "TABLE") {
+            
+            codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(copybutton);
+        } else {
+            
+            codeblock.parentNode.appendChild(copybutton);
+        }
+    });
+</script>
+</body>
+
+</html>

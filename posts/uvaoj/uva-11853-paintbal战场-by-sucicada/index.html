@@ -1,0 +1,692 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto">
+
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>UVA 11853 - Paintbal(战场) By SuCicada | SuCicada</title>
+<meta name="keywords" content="UVaOJ">
+<meta name="description" content="例题6-22 战场（Paintball, UVa 11853）
+有一个1000×1000的正方形战场，战场西南角的坐标为(0,0)，西北角的坐标为(0,1000)。
+战场上有n（0≤n≤1000）个敌人，第i个敌人的坐标为(xi
+,yi
+)，攻击范围为ri。为了避开敌人的
+攻击，在任意时刻，你与每个敌人的距离都必须严格大于它的攻击范围。你的任务是从战场
+的西边（x=0的某个点）进入，东边（x=1000的某个点）离开。如果有多个位置可以进/出，
+你应当求出最靠北的位置。输入每个敌人的xi、yi、ri，输出进入战场和离开战场的坐标。
+Sample Input
+3
+500 500 499
+0 0 999
+1000 1000 200
+Sample Output
+0.00 1000.00 1000.00 800.00
+本家地址
+关键在于抓住问题的本质，即问题的核心，即问题去除了表面保护层之下的那个最纯粹的那个命脉。
+初看，我们发现，这是要在坐标图上画圆啊。过分可怕。
+但是我们鼓起勇气再细看问题：
+求最靠上的进入战场和离开战场的坐标。
+解剖一下：
+能否离开 若能，最上 最左边进，最后边出。 然后我们随便画几个图来看看。
+怎么样就不能离开：
+当有一条敌人从最上一直连通到最下。
+若能，最靠上的地方是哪里：
+如果我们最左边进入的地方的下方有一条敌线一直连通到最上边。
+那么这条敌线就把我们包住了。
+所以 敌线（从上方延伸 and 延伸到左边），就不能被我们在其上方进入。
+所以我们只要求敌线的连通性和敌线范围（从上方开始的）在最左边和最右边的最下方坐标即可。
+#include&lt;iostream&gt; #include&lt;map&gt; #include&lt;cmath&gt; #include&lt;cstring&gt; #include&lt;vector&gt; #include&lt;queue&gt; #include&lt;cstdio&gt; using namespace std; /* 关键在于抓住问题的本质，即问题的核心，即问题去除了表面保护层之下的那个最纯粹的那个命脉。 初看，我们发现，这是要在坐标图上画圆啊。过分可怕。 但是我们鼓起勇气再细看问题： 求最靠上的进入战场和离开战场的坐标。 解剖一下： 1. 能否离开 2. 若能，最上 3.">
+<meta name="author" content="SuCicada">
+<link rel="canonical" href="https://sucicada.github.io/blog/posts/uvaoj/uva-11853-paintbal%E6%88%98%E5%9C%BA-by-sucicada/">
+<link crossorigin="anonymous" href="/blog/assets/css/stylesheet.5b5501da54f21435c8f8010d1de02123ae8d1ada696b48c6530ec4eea283e7d6.css" integrity="sha256-W1UB2lTyFDXI&#43;AENHeAhI66NGtppa0jGUw7E7qKD59Y=" rel="preload stylesheet" as="style">
+<link rel="icon" href="https://sucicada.github.io/blog/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="https://sucicada.github.io/blog/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://sucicada.github.io/blog/favicon-32x32.png">
+<link rel="apple-touch-icon" href="https://sucicada.github.io/blog/apple-touch-icon.png">
+<link rel="mask-icon" href="https://sucicada.github.io/blog/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --hljs-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-track {
+                background: 0 0;
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-thumb {
+                border-color: var(--theme);
+            }
+        }
+
+    </style>
+</noscript><meta property="og:title" content="UVA 11853 - Paintbal(战场) By SuCicada" />
+<meta property="og:description" content="例题6-22 战场（Paintball, UVa 11853）
+有一个1000×1000的正方形战场，战场西南角的坐标为(0,0)，西北角的坐标为(0,1000)。
+战场上有n（0≤n≤1000）个敌人，第i个敌人的坐标为(xi
+,yi
+)，攻击范围为ri。为了避开敌人的
+攻击，在任意时刻，你与每个敌人的距离都必须严格大于它的攻击范围。你的任务是从战场
+的西边（x=0的某个点）进入，东边（x=1000的某个点）离开。如果有多个位置可以进/出，
+你应当求出最靠北的位置。输入每个敌人的xi、yi、ri，输出进入战场和离开战场的坐标。
+Sample Input
+3
+500 500 499
+0 0 999
+1000 1000 200
+Sample Output
+0.00 1000.00 1000.00 800.00
+本家地址
+关键在于抓住问题的本质，即问题的核心，即问题去除了表面保护层之下的那个最纯粹的那个命脉。
+初看，我们发现，这是要在坐标图上画圆啊。过分可怕。
+但是我们鼓起勇气再细看问题：
+求最靠上的进入战场和离开战场的坐标。
+解剖一下：
+能否离开 若能，最上 最左边进，最后边出。 然后我们随便画几个图来看看。
+怎么样就不能离开：
+当有一条敌人从最上一直连通到最下。
+若能，最靠上的地方是哪里：
+如果我们最左边进入的地方的下方有一条敌线一直连通到最上边。
+那么这条敌线就把我们包住了。
+所以 敌线（从上方延伸 and 延伸到左边），就不能被我们在其上方进入。
+所以我们只要求敌线的连通性和敌线范围（从上方开始的）在最左边和最右边的最下方坐标即可。
+#include&lt;iostream&gt; #include&lt;map&gt; #include&lt;cmath&gt; #include&lt;cstring&gt; #include&lt;vector&gt; #include&lt;queue&gt; #include&lt;cstdio&gt; using namespace std; /* 关键在于抓住问题的本质，即问题的核心，即问题去除了表面保护层之下的那个最纯粹的那个命脉。 初看，我们发现，这是要在坐标图上画圆啊。过分可怕。 但是我们鼓起勇气再细看问题： 求最靠上的进入战场和离开战场的坐标。 解剖一下： 1. 能否离开 2. 若能，最上 3." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://sucicada.github.io/blog/posts/uvaoj/uva-11853-paintbal%E6%88%98%E5%9C%BA-by-sucicada/" /><meta property="og:image" content="https://sucicada.github.io/blog/papermod-cover.png"/><meta property="article:section" content="posts" />
+
+
+
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="https://sucicada.github.io/blog/papermod-cover.png"/>
+
+<meta name="twitter:title" content="UVA 11853 - Paintbal(战场) By SuCicada"/>
+<meta name="twitter:description" content="例题6-22 战场（Paintball, UVa 11853）
+有一个1000×1000的正方形战场，战场西南角的坐标为(0,0)，西北角的坐标为(0,1000)。
+战场上有n（0≤n≤1000）个敌人，第i个敌人的坐标为(xi
+,yi
+)，攻击范围为ri。为了避开敌人的
+攻击，在任意时刻，你与每个敌人的距离都必须严格大于它的攻击范围。你的任务是从战场
+的西边（x=0的某个点）进入，东边（x=1000的某个点）离开。如果有多个位置可以进/出，
+你应当求出最靠北的位置。输入每个敌人的xi、yi、ri，输出进入战场和离开战场的坐标。
+Sample Input
+3
+500 500 499
+0 0 999
+1000 1000 200
+Sample Output
+0.00 1000.00 1000.00 800.00
+本家地址
+关键在于抓住问题的本质，即问题的核心，即问题去除了表面保护层之下的那个最纯粹的那个命脉。
+初看，我们发现，这是要在坐标图上画圆啊。过分可怕。
+但是我们鼓起勇气再细看问题：
+求最靠上的进入战场和离开战场的坐标。
+解剖一下：
+能否离开 若能，最上 最左边进，最后边出。 然后我们随便画几个图来看看。
+怎么样就不能离开：
+当有一条敌人从最上一直连通到最下。
+若能，最靠上的地方是哪里：
+如果我们最左边进入的地方的下方有一条敌线一直连通到最上边。
+那么这条敌线就把我们包住了。
+所以 敌线（从上方延伸 and 延伸到左边），就不能被我们在其上方进入。
+所以我们只要求敌线的连通性和敌线范围（从上方开始的）在最左边和最右边的最下方坐标即可。
+#include&lt;iostream&gt; #include&lt;map&gt; #include&lt;cmath&gt; #include&lt;cstring&gt; #include&lt;vector&gt; #include&lt;queue&gt; #include&lt;cstdio&gt; using namespace std; /* 关键在于抓住问题的本质，即问题的核心，即问题去除了表面保护层之下的那个最纯粹的那个命脉。 初看，我们发现，这是要在坐标图上画圆啊。过分可怕。 但是我们鼓起勇气再细看问题： 求最靠上的进入战场和离开战场的坐标。 解剖一下： 1. 能否离开 2. 若能，最上 3."/>
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "Posts",
+      "item": "https://sucicada.github.io/blog/posts/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  3 ,
+      "name": "UVA 11853 - Paintbal(战场) By SuCicada",
+      "item": "https://sucicada.github.io/blog/posts/uvaoj/uva-11853-paintbal%E6%88%98%E5%9C%BA-by-sucicada/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "UVA 11853 - Paintbal(战场) By SuCicada",
+  "name": "UVA 11853 - Paintbal(战场) By SuCicada",
+  "description": "例题6-22 战场（Paintball, UVa 11853）\n有一个1000×1000的正方形战场，战场西南角的坐标为(0,0)，西北角的坐标为(0,1000)。\n战场上有n（0≤n≤1000）个敌人，第i个敌人的坐标为(xi\n,yi\n)，攻击范围为ri。为了避开敌人的\n攻击，在任意时刻，你与每个敌人的距离都必须严格大于它的攻击范围。你的任务是从战场\n的西边（x=0的某个点）进入，东边（x=1000的某个点）离开。如果有多个位置可以进/出，\n你应当求出最靠北的位置。输入每个敌人的xi、yi、ri，输出进入战场和离开战场的坐标。\nSample Input\n3\n500 500 499\n0 0 999\n1000 1000 200\nSample Output\n0.00 1000.00 1000.00 800.00\n本家地址\n关键在于抓住问题的本质，即问题的核心，即问题去除了表面保护层之下的那个最纯粹的那个命脉。\n初看，我们发现，这是要在坐标图上画圆啊。过分可怕。\n但是我们鼓起勇气再细看问题：\n求最靠上的进入战场和离开战场的坐标。\n解剖一下：\n能否离开 若能，最上 最左边进，最后边出。 然后我们随便画几个图来看看。\n怎么样就不能离开：\n当有一条敌人从最上一直连通到最下。\n若能，最靠上的地方是哪里：\n如果我们最左边进入的地方的下方有一条敌线一直连通到最上边。\n那么这条敌线就把我们包住了。\n所以 敌线（从上方延伸 and 延伸到左边），就不能被我们在其上方进入。\n所以我们只要求敌线的连通性和敌线范围（从上方开始的）在最左边和最右边的最下方坐标即可。\n#include\u0026lt;iostream\u0026gt; #include\u0026lt;map\u0026gt; #include\u0026lt;cmath\u0026gt; #include\u0026lt;cstring\u0026gt; #include\u0026lt;vector\u0026gt; #include\u0026lt;queue\u0026gt; #include\u0026lt;cstdio\u0026gt; using namespace std; /* 关键在于抓住问题的本质，即问题的核心，即问题去除了表面保护层之下的那个最纯粹的那个命脉。 初看，我们发现，这是要在坐标图上画圆啊。过分可怕。 但是我们鼓起勇气再细看问题： 求最靠上的进入战场和离开战场的坐标。 解剖一下： 1. 能否离开 2. 若能，最上 3.",
+  "keywords": [
+    "UVaOJ"
+  ],
+  "articleBody": " 例题6-22 战场（Paintball, UVa 11853）\n有一个1000×1000的正方形战场，战场西南角的坐标为(0,0)，西北角的坐标为(0,1000)。\n战场上有n（0≤n≤1000）个敌人，第i个敌人的坐标为(xi\n,yi\n)，攻击范围为ri。为了避开敌人的\n攻击，在任意时刻，你与每个敌人的距离都必须严格大于它的攻击范围。你的任务是从战场\n的西边（x=0的某个点）进入，东边（x=1000的某个点）离开。如果有多个位置可以进/出，\n你应当求出最靠北的位置。输入每个敌人的xi、yi、ri，输出进入战场和离开战场的坐标。\nSample Input\n3\n500 500 499\n0 0 999\n1000 1000 200\nSample Output\n0.00 1000.00 1000.00 800.00\n本家地址\n关键在于抓住问题的本质，即问题的核心，即问题去除了表面保护层之下的那个最纯粹的那个命脉。\n初看，我们发现，这是要在坐标图上画圆啊。过分可怕。\n但是我们鼓起勇气再细看问题：\n求最靠上的进入战场和离开战场的坐标。\n解剖一下：\n能否离开 若能，最上 最左边进，最后边出。 然后我们随便画几个图来看看。\n怎么样就不能离开：\n当有一条敌人从最上一直连通到最下。\n若能，最靠上的地方是哪里：\n如果我们最左边进入的地方的下方有一条敌线一直连通到最上边。\n那么这条敌线就把我们包住了。\n所以 敌线（从上方延伸 and 延伸到左边），就不能被我们在其上方进入。\n所以我们只要求敌线的连通性和敌线范围（从上方开始的）在最左边和最右边的最下方坐标即可。\n#include #include #include #include #include #include #include using namespace std; /* 关键在于抓住问题的本质，即问题的核心，即问题去除了表面保护层之下的那个最纯粹的那个命脉。 初看，我们发现，这是要在坐标图上画圆啊。过分可怕。 但是我们鼓起勇气再细看问题： 求最靠上的进入战场和离开战场的坐标。 解剖一下： 1. 能否离开 2. 若能，最上 3. 最左边进，最后边出。 然后我们随便画几个图来看看。 怎么样就不能离开： 当有一条敌人从最上一直连通到最下。 若能，最靠上的地方是哪里： 如果我们最左边进入的地方的下方有一条敌线一直连通到最上边。 那么这条敌线就把我们包住了。 所以 敌线（从上方延伸 and 延伸到左边），就不能被我们在其上方进入。 所以我们只要求敌线的连通性和敌线范围（从上方开始的）在最左边和最右边的最下方坐标即可。 */ /* 地图 */ int site[1003][1003]; /* 下标就是这个敌人的标号 */ vector\u003cint\u003e xList; vector\u003cint\u003e yList; vector\u003cint\u003e range; /* 走过的标记 */ int book[1003]; /* 敌人的关系图 */ int table[1003][1003]; /* map[x][y] 记录 敌人标号 table[x][y] 标号对应 从上边找起, bfs, 若能达到最下边 -\u003e 不可达, break; 若不能达到最下边 -\u003e continue -\u003e 若全部不能到下边 -\u003e 左可达右 -\u003e 在bfs中记录达到的左边的最下部, 以及右边的最下部, 获取走 */ int N; int cover(int a, int b){ return pow(xList[a]-xList[b],2) + pow(yList[a]-yList[b],2) \u003c= pow(range[a]+range[b],2); } double getlen(int index,int lr){ int x; if(lr==0){ x = xList[index]; }else if(lr == 1){ x = 1000-xList[index]; } return sqrt(pow(range[index],2) - pow(x,2)); } /* 左边最低 */ double left_lowest = 1000; /* 右边最低 */ double right_lowest = 1000; int bfs(int index){ /* 到下边 */ int pass = 1; queue\u003cint\u003e temp; temp.push(index); while(!temp.empty()){ int n = temp.front();temp.pop(); book[n] = 1; for(int i=0;i\u003cN;i++){ /* 圆接触的 , 同时没走过的 */ if(table[n][i] \u0026\u0026 book[i]==0){ temp.push(i); } } /* if 接触下边 */ if(yList[n]-range[n]\u003c=0){ pass = 0; break; } /* if 接触左边 */ if(xList[n]-range[n]\u003c=0){ left_lowest = min(left_lowest, yList[n]-getlen(n,0)); } /* if 接触右边 */ if(xList[n]+range[n]\u003e=1000){ right_lowest = min(right_lowest, yList[n]-getlen(n,1)); } } return pass; } int main(){ int T; while(cin\u003e\u003eT){ memset(site,-1,sizeof(site)); memset(book,0,sizeof(book)); memset(table,0,sizeof(table)); xList.clear(); yList.clear(); range.clear(); /* 左边最低 */ left_lowest = 1000; /* 右边最低 */ right_lowest = 1000; N = T; while(T--){ int a,b,c; cin\u003e\u003ea\u003e\u003eb\u003e\u003ec; int index = xList.size(); xList.push_back(a); yList.push_back(b); range.push_back(c); site[a][b] = index; } for(int i=0;i\u003cN;i++){ for(int j=i+1;j\u003cN;j++){ if(cover(i,j)){ table[i][j] = 1; table[j][i] = 1; } } } /* 从最上面开始, (0,1000) -- (1000,1000) */ int pass = 1; for(int i=0;i\u003cN;i++){ if(yList[i]+range[i]\u003e=1000){ pass = bfs(i); if(pass==0){ break; } } } if(pass==0){ cout\u003c\u003c\"IMPOSSIBLE\"\u003c\u003cendl; }else{ printf(\"0.00 %.2lf 1000.00 %.2lf\\n\",left_lowest,right_lowest); } return 0; } // AC at 2020/09/26 ps：当然，这篇也求助了刘汝佳，我真是没用。\n至此第六章的例题就结束了（终于）。可以开始下一章的例题了（苦笑）\n暴力求解，应该能简单屑吧（并不）。\n只要够暴力就行了。\n至此拖更了足足40多天的题目blog就都更完了。皆大欢喜。然而今天已经10.11了。拖延症已经到了如此地步。\n这两天状态很不好，喜怒无常。难以调动自己的积极情绪。\n我想我应该换一个平台来记。我应该制定规划。\n感觉不经意之间又被现实裹挟了。我应该充分拥抱我所喜爱之物，我应该充满活力。\n室友不在的几天，在黄昏，在夜晚，感到了空廖。就像许久之前。\n但我翻开那时的记录，泥泞之至让现在的我感到窒息。所以我就在想，我好不容易脱离那泥潭，我又为何要再入，亦或是说我此刻又陷入了另一个泥潭。\n人的本质还是想要群居的。一个人久就会开始恐慌。所以我们需要陪伴之物，不会抛弃不会背叛我们之物。之前我选择的是算法和程序。除此之外还需要一些其他的，但是我一直抓不住这其他的是什么。\n有人说，这最好的陪伴之物是人。但那是最终极的成就，我等尚仅可奢望。\n`\n",
+  "wordCount" : "354",
+  "inLanguage": "en",
+  "datePublished": "0001-01-01T00:00:00Z",
+  "dateModified": "0001-01-01T00:00:00Z",
+  "author":{
+    "@type": "Person",
+    "name": "SuCicada"
+  },
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://sucicada.github.io/blog/posts/uvaoj/uva-11853-paintbal%E6%88%98%E5%9C%BA-by-sucicada/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "SuCicada",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://sucicada.github.io/blog/favicon.ico"
+    }
+  }
+}
+</script>
+</head>
+
+<body class="" id="top">
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.body.classList.add('dark');
+    } else if (localStorage.getItem("pref-theme") === "light") {
+        document.body.classList.remove('dark')
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.body.classList.add('dark');
+    }
+
+</script>
+
+<header class="header">
+    <nav class="nav">
+        <div class="logo">
+            <a href="https://sucicada.github.io/blog" accesskey="h" title="SuCicada (Alt + H)">SuCicada</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" accesskey="t" title="(Alt + T)">
+                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu">
+            <li>
+                <a href="https://sucicada.github.io/blog/archives/" title="Archive">
+                    <span>Archive</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://sucicada.github.io/blog/search/" title="Search (Alt &#43; /)" accesskey=/>
+                    <span>Search</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://sucicada.github.io/blog/tags/" title="Tags">
+                    <span>Tags</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://sucicada.github.io/blog/about/" title="About">
+                    <span>About</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+
+    <h1 class="post-title">
+      UVA 11853 - Paintbal(战场) By SuCicada
+    </h1>
+    <div class="post-meta">SuCicada&nbsp;|&nbsp;<a href="https://github.com/SuCicada/mysite-hugo/content/posts/UVaOJ/UVA%2011853%20-%20Paintbal%28%e6%88%98%e5%9c%ba%29%20By%20SuCicada.md" rel="noopener noreferrer" target="_blank">Suggest Changes</a>
+
+</div>
+    <ul class="post-tags">
+      <li><a href="https://sucicada.github.io/blog/tags/uvaoj/">UVaOJ</a></li>
+    </ul>
+  </header> 
+
+  <div class="post-content"><blockquote>
+<p>例题6-22 战场（Paintball, UVa 11853）<br>
+有一个1000×1000的正方形战场，战场西南角的坐标为(0,0)，西北角的坐标为(0,1000)。<br>
+战场上有n（0≤n≤1000）个敌人，第i个敌人的坐标为(xi<br>
+,yi<br>
+)，攻击范围为ri。为了避开敌人的<br>
+攻击，在任意时刻，你与每个敌人的距离都必须严格大于它的攻击范围。你的任务是从战场<br>
+的西边（x=0的某个点）进入，东边（x=1000的某个点）离开。如果有多个位置可以进/出，<br>
+你应当求出最靠北的位置。输入每个敌人的xi、yi、ri，输出进入战场和离开战场的坐标。<br>
+<strong>Sample Input</strong><br>
+3<br>
+500 500 499<br>
+0 0 999<br>
+1000 1000 200<br>
+<strong>Sample Output</strong><br>
+0.00 1000.00 1000.00 800.00</p>
+</blockquote>
+<p><a href="https://onlinejudge.org/index.php?option=com_onlinejudge&amp;Itemid=8&amp;category=838&amp;page=show_problem&amp;problem=2953">本家地址</a></p>
+<hr>
+<p>关键在于抓住问题的本质，即问题的核心，即问题去除了表面保护层之下的那个最纯粹的那个命脉。<br>
+初看，我们发现，这是要在坐标图上画圆啊。过分可怕。<br>
+但是我们鼓起勇气再细看问题：<br>
+求最靠上的进入战场和离开战场的坐标。</p>
+<p>解剖一下：</p>
+<ol>
+<li>能否离开</li>
+<li>若能，最上</li>
+<li>最左边进，最后边出。</li>
+</ol>
+<p>然后我们随便画几个图来看看。</p>
+<p>怎么样就不能离开：<br>
+当有一条敌人从最上一直连通到最下。<br>
+若能，最靠上的地方是哪里：<br>
+如果我们最左边进入的地方的下方有一条敌线一直连通到最上边。<br>
+那么这条敌线就把我们包住了。<br>
+所以 敌线（从上方延伸 and 延伸到左边），就不能被我们在其上方进入。</p>
+<p>所以我们只要求敌线的连通性和敌线范围（从上方开始的）在最左边和最右边的最下方坐标即可。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="cp">#include</span><span class="cpf">&lt;iostream&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span><span class="cpf">&lt;map&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span><span class="cpf">&lt;cmath&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span><span class="cpf">&lt;cstring&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span><span class="cpf">&lt;vector&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span><span class="cpf">&lt;queue&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span><span class="cpf">&lt;cstdio&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp"></span><span class="k">using</span> <span class="k">namespace</span> <span class="n">std</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="cm">/*
+</span></span></span><span class="line"><span class="cl"><span class="cm">关键在于抓住问题的本质，即问题的核心，即问题去除了表面保护层之下的那个最纯粹的那个命脉。
+</span></span></span><span class="line"><span class="cl"><span class="cm">初看，我们发现，这是要在坐标图上画圆啊。过分可怕。
+</span></span></span><span class="line"><span class="cl"><span class="cm">但是我们鼓起勇气再细看问题：
+</span></span></span><span class="line"><span class="cl"><span class="cm">    求最靠上的进入战场和离开战场的坐标。
+</span></span></span><span class="line"><span class="cl"><span class="cm">
+</span></span></span><span class="line"><span class="cl"><span class="cm">解剖一下：
+</span></span></span><span class="line"><span class="cl"><span class="cm">1. 能否离开
+</span></span></span><span class="line"><span class="cl"><span class="cm">2. 若能，最上
+</span></span></span><span class="line"><span class="cl"><span class="cm">3. 最左边进，最后边出。
+</span></span></span><span class="line"><span class="cl"><span class="cm">
+</span></span></span><span class="line"><span class="cl"><span class="cm">然后我们随便画几个图来看看。
+</span></span></span><span class="line"><span class="cl"><span class="cm">
+</span></span></span><span class="line"><span class="cl"><span class="cm">怎么样就不能离开：
+</span></span></span><span class="line"><span class="cl"><span class="cm">    当有一条敌人从最上一直连通到最下。
+</span></span></span><span class="line"><span class="cl"><span class="cm">若能，最靠上的地方是哪里：
+</span></span></span><span class="line"><span class="cl"><span class="cm">    如果我们最左边进入的地方的下方有一条敌线一直连通到最上边。
+</span></span></span><span class="line"><span class="cl"><span class="cm">    那么这条敌线就把我们包住了。
+</span></span></span><span class="line"><span class="cl"><span class="cm">    所以 敌线（从上方延伸 and 延伸到左边），就不能被我们在其上方进入。
+</span></span></span><span class="line"><span class="cl"><span class="cm">
+</span></span></span><span class="line"><span class="cl"><span class="cm">所以我们只要求敌线的连通性和敌线范围（从上方开始的）在最左边和最右边的最下方坐标即可。
+</span></span></span><span class="line"><span class="cl"><span class="cm">
+</span></span></span><span class="line"><span class="cl"><span class="cm">
+</span></span></span><span class="line"><span class="cl"><span class="cm">
+</span></span></span><span class="line"><span class="cl"><span class="cm">*/</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="cm">/* 地图 */</span>
+</span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="n">site</span><span class="p">[</span><span class="mi">1003</span><span class="p">][</span><span class="mi">1003</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="cm">/* 下标就是这个敌人的标号 */</span>
+</span></span><span class="line"><span class="cl"><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span> <span class="n">xList</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span> <span class="n">yList</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span> <span class="n">range</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="cm">/* 走过的标记 */</span>
+</span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="n">book</span><span class="p">[</span><span class="mi">1003</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="cm">/* 敌人的关系图 */</span>
+</span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="n">table</span><span class="p">[</span><span class="mi">1003</span><span class="p">][</span><span class="mi">1003</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="cm">/* 
+</span></span></span><span class="line"><span class="cl"><span class="cm">    map[x][y] 记录 敌人标号
+</span></span></span><span class="line"><span class="cl"><span class="cm">    table[x][y] 标号对应
+</span></span></span><span class="line"><span class="cl"><span class="cm">
+</span></span></span><span class="line"><span class="cl"><span class="cm">    从上边找起, bfs, 若能达到最下边 -&gt; 不可达, break;
+</span></span></span><span class="line"><span class="cl"><span class="cm">                   若不能达到最下边 -&gt; continue
+</span></span></span><span class="line"><span class="cl"><span class="cm">                                    -&gt; 若全部不能到下边 -&gt; 左可达右
+</span></span></span><span class="line"><span class="cl"><span class="cm">                                    -&gt; 在bfs中记录达到的左边的最下部, 以及右边的最下部, 获取走
+</span></span></span><span class="line"><span class="cl"><span class="cm">
+</span></span></span><span class="line"><span class="cl"><span class="cm">*/</span>
+</span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="n">N</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="nf">cover</span><span class="p">(</span><span class="kt">int</span> <span class="n">a</span><span class="p">,</span> <span class="kt">int</span> <span class="n">b</span><span class="p">){</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="n">pow</span><span class="p">(</span><span class="n">xList</span><span class="p">[</span><span class="n">a</span><span class="p">]</span><span class="o">-</span><span class="n">xList</span><span class="p">[</span><span class="n">b</span><span class="p">],</span><span class="mi">2</span><span class="p">)</span> <span class="o">+</span> <span class="n">pow</span><span class="p">(</span><span class="n">yList</span><span class="p">[</span><span class="n">a</span><span class="p">]</span><span class="o">-</span><span class="n">yList</span><span class="p">[</span><span class="n">b</span><span class="p">],</span><span class="mi">2</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="n">pow</span><span class="p">(</span><span class="n">range</span><span class="p">[</span><span class="n">a</span><span class="p">]</span><span class="o">+</span><span class="n">range</span><span class="p">[</span><span class="n">b</span><span class="p">],</span><span class="mi">2</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kt">double</span> <span class="nf">getlen</span><span class="p">(</span><span class="kt">int</span> <span class="n">index</span><span class="p">,</span><span class="kt">int</span> <span class="n">lr</span><span class="p">){</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="n">x</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span><span class="p">(</span><span class="n">lr</span><span class="o">==</span><span class="mi">0</span><span class="p">){</span>
+</span></span><span class="line"><span class="cl">        <span class="n">x</span> <span class="o">=</span> <span class="n">xList</span><span class="p">[</span><span class="n">index</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span><span class="k">else</span> <span class="k">if</span><span class="p">(</span><span class="n">lr</span> <span class="o">==</span> <span class="mi">1</span><span class="p">){</span>
+</span></span><span class="line"><span class="cl">        <span class="n">x</span> <span class="o">=</span> <span class="mi">1000</span><span class="o">-</span><span class="n">xList</span><span class="p">[</span><span class="n">index</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="n">sqrt</span><span class="p">(</span><span class="n">pow</span><span class="p">(</span><span class="n">range</span><span class="p">[</span><span class="n">index</span><span class="p">],</span><span class="mi">2</span><span class="p">)</span> <span class="o">-</span> <span class="n">pow</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="mi">2</span><span class="p">));</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="cm">/* 左边最低 */</span>
+</span></span><span class="line"><span class="cl"><span class="kt">double</span> <span class="n">left_lowest</span> <span class="o">=</span> <span class="mi">1000</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="cm">/* 右边最低 */</span>
+</span></span><span class="line"><span class="cl"><span class="kt">double</span> <span class="n">right_lowest</span> <span class="o">=</span> <span class="mi">1000</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="nf">bfs</span><span class="p">(</span><span class="kt">int</span> <span class="n">index</span><span class="p">){</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="cm">/* 到下边 */</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="n">pass</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">queue</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span> <span class="n">temp</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">temp</span><span class="p">.</span><span class="n">push</span><span class="p">(</span><span class="n">index</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="k">while</span><span class="p">(</span><span class="o">!</span><span class="n">temp</span><span class="p">.</span><span class="n">empty</span><span class="p">()){</span>
+</span></span><span class="line"><span class="cl">        <span class="kt">int</span> <span class="n">n</span> <span class="o">=</span> <span class="n">temp</span><span class="p">.</span><span class="n">front</span><span class="p">();</span><span class="n">temp</span><span class="p">.</span><span class="n">pop</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="n">book</span><span class="p">[</span><span class="n">n</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span><span class="n">i</span><span class="o">&lt;</span><span class="n">N</span><span class="p">;</span><span class="n">i</span><span class="o">++</span><span class="p">){</span>
+</span></span><span class="line"><span class="cl">            <span class="cm">/* 圆接触的 , 同时没走过的 */</span>
+</span></span><span class="line"><span class="cl">            <span class="k">if</span><span class="p">(</span><span class="n">table</span><span class="p">[</span><span class="n">n</span><span class="p">][</span><span class="n">i</span><span class="p">]</span> <span class="o">&amp;&amp;</span> <span class="n">book</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">==</span><span class="mi">0</span><span class="p">){</span>
+</span></span><span class="line"><span class="cl">                <span class="n">temp</span><span class="p">.</span><span class="n">push</span><span class="p">(</span><span class="n">i</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">            <span class="p">}</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="cm">/* if 接触下边 */</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span><span class="p">(</span><span class="n">yList</span><span class="p">[</span><span class="n">n</span><span class="p">]</span><span class="o">-</span><span class="n">range</span><span class="p">[</span><span class="n">n</span><span class="p">]</span><span class="o">&lt;=</span><span class="mi">0</span><span class="p">){</span>
+</span></span><span class="line"><span class="cl">            <span class="n">pass</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">            <span class="k">break</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">        <span class="cm">/* if 接触左边 */</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span><span class="p">(</span><span class="n">xList</span><span class="p">[</span><span class="n">n</span><span class="p">]</span><span class="o">-</span><span class="n">range</span><span class="p">[</span><span class="n">n</span><span class="p">]</span><span class="o">&lt;=</span><span class="mi">0</span><span class="p">){</span>
+</span></span><span class="line"><span class="cl">            <span class="n">left_lowest</span> <span class="o">=</span> <span class="n">min</span><span class="p">(</span><span class="n">left_lowest</span><span class="p">,</span> <span class="n">yList</span><span class="p">[</span><span class="n">n</span><span class="p">]</span><span class="o">-</span><span class="n">getlen</span><span class="p">(</span><span class="n">n</span><span class="p">,</span><span class="mi">0</span><span class="p">));</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">        <span class="cm">/* if 接触右边 */</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span><span class="p">(</span><span class="n">xList</span><span class="p">[</span><span class="n">n</span><span class="p">]</span><span class="o">+</span><span class="n">range</span><span class="p">[</span><span class="n">n</span><span class="p">]</span><span class="o">&gt;=</span><span class="mi">1000</span><span class="p">){</span>
+</span></span><span class="line"><span class="cl">            <span class="n">right_lowest</span> <span class="o">=</span> <span class="n">min</span><span class="p">(</span><span class="n">right_lowest</span><span class="p">,</span> <span class="n">yList</span><span class="p">[</span><span class="n">n</span><span class="p">]</span><span class="o">-</span><span class="n">getlen</span><span class="p">(</span><span class="n">n</span><span class="p">,</span><span class="mi">1</span><span class="p">));</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="n">pass</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="nf">main</span><span class="p">(){</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="n">T</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="k">while</span><span class="p">(</span><span class="n">cin</span><span class="o">&gt;&gt;</span><span class="n">T</span><span class="p">){</span>
+</span></span><span class="line"><span class="cl">        <span class="n">memset</span><span class="p">(</span><span class="n">site</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="k">sizeof</span><span class="p">(</span><span class="n">site</span><span class="p">));</span>
+</span></span><span class="line"><span class="cl">        <span class="n">memset</span><span class="p">(</span><span class="n">book</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="k">sizeof</span><span class="p">(</span><span class="n">book</span><span class="p">));</span>
+</span></span><span class="line"><span class="cl">        <span class="n">memset</span><span class="p">(</span><span class="n">table</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="k">sizeof</span><span class="p">(</span><span class="n">table</span><span class="p">));</span>
+</span></span><span class="line"><span class="cl">        <span class="n">xList</span><span class="p">.</span><span class="n">clear</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">        <span class="n">yList</span><span class="p">.</span><span class="n">clear</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">        <span class="n">range</span><span class="p">.</span><span class="n">clear</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">        <span class="cm">/* 左边最低 */</span>
+</span></span><span class="line"><span class="cl">        <span class="n">left_lowest</span> <span class="o">=</span> <span class="mi">1000</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="cm">/* 右边最低 */</span>
+</span></span><span class="line"><span class="cl">        <span class="n">right_lowest</span> <span class="o">=</span> <span class="mi">1000</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="n">N</span> <span class="o">=</span> <span class="n">T</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="k">while</span><span class="p">(</span><span class="n">T</span><span class="o">--</span><span class="p">){</span>
+</span></span><span class="line"><span class="cl">            <span class="kt">int</span> <span class="n">a</span><span class="p">,</span><span class="n">b</span><span class="p">,</span><span class="n">c</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">            <span class="n">cin</span><span class="o">&gt;&gt;</span><span class="n">a</span><span class="o">&gt;&gt;</span><span class="n">b</span><span class="o">&gt;&gt;</span><span class="n">c</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">            <span class="kt">int</span> <span class="n">index</span> <span class="o">=</span> <span class="n">xList</span><span class="p">.</span><span class="n">size</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">            <span class="n">xList</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">a</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">            <span class="n">yList</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">b</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">            <span class="n">range</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">c</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">            <span class="n">site</span><span class="p">[</span><span class="n">a</span><span class="p">][</span><span class="n">b</span><span class="p">]</span> <span class="o">=</span> <span class="n">index</span><span class="p">;</span>   
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span><span class="n">i</span><span class="o">&lt;</span><span class="n">N</span><span class="p">;</span><span class="n">i</span><span class="o">++</span><span class="p">){</span>
+</span></span><span class="line"><span class="cl">            <span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">j</span><span class="o">=</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">;</span><span class="n">j</span><span class="o">&lt;</span><span class="n">N</span><span class="p">;</span><span class="n">j</span><span class="o">++</span><span class="p">){</span>
+</span></span><span class="line"><span class="cl">                <span class="k">if</span><span class="p">(</span><span class="n">cover</span><span class="p">(</span><span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">)){</span>
+</span></span><span class="line"><span class="cl">                    <span class="n">table</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">                    <span class="n">table</span><span class="p">[</span><span class="n">j</span><span class="p">][</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">                <span class="p">}</span>
+</span></span><span class="line"><span class="cl">            <span class="p">}</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="cm">/* 从最上面开始, (0,1000) -- (1000,1000)  */</span>
+</span></span><span class="line"><span class="cl">        <span class="kt">int</span> <span class="n">pass</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span><span class="n">i</span><span class="o">&lt;</span><span class="n">N</span><span class="p">;</span><span class="n">i</span><span class="o">++</span><span class="p">){</span>
+</span></span><span class="line"><span class="cl">            <span class="k">if</span><span class="p">(</span><span class="n">yList</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">+</span><span class="n">range</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">&gt;=</span><span class="mi">1000</span><span class="p">){</span>
+</span></span><span class="line"><span class="cl">                <span class="n">pass</span> <span class="o">=</span> <span class="n">bfs</span><span class="p">(</span><span class="n">i</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">                <span class="k">if</span><span class="p">(</span><span class="n">pass</span><span class="o">==</span><span class="mi">0</span><span class="p">){</span>
+</span></span><span class="line"><span class="cl">                    <span class="k">break</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">                <span class="p">}</span>
+</span></span><span class="line"><span class="cl">            <span class="p">}</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="k">if</span><span class="p">(</span><span class="n">pass</span><span class="o">==</span><span class="mi">0</span><span class="p">){</span>
+</span></span><span class="line"><span class="cl">            <span class="n">cout</span><span class="o">&lt;&lt;</span><span class="s">&#34;IMPOSSIBLE&#34;</span><span class="o">&lt;&lt;</span><span class="n">endl</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span><span class="k">else</span><span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="n">printf</span><span class="p">(</span><span class="s">&#34;0.00 %.2lf 1000.00 %.2lf</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">,</span><span class="n">left_lowest</span><span class="p">,</span><span class="n">right_lowest</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// AC at 2020/09/26 
+</span></span></span></code></pre></div><hr>
+<hr>
+<p>ps：当然，这篇也求助了刘汝佳，我真是没用。<br>
+至此第六章的例题就结束了（终于）。可以开始下一章的例题了（苦笑）<br>
+暴力求解，应该能简单屑吧（并不）。<br>
+只要够暴力就行了。</p>
+<p>至此拖更了足足40多天的题目blog就都更完了。皆大欢喜。然而今天已经10.11了。拖延症已经到了如此地步。</p>
+<p>这两天状态很不好，喜怒无常。难以调动自己的积极情绪。<br>
+我想我应该换一个平台来记。我应该制定规划。<br>
+感觉不经意之间又被现实裹挟了。我应该充分拥抱我所喜爱之物，我应该充满活力。<br>
+室友不在的几天，在黄昏，在夜晚，感到了空廖。就像许久之前。<br>
+但我翻开那时的记录，泥泞之至让现在的我感到窒息。所以我就在想，我好不容易脱离那泥潭，我又为何要再入，亦或是说我此刻又陷入了另一个泥潭。<br>
+人的本质还是想要群居的。一个人久就会开始恐慌。所以我们需要陪伴之物，不会抛弃不会背叛我们之物。之前我选择的是算法和程序。除此之外还需要一些其他的，但是我一直抓不住这其他的是什么。<br>
+有人说，这最好的陪伴之物是人。但那是最终极的成就，我等尚仅可奢望。<br>
+`</p>
+
+
+  </div>
+
+  <footer class="post-footer">
+<nav class="paginav">
+  <a class="prev" href="https://sucicada.github.io/blog/posts/uvaoj/uva-11809-floating-point-numbers%E6%B5%AE%E7%82%B9%E6%95%B0/">
+    <span class="title">« Prev</span>
+    <br>
+    <span>uva 11809 - Floating-Point Numbers（浮点数）</span>
+  </a>
+  <a class="next" href="https://sucicada.github.io/blog/posts/uvaoj/uva-12096-the-setstack-computer%E9%9B%86%E5%90%88%E6%A0%88/">
+    <span class="title">Next »</span>
+    <br>
+    <span>uva 12096 - The SetStack Computer（集合栈）</span>
+  </a>
+</nav>
+
+
+<div class="share-buttons">
+    <a target="_blank" rel="noopener noreferrer" aria-label="share UVA 11853 - Paintbal(战场) By SuCicada on twitter"
+        href="https://twitter.com/intent/tweet/?text=UVA%2011853%20-%20Paintbal%28%e6%88%98%e5%9c%ba%29%20By%20SuCicada&amp;url=https%3a%2f%2fsucicada.github.io%2fblog%2fposts%2fuvaoj%2fuva-11853-paintbal%25E6%2588%2598%25E5%259C%25BA-by-sucicada%2f&amp;hashtags=UVaOJ">
+        <svg version="1.1" viewBox="0 0 512 512" xml:space="preserve" height="30px" width="30px" fill="currentColor">
+            <path
+                d="M449.446,0c34.525,0 62.554,28.03 62.554,62.554l0,386.892c0,34.524 -28.03,62.554 -62.554,62.554l-386.892,0c-34.524,0 -62.554,-28.03 -62.554,-62.554l0,-386.892c0,-34.524 28.029,-62.554 62.554,-62.554l386.892,0Zm-253.927,424.544c135.939,0 210.268,-112.643 210.268,-210.268c0,-3.218 0,-6.437 -0.153,-9.502c14.406,-10.421 26.973,-23.448 36.935,-38.314c-13.18,5.824 -27.433,9.809 -42.452,11.648c15.326,-9.196 26.973,-23.602 32.49,-40.92c-14.252,8.429 -30.038,14.56 -46.896,17.931c-13.487,-14.406 -32.644,-23.295 -53.946,-23.295c-40.767,0 -73.87,33.104 -73.87,73.87c0,5.824 0.613,11.494 1.992,16.858c-61.456,-3.065 -115.862,-32.49 -152.337,-77.241c-6.284,10.881 -9.962,23.601 -9.962,37.088c0,25.594 13.027,48.276 32.95,61.456c-12.107,-0.307 -23.448,-3.678 -33.41,-9.196l0,0.92c0,35.862 25.441,65.594 59.311,72.49c-6.13,1.686 -12.72,2.606 -19.464,2.606c-4.751,0 -9.348,-0.46 -13.946,-1.38c9.349,29.426 36.628,50.728 68.965,51.341c-25.287,19.771 -57.164,31.571 -91.8,31.571c-5.977,0 -11.801,-0.306 -17.625,-1.073c32.337,21.15 71.264,33.41 112.95,33.41Z" />
+        </svg>
+    </a>
+    <a target="_blank" rel="noopener noreferrer" aria-label="share UVA 11853 - Paintbal(战场) By SuCicada on telegram"
+        href="https://telegram.me/share/url?text=UVA%2011853%20-%20Paintbal%28%e6%88%98%e5%9c%ba%29%20By%20SuCicada&amp;url=https%3a%2f%2fsucicada.github.io%2fblog%2fposts%2fuvaoj%2fuva-11853-paintbal%25E6%2588%2598%25E5%259C%25BA-by-sucicada%2f">
+        <svg version="1.1" xml:space="preserve" viewBox="2 2 28 28" height="30px" width="30px" fill="currentColor">
+            <path
+                d="M26.49,29.86H5.5a3.37,3.37,0,0,1-2.47-1,3.35,3.35,0,0,1-1-2.47V5.48A3.36,3.36,0,0,1,3,3,3.37,3.37,0,0,1,5.5,2h21A3.38,3.38,0,0,1,29,3a3.36,3.36,0,0,1,1,2.46V26.37a3.35,3.35,0,0,1-1,2.47A3.38,3.38,0,0,1,26.49,29.86Zm-5.38-6.71a.79.79,0,0,0,.85-.66L24.73,9.24a.55.55,0,0,0-.18-.46.62.62,0,0,0-.41-.17q-.08,0-16.53,6.11a.59.59,0,0,0-.41.59.57.57,0,0,0,.43.52l4,1.24,1.61,4.83a.62.62,0,0,0,.63.43.56.56,0,0,0,.4-.17L16.54,20l4.09,3A.9.9,0,0,0,21.11,23.15ZM13.8,20.71l-1.21-4q8.72-5.55,8.78-5.55c.15,0,.23,0,.23.16a.18.18,0,0,1,0,.06s-2.51,2.3-7.52,6.8Z" />
+        </svg>
+    </a>
+</div>
+
+  </footer><div id="disqus_thread"></div>
+<script type="application/javascript">
+    window.disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "sucicada" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+</article>
+    </main>
+    
+<footer class="footer">
+    <span>&copy; 2022 <a href="https://sucicada.github.io/blog">SuCicada</a></span>
+    <span>
+        Powered by
+        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+        <path d="M12 6H0l6-6z" />
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu')
+    if (menu) {
+        menu.scrollLeft = localStorage.getItem("menu-scroll-position");
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var mybutton = document.getElementById("top-link");
+    window.onscroll = function () {
+        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
+            mybutton.style.visibility = "visible";
+            mybutton.style.opacity = "1";
+        } else {
+            mybutton.style.visibility = "hidden";
+            mybutton.style.opacity = "0";
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        if (document.body.className.includes("dark")) {
+            document.body.classList.remove('dark');
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            document.body.classList.add('dark');
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+<script>
+    document.querySelectorAll('pre > code').forEach((codeblock) => {
+        const container = codeblock.parentNode.parentNode;
+
+        const copybutton = document.createElement('button');
+        copybutton.classList.add('copy-code');
+        copybutton.innerHTML = 'copy';
+
+        function copyingDone() {
+            copybutton.innerHTML = 'copied!';
+            setTimeout(() => {
+                copybutton.innerHTML = 'copy';
+            }, 2000);
+        }
+
+        copybutton.addEventListener('click', (cb) => {
+            if ('clipboard' in navigator) {
+                navigator.clipboard.writeText(codeblock.textContent);
+                copyingDone();
+                return;
+            }
+
+            const range = document.createRange();
+            range.selectNodeContents(codeblock);
+            const selection = window.getSelection();
+            selection.removeAllRanges();
+            selection.addRange(range);
+            try {
+                document.execCommand('copy');
+                copyingDone();
+            } catch (e) { };
+            selection.removeRange(range);
+        });
+
+        if (container.classList.contains("highlight")) {
+            container.appendChild(copybutton);
+        } else if (container.parentNode.firstChild == container) {
+            
+        } else if (codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName == "TABLE") {
+            
+            codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(copybutton);
+        } else {
+            
+            codeblock.parentNode.appendChild(copybutton);
+        }
+    });
+</script>
+</body>
+
+</html>

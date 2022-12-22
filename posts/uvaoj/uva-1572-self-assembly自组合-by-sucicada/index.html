@@ -1,0 +1,562 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto">
+
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>UVA 1572 - Self-Assembly(自组合) By SuCicada | SuCicada</title>
+<meta name="keywords" content="UVaOJ">
+<meta name="description" content="例题6-19 自组合（Self-Assembly, ACM/ICPC World Finals 2013, UVa 1572）
+有n（n≤40000）种边上带标号的正方形。每条边上的标号要么为一个大写字母后面跟着一个加号或减号，要么为数字00。当且仅当两条边的字母相同且符号相反时，两条边能拼在一起（00不能和任何边拼在一起，包括另一条标号为00的边）。
+假设输入的每种正方形都有无穷多种，而且可以旋转和翻转，你的任务是判断能否组成一个无限大的结构。每条边要么悬空（不和任何边相邻），要么和一个上述可拼接的边相邻。如图6-17（a）所示是3个正方形，图6-17（b）所示边是它们组成的一个合法结构（但大小有限）。
+Sample Input
+3
+A&#43;00A&#43;A&#43; 00B&#43;D&#43;A- B-C&#43;00C&#43;
+1
+K&#43;K-Q&#43;Q
+Sample Output
+bounded
+unbounded
+本家地址
+提炼一下关键点：一共53种符号。方块数目很大，构造传统二维图会过大而超时。方块内部符号已知连通性。求方块间符号连通性。
+可以抽象为52个点（00去掉），已知连通性（方块内部，不互补符号），互补符号可连通，当一段方块能够重复连接，即能够无限，即在可能的通路中求是否存在环路。
+所以解决方案：使用dfs的方式，从一个符号开始，然后循环找方块内部的道路，找到之后，再递归走向下一个与其互补的符号。然后记录每一次递归通过的符号，即结点，当某一次递归走到了已经走过的符号结点上，那么就存在重复道路，即环路了。
+具体看注释
+#include&lt;iostream&gt; #include&lt;string&gt; #include&lt;cstring&gt; using namespace std; /* x -&gt; y : inner */ /* y -&gt; x : outer( &#43; -) */ // /* A&#43;B&#43;C&#43;D&#43;...A-B-C-D- */ /* A&#43;A-B&#43;B-C&#43;C-D&#43;D-... */ int table[55][55]; /* 1: can go 2: has gone 用于减少计算数 */ int look[55]; /* 作为标记，锁一类。作为当前一次dfs中,这个点是否已经走过了 用于判断环路存在 */ int run[55]; int getIndex(char a,char b){ return (a-&#39;A&#39;)*2 &#43; (b==&#39;-&#39;?">
+<meta name="author" content="SuCicada">
+<link rel="canonical" href="https://sucicada.github.io/blog/posts/uvaoj/uva-1572-self-assembly%E8%87%AA%E7%BB%84%E5%90%88-by-sucicada/">
+<link crossorigin="anonymous" href="/blog/assets/css/stylesheet.5b5501da54f21435c8f8010d1de02123ae8d1ada696b48c6530ec4eea283e7d6.css" integrity="sha256-W1UB2lTyFDXI&#43;AENHeAhI66NGtppa0jGUw7E7qKD59Y=" rel="preload stylesheet" as="style">
+<link rel="icon" href="https://sucicada.github.io/blog/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="https://sucicada.github.io/blog/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://sucicada.github.io/blog/favicon-32x32.png">
+<link rel="apple-touch-icon" href="https://sucicada.github.io/blog/apple-touch-icon.png">
+<link rel="mask-icon" href="https://sucicada.github.io/blog/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --hljs-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-track {
+                background: 0 0;
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-thumb {
+                border-color: var(--theme);
+            }
+        }
+
+    </style>
+</noscript><meta property="og:title" content="UVA 1572 - Self-Assembly(自组合) By SuCicada" />
+<meta property="og:description" content="例题6-19 自组合（Self-Assembly, ACM/ICPC World Finals 2013, UVa 1572）
+有n（n≤40000）种边上带标号的正方形。每条边上的标号要么为一个大写字母后面跟着一个加号或减号，要么为数字00。当且仅当两条边的字母相同且符号相反时，两条边能拼在一起（00不能和任何边拼在一起，包括另一条标号为00的边）。
+假设输入的每种正方形都有无穷多种，而且可以旋转和翻转，你的任务是判断能否组成一个无限大的结构。每条边要么悬空（不和任何边相邻），要么和一个上述可拼接的边相邻。如图6-17（a）所示是3个正方形，图6-17（b）所示边是它们组成的一个合法结构（但大小有限）。
+Sample Input
+3
+A&#43;00A&#43;A&#43; 00B&#43;D&#43;A- B-C&#43;00C&#43;
+1
+K&#43;K-Q&#43;Q
+Sample Output
+bounded
+unbounded
+本家地址
+提炼一下关键点：一共53种符号。方块数目很大，构造传统二维图会过大而超时。方块内部符号已知连通性。求方块间符号连通性。
+可以抽象为52个点（00去掉），已知连通性（方块内部，不互补符号），互补符号可连通，当一段方块能够重复连接，即能够无限，即在可能的通路中求是否存在环路。
+所以解决方案：使用dfs的方式，从一个符号开始，然后循环找方块内部的道路，找到之后，再递归走向下一个与其互补的符号。然后记录每一次递归通过的符号，即结点，当某一次递归走到了已经走过的符号结点上，那么就存在重复道路，即环路了。
+具体看注释
+#include&lt;iostream&gt; #include&lt;string&gt; #include&lt;cstring&gt; using namespace std; /* x -&gt; y : inner */ /* y -&gt; x : outer( &#43; -) */ // /* A&#43;B&#43;C&#43;D&#43;...A-B-C-D- */ /* A&#43;A-B&#43;B-C&#43;C-D&#43;D-... */ int table[55][55]; /* 1: can go 2: has gone 用于减少计算数 */ int look[55]; /* 作为标记，锁一类。作为当前一次dfs中,这个点是否已经走过了 用于判断环路存在 */ int run[55]; int getIndex(char a,char b){ return (a-&#39;A&#39;)*2 &#43; (b==&#39;-&#39;?" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://sucicada.github.io/blog/posts/uvaoj/uva-1572-self-assembly%E8%87%AA%E7%BB%84%E5%90%88-by-sucicada/" /><meta property="og:image" content="https://sucicada.github.io/blog/papermod-cover.png"/><meta property="article:section" content="posts" />
+
+
+
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="https://sucicada.github.io/blog/papermod-cover.png"/>
+
+<meta name="twitter:title" content="UVA 1572 - Self-Assembly(自组合) By SuCicada"/>
+<meta name="twitter:description" content="例题6-19 自组合（Self-Assembly, ACM/ICPC World Finals 2013, UVa 1572）
+有n（n≤40000）种边上带标号的正方形。每条边上的标号要么为一个大写字母后面跟着一个加号或减号，要么为数字00。当且仅当两条边的字母相同且符号相反时，两条边能拼在一起（00不能和任何边拼在一起，包括另一条标号为00的边）。
+假设输入的每种正方形都有无穷多种，而且可以旋转和翻转，你的任务是判断能否组成一个无限大的结构。每条边要么悬空（不和任何边相邻），要么和一个上述可拼接的边相邻。如图6-17（a）所示是3个正方形，图6-17（b）所示边是它们组成的一个合法结构（但大小有限）。
+Sample Input
+3
+A&#43;00A&#43;A&#43; 00B&#43;D&#43;A- B-C&#43;00C&#43;
+1
+K&#43;K-Q&#43;Q
+Sample Output
+bounded
+unbounded
+本家地址
+提炼一下关键点：一共53种符号。方块数目很大，构造传统二维图会过大而超时。方块内部符号已知连通性。求方块间符号连通性。
+可以抽象为52个点（00去掉），已知连通性（方块内部，不互补符号），互补符号可连通，当一段方块能够重复连接，即能够无限，即在可能的通路中求是否存在环路。
+所以解决方案：使用dfs的方式，从一个符号开始，然后循环找方块内部的道路，找到之后，再递归走向下一个与其互补的符号。然后记录每一次递归通过的符号，即结点，当某一次递归走到了已经走过的符号结点上，那么就存在重复道路，即环路了。
+具体看注释
+#include&lt;iostream&gt; #include&lt;string&gt; #include&lt;cstring&gt; using namespace std; /* x -&gt; y : inner */ /* y -&gt; x : outer( &#43; -) */ // /* A&#43;B&#43;C&#43;D&#43;...A-B-C-D- */ /* A&#43;A-B&#43;B-C&#43;C-D&#43;D-... */ int table[55][55]; /* 1: can go 2: has gone 用于减少计算数 */ int look[55]; /* 作为标记，锁一类。作为当前一次dfs中,这个点是否已经走过了 用于判断环路存在 */ int run[55]; int getIndex(char a,char b){ return (a-&#39;A&#39;)*2 &#43; (b==&#39;-&#39;?"/>
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "Posts",
+      "item": "https://sucicada.github.io/blog/posts/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  3 ,
+      "name": "UVA 1572 - Self-Assembly(自组合) By SuCicada",
+      "item": "https://sucicada.github.io/blog/posts/uvaoj/uva-1572-self-assembly%E8%87%AA%E7%BB%84%E5%90%88-by-sucicada/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "UVA 1572 - Self-Assembly(自组合) By SuCicada",
+  "name": "UVA 1572 - Self-Assembly(自组合) By SuCicada",
+  "description": "例题6-19 自组合（Self-Assembly, ACM/ICPC World Finals 2013, UVa 1572）\n有n（n≤40000）种边上带标号的正方形。每条边上的标号要么为一个大写字母后面跟着一个加号或减号，要么为数字00。当且仅当两条边的字母相同且符号相反时，两条边能拼在一起（00不能和任何边拼在一起，包括另一条标号为00的边）。\n假设输入的每种正方形都有无穷多种，而且可以旋转和翻转，你的任务是判断能否组成一个无限大的结构。每条边要么悬空（不和任何边相邻），要么和一个上述可拼接的边相邻。如图6-17（a）所示是3个正方形，图6-17（b）所示边是它们组成的一个合法结构（但大小有限）。\nSample Input\n3\nA+00A+A+ 00B+D+A- B-C+00C+\n1\nK+K-Q+Q\nSample Output\nbounded\nunbounded\n本家地址\n提炼一下关键点：一共53种符号。方块数目很大，构造传统二维图会过大而超时。方块内部符号已知连通性。求方块间符号连通性。\n可以抽象为52个点（00去掉），已知连通性（方块内部，不互补符号），互补符号可连通，当一段方块能够重复连接，即能够无限，即在可能的通路中求是否存在环路。\n所以解决方案：使用dfs的方式，从一个符号开始，然后循环找方块内部的道路，找到之后，再递归走向下一个与其互补的符号。然后记录每一次递归通过的符号，即结点，当某一次递归走到了已经走过的符号结点上，那么就存在重复道路，即环路了。\n具体看注释\n#include\u0026lt;iostream\u0026gt; #include\u0026lt;string\u0026gt; #include\u0026lt;cstring\u0026gt; using namespace std; /* x -\u0026gt; y : inner */ /* y -\u0026gt; x : outer( + -) */ // /* A+B+C+D+...A-B-C-D- */ /* A+A-B+B-C+C-D+D-... */ int table[55][55]; /* 1: can go 2: has gone 用于减少计算数 */ int look[55]; /* 作为标记，锁一类。作为当前一次dfs中,这个点是否已经走过了 用于判断环路存在 */ int run[55]; int getIndex(char a,char b){ return (a-\u0026#39;A\u0026#39;)*2 + (b==\u0026#39;-\u0026#39;?",
+  "keywords": [
+    "UVaOJ"
+  ],
+  "articleBody": " 例题6-19 自组合（Self-Assembly, ACM/ICPC World Finals 2013, UVa 1572）\n有n（n≤40000）种边上带标号的正方形。每条边上的标号要么为一个大写字母后面跟着一个加号或减号，要么为数字00。当且仅当两条边的字母相同且符号相反时，两条边能拼在一起（00不能和任何边拼在一起，包括另一条标号为00的边）。\n假设输入的每种正方形都有无穷多种，而且可以旋转和翻转，你的任务是判断能否组成一个无限大的结构。每条边要么悬空（不和任何边相邻），要么和一个上述可拼接的边相邻。如图6-17（a）所示是3个正方形，图6-17（b）所示边是它们组成的一个合法结构（但大小有限）。\nSample Input\n3\nA+00A+A+ 00B+D+A- B-C+00C+\n1\nK+K-Q+Q\nSample Output\nbounded\nunbounded\n本家地址\n提炼一下关键点：一共53种符号。方块数目很大，构造传统二维图会过大而超时。方块内部符号已知连通性。求方块间符号连通性。\n可以抽象为52个点（00去掉），已知连通性（方块内部，不互补符号），互补符号可连通，当一段方块能够重复连接，即能够无限，即在可能的通路中求是否存在环路。\n所以解决方案：使用dfs的方式，从一个符号开始，然后循环找方块内部的道路，找到之后，再递归走向下一个与其互补的符号。然后记录每一次递归通过的符号，即结点，当某一次递归走到了已经走过的符号结点上，那么就存在重复道路，即环路了。\n具体看注释\n#include #include #include using namespace std; /* x -\u003e y : inner */ /* y -\u003e x : outer( + -) */ // /* A+B+C+D+...A-B-C-D- */ /* A+A-B+B-C+C-D+D-... */ int table[55][55]; /* 1: can go 2: has gone 用于减少计算数 */ int look[55]; /* 作为标记，锁一类。作为当前一次dfs中,这个点是否已经走过了 用于判断环路存在 */ int run[55]; int getIndex(char a,char b){ return (a-'A')*2 + (b=='-'?1:0); } void show(); /* 考虑什么时候有回路 从一个口子出去, 经过几圈之后, 从另一个口子进来, 在内部又到了这个口子, 即重复路 */ int calc(int n){ if(run[n]==1){ return 1; } /* n开始了 */ run[n]=1; /* n没有进过 */ if(look[n]==1){ for(int i=0;i\u003c52;i++){ /* 循环找内部路 */ if(table[n][i]==1) { /* 能走 */ /* 找到了, i为出口,即互补符号 */ int nextIn = i-1*(i%2*2-1); if(calc(nextIn)){ return 1; } } } look[n] = 2; } run[n] = 0; return 0; } int main(){ int T; while(cin\u003e\u003eT){ memset(table,0,sizeof(table)); memset(look,0,sizeof(look)); memset(run,0,sizeof(run)); string str; while(T--){ cin\u003e\u003estr; for(int i=0;i\u003c8;i+=2){ if(str[i]!='0'){ int xi = getIndex(str[i],str[i+1]); look[xi]=1; for(int j=0;j\u003c8;j+=2){ if(i!=j \u0026\u0026 str[j] !='0'){ int yi = getIndex(str[j],str[j+1]); table[xi][yi]=1; } } } } } int yes=0; for(int i=0;i\u003c52;i++){ if(look[i]==1){ int res = calc(i); if(res==1){ yes = 1; break; } } } if(yes){ cout\u003c\u003c\"unbounded\"\u003c\u003cendl; }else{ cout\u003c\u003c\"bounded\"\u003c\u003cendl; } } return 0; } // AC at 2020/09/13 ps：有时候写一种方法写不下去了，思路纠结住了，怎么改怎么不对，那么就抛弃这个扭曲的函数，重新开始整理思路，写一个新的同样功能的函数。\n这个题也求助于刘汝佳了，这个星期的状态实在太糟糕了。\n",
+  "wordCount" : "211",
+  "inLanguage": "en",
+  "datePublished": "0001-01-01T00:00:00Z",
+  "dateModified": "0001-01-01T00:00:00Z",
+  "author":{
+    "@type": "Person",
+    "name": "SuCicada"
+  },
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://sucicada.github.io/blog/posts/uvaoj/uva-1572-self-assembly%E8%87%AA%E7%BB%84%E5%90%88-by-sucicada/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "SuCicada",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://sucicada.github.io/blog/favicon.ico"
+    }
+  }
+}
+</script>
+</head>
+
+<body class="" id="top">
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.body.classList.add('dark');
+    } else if (localStorage.getItem("pref-theme") === "light") {
+        document.body.classList.remove('dark')
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.body.classList.add('dark');
+    }
+
+</script>
+
+<header class="header">
+    <nav class="nav">
+        <div class="logo">
+            <a href="https://sucicada.github.io/blog" accesskey="h" title="SuCicada (Alt + H)">SuCicada</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" accesskey="t" title="(Alt + T)">
+                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu">
+            <li>
+                <a href="https://sucicada.github.io/blog/archives/" title="Archive">
+                    <span>Archive</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://sucicada.github.io/blog/search/" title="Search (Alt &#43; /)" accesskey=/>
+                    <span>Search</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://sucicada.github.io/blog/tags/" title="Tags">
+                    <span>Tags</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://sucicada.github.io/blog/about/" title="About">
+                    <span>About</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+
+    <h1 class="post-title">
+      UVA 1572 - Self-Assembly(自组合) By SuCicada
+    </h1>
+    <div class="post-meta">SuCicada&nbsp;|&nbsp;<a href="https://github.com/SuCicada/mysite-hugo/content/posts/UVaOJ/UVA%201572%20-%20Self-Assembly%28%e8%87%aa%e7%bb%84%e5%90%88%29%20By%20SuCicada.md" rel="noopener noreferrer" target="_blank">Suggest Changes</a>
+
+</div>
+    <ul class="post-tags">
+      <li><a href="https://sucicada.github.io/blog/tags/uvaoj/">UVaOJ</a></li>
+    </ul>
+  </header> 
+
+  <div class="post-content"><blockquote>
+<p>例题6-19 自组合（Self-Assembly, ACM/ICPC World Finals 2013, UVa 1572）<br>
+有n（n≤40000）种边上带标号的正方形。每条边上的标号要么为一个大写字母后面跟着一个加号或减号，要么为数字00。当且仅当两条边的字母相同且符号相反时，两条边能拼在一起（00不能和任何边拼在一起，包括另一条标号为00的边）。<br>
+假设输入的每种正方形都有无穷多种，而且可以旋转和翻转，你的任务是判断能否组成一个无限大的结构。每条边要么悬空（不和任何边相邻），要么和一个上述可拼接的边相邻。如图6-17（a）所示是3个正方形，图6-17（b）所示边是它们组成的一个合法结构（但大小有限）。<br>
+
+
+
+
+<img loading="lazy" src="https://img-blog.csdnimg.cn/20201009213522450.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3N1X2NpY2FkYQ==,size_16,color_FFFFFF,t_70#pic_center" alt="在这里插入图片描述"  />
+<br>
+<strong>Sample Input</strong><br>
+3<br>
+A+00A+A+ 00B+D+A- B-C+00C+<br>
+1<br>
+K+K-Q+Q<br>
+<strong>Sample Output</strong><br>
+bounded<br>
+unbounded</p>
+</blockquote>
+<p><a href="https://onlinejudge.org/index.php?option=com_onlinejudge&amp;Itemid=8&amp;category=838&amp;page=show_problem&amp;problem=4364">本家地址</a></p>
+<hr>
+<p>提炼一下关键点：一共53种符号。方块数目很大，构造传统二维图会过大而超时。方块内部符号已知连通性。求方块间符号连通性。</p>
+<p>可以抽象为52个点（00去掉），已知连通性（方块内部，不互补符号），互补符号可连通，当一段方块能够重复连接，即能够无限，即在可能的通路中求是否存在环路。</p>
+<p>所以解决方案：使用dfs的方式，从一个符号开始，然后循环找方块内部的道路，找到之后，再递归走向下一个与其互补的符号。然后记录每一次递归通过的符号，即结点，当某一次递归走到了已经走过的符号结点上，那么就存在重复道路，即环路了。</p>
+<p>具体看注释</p>
+<hr>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="cp">#include</span><span class="cpf">&lt;iostream&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span><span class="cpf">&lt;string&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span><span class="cpf">&lt;cstring&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp"></span>
+</span></span><span class="line"><span class="cl"><span class="k">using</span> <span class="k">namespace</span> <span class="n">std</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="cm">/*  x -&gt; y  : inner       */</span>
+</span></span><span class="line"><span class="cl"><span class="cm">/*  y -&gt; x  : outer( + -) */</span>
+</span></span><span class="line"><span class="cl"><span class="c1">// /*  A+B+C+D+...A-B-C-D- */
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="cm">/*  A+A-B+B-C+C-D+D-... */</span>
+</span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="n">table</span><span class="p">[</span><span class="mi">55</span><span class="p">][</span><span class="mi">55</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl"><span class="cm">/*  1: can go 
+</span></span></span><span class="line"><span class="cl"><span class="cm">    2: has gone
+</span></span></span><span class="line"><span class="cl"><span class="cm">    用于减少计算数 
+</span></span></span><span class="line"><span class="cl"><span class="cm">*/</span>
+</span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="n">look</span><span class="p">[</span><span class="mi">55</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl"><span class="cm">/* 作为标记，锁一类。作为当前一次dfs中,这个点是否已经走过了
+</span></span></span><span class="line"><span class="cl"><span class="cm">    用于判断环路存在
+</span></span></span><span class="line"><span class="cl"><span class="cm"> */</span>
+</span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="n">run</span><span class="p">[</span><span class="mi">55</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="nf">getIndex</span><span class="p">(</span><span class="kt">char</span> <span class="n">a</span><span class="p">,</span><span class="kt">char</span> <span class="n">b</span><span class="p">){</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="p">(</span><span class="n">a</span><span class="o">-</span><span class="sc">&#39;A&#39;</span><span class="p">)</span><span class="o">*</span><span class="mi">2</span> <span class="o">+</span> <span class="p">(</span><span class="n">b</span><span class="o">==</span><span class="sc">&#39;-&#39;</span><span class="o">?</span><span class="mi">1</span><span class="o">:</span><span class="mi">0</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">show</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="cm">/* 考虑什么时候有回路
+</span></span></span><span class="line"><span class="cl"><span class="cm">    从一个口子出去, 经过几圈之后, 从另一个口子进来, 在内部又到了这个口子, 即重复路
+</span></span></span><span class="line"><span class="cl"><span class="cm">*/</span>
+</span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="nf">calc</span><span class="p">(</span><span class="kt">int</span> <span class="n">n</span><span class="p">){</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span><span class="p">(</span><span class="n">run</span><span class="p">[</span><span class="n">n</span><span class="p">]</span><span class="o">==</span><span class="mi">1</span><span class="p">){</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="mi">1</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="cm">/* n开始了 */</span>
+</span></span><span class="line"><span class="cl">    <span class="n">run</span><span class="p">[</span><span class="n">n</span><span class="p">]</span><span class="o">=</span><span class="mi">1</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="cm">/* n没有进过 */</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span><span class="p">(</span><span class="n">look</span><span class="p">[</span><span class="n">n</span><span class="p">]</span><span class="o">==</span><span class="mi">1</span><span class="p">){</span>
+</span></span><span class="line"><span class="cl">        <span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span><span class="n">i</span><span class="o">&lt;</span><span class="mi">52</span><span class="p">;</span><span class="n">i</span><span class="o">++</span><span class="p">){</span>
+</span></span><span class="line"><span class="cl">            <span class="cm">/* 循环找内部路 */</span>
+</span></span><span class="line"><span class="cl">            <span class="k">if</span><span class="p">(</span><span class="n">table</span><span class="p">[</span><span class="n">n</span><span class="p">][</span><span class="n">i</span><span class="p">]</span><span class="o">==</span><span class="mi">1</span><span class="p">)</span> <span class="p">{</span> <span class="cm">/* 能走 */</span>
+</span></span><span class="line"><span class="cl">                <span class="cm">/* 找到了, i为出口,即互补符号 */</span>
+</span></span><span class="line"><span class="cl">                <span class="kt">int</span> <span class="n">nextIn</span> <span class="o">=</span> <span class="n">i</span><span class="o">-</span><span class="mi">1</span><span class="o">*</span><span class="p">(</span><span class="n">i</span><span class="o">%</span><span class="mi">2</span><span class="o">*</span><span class="mi">2</span><span class="o">-</span><span class="mi">1</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">                <span class="k">if</span><span class="p">(</span><span class="n">calc</span><span class="p">(</span><span class="n">nextIn</span><span class="p">)){</span>
+</span></span><span class="line"><span class="cl">                    <span class="k">return</span> <span class="mi">1</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">                <span class="p">}</span>
+</span></span><span class="line"><span class="cl">            <span class="p">}</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">        <span class="n">look</span><span class="p">[</span><span class="n">n</span><span class="p">]</span> <span class="o">=</span> <span class="mi">2</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="n">run</span><span class="p">[</span><span class="n">n</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="nf">main</span><span class="p">(){</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="n">T</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="k">while</span><span class="p">(</span><span class="n">cin</span><span class="o">&gt;&gt;</span><span class="n">T</span><span class="p">){</span>
+</span></span><span class="line"><span class="cl">        <span class="n">memset</span><span class="p">(</span><span class="n">table</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="k">sizeof</span><span class="p">(</span><span class="n">table</span><span class="p">));</span>
+</span></span><span class="line"><span class="cl">        <span class="n">memset</span><span class="p">(</span><span class="n">look</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="k">sizeof</span><span class="p">(</span><span class="n">look</span><span class="p">));</span>
+</span></span><span class="line"><span class="cl">        <span class="n">memset</span><span class="p">(</span><span class="n">run</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="k">sizeof</span><span class="p">(</span><span class="n">run</span><span class="p">));</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="n">string</span> <span class="n">str</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="k">while</span><span class="p">(</span><span class="n">T</span><span class="o">--</span><span class="p">){</span>
+</span></span><span class="line"><span class="cl">            <span class="n">cin</span><span class="o">&gt;&gt;</span><span class="n">str</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">            <span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span><span class="n">i</span><span class="o">&lt;</span><span class="mi">8</span><span class="p">;</span><span class="n">i</span><span class="o">+=</span><span class="mi">2</span><span class="p">){</span>
+</span></span><span class="line"><span class="cl">                <span class="k">if</span><span class="p">(</span><span class="n">str</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">!=</span><span class="sc">&#39;0&#39;</span><span class="p">){</span>
+</span></span><span class="line"><span class="cl">                    <span class="kt">int</span> <span class="n">xi</span> <span class="o">=</span> <span class="n">getIndex</span><span class="p">(</span><span class="n">str</span><span class="p">[</span><span class="n">i</span><span class="p">],</span><span class="n">str</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">]);</span>
+</span></span><span class="line"><span class="cl">                    <span class="n">look</span><span class="p">[</span><span class="n">xi</span><span class="p">]</span><span class="o">=</span><span class="mi">1</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">                    <span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">j</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span><span class="n">j</span><span class="o">&lt;</span><span class="mi">8</span><span class="p">;</span><span class="n">j</span><span class="o">+=</span><span class="mi">2</span><span class="p">){</span>
+</span></span><span class="line"><span class="cl">                        <span class="k">if</span><span class="p">(</span><span class="n">i</span><span class="o">!=</span><span class="n">j</span> <span class="o">&amp;&amp;</span>  <span class="n">str</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">!=</span><span class="sc">&#39;0&#39;</span><span class="p">){</span>
+</span></span><span class="line"><span class="cl">                            <span class="kt">int</span> <span class="n">yi</span> <span class="o">=</span> <span class="n">getIndex</span><span class="p">(</span><span class="n">str</span><span class="p">[</span><span class="n">j</span><span class="p">],</span><span class="n">str</span><span class="p">[</span><span class="n">j</span><span class="o">+</span><span class="mi">1</span><span class="p">]);</span>
+</span></span><span class="line"><span class="cl">                            <span class="n">table</span><span class="p">[</span><span class="n">xi</span><span class="p">][</span><span class="n">yi</span><span class="p">]</span><span class="o">=</span><span class="mi">1</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">                        <span class="p">}</span>        
+</span></span><span class="line"><span class="cl">                    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">                <span class="p">}</span>
+</span></span><span class="line"><span class="cl">            <span class="p">}</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">        <span class="kt">int</span> <span class="n">yes</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span><span class="n">i</span><span class="o">&lt;</span><span class="mi">52</span><span class="p">;</span><span class="n">i</span><span class="o">++</span><span class="p">){</span>
+</span></span><span class="line"><span class="cl">            <span class="k">if</span><span class="p">(</span><span class="n">look</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">==</span><span class="mi">1</span><span class="p">){</span>
+</span></span><span class="line"><span class="cl">                <span class="kt">int</span> <span class="n">res</span> <span class="o">=</span> <span class="n">calc</span><span class="p">(</span><span class="n">i</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">                <span class="k">if</span><span class="p">(</span><span class="n">res</span><span class="o">==</span><span class="mi">1</span><span class="p">){</span>
+</span></span><span class="line"><span class="cl">                    <span class="n">yes</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">                    <span class="k">break</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">                <span class="p">}</span>
+</span></span><span class="line"><span class="cl">            <span class="p">}</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">        
+</span></span><span class="line"><span class="cl">        <span class="k">if</span><span class="p">(</span><span class="n">yes</span><span class="p">){</span>
+</span></span><span class="line"><span class="cl">            <span class="n">cout</span><span class="o">&lt;&lt;</span><span class="s">&#34;unbounded&#34;</span><span class="o">&lt;&lt;</span><span class="n">endl</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span><span class="k">else</span><span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="n">cout</span><span class="o">&lt;&lt;</span><span class="s">&#34;bounded&#34;</span><span class="o">&lt;&lt;</span><span class="n">endl</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// AC at 2020/09/13
+</span></span></span></code></pre></div><hr>
+<p>ps：有时候写一种方法写不下去了，思路纠结住了，怎么改怎么不对，那么就抛弃这个扭曲的函数，重新开始整理思路，写一个新的同样功能的函数。<br>
+这个题也求助于刘汝佳了，这个星期的状态实在太糟糕了。</p>
+
+
+  </div>
+
+  <footer class="post-footer">
+<nav class="paginav">
+  <a class="prev" href="https://sucicada.github.io/blog/posts/uvaoj/uva-156-ananagrams-%E5%8F%8D%E7%89%87%E8%AF%AD/">
+    <span class="title">« Prev</span>
+    <br>
+    <span>UVA 156 - Ananagrams (反片语)</span>
+  </a>
+  <a class="next" href="https://sucicada.github.io/blog/posts/uvaoj/uva-1584-circular-sequence%E7%8E%AF%E7%8A%B6%E5%BA%8F%E5%88%97/">
+    <span class="title">Next »</span>
+    <br>
+    <span>uva 1584 - Circular Sequence（环状序列）</span>
+  </a>
+</nav>
+
+
+<div class="share-buttons">
+    <a target="_blank" rel="noopener noreferrer" aria-label="share UVA 1572 - Self-Assembly(自组合) By SuCicada on twitter"
+        href="https://twitter.com/intent/tweet/?text=UVA%201572%20-%20Self-Assembly%28%e8%87%aa%e7%bb%84%e5%90%88%29%20By%20SuCicada&amp;url=https%3a%2f%2fsucicada.github.io%2fblog%2fposts%2fuvaoj%2fuva-1572-self-assembly%25E8%2587%25AA%25E7%25BB%2584%25E5%2590%2588-by-sucicada%2f&amp;hashtags=UVaOJ">
+        <svg version="1.1" viewBox="0 0 512 512" xml:space="preserve" height="30px" width="30px" fill="currentColor">
+            <path
+                d="M449.446,0c34.525,0 62.554,28.03 62.554,62.554l0,386.892c0,34.524 -28.03,62.554 -62.554,62.554l-386.892,0c-34.524,0 -62.554,-28.03 -62.554,-62.554l0,-386.892c0,-34.524 28.029,-62.554 62.554,-62.554l386.892,0Zm-253.927,424.544c135.939,0 210.268,-112.643 210.268,-210.268c0,-3.218 0,-6.437 -0.153,-9.502c14.406,-10.421 26.973,-23.448 36.935,-38.314c-13.18,5.824 -27.433,9.809 -42.452,11.648c15.326,-9.196 26.973,-23.602 32.49,-40.92c-14.252,8.429 -30.038,14.56 -46.896,17.931c-13.487,-14.406 -32.644,-23.295 -53.946,-23.295c-40.767,0 -73.87,33.104 -73.87,73.87c0,5.824 0.613,11.494 1.992,16.858c-61.456,-3.065 -115.862,-32.49 -152.337,-77.241c-6.284,10.881 -9.962,23.601 -9.962,37.088c0,25.594 13.027,48.276 32.95,61.456c-12.107,-0.307 -23.448,-3.678 -33.41,-9.196l0,0.92c0,35.862 25.441,65.594 59.311,72.49c-6.13,1.686 -12.72,2.606 -19.464,2.606c-4.751,0 -9.348,-0.46 -13.946,-1.38c9.349,29.426 36.628,50.728 68.965,51.341c-25.287,19.771 -57.164,31.571 -91.8,31.571c-5.977,0 -11.801,-0.306 -17.625,-1.073c32.337,21.15 71.264,33.41 112.95,33.41Z" />
+        </svg>
+    </a>
+    <a target="_blank" rel="noopener noreferrer" aria-label="share UVA 1572 - Self-Assembly(自组合) By SuCicada on telegram"
+        href="https://telegram.me/share/url?text=UVA%201572%20-%20Self-Assembly%28%e8%87%aa%e7%bb%84%e5%90%88%29%20By%20SuCicada&amp;url=https%3a%2f%2fsucicada.github.io%2fblog%2fposts%2fuvaoj%2fuva-1572-self-assembly%25E8%2587%25AA%25E7%25BB%2584%25E5%2590%2588-by-sucicada%2f">
+        <svg version="1.1" xml:space="preserve" viewBox="2 2 28 28" height="30px" width="30px" fill="currentColor">
+            <path
+                d="M26.49,29.86H5.5a3.37,3.37,0,0,1-2.47-1,3.35,3.35,0,0,1-1-2.47V5.48A3.36,3.36,0,0,1,3,3,3.37,3.37,0,0,1,5.5,2h21A3.38,3.38,0,0,1,29,3a3.36,3.36,0,0,1,1,2.46V26.37a3.35,3.35,0,0,1-1,2.47A3.38,3.38,0,0,1,26.49,29.86Zm-5.38-6.71a.79.79,0,0,0,.85-.66L24.73,9.24a.55.55,0,0,0-.18-.46.62.62,0,0,0-.41-.17q-.08,0-16.53,6.11a.59.59,0,0,0-.41.59.57.57,0,0,0,.43.52l4,1.24,1.61,4.83a.62.62,0,0,0,.63.43.56.56,0,0,0,.4-.17L16.54,20l4.09,3A.9.9,0,0,0,21.11,23.15ZM13.8,20.71l-1.21-4q8.72-5.55,8.78-5.55c.15,0,.23,0,.23.16a.18.18,0,0,1,0,.06s-2.51,2.3-7.52,6.8Z" />
+        </svg>
+    </a>
+</div>
+
+  </footer><div id="disqus_thread"></div>
+<script type="application/javascript">
+    window.disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "sucicada" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+</article>
+    </main>
+    
+<footer class="footer">
+    <span>&copy; 2022 <a href="https://sucicada.github.io/blog">SuCicada</a></span>
+    <span>
+        Powered by
+        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+        <path d="M12 6H0l6-6z" />
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu')
+    if (menu) {
+        menu.scrollLeft = localStorage.getItem("menu-scroll-position");
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var mybutton = document.getElementById("top-link");
+    window.onscroll = function () {
+        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
+            mybutton.style.visibility = "visible";
+            mybutton.style.opacity = "1";
+        } else {
+            mybutton.style.visibility = "hidden";
+            mybutton.style.opacity = "0";
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        if (document.body.className.includes("dark")) {
+            document.body.classList.remove('dark');
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            document.body.classList.add('dark');
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+<script>
+    document.querySelectorAll('pre > code').forEach((codeblock) => {
+        const container = codeblock.parentNode.parentNode;
+
+        const copybutton = document.createElement('button');
+        copybutton.classList.add('copy-code');
+        copybutton.innerHTML = 'copy';
+
+        function copyingDone() {
+            copybutton.innerHTML = 'copied!';
+            setTimeout(() => {
+                copybutton.innerHTML = 'copy';
+            }, 2000);
+        }
+
+        copybutton.addEventListener('click', (cb) => {
+            if ('clipboard' in navigator) {
+                navigator.clipboard.writeText(codeblock.textContent);
+                copyingDone();
+                return;
+            }
+
+            const range = document.createRange();
+            range.selectNodeContents(codeblock);
+            const selection = window.getSelection();
+            selection.removeAllRanges();
+            selection.addRange(range);
+            try {
+                document.execCommand('copy');
+                copyingDone();
+            } catch (e) { };
+            selection.removeRange(range);
+        });
+
+        if (container.classList.contains("highlight")) {
+            container.appendChild(copybutton);
+        } else if (container.parentNode.firstChild == container) {
+            
+        } else if (codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName == "TABLE") {
+            
+            codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(copybutton);
+        } else {
+            
+            codeblock.parentNode.appendChild(copybutton);
+        }
+    });
+</script>
+</body>
+
+</html>

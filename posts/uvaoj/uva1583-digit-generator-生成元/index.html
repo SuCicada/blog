@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto">
+
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>uva1583 - Digit Generator （生成元） | SuCicada</title>
+<meta name="keywords" content="UVaOJ">
+<meta name="description" content="如果x加上x的各个数字之和得到y，就说x是y的生成元。给出n（1≤n≤100000），求最小
+生成元。无解输出0。例如，n=216，121，2005时的解分别为198，0，1979。
+Sample Input
+3
+216
+121
+2005
+Sample Output
+198
+0
+1979
+https://uva.onlinejudge.org/index.php?option=com_onlinejudge&amp;Itemid=8&amp;category=829&amp;page=show_problem&amp;problem=4458
+//先算出所有的生成元x的原数y，以s[y]=x的形式将其存起，在求y的解x的时候，直接输出是s[y]即可 //所以为了求最小生成元也就是x，就要从尾到头的循环算y。 #include&lt;iostream&gt; #include&lt;cstdio&gt; #include&lt;string.h&gt; using namespace std; int const N = 100000; int sn[N&#43;5]={0}; int main() { memset(sn,0,sizeof(sn)); for(int i=N;i&gt;=0;i--) { int n=i; int s=i; while(n&gt;0) { s&#43;=n%10; n/=10; } sn[s]=i; } //for(int i=0;i&lt;N;i&#43;&#43;) // cout&lt;&lt;sn[i]&lt;&lt;&#34; &#34;; // cout&lt;&lt;endl; int n,T; cin&gt;&gt;T; while(T--) { int i; cin&gt;&gt;n; cout&lt;&lt;sn[n]&lt;&lt;endl; } return 0; } //AC at 2017/12/7 以下算法虽然一样可以算出正确答案，但是超时，oj不通过。">
+<meta name="author" content="SuCicada">
+<link rel="canonical" href="https://sucicada.github.io/blog/posts/uvaoj/uva1583-digit-generator-%E7%94%9F%E6%88%90%E5%85%83/">
+<link crossorigin="anonymous" href="/blog/assets/css/stylesheet.5b5501da54f21435c8f8010d1de02123ae8d1ada696b48c6530ec4eea283e7d6.css" integrity="sha256-W1UB2lTyFDXI&#43;AENHeAhI66NGtppa0jGUw7E7qKD59Y=" rel="preload stylesheet" as="style">
+<link rel="icon" href="https://sucicada.github.io/blog/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="https://sucicada.github.io/blog/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://sucicada.github.io/blog/favicon-32x32.png">
+<link rel="apple-touch-icon" href="https://sucicada.github.io/blog/apple-touch-icon.png">
+<link rel="mask-icon" href="https://sucicada.github.io/blog/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --hljs-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-track {
+                background: 0 0;
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-thumb {
+                border-color: var(--theme);
+            }
+        }
+
+    </style>
+</noscript><meta property="og:title" content="uva1583 - Digit Generator （生成元）" />
+<meta property="og:description" content="如果x加上x的各个数字之和得到y，就说x是y的生成元。给出n（1≤n≤100000），求最小
+生成元。无解输出0。例如，n=216，121，2005时的解分别为198，0，1979。
+Sample Input
+3
+216
+121
+2005
+Sample Output
+198
+0
+1979
+https://uva.onlinejudge.org/index.php?option=com_onlinejudge&amp;Itemid=8&amp;category=829&amp;page=show_problem&amp;problem=4458
+//先算出所有的生成元x的原数y，以s[y]=x的形式将其存起，在求y的解x的时候，直接输出是s[y]即可 //所以为了求最小生成元也就是x，就要从尾到头的循环算y。 #include&lt;iostream&gt; #include&lt;cstdio&gt; #include&lt;string.h&gt; using namespace std; int const N = 100000; int sn[N&#43;5]={0}; int main() { memset(sn,0,sizeof(sn)); for(int i=N;i&gt;=0;i--) { int n=i; int s=i; while(n&gt;0) { s&#43;=n%10; n/=10; } sn[s]=i; } //for(int i=0;i&lt;N;i&#43;&#43;) // cout&lt;&lt;sn[i]&lt;&lt;&#34; &#34;; // cout&lt;&lt;endl; int n,T; cin&gt;&gt;T; while(T--) { int i; cin&gt;&gt;n; cout&lt;&lt;sn[n]&lt;&lt;endl; } return 0; } //AC at 2017/12/7 以下算法虽然一样可以算出正确答案，但是超时，oj不通过。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://sucicada.github.io/blog/posts/uvaoj/uva1583-digit-generator-%E7%94%9F%E6%88%90%E5%85%83/" /><meta property="og:image" content="https://sucicada.github.io/blog/papermod-cover.png"/><meta property="article:section" content="posts" />
+
+
+
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="https://sucicada.github.io/blog/papermod-cover.png"/>
+
+<meta name="twitter:title" content="uva1583 - Digit Generator （生成元）"/>
+<meta name="twitter:description" content="如果x加上x的各个数字之和得到y，就说x是y的生成元。给出n（1≤n≤100000），求最小
+生成元。无解输出0。例如，n=216，121，2005时的解分别为198，0，1979。
+Sample Input
+3
+216
+121
+2005
+Sample Output
+198
+0
+1979
+https://uva.onlinejudge.org/index.php?option=com_onlinejudge&amp;Itemid=8&amp;category=829&amp;page=show_problem&amp;problem=4458
+//先算出所有的生成元x的原数y，以s[y]=x的形式将其存起，在求y的解x的时候，直接输出是s[y]即可 //所以为了求最小生成元也就是x，就要从尾到头的循环算y。 #include&lt;iostream&gt; #include&lt;cstdio&gt; #include&lt;string.h&gt; using namespace std; int const N = 100000; int sn[N&#43;5]={0}; int main() { memset(sn,0,sizeof(sn)); for(int i=N;i&gt;=0;i--) { int n=i; int s=i; while(n&gt;0) { s&#43;=n%10; n/=10; } sn[s]=i; } //for(int i=0;i&lt;N;i&#43;&#43;) // cout&lt;&lt;sn[i]&lt;&lt;&#34; &#34;; // cout&lt;&lt;endl; int n,T; cin&gt;&gt;T; while(T--) { int i; cin&gt;&gt;n; cout&lt;&lt;sn[n]&lt;&lt;endl; } return 0; } //AC at 2017/12/7 以下算法虽然一样可以算出正确答案，但是超时，oj不通过。"/>
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "Posts",
+      "item": "https://sucicada.github.io/blog/posts/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  3 ,
+      "name": "uva1583 - Digit Generator （生成元）",
+      "item": "https://sucicada.github.io/blog/posts/uvaoj/uva1583-digit-generator-%E7%94%9F%E6%88%90%E5%85%83/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "uva1583 - Digit Generator （生成元）",
+  "name": "uva1583 - Digit Generator （生成元）",
+  "description": "如果x加上x的各个数字之和得到y，就说x是y的生成元。给出n（1≤n≤100000），求最小\n生成元。无解输出0。例如，n=216，121，2005时的解分别为198，0，1979。\nSample Input\n3\n216\n121\n2005\nSample Output\n198\n0\n1979\nhttps://uva.onlinejudge.org/index.php?option=com_onlinejudge\u0026amp;Itemid=8\u0026amp;category=829\u0026amp;page=show_problem\u0026amp;problem=4458\n//先算出所有的生成元x的原数y，以s[y]=x的形式将其存起，在求y的解x的时候，直接输出是s[y]即可 //所以为了求最小生成元也就是x，就要从尾到头的循环算y。 #include\u0026lt;iostream\u0026gt; #include\u0026lt;cstdio\u0026gt; #include\u0026lt;string.h\u0026gt; using namespace std; int const N = 100000; int sn[N+5]={0}; int main() { memset(sn,0,sizeof(sn)); for(int i=N;i\u0026gt;=0;i--) { int n=i; int s=i; while(n\u0026gt;0) { s+=n%10; n/=10; } sn[s]=i; } //for(int i=0;i\u0026lt;N;i++) // cout\u0026lt;\u0026lt;sn[i]\u0026lt;\u0026lt;\u0026#34; \u0026#34;; // cout\u0026lt;\u0026lt;endl; int n,T; cin\u0026gt;\u0026gt;T; while(T--) { int i; cin\u0026gt;\u0026gt;n; cout\u0026lt;\u0026lt;sn[n]\u0026lt;\u0026lt;endl; } return 0; } //AC at 2017/12/7 以下算法虽然一样可以算出正确答案，但是超时，oj不通过。",
+  "keywords": [
+    "UVaOJ"
+  ],
+  "articleBody": " 如果x加上x的各个数字之和得到y，就说x是y的生成元。给出n（1≤n≤100000），求最小\n生成元。无解输出0。例如，n=216，121，2005时的解分别为198，0，1979。\nSample Input\n3\n216\n121\n2005\nSample Output\n198\n0\n1979\nhttps://uva.onlinejudge.org/index.php?option=com_onlinejudge\u0026Itemid=8\u0026category=829\u0026page=show_problem\u0026problem=4458\n//先算出所有的生成元x的原数y，以s[y]=x的形式将其存起，在求y的解x的时候，直接输出是s[y]即可 //所以为了求最小生成元也就是x，就要从尾到头的循环算y。 #include #include #include using namespace std; int const N = 100000; int sn[N+5]={0}; int main() { memset(sn,0,sizeof(sn)); for(int i=N;i\u003e=0;i--) { int n=i; int s=i; while(n\u003e0) { s+=n%10; n/=10; } sn[s]=i; } //for(int i=0;i",
+  "wordCount" : "138",
+  "inLanguage": "en",
+  "datePublished": "0001-01-01T00:00:00Z",
+  "dateModified": "0001-01-01T00:00:00Z",
+  "author":{
+    "@type": "Person",
+    "name": "SuCicada"
+  },
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://sucicada.github.io/blog/posts/uvaoj/uva1583-digit-generator-%E7%94%9F%E6%88%90%E5%85%83/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "SuCicada",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://sucicada.github.io/blog/favicon.ico"
+    }
+  }
+}
+</script>
+</head>
+
+<body class="" id="top">
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.body.classList.add('dark');
+    } else if (localStorage.getItem("pref-theme") === "light") {
+        document.body.classList.remove('dark')
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.body.classList.add('dark');
+    }
+
+</script>
+
+<header class="header">
+    <nav class="nav">
+        <div class="logo">
+            <a href="https://sucicada.github.io/blog" accesskey="h" title="SuCicada (Alt + H)">SuCicada</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" accesskey="t" title="(Alt + T)">
+                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu">
+            <li>
+                <a href="https://sucicada.github.io/blog/archives/" title="Archive">
+                    <span>Archive</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://sucicada.github.io/blog/search/" title="Search (Alt &#43; /)" accesskey=/>
+                    <span>Search</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://sucicada.github.io/blog/tags/" title="Tags">
+                    <span>Tags</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://sucicada.github.io/blog/about/" title="About">
+                    <span>About</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+
+    <h1 class="post-title">
+      uva1583 - Digit Generator （生成元）
+    </h1>
+    <div class="post-meta">SuCicada&nbsp;|&nbsp;<a href="https://github.com/SuCicada/mysite-hugo/content/posts/UVaOJ/uva1583%20-%20Digit%20Generator%20%ef%bc%88%e7%94%9f%e6%88%90%e5%85%83%ef%bc%89.md" rel="noopener noreferrer" target="_blank">Suggest Changes</a>
+
+</div>
+    <ul class="post-tags">
+      <li><a href="https://sucicada.github.io/blog/tags/uvaoj/">UVaOJ</a></li>
+    </ul>
+  </header> 
+
+  <div class="post-content"><blockquote>
+</blockquote>
+<p>如果x加上x的各个数字之和得到y，就说x是y的生成元。给出n（1≤n≤100000），求最小<br>
+生成元。无解输出0。例如，n=216，121，2005时的解分别为198，0，1979。<br>
+<strong>Sample Input</strong><br>
+3<br>
+216<br>
+121<br>
+2005<br>
+<strong>Sample Output</strong><br>
+198<br>
+0<br>
+1979</p>
+<p><a href="https://uva.onlinejudge.org/index.php?option=com_onlinejudge&amp;Itemid=8&amp;category=829&amp;page=show_problem&amp;problem=4458">https://uva.onlinejudge.org/index.php?option=com_onlinejudge&amp;Itemid=8&amp;category=829&amp;page=show_problem&amp;problem=4458</a></p>
+<pre tabindex="0"><code>//先算出所有的生成元x的原数y，以s[y]=x的形式将其存起，在求y的解x的时候，直接输出是s[y]即可
+//所以为了求最小生成元也就是x，就要从尾到头的循环算y。
+#include&lt;iostream&gt;
+#include&lt;cstdio&gt;
+#include&lt;string.h&gt;
+using namespace std;
+int const N = 100000;
+int sn[N+5]={0};
+int main()
+{
+    memset(sn,0,sizeof(sn)); 
+    for(int i=N;i&gt;=0;i--)
+    {
+        int n=i;
+        int s=i;
+        while(n&gt;0)
+        {
+            s+=n%10;
+            n/=10;
+        }
+        sn[s]=i;
+    }
+    //for(int i=0;i&lt;N;i++)
+    //    cout&lt;&lt;sn[i]&lt;&lt;&#34;  &#34;;
+   // cout&lt;&lt;endl;
+    int n,T;
+    cin&gt;&gt;T;
+    while(T--)
+    {
+        int i;
+        cin&gt;&gt;n;
+        cout&lt;&lt;sn[n]&lt;&lt;endl;
+    }
+    return 0;
+}
+//AC at 2017/12/7
+</code></pre><hr>
+<p>以下算法虽然一样可以算出正确答案，但是超时，oj不通过。</p>
+<pre tabindex="0"><code>
+//Time limit exceeded
+//先算出所有的原数y，将其以s[x]=y;的形式存起，然后循环对比：要求的数和s中哪个元素相等，输出此元素的下标即可
+#include&lt;iostream&gt;
+#include&lt;cstdio&gt;
+using namespace std;
+int const N = 100000;
+int main()
+{
+    int sn[N+5]={0};
+    for(int i=1;i&lt;=N;i++)
+    {
+        int n=i;
+        sn[i]=i;
+        while(n&gt;0)
+        {
+            sn[i]+=n%10;
+            n/=10;
+        }
+    }
+    //for(int i=0;i&lt;N;i++)
+    //    cout&lt;&lt;sn[i]&lt;&lt;&#34;  &#34;;
+   // cout&lt;&lt;endl;
+    int n,T;
+    cin&gt;&gt;T;
+    while(T--)
+    {
+        int i;
+        cin&gt;&gt;n;
+        for(i=1;i&lt;=N;i++)
+        {
+            if(n==sn[i])
+            {
+                cout&lt;&lt;i&lt;&lt;endl;
+                break;
+            }
+        }
+        if(i&gt;N)
+            cout&lt;&lt;0&lt;&lt;endl;
+    }
+    return 0;
+}
+</code></pre><p>总结：<br>
+第一种还是刘汝佳给的思路，只循环了N次，而后者循环2*N次。思维不能太死板，就如同那句警言：<br>
+KEEP IT SIMPLE AND STUPID</p>
+
+
+  </div>
+
+  <footer class="post-footer">
+<nav class="paginav">
+  <a class="prev" href="https://sucicada.github.io/blog/posts/uvaoj/uva-online-judge-%E8%A5%BF%E7%8F%AD%E7%89%99valladolid-%E5%9C%A8%E7%BA%BF%E5%88%A4%E5%AE%98-%E5%92%8C-udebug%E4%BD%BF%E7%94%A8%E7%AE%80%E5%8D%95%E6%95%99%E7%A8%8B/">
+    <span class="title">« Prev</span>
+    <br>
+    <span>UVa Online Judge 西班牙Valladolid 在线判官 和 uDebug使用简单教程</span>
+  </a>
+  <a class="next" href="https://sucicada.github.io/blog/posts/uvaoj/uva272-tex/">
+    <span class="title">Next »</span>
+    <br>
+    <span>uva272 （TeX）</span>
+  </a>
+</nav>
+
+
+<div class="share-buttons">
+    <a target="_blank" rel="noopener noreferrer" aria-label="share uva1583 - Digit Generator （生成元） on twitter"
+        href="https://twitter.com/intent/tweet/?text=uva1583%20-%20Digit%20Generator%20%ef%bc%88%e7%94%9f%e6%88%90%e5%85%83%ef%bc%89&amp;url=https%3a%2f%2fsucicada.github.io%2fblog%2fposts%2fuvaoj%2fuva1583-digit-generator-%25E7%2594%259F%25E6%2588%2590%25E5%2585%2583%2f&amp;hashtags=UVaOJ">
+        <svg version="1.1" viewBox="0 0 512 512" xml:space="preserve" height="30px" width="30px" fill="currentColor">
+            <path
+                d="M449.446,0c34.525,0 62.554,28.03 62.554,62.554l0,386.892c0,34.524 -28.03,62.554 -62.554,62.554l-386.892,0c-34.524,0 -62.554,-28.03 -62.554,-62.554l0,-386.892c0,-34.524 28.029,-62.554 62.554,-62.554l386.892,0Zm-253.927,424.544c135.939,0 210.268,-112.643 210.268,-210.268c0,-3.218 0,-6.437 -0.153,-9.502c14.406,-10.421 26.973,-23.448 36.935,-38.314c-13.18,5.824 -27.433,9.809 -42.452,11.648c15.326,-9.196 26.973,-23.602 32.49,-40.92c-14.252,8.429 -30.038,14.56 -46.896,17.931c-13.487,-14.406 -32.644,-23.295 -53.946,-23.295c-40.767,0 -73.87,33.104 -73.87,73.87c0,5.824 0.613,11.494 1.992,16.858c-61.456,-3.065 -115.862,-32.49 -152.337,-77.241c-6.284,10.881 -9.962,23.601 -9.962,37.088c0,25.594 13.027,48.276 32.95,61.456c-12.107,-0.307 -23.448,-3.678 -33.41,-9.196l0,0.92c0,35.862 25.441,65.594 59.311,72.49c-6.13,1.686 -12.72,2.606 -19.464,2.606c-4.751,0 -9.348,-0.46 -13.946,-1.38c9.349,29.426 36.628,50.728 68.965,51.341c-25.287,19.771 -57.164,31.571 -91.8,31.571c-5.977,0 -11.801,-0.306 -17.625,-1.073c32.337,21.15 71.264,33.41 112.95,33.41Z" />
+        </svg>
+    </a>
+    <a target="_blank" rel="noopener noreferrer" aria-label="share uva1583 - Digit Generator （生成元） on telegram"
+        href="https://telegram.me/share/url?text=uva1583%20-%20Digit%20Generator%20%ef%bc%88%e7%94%9f%e6%88%90%e5%85%83%ef%bc%89&amp;url=https%3a%2f%2fsucicada.github.io%2fblog%2fposts%2fuvaoj%2fuva1583-digit-generator-%25E7%2594%259F%25E6%2588%2590%25E5%2585%2583%2f">
+        <svg version="1.1" xml:space="preserve" viewBox="2 2 28 28" height="30px" width="30px" fill="currentColor">
+            <path
+                d="M26.49,29.86H5.5a3.37,3.37,0,0,1-2.47-1,3.35,3.35,0,0,1-1-2.47V5.48A3.36,3.36,0,0,1,3,3,3.37,3.37,0,0,1,5.5,2h21A3.38,3.38,0,0,1,29,3a3.36,3.36,0,0,1,1,2.46V26.37a3.35,3.35,0,0,1-1,2.47A3.38,3.38,0,0,1,26.49,29.86Zm-5.38-6.71a.79.79,0,0,0,.85-.66L24.73,9.24a.55.55,0,0,0-.18-.46.62.62,0,0,0-.41-.17q-.08,0-16.53,6.11a.59.59,0,0,0-.41.59.57.57,0,0,0,.43.52l4,1.24,1.61,4.83a.62.62,0,0,0,.63.43.56.56,0,0,0,.4-.17L16.54,20l4.09,3A.9.9,0,0,0,21.11,23.15ZM13.8,20.71l-1.21-4q8.72-5.55,8.78-5.55c.15,0,.23,0,.23.16a.18.18,0,0,1,0,.06s-2.51,2.3-7.52,6.8Z" />
+        </svg>
+    </a>
+</div>
+
+  </footer><div id="disqus_thread"></div>
+<script type="application/javascript">
+    window.disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "sucicada" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+</article>
+    </main>
+    
+<footer class="footer">
+    <span>&copy; 2022 <a href="https://sucicada.github.io/blog">SuCicada</a></span>
+    <span>
+        Powered by
+        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+        <path d="M12 6H0l6-6z" />
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu')
+    if (menu) {
+        menu.scrollLeft = localStorage.getItem("menu-scroll-position");
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var mybutton = document.getElementById("top-link");
+    window.onscroll = function () {
+        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
+            mybutton.style.visibility = "visible";
+            mybutton.style.opacity = "1";
+        } else {
+            mybutton.style.visibility = "hidden";
+            mybutton.style.opacity = "0";
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        if (document.body.className.includes("dark")) {
+            document.body.classList.remove('dark');
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            document.body.classList.add('dark');
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+<script>
+    document.querySelectorAll('pre > code').forEach((codeblock) => {
+        const container = codeblock.parentNode.parentNode;
+
+        const copybutton = document.createElement('button');
+        copybutton.classList.add('copy-code');
+        copybutton.innerHTML = 'copy';
+
+        function copyingDone() {
+            copybutton.innerHTML = 'copied!';
+            setTimeout(() => {
+                copybutton.innerHTML = 'copy';
+            }, 2000);
+        }
+
+        copybutton.addEventListener('click', (cb) => {
+            if ('clipboard' in navigator) {
+                navigator.clipboard.writeText(codeblock.textContent);
+                copyingDone();
+                return;
+            }
+
+            const range = document.createRange();
+            range.selectNodeContents(codeblock);
+            const selection = window.getSelection();
+            selection.removeAllRanges();
+            selection.addRange(range);
+            try {
+                document.execCommand('copy');
+                copyingDone();
+            } catch (e) { };
+            selection.removeRange(range);
+        });
+
+        if (container.classList.contains("highlight")) {
+            container.appendChild(copybutton);
+        } else if (container.parentNode.firstChild == container) {
+            
+        } else if (codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName == "TABLE") {
+            
+            codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(copybutton);
+        } else {
+            
+            codeblock.parentNode.appendChild(copybutton);
+        }
+    });
+</script>
+</body>
+
+</html>

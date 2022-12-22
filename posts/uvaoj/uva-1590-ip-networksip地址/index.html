@@ -1,0 +1,630 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto">
+
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>uva 1590 - IP Networks（IP地址） | SuCicada</title>
+<meta name="keywords" content="UVaOJ">
+<meta name="description" content="习题4-5 IP网络（IP Networks, ACM/ICPC NEERC 2005, UVa1590）
+可以用一个网络地址和一个子网掩码描述一个子网（即连续的IP地址范围）。其中子网
+掩码包含32个二进制位，前32-n位为1，后n位为0，网络地址的前32-n位任意，后n位为0。
+所有前32-n位和网络地址相同的IP都属于此网络。
+例如，网络地址为194.85.160.176（二进制为11000010|01010101|10100000|10110000），
+子网掩码为255.255.255.248（二进制为11111111|11111111|11111111|11111000），则该子网
+的IP地址范围是194.85.160.176～194.85.160.183。输入一些IP地址，求最小的网络（即包含IP
+地址最少的网络），包含所有这些输入地址。
+例如，若输入3个IP地址：194.85.160.177、194.85.160.183和194.85.160.178，包含上述3
+个地址的最小网络的网络地址为194.85.160.176，子网掩码为255.255.255.248。
+Sample Input
+3
+194.85.160.177
+194.85.160.183
+194.85.160.178
+Sample Output
+194.85.160.176
+255.255.255.248
+【注意：他可能有很多组输入，而每组输出之间没有空行】
+https://uva.onlinejudge.org/index.php?option=com_onlinejudge&amp;Itemid=8&amp;page=show_problem&amp;category=833&amp;problem=4465&amp;mosmsg=Submission&#43;received&#43;with&#43;ID&#43;21184770
+思路：
+1、先将所有ip存起来，用数组或容器什么的。
+2、转换二进制
+3、从第一位开始，诸位比较所有的ip在这一位上的数字一样否
+4、判断出最小网络位数，即掩码为1的位数。
+5、转换十进制
+（我用来存二进制的ip用的是string）
+（用了下vector，当然也可以用数组存，一个32*1000的数组）
+/* 110000100101010110100000_10110001 110000100101010110100000_10110111 110000100101010110100000_10110010 11000010010101011010000010110000 11111111111111111111111111111000 */ //特殊情况：只输入一个IP地址，这时掩码应该32位1 #include&lt;iostream&gt; #include&lt;stack&gt; #include&lt;string&gt; #include&lt;vector&gt; #include&lt;cmath&gt; #include&lt;cstdio&gt; using namespace std; string binary(int dec) { string str=&#34;00000000&#34;; stack&lt;int&gt; s; int bin=0; for(int i=7;i&gt;=0;i--) { //s.push(dec%2); str[i]=dec%2&#43;&#39;0&#39;; dec /= 2; } // while(!">
+<meta name="author" content="SuCicada">
+<link rel="canonical" href="https://sucicada.github.io/blog/posts/uvaoj/uva-1590-ip-networksip%E5%9C%B0%E5%9D%80/">
+<link crossorigin="anonymous" href="/blog/assets/css/stylesheet.5b5501da54f21435c8f8010d1de02123ae8d1ada696b48c6530ec4eea283e7d6.css" integrity="sha256-W1UB2lTyFDXI&#43;AENHeAhI66NGtppa0jGUw7E7qKD59Y=" rel="preload stylesheet" as="style">
+<link rel="icon" href="https://sucicada.github.io/blog/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="https://sucicada.github.io/blog/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://sucicada.github.io/blog/favicon-32x32.png">
+<link rel="apple-touch-icon" href="https://sucicada.github.io/blog/apple-touch-icon.png">
+<link rel="mask-icon" href="https://sucicada.github.io/blog/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --hljs-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-track {
+                background: 0 0;
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-thumb {
+                border-color: var(--theme);
+            }
+        }
+
+    </style>
+</noscript><meta property="og:title" content="uva 1590 - IP Networks（IP地址）" />
+<meta property="og:description" content="习题4-5 IP网络（IP Networks, ACM/ICPC NEERC 2005, UVa1590）
+可以用一个网络地址和一个子网掩码描述一个子网（即连续的IP地址范围）。其中子网
+掩码包含32个二进制位，前32-n位为1，后n位为0，网络地址的前32-n位任意，后n位为0。
+所有前32-n位和网络地址相同的IP都属于此网络。
+例如，网络地址为194.85.160.176（二进制为11000010|01010101|10100000|10110000），
+子网掩码为255.255.255.248（二进制为11111111|11111111|11111111|11111000），则该子网
+的IP地址范围是194.85.160.176～194.85.160.183。输入一些IP地址，求最小的网络（即包含IP
+地址最少的网络），包含所有这些输入地址。
+例如，若输入3个IP地址：194.85.160.177、194.85.160.183和194.85.160.178，包含上述3
+个地址的最小网络的网络地址为194.85.160.176，子网掩码为255.255.255.248。
+Sample Input
+3
+194.85.160.177
+194.85.160.183
+194.85.160.178
+Sample Output
+194.85.160.176
+255.255.255.248
+【注意：他可能有很多组输入，而每组输出之间没有空行】
+https://uva.onlinejudge.org/index.php?option=com_onlinejudge&amp;Itemid=8&amp;page=show_problem&amp;category=833&amp;problem=4465&amp;mosmsg=Submission&#43;received&#43;with&#43;ID&#43;21184770
+思路：
+1、先将所有ip存起来，用数组或容器什么的。
+2、转换二进制
+3、从第一位开始，诸位比较所有的ip在这一位上的数字一样否
+4、判断出最小网络位数，即掩码为1的位数。
+5、转换十进制
+（我用来存二进制的ip用的是string）
+（用了下vector，当然也可以用数组存，一个32*1000的数组）
+/* 110000100101010110100000_10110001 110000100101010110100000_10110111 110000100101010110100000_10110010 11000010010101011010000010110000 11111111111111111111111111111000 */ //特殊情况：只输入一个IP地址，这时掩码应该32位1 #include&lt;iostream&gt; #include&lt;stack&gt; #include&lt;string&gt; #include&lt;vector&gt; #include&lt;cmath&gt; #include&lt;cstdio&gt; using namespace std; string binary(int dec) { string str=&#34;00000000&#34;; stack&lt;int&gt; s; int bin=0; for(int i=7;i&gt;=0;i--) { //s.push(dec%2); str[i]=dec%2&#43;&#39;0&#39;; dec /= 2; } // while(!" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://sucicada.github.io/blog/posts/uvaoj/uva-1590-ip-networksip%E5%9C%B0%E5%9D%80/" /><meta property="og:image" content="https://sucicada.github.io/blog/papermod-cover.png"/><meta property="article:section" content="posts" />
+
+
+
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="https://sucicada.github.io/blog/papermod-cover.png"/>
+
+<meta name="twitter:title" content="uva 1590 - IP Networks（IP地址）"/>
+<meta name="twitter:description" content="习题4-5 IP网络（IP Networks, ACM/ICPC NEERC 2005, UVa1590）
+可以用一个网络地址和一个子网掩码描述一个子网（即连续的IP地址范围）。其中子网
+掩码包含32个二进制位，前32-n位为1，后n位为0，网络地址的前32-n位任意，后n位为0。
+所有前32-n位和网络地址相同的IP都属于此网络。
+例如，网络地址为194.85.160.176（二进制为11000010|01010101|10100000|10110000），
+子网掩码为255.255.255.248（二进制为11111111|11111111|11111111|11111000），则该子网
+的IP地址范围是194.85.160.176～194.85.160.183。输入一些IP地址，求最小的网络（即包含IP
+地址最少的网络），包含所有这些输入地址。
+例如，若输入3个IP地址：194.85.160.177、194.85.160.183和194.85.160.178，包含上述3
+个地址的最小网络的网络地址为194.85.160.176，子网掩码为255.255.255.248。
+Sample Input
+3
+194.85.160.177
+194.85.160.183
+194.85.160.178
+Sample Output
+194.85.160.176
+255.255.255.248
+【注意：他可能有很多组输入，而每组输出之间没有空行】
+https://uva.onlinejudge.org/index.php?option=com_onlinejudge&amp;Itemid=8&amp;page=show_problem&amp;category=833&amp;problem=4465&amp;mosmsg=Submission&#43;received&#43;with&#43;ID&#43;21184770
+思路：
+1、先将所有ip存起来，用数组或容器什么的。
+2、转换二进制
+3、从第一位开始，诸位比较所有的ip在这一位上的数字一样否
+4、判断出最小网络位数，即掩码为1的位数。
+5、转换十进制
+（我用来存二进制的ip用的是string）
+（用了下vector，当然也可以用数组存，一个32*1000的数组）
+/* 110000100101010110100000_10110001 110000100101010110100000_10110111 110000100101010110100000_10110010 11000010010101011010000010110000 11111111111111111111111111111000 */ //特殊情况：只输入一个IP地址，这时掩码应该32位1 #include&lt;iostream&gt; #include&lt;stack&gt; #include&lt;string&gt; #include&lt;vector&gt; #include&lt;cmath&gt; #include&lt;cstdio&gt; using namespace std; string binary(int dec) { string str=&#34;00000000&#34;; stack&lt;int&gt; s; int bin=0; for(int i=7;i&gt;=0;i--) { //s.push(dec%2); str[i]=dec%2&#43;&#39;0&#39;; dec /= 2; } // while(!"/>
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "Posts",
+      "item": "https://sucicada.github.io/blog/posts/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  3 ,
+      "name": "uva 1590 - IP Networks（IP地址）",
+      "item": "https://sucicada.github.io/blog/posts/uvaoj/uva-1590-ip-networksip%E5%9C%B0%E5%9D%80/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "uva 1590 - IP Networks（IP地址）",
+  "name": "uva 1590 - IP Networks（IP地址）",
+  "description": "习题4-5 IP网络（IP Networks, ACM/ICPC NEERC 2005, UVa1590）\n可以用一个网络地址和一个子网掩码描述一个子网（即连续的IP地址范围）。其中子网\n掩码包含32个二进制位，前32-n位为1，后n位为0，网络地址的前32-n位任意，后n位为0。\n所有前32-n位和网络地址相同的IP都属于此网络。\n例如，网络地址为194.85.160.176（二进制为11000010|01010101|10100000|10110000），\n子网掩码为255.255.255.248（二进制为11111111|11111111|11111111|11111000），则该子网\n的IP地址范围是194.85.160.176～194.85.160.183。输入一些IP地址，求最小的网络（即包含IP\n地址最少的网络），包含所有这些输入地址。\n例如，若输入3个IP地址：194.85.160.177、194.85.160.183和194.85.160.178，包含上述3\n个地址的最小网络的网络地址为194.85.160.176，子网掩码为255.255.255.248。\nSample Input\n3\n194.85.160.177\n194.85.160.183\n194.85.160.178\nSample Output\n194.85.160.176\n255.255.255.248\n【注意：他可能有很多组输入，而每组输出之间没有空行】\nhttps://uva.onlinejudge.org/index.php?option=com_onlinejudge\u0026amp;Itemid=8\u0026amp;page=show_problem\u0026amp;category=833\u0026amp;problem=4465\u0026amp;mosmsg=Submission+received+with+ID+21184770\n思路：\n1、先将所有ip存起来，用数组或容器什么的。\n2、转换二进制\n3、从第一位开始，诸位比较所有的ip在这一位上的数字一样否\n4、判断出最小网络位数，即掩码为1的位数。\n5、转换十进制\n（我用来存二进制的ip用的是string）\n（用了下vector，当然也可以用数组存，一个32*1000的数组）\n/* 110000100101010110100000_10110001 110000100101010110100000_10110111 110000100101010110100000_10110010 11000010010101011010000010110000 11111111111111111111111111111000 */ //特殊情况：只输入一个IP地址，这时掩码应该32位1 #include\u0026lt;iostream\u0026gt; #include\u0026lt;stack\u0026gt; #include\u0026lt;string\u0026gt; #include\u0026lt;vector\u0026gt; #include\u0026lt;cmath\u0026gt; #include\u0026lt;cstdio\u0026gt; using namespace std; string binary(int dec) { string str=\u0026#34;00000000\u0026#34;; stack\u0026lt;int\u0026gt; s; int bin=0; for(int i=7;i\u0026gt;=0;i--) { //s.push(dec%2); str[i]=dec%2+\u0026#39;0\u0026#39;; dec /= 2; } // while(!",
+  "keywords": [
+    "UVaOJ"
+  ],
+  "articleBody": " 习题4-5 IP网络（IP Networks, ACM/ICPC NEERC 2005, UVa1590）\n可以用一个网络地址和一个子网掩码描述一个子网（即连续的IP地址范围）。其中子网\n掩码包含32个二进制位，前32-n位为1，后n位为0，网络地址的前32-n位任意，后n位为0。\n所有前32-n位和网络地址相同的IP都属于此网络。\n例如，网络地址为194.85.160.176（二进制为11000010|01010101|10100000|10110000），\n子网掩码为255.255.255.248（二进制为11111111|11111111|11111111|11111000），则该子网\n的IP地址范围是194.85.160.176～194.85.160.183。输入一些IP地址，求最小的网络（即包含IP\n地址最少的网络），包含所有这些输入地址。\n例如，若输入3个IP地址：194.85.160.177、194.85.160.183和194.85.160.178，包含上述3\n个地址的最小网络的网络地址为194.85.160.176，子网掩码为255.255.255.248。\nSample Input\n3\n194.85.160.177\n194.85.160.183\n194.85.160.178\nSample Output\n194.85.160.176\n255.255.255.248\n【注意：他可能有很多组输入，而每组输出之间没有空行】\nhttps://uva.onlinejudge.org/index.php?option=com_onlinejudge\u0026Itemid=8\u0026page=show_problem\u0026category=833\u0026problem=4465\u0026mosmsg=Submission+received+with+ID+21184770\n思路：\n1、先将所有ip存起来，用数组或容器什么的。\n2、转换二进制\n3、从第一位开始，诸位比较所有的ip在这一位上的数字一样否\n4、判断出最小网络位数，即掩码为1的位数。\n5、转换十进制\n（我用来存二进制的ip用的是string）\n（用了下vector，当然也可以用数组存，一个32*1000的数组）\n/* 110000100101010110100000_10110001 110000100101010110100000_10110111 110000100101010110100000_10110010 11000010010101011010000010110000 11111111111111111111111111111000 */ //特殊情况：只输入一个IP地址，这时掩码应该32位1 #include #include #include #include #include #include using namespace std; string binary(int dec) { string str=\"00000000\"; stack s; int bin=0; for(int i=7;i\u003e=0;i--) { //s.push(dec%2); str[i]=dec%2+'0'; dec /= 2; } // while(!s.empty()) // { // bin = bin*10 + s.top(); // s.pop(); // } // return bin; return str; } int decimal(string bin) { int dec =0; for(int i=0;i\u003c8;i++) //从高位开始 { dec += (int)pow(2,8-i-1)* (bin[i]-'0'); } return dec; } int main() { int T; while(cin\u003e\u003eT) { vectorip; // 存储输入的所有ip int num=0; if(T==1) //防止只输入一个地址的特殊情况 num=32; while(T--) //输入 { int a[4]; string str; scanf(\"%d.%d.%d.%d\",\u0026a[0],\u0026a[1],\u0026a[2],\u0026a[3]); for(int i=0;i\u003c4;i++) { str += binary(a[i]); } ip.push_back(str); } for(int j=0;j\u003c32;j++) //判断相等的位数 { int iff=0; for(int i=1;i",
+  "wordCount" : "250",
+  "inLanguage": "en",
+  "datePublished": "0001-01-01T00:00:00Z",
+  "dateModified": "0001-01-01T00:00:00Z",
+  "author":{
+    "@type": "Person",
+    "name": "SuCicada"
+  },
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://sucicada.github.io/blog/posts/uvaoj/uva-1590-ip-networksip%E5%9C%B0%E5%9D%80/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "SuCicada",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://sucicada.github.io/blog/favicon.ico"
+    }
+  }
+}
+</script>
+</head>
+
+<body class="" id="top">
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.body.classList.add('dark');
+    } else if (localStorage.getItem("pref-theme") === "light") {
+        document.body.classList.remove('dark')
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.body.classList.add('dark');
+    }
+
+</script>
+
+<header class="header">
+    <nav class="nav">
+        <div class="logo">
+            <a href="https://sucicada.github.io/blog" accesskey="h" title="SuCicada (Alt + H)">SuCicada</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" accesskey="t" title="(Alt + T)">
+                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu">
+            <li>
+                <a href="https://sucicada.github.io/blog/archives/" title="Archive">
+                    <span>Archive</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://sucicada.github.io/blog/search/" title="Search (Alt &#43; /)" accesskey=/>
+                    <span>Search</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://sucicada.github.io/blog/tags/" title="Tags">
+                    <span>Tags</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://sucicada.github.io/blog/about/" title="About">
+                    <span>About</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+
+    <h1 class="post-title">
+      uva 1590 - IP Networks（IP地址）
+    </h1>
+    <div class="post-meta">SuCicada&nbsp;|&nbsp;<a href="https://github.com/SuCicada/mysite-hugo/content/posts/UVaOJ/uva%201590%20-%20IP%20Networks%ef%bc%88IP%e5%9c%b0%e5%9d%80%ef%bc%89.md" rel="noopener noreferrer" target="_blank">Suggest Changes</a>
+
+</div>
+    <ul class="post-tags">
+      <li><a href="https://sucicada.github.io/blog/tags/uvaoj/">UVaOJ</a></li>
+    </ul>
+  </header> 
+
+  <div class="post-content"><blockquote>
+<p>习题4-5 IP网络（IP Networks, ACM/ICPC NEERC 2005, UVa1590）<br>
+可以用一个网络地址和一个子网掩码描述一个子网（即连续的IP地址范围）。其中子网<br>
+掩码包含32个二进制位，前32-n位为1，后n位为0，网络地址的前32-n位任意，后n位为0。<br>
+所有前32-n位和网络地址相同的IP都属于此网络。<br>
+例如，网络地址为194.85.160.176（二进制为11000010|01010101|10100000|10110000），<br>
+子网掩码为255.255.255.248（二进制为11111111|11111111|11111111|11111000），则该子网<br>
+的IP地址范围是194.85.160.176～194.85.160.183。输入一些IP地址，求最小的网络（即包含IP<br>
+地址最少的网络），包含所有这些输入地址。<br>
+例如，若输入3个IP地址：194.85.160.177、194.85.160.183和194.85.160.178，包含上述3<br>
+个地址的最小网络的网络地址为194.85.160.176，子网掩码为255.255.255.248。<br>
+<strong>Sample Input</strong><br>
+3<br>
+194.85.160.177<br>
+194.85.160.183<br>
+194.85.160.178<br>
+<strong>Sample Output</strong><br>
+194.85.160.176<br>
+255.255.255.248<br>
+【注意：他可能有很多组输入，而每组输出之间没有空行】</p>
+</blockquote>
+<p><a href="https://uva.onlinejudge.org/index.php?option=com_onlinejudge&amp;Itemid=8&amp;page=show_problem&amp;category=833&amp;problem=4465&amp;mosmsg=Submission+received+with+ID+21184770">https://uva.onlinejudge.org/index.php?option=com_onlinejudge&amp;Itemid=8&amp;page=show_problem&amp;category=833&amp;problem=4465&amp;mosmsg=Submission+received+with+ID+21184770</a></p>
+<p>思路：<br>
+1、先将所有ip存起来，用数组或容器什么的。<br>
+2、转换二进制<br>
+3、从第一位开始，诸位比较所有的ip在这一位上的数字一样否<br>
+4、判断出最小网络位数，即掩码为1的位数。<br>
+5、转换十进制<br>
+（我用来存二进制的ip用的是string）<br>
+（用了下vector，当然也可以用数组存，一个32*1000的数组）</p>
+<pre tabindex="0"><code>
+/*
+110000100101010110100000_10110001
+110000100101010110100000_10110111
+110000100101010110100000_10110010
+
+11000010010101011010000010110000
+11111111111111111111111111111000
+*/
+//特殊情况：只输入一个IP地址，这时掩码应该32位1
+#include&lt;iostream&gt;
+#include&lt;stack&gt;
+#include&lt;string&gt;
+#include&lt;vector&gt;
+#include&lt;cmath&gt;
+#include&lt;cstdio&gt;
+using namespace std;
+string binary(int dec)
+{
+    string str=&#34;00000000&#34;;
+    stack&lt;int&gt; s;
+    int bin=0;
+    for(int i=7;i&gt;=0;i--)
+    {
+        //s.push(dec%2);
+        str[i]=dec%2+&#39;0&#39;;
+        dec /= 2;
+    }
+//    while(!s.empty())
+//    {
+//        bin = bin*10 + s.top();
+//        s.pop();
+//    }
+//    return bin;
+    return str;
+}
+int decimal(string bin)
+{
+    int dec =0;
+    for(int i=0;i&lt;8;i++) //从高位开始
+    {
+        dec += (int)pow(2,8-i-1)* (bin[i]-&#39;0&#39;);
+    }
+    return dec;
+}
+int main()
+{
+    int T;
+    while(cin&gt;&gt;T)
+    {
+        vector&lt;string&gt;ip; //  存储输入的所有ip
+        int num=0;
+        if(T==1)  //防止只输入一个地址的特殊情况
+            num=32;
+        while(T--)    //输入
+        {
+            int a[4];
+            string str;
+            scanf(&#34;%d.%d.%d.%d&#34;,&amp;a[0],&amp;a[1],&amp;a[2],&amp;a[3]);
+            for(int i=0;i&lt;4;i++)
+            {
+                str += binary(a[i]);
+            }
+            ip.push_back(str);
+        }
+        for(int j=0;j&lt;32;j++)    //判断相等的位数
+        {
+            int iff=0;
+            for(int i=1;i&lt;ip.size();i++)
+            {
+                //cout&lt;&lt;ip.at(i)&lt;&lt;endl;
+                if(ip.at(0)[j] == ip.at(i)[j])  //这一位相等
+                {
+                    iff=1;
+                }
+                else
+                {
+                    iff=0;
+                    break;
+                }
+            }
+            if(iff)         //这一位相等，掩码位数加一
+                num++;
+            else
+                break;
+        }
+        string zero=&#34;00000000&#34;; //备用0
+        string mask,minip;
+        int score[4];//存储最小网络的四个十进制ip地址段
+        int score2[4];//存储mask的四个十进制的ip地址段
+
+        for(int i=1;i&lt;=32-num;i++)  //先从最后开始补0
+        {
+            minip=&#39;0&#39;+minip;
+            mask=&#39;0&#39;+mask;
+        }
+        for(int i=num-1;i&gt;=0;i--)   //倒的补
+        {
+            minip=ip[0].at(i)+minip;
+            mask=&#39;1&#39;+mask;
+        }
+
+//        cout&lt;&lt;num&lt;&lt;endl;
+//        for(int i=0;i&lt;ip.size();i++)
+//            cout&lt;&lt;ip[i]&lt;&lt;endl;
+//        cout&lt;&lt;endl;
+//        cout&lt;&lt;mask&lt;&lt;endl;
+
+        for(int i=0;i&lt;4;i++)  //运算最小网络
+        {
+            score[i] =decimal(minip.substr(i*8,8));
+            score2[i] =decimal(mask.substr(i*8,8));
+            //以下淘汰的方法是：边变换，边比对是否位数到了最小网络位。
+            //比较上面的先做好一个最小网络的二进制地址,然后在直接变换。要更复杂
+//            if(i*8+8&gt;num)
+//            {
+//                //cout&lt;&lt;i*8&lt;&lt;&#34; &#34;&lt;&lt;num&lt;&lt;endl;
+//                //cout&lt;&lt;ip[0].substr(i*8,num-i*8)&lt;&lt;&#34;|&#34;&lt;&lt;zero.substr(0,32-num)&lt;&lt;endl;
+//                score[i]=decimal(ip[0].substr(i*8,num-i*8)+zero.substr(0,32-num));
+//            }
+//            else
+//            {
+//                //cout&lt;&lt;ip[0].substr(i*8,8)&lt;&lt;endl;
+//                score[i]=decimal(ip[0].substr(i*8,8));
+//            }
+        }
+
+        printf(&#34;%d.%d.%d.%d\n&#34;,score[0],score[1],score[2],score[3]);
+        printf(&#34;%d.%d.%d.%d\n&#34;,score2[0],score2[1],score2[2],score2[3]);
+    }
+    return 0;
+}
+//AC at 2018/4/22
+</code></pre><p>（题外话：好在上学期的网络课设就是算ip地址，所以这道题我才想了半个多小时就有思路了（哭））</p>
+
+
+  </div>
+
+  <footer class="post-footer">
+<nav class="paginav">
+  <a class="prev" href="https://sucicada.github.io/blog/posts/uvaoj/uva-1589-xiangqi%E8%B1%A1%E6%A3%8B/">
+    <span class="title">« Prev</span>
+    <br>
+    <span>uva 1589 - Xiangqi（象棋）</span>
+  </a>
+  <a class="next" href="https://sucicada.github.io/blog/posts/uvaoj/uva-1592-database-%E6%95%B0%E6%8D%AE%E5%BA%93-by-sucicada/">
+    <span class="title">Next »</span>
+    <br>
+    <span>UVA 1592 - Database (数据库) By SuCicada</span>
+  </a>
+</nav>
+
+
+<div class="share-buttons">
+    <a target="_blank" rel="noopener noreferrer" aria-label="share uva 1590 - IP Networks（IP地址） on twitter"
+        href="https://twitter.com/intent/tweet/?text=uva%201590%20-%20IP%20Networks%ef%bc%88IP%e5%9c%b0%e5%9d%80%ef%bc%89&amp;url=https%3a%2f%2fsucicada.github.io%2fblog%2fposts%2fuvaoj%2fuva-1590-ip-networksip%25E5%259C%25B0%25E5%259D%2580%2f&amp;hashtags=UVaOJ">
+        <svg version="1.1" viewBox="0 0 512 512" xml:space="preserve" height="30px" width="30px" fill="currentColor">
+            <path
+                d="M449.446,0c34.525,0 62.554,28.03 62.554,62.554l0,386.892c0,34.524 -28.03,62.554 -62.554,62.554l-386.892,0c-34.524,0 -62.554,-28.03 -62.554,-62.554l0,-386.892c0,-34.524 28.029,-62.554 62.554,-62.554l386.892,0Zm-253.927,424.544c135.939,0 210.268,-112.643 210.268,-210.268c0,-3.218 0,-6.437 -0.153,-9.502c14.406,-10.421 26.973,-23.448 36.935,-38.314c-13.18,5.824 -27.433,9.809 -42.452,11.648c15.326,-9.196 26.973,-23.602 32.49,-40.92c-14.252,8.429 -30.038,14.56 -46.896,17.931c-13.487,-14.406 -32.644,-23.295 -53.946,-23.295c-40.767,0 -73.87,33.104 -73.87,73.87c0,5.824 0.613,11.494 1.992,16.858c-61.456,-3.065 -115.862,-32.49 -152.337,-77.241c-6.284,10.881 -9.962,23.601 -9.962,37.088c0,25.594 13.027,48.276 32.95,61.456c-12.107,-0.307 -23.448,-3.678 -33.41,-9.196l0,0.92c0,35.862 25.441,65.594 59.311,72.49c-6.13,1.686 -12.72,2.606 -19.464,2.606c-4.751,0 -9.348,-0.46 -13.946,-1.38c9.349,29.426 36.628,50.728 68.965,51.341c-25.287,19.771 -57.164,31.571 -91.8,31.571c-5.977,0 -11.801,-0.306 -17.625,-1.073c32.337,21.15 71.264,33.41 112.95,33.41Z" />
+        </svg>
+    </a>
+    <a target="_blank" rel="noopener noreferrer" aria-label="share uva 1590 - IP Networks（IP地址） on telegram"
+        href="https://telegram.me/share/url?text=uva%201590%20-%20IP%20Networks%ef%bc%88IP%e5%9c%b0%e5%9d%80%ef%bc%89&amp;url=https%3a%2f%2fsucicada.github.io%2fblog%2fposts%2fuvaoj%2fuva-1590-ip-networksip%25E5%259C%25B0%25E5%259D%2580%2f">
+        <svg version="1.1" xml:space="preserve" viewBox="2 2 28 28" height="30px" width="30px" fill="currentColor">
+            <path
+                d="M26.49,29.86H5.5a3.37,3.37,0,0,1-2.47-1,3.35,3.35,0,0,1-1-2.47V5.48A3.36,3.36,0,0,1,3,3,3.37,3.37,0,0,1,5.5,2h21A3.38,3.38,0,0,1,29,3a3.36,3.36,0,0,1,1,2.46V26.37a3.35,3.35,0,0,1-1,2.47A3.38,3.38,0,0,1,26.49,29.86Zm-5.38-6.71a.79.79,0,0,0,.85-.66L24.73,9.24a.55.55,0,0,0-.18-.46.62.62,0,0,0-.41-.17q-.08,0-16.53,6.11a.59.59,0,0,0-.41.59.57.57,0,0,0,.43.52l4,1.24,1.61,4.83a.62.62,0,0,0,.63.43.56.56,0,0,0,.4-.17L16.54,20l4.09,3A.9.9,0,0,0,21.11,23.15ZM13.8,20.71l-1.21-4q8.72-5.55,8.78-5.55c.15,0,.23,0,.23.16a.18.18,0,0,1,0,.06s-2.51,2.3-7.52,6.8Z" />
+        </svg>
+    </a>
+</div>
+
+  </footer><div id="disqus_thread"></div>
+<script type="application/javascript">
+    window.disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "sucicada" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+</article>
+    </main>
+    
+<footer class="footer">
+    <span>&copy; 2022 <a href="https://sucicada.github.io/blog">SuCicada</a></span>
+    <span>
+        Powered by
+        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+        <path d="M12 6H0l6-6z" />
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu')
+    if (menu) {
+        menu.scrollLeft = localStorage.getItem("menu-scroll-position");
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var mybutton = document.getElementById("top-link");
+    window.onscroll = function () {
+        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
+            mybutton.style.visibility = "visible";
+            mybutton.style.opacity = "1";
+        } else {
+            mybutton.style.visibility = "hidden";
+            mybutton.style.opacity = "0";
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        if (document.body.className.includes("dark")) {
+            document.body.classList.remove('dark');
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            document.body.classList.add('dark');
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+<script>
+    document.querySelectorAll('pre > code').forEach((codeblock) => {
+        const container = codeblock.parentNode.parentNode;
+
+        const copybutton = document.createElement('button');
+        copybutton.classList.add('copy-code');
+        copybutton.innerHTML = 'copy';
+
+        function copyingDone() {
+            copybutton.innerHTML = 'copied!';
+            setTimeout(() => {
+                copybutton.innerHTML = 'copy';
+            }, 2000);
+        }
+
+        copybutton.addEventListener('click', (cb) => {
+            if ('clipboard' in navigator) {
+                navigator.clipboard.writeText(codeblock.textContent);
+                copyingDone();
+                return;
+            }
+
+            const range = document.createRange();
+            range.selectNodeContents(codeblock);
+            const selection = window.getSelection();
+            selection.removeAllRanges();
+            selection.addRange(range);
+            try {
+                document.execCommand('copy');
+                copyingDone();
+            } catch (e) { };
+            selection.removeRange(range);
+        });
+
+        if (container.classList.contains("highlight")) {
+            container.appendChild(copybutton);
+        } else if (container.parentNode.firstChild == container) {
+            
+        } else if (codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName == "TABLE") {
+            
+            codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(copybutton);
+        } else {
+            
+            codeblock.parentNode.appendChild(copybutton);
+        }
+    });
+</script>
+</body>
+
+</html>

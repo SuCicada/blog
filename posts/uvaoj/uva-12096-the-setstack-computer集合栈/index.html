@@ -1,0 +1,732 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto">
+
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>uva 12096 - The SetStack Computer（集合栈） | SuCicada</title>
+<meta name="keywords" content="UVaOJ">
+<meta name="description" content="例题5-5
+集合栈计算机(The
+Set
+Stack
+Computer,ACM/ICPC
+NWERC
+2006,UVa12096)
+有一个专门为了集合运算而设计的“集合栈”计算机。该机器有一个初始为空的栈,并且
+支持以下操作。
+PUSH:空集“{}”入栈。
+DUP:把当前栈顶元素复制一份后再入栈。
+UNION:出栈两个集合,然后把二者的并集入栈。
+INTERSECT:出栈两个集合,然后把二者的交集入栈。ADD:出栈两个集合,然后把先出栈的集合加入到后出栈的集合中,把结果入栈。
+每次操作后,输出栈顶集合的大小(即元素个数)。例如,栈顶元素是A={{},
+{{}}},下一个元素是B={{},{{{}}}},则:
+UNION操作将得到{{},{{}},{{{}}}},输出3。
+INTERSECT操作将得到{{}},输出1。
+ADD操作将得到{{},{{{}}},{{},{{}}}},输出3。
+输入不超过2000个操作,并且保证操作均能顺利进行(不需要对空栈执行出栈操作)。
+Sample Input
+2
+9
+PUSH
+DUP
+ADD
+PUSH
+ADD
+DUP
+ADD
+DUP
+UNION
+5
+PUSH
+PUSH
+ADD
+PUSH
+INTERSECT
+Sample Output
+0
+0
+1
+0
+1
+1
+2
+2
+2
+***
+0
+0
+1
+0
+0
+***
+https://uva.onlinejudge.org/index.php?option=com_onlinejudge&amp;Itemid=8&amp;page=show_problem&amp;category=835&amp;problem=3248&amp;mosmsg=Submission&#43;received&#43;with&#43;ID&#43;21273791
+性质：
+１、set&lt; int &gt;　代表是集合
+２、idcache 是集合与其编号的映射，每一个集合都有唯一的编号。
+３、setcache是向量，即下标与其存的是集合的元素相映射。
+４、每一个集合都只在以上容器中存在一个。
+５、栈里存的只是集合的编号。
+#include &lt;iostream&gt; #include &lt;set&gt; #include &lt;map&gt; #include &lt;stack&gt; #include &lt;vector&gt; using namespace std; map&lt; set&lt;int&gt; ,int&gt; idcache; //每一个集合对应一个编号 vector&lt; set&lt;int&gt; &gt; setcache; //每一个编号对应一个集合 int getid(set&lt;int&gt; s) { if(idcache.">
+<meta name="author" content="SuCicada">
+<link rel="canonical" href="https://sucicada.github.io/blog/posts/uvaoj/uva-12096-the-setstack-computer%E9%9B%86%E5%90%88%E6%A0%88/">
+<link crossorigin="anonymous" href="/blog/assets/css/stylesheet.5b5501da54f21435c8f8010d1de02123ae8d1ada696b48c6530ec4eea283e7d6.css" integrity="sha256-W1UB2lTyFDXI&#43;AENHeAhI66NGtppa0jGUw7E7qKD59Y=" rel="preload stylesheet" as="style">
+<link rel="icon" href="https://sucicada.github.io/blog/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="https://sucicada.github.io/blog/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://sucicada.github.io/blog/favicon-32x32.png">
+<link rel="apple-touch-icon" href="https://sucicada.github.io/blog/apple-touch-icon.png">
+<link rel="mask-icon" href="https://sucicada.github.io/blog/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --hljs-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-track {
+                background: 0 0;
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-thumb {
+                border-color: var(--theme);
+            }
+        }
+
+    </style>
+</noscript><meta property="og:title" content="uva 12096 - The SetStack Computer（集合栈）" />
+<meta property="og:description" content="例题5-5
+集合栈计算机(The
+Set
+Stack
+Computer,ACM/ICPC
+NWERC
+2006,UVa12096)
+有一个专门为了集合运算而设计的“集合栈”计算机。该机器有一个初始为空的栈,并且
+支持以下操作。
+PUSH:空集“{}”入栈。
+DUP:把当前栈顶元素复制一份后再入栈。
+UNION:出栈两个集合,然后把二者的并集入栈。
+INTERSECT:出栈两个集合,然后把二者的交集入栈。ADD:出栈两个集合,然后把先出栈的集合加入到后出栈的集合中,把结果入栈。
+每次操作后,输出栈顶集合的大小(即元素个数)。例如,栈顶元素是A={{},
+{{}}},下一个元素是B={{},{{{}}}},则:
+UNION操作将得到{{},{{}},{{{}}}},输出3。
+INTERSECT操作将得到{{}},输出1。
+ADD操作将得到{{},{{{}}},{{},{{}}}},输出3。
+输入不超过2000个操作,并且保证操作均能顺利进行(不需要对空栈执行出栈操作)。
+Sample Input
+2
+9
+PUSH
+DUP
+ADD
+PUSH
+ADD
+DUP
+ADD
+DUP
+UNION
+5
+PUSH
+PUSH
+ADD
+PUSH
+INTERSECT
+Sample Output
+0
+0
+1
+0
+1
+1
+2
+2
+2
+***
+0
+0
+1
+0
+0
+***
+https://uva.onlinejudge.org/index.php?option=com_onlinejudge&amp;Itemid=8&amp;page=show_problem&amp;category=835&amp;problem=3248&amp;mosmsg=Submission&#43;received&#43;with&#43;ID&#43;21273791
+性质：
+１、set&lt; int &gt;　代表是集合
+２、idcache 是集合与其编号的映射，每一个集合都有唯一的编号。
+３、setcache是向量，即下标与其存的是集合的元素相映射。
+４、每一个集合都只在以上容器中存在一个。
+５、栈里存的只是集合的编号。
+#include &lt;iostream&gt; #include &lt;set&gt; #include &lt;map&gt; #include &lt;stack&gt; #include &lt;vector&gt; using namespace std; map&lt; set&lt;int&gt; ,int&gt; idcache; //每一个集合对应一个编号 vector&lt; set&lt;int&gt; &gt; setcache; //每一个编号对应一个集合 int getid(set&lt;int&gt; s) { if(idcache." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://sucicada.github.io/blog/posts/uvaoj/uva-12096-the-setstack-computer%E9%9B%86%E5%90%88%E6%A0%88/" /><meta property="og:image" content="https://sucicada.github.io/blog/papermod-cover.png"/><meta property="article:section" content="posts" />
+
+
+
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="https://sucicada.github.io/blog/papermod-cover.png"/>
+
+<meta name="twitter:title" content="uva 12096 - The SetStack Computer（集合栈）"/>
+<meta name="twitter:description" content="例题5-5
+集合栈计算机(The
+Set
+Stack
+Computer,ACM/ICPC
+NWERC
+2006,UVa12096)
+有一个专门为了集合运算而设计的“集合栈”计算机。该机器有一个初始为空的栈,并且
+支持以下操作。
+PUSH:空集“{}”入栈。
+DUP:把当前栈顶元素复制一份后再入栈。
+UNION:出栈两个集合,然后把二者的并集入栈。
+INTERSECT:出栈两个集合,然后把二者的交集入栈。ADD:出栈两个集合,然后把先出栈的集合加入到后出栈的集合中,把结果入栈。
+每次操作后,输出栈顶集合的大小(即元素个数)。例如,栈顶元素是A={{},
+{{}}},下一个元素是B={{},{{{}}}},则:
+UNION操作将得到{{},{{}},{{{}}}},输出3。
+INTERSECT操作将得到{{}},输出1。
+ADD操作将得到{{},{{{}}},{{},{{}}}},输出3。
+输入不超过2000个操作,并且保证操作均能顺利进行(不需要对空栈执行出栈操作)。
+Sample Input
+2
+9
+PUSH
+DUP
+ADD
+PUSH
+ADD
+DUP
+ADD
+DUP
+UNION
+5
+PUSH
+PUSH
+ADD
+PUSH
+INTERSECT
+Sample Output
+0
+0
+1
+0
+1
+1
+2
+2
+2
+***
+0
+0
+1
+0
+0
+***
+https://uva.onlinejudge.org/index.php?option=com_onlinejudge&amp;Itemid=8&amp;page=show_problem&amp;category=835&amp;problem=3248&amp;mosmsg=Submission&#43;received&#43;with&#43;ID&#43;21273791
+性质：
+１、set&lt; int &gt;　代表是集合
+２、idcache 是集合与其编号的映射，每一个集合都有唯一的编号。
+３、setcache是向量，即下标与其存的是集合的元素相映射。
+４、每一个集合都只在以上容器中存在一个。
+５、栈里存的只是集合的编号。
+#include &lt;iostream&gt; #include &lt;set&gt; #include &lt;map&gt; #include &lt;stack&gt; #include &lt;vector&gt; using namespace std; map&lt; set&lt;int&gt; ,int&gt; idcache; //每一个集合对应一个编号 vector&lt; set&lt;int&gt; &gt; setcache; //每一个编号对应一个集合 int getid(set&lt;int&gt; s) { if(idcache."/>
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "Posts",
+      "item": "https://sucicada.github.io/blog/posts/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  3 ,
+      "name": "uva 12096 - The SetStack Computer（集合栈）",
+      "item": "https://sucicada.github.io/blog/posts/uvaoj/uva-12096-the-setstack-computer%E9%9B%86%E5%90%88%E6%A0%88/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "uva 12096 - The SetStack Computer（集合栈）",
+  "name": "uva 12096 - The SetStack Computer（集合栈）",
+  "description": "例题5-5\n集合栈计算机(The\nSet\nStack\nComputer,ACM/ICPC\nNWERC\n2006,UVa12096)\n有一个专门为了集合运算而设计的“集合栈”计算机。该机器有一个初始为空的栈,并且\n支持以下操作。\nPUSH:空集“{}”入栈。\nDUP:把当前栈顶元素复制一份后再入栈。\nUNION:出栈两个集合,然后把二者的并集入栈。\nINTERSECT:出栈两个集合,然后把二者的交集入栈。ADD:出栈两个集合,然后把先出栈的集合加入到后出栈的集合中,把结果入栈。\n每次操作后,输出栈顶集合的大小(即元素个数)。例如,栈顶元素是A={{},\n{{}}},下一个元素是B={{},{{{}}}},则:\nUNION操作将得到{{},{{}},{{{}}}},输出3。\nINTERSECT操作将得到{{}},输出1。\nADD操作将得到{{},{{{}}},{{},{{}}}},输出3。\n输入不超过2000个操作,并且保证操作均能顺利进行(不需要对空栈执行出栈操作)。\nSample Input\n2\n9\nPUSH\nDUP\nADD\nPUSH\nADD\nDUP\nADD\nDUP\nUNION\n5\nPUSH\nPUSH\nADD\nPUSH\nINTERSECT\nSample Output\n0\n0\n1\n0\n1\n1\n2\n2\n2\n***\n0\n0\n1\n0\n0\n***\nhttps://uva.onlinejudge.org/index.php?option=com_onlinejudge\u0026amp;Itemid=8\u0026amp;page=show_problem\u0026amp;category=835\u0026amp;problem=3248\u0026amp;mosmsg=Submission+received+with+ID+21273791\n性质：\n１、set\u0026lt; int \u0026gt;　代表是集合\n２、idcache 是集合与其编号的映射，每一个集合都有唯一的编号。\n３、setcache是向量，即下标与其存的是集合的元素相映射。\n４、每一个集合都只在以上容器中存在一个。\n５、栈里存的只是集合的编号。\n#include \u0026lt;iostream\u0026gt; #include \u0026lt;set\u0026gt; #include \u0026lt;map\u0026gt; #include \u0026lt;stack\u0026gt; #include \u0026lt;vector\u0026gt; using namespace std; map\u0026lt; set\u0026lt;int\u0026gt; ,int\u0026gt; idcache; //每一个集合对应一个编号 vector\u0026lt; set\u0026lt;int\u0026gt; \u0026gt; setcache; //每一个编号对应一个集合 int getid(set\u0026lt;int\u0026gt; s) { if(idcache.",
+  "keywords": [
+    "UVaOJ"
+  ],
+  "articleBody": " 例题5-5\n集合栈计算机(The\nSet\nStack\nComputer,ACM/ICPC\nNWERC\n2006,UVa12096)\n有一个专门为了集合运算而设计的“集合栈”计算机。该机器有一个初始为空的栈,并且\n支持以下操作。\nPUSH:空集“{}”入栈。\nDUP:把当前栈顶元素复制一份后再入栈。\nUNION:出栈两个集合,然后把二者的并集入栈。\nINTERSECT:出栈两个集合,然后把二者的交集入栈。ADD:出栈两个集合,然后把先出栈的集合加入到后出栈的集合中,把结果入栈。\n每次操作后,输出栈顶集合的大小(即元素个数)。例如,栈顶元素是A={{},\n{{}}},下一个元素是B={{},{{{}}}},则:\nUNION操作将得到{{},{{}},{{{}}}},输出3。\nINTERSECT操作将得到{{}},输出1。\nADD操作将得到{{},{{{}}},{{},{{}}}},输出3。\n输入不超过2000个操作,并且保证操作均能顺利进行(不需要对空栈执行出栈操作)。\nSample Input\n2\n9\nPUSH\nDUP\nADD\nPUSH\nADD\nDUP\nADD\nDUP\nUNION\n5\nPUSH\nPUSH\nADD\nPUSH\nINTERSECT\nSample Output\n0\n0\n1\n0\n1\n1\n2\n2\n2\n***\n0\n0\n1\n0\n0\n***\nhttps://uva.onlinejudge.org/index.php?option=com_onlinejudge\u0026Itemid=8\u0026page=show_problem\u0026category=835\u0026problem=3248\u0026mosmsg=Submission+received+with+ID+21273791\n性质：\n１、set\u003c int \u003e　代表是集合\n２、idcache 是集合与其编号的映射，每一个集合都有唯一的编号。\n３、setcache是向量，即下标与其存的是集合的元素相映射。\n４、每一个集合都只在以上容器中存在一个。\n５、栈里存的只是集合的编号。\n#include #include #include #include #include using namespace std; map\u003c set ,int\u003e idcache; //每一个集合对应一个编号 vector\u003c set \u003e setcache; //每一个编号对应一个集合 int getid(set s) { if(idcache.count(s)) return idcache[s]; else setcache.push_back(s); //将集合存入vector idcache[s]=setcache.size()-1; //将集合存入map，从0开始，为了让map中的键与值与vector元素与下标相对应 return idcache[s]; } int main() { int T;\tcin\u003e\u003eT; while(T--) { stack s;\t//只是存的集合的编号 idcache.clear(); setcache.clear(); int n; cin\u003e\u003en; while(n--) { // cout\u003c\u003c\"n\"\u003c",
+  "wordCount" : "227",
+  "inLanguage": "en",
+  "datePublished": "0001-01-01T00:00:00Z",
+  "dateModified": "0001-01-01T00:00:00Z",
+  "author":{
+    "@type": "Person",
+    "name": "SuCicada"
+  },
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://sucicada.github.io/blog/posts/uvaoj/uva-12096-the-setstack-computer%E9%9B%86%E5%90%88%E6%A0%88/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "SuCicada",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://sucicada.github.io/blog/favicon.ico"
+    }
+  }
+}
+</script>
+</head>
+
+<body class="" id="top">
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.body.classList.add('dark');
+    } else if (localStorage.getItem("pref-theme") === "light") {
+        document.body.classList.remove('dark')
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.body.classList.add('dark');
+    }
+
+</script>
+
+<header class="header">
+    <nav class="nav">
+        <div class="logo">
+            <a href="https://sucicada.github.io/blog" accesskey="h" title="SuCicada (Alt + H)">SuCicada</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" accesskey="t" title="(Alt + T)">
+                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu">
+            <li>
+                <a href="https://sucicada.github.io/blog/archives/" title="Archive">
+                    <span>Archive</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://sucicada.github.io/blog/search/" title="Search (Alt &#43; /)" accesskey=/>
+                    <span>Search</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://sucicada.github.io/blog/tags/" title="Tags">
+                    <span>Tags</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://sucicada.github.io/blog/about/" title="About">
+                    <span>About</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+
+    <h1 class="post-title">
+      uva 12096 - The SetStack Computer（集合栈）
+    </h1>
+    <div class="post-meta">SuCicada&nbsp;|&nbsp;<a href="https://github.com/SuCicada/mysite-hugo/content/posts/UVaOJ/uva%2012096%20-%20The%20SetStack%20Computer%ef%bc%88%e9%9b%86%e5%90%88%e6%a0%88%ef%bc%89.md" rel="noopener noreferrer" target="_blank">Suggest Changes</a>
+
+</div>
+    <ul class="post-tags">
+      <li><a href="https://sucicada.github.io/blog/tags/uvaoj/">UVaOJ</a></li>
+    </ul>
+  </header> 
+
+  <div class="post-content"><blockquote>
+<p>例题5-5<br>
+集合栈计算机(The<br>
+Set<br>
+Stack<br>
+Computer,ACM/ICPC<br>
+NWERC<br>
+2006,UVa12096)<br>
+有一个专门为了集合运算而设计的“集合栈”计算机。该机器有一个初始为空的栈,并且<br>
+支持以下操作。<br>
+PUSH:空集“{}”入栈。<br>
+DUP:把当前栈顶元素复制一份后再入栈。<br>
+UNION:出栈两个集合,然后把二者的并集入栈。<br>
+INTERSECT:出栈两个集合,然后把二者的交集入栈。ADD:出栈两个集合,然后把先出栈的集合加入到后出栈的集合中,把结果入栈。<br>
+每次操作后,输出栈顶集合的大小(即元素个数)。例如,栈顶元素是A={{},<br>
+{{}}},下一个元素是B={{},{{{}}}},则:<br>
+UNION操作将得到{{},{{}},{{{}}}},输出3。<br>
+INTERSECT操作将得到{{}},输出1。<br>
+ADD操作将得到{{},{{{}}},{{},{{}}}},输出3。<br>
+输入不超过2000个操作,并且保证操作均能顺利进行(不需要对空栈执行出栈操作)。<br>
+<strong>Sample Input</strong><br>
+2<br>
+9<br>
+PUSH<br>
+DUP<br>
+ADD<br>
+PUSH<br>
+ADD<br>
+DUP<br>
+ADD<br>
+DUP<br>
+UNION<br>
+5<br>
+PUSH<br>
+PUSH<br>
+ADD<br>
+PUSH<br>
+INTERSECT<br>
+<strong>Sample Output</strong><br>
+0<br>
+0<br>
+1<br>
+0<br>
+1<br>
+1<br>
+2<br>
+2<br>
+2<br>
+***<br>
+0<br>
+0<br>
+1<br>
+0<br>
+0<br>
+***</p>
+</blockquote>
+<p><a href="https://uva.onlinejudge.org/index.php?option=com_onlinejudge&amp;Itemid=8&amp;page=show_problem&amp;category=835&amp;problem=3248&amp;mosmsg=Submission+received+with+ID+21273791">https://uva.onlinejudge.org/index.php?option=com_onlinejudge&amp;Itemid=8&amp;page=show_problem&amp;category=835&amp;problem=3248&amp;mosmsg=Submission+received+with+ID+21273791</a></p>
+<p>性质：<br>
+１、set&lt; int &gt;　　代表是集合<br>
+２、idcache 是集合与其编号的映射，每一个集合都有唯一的编号。<br>
+３、setcache是向量，即下标与其存的是集合的元素相映射。<br>
+４、每一个集合都只在以上容器中存在一个。<br>
+５、栈里存的只是集合的编号。</p>
+<pre tabindex="0"><code>#include &lt;iostream&gt;
+#include &lt;set&gt;
+#include &lt;map&gt;
+#include &lt;stack&gt;
+#include &lt;vector&gt;
+using namespace std;
+
+map&lt; set&lt;int&gt; ,int&gt; idcache;   //每一个集合对应一个编号
+vector&lt; set&lt;int&gt; &gt; setcache;   //每一个编号对应一个集合
+
+int getid(set&lt;int&gt; s)
+{
+   	if(idcache.count(s))
+        return idcache[s];
+	else 
+		setcache.push_back(s);      //将集合存入vector
+	idcache[s]=setcache.size()-1;  //将集合存入map，从0开始，为了让map中的键与值与vector元素与下标相对应
+	return idcache[s];
+}
+
+int main()
+{   
+   	int T;	
+	cin&gt;&gt;T;
+	while(T--)
+	{
+		stack&lt;int&gt; s;	//只是存的集合的编号
+		idcache.clear();
+		setcache.clear();
+		int n;
+		cin&gt;&gt;n;
+		while(n--)
+		{
+			
+
+			// cout&lt;&lt;&#34;n&#34;&lt;&lt;n&lt;&lt;endl;
+			string str;
+			cin&gt;&gt;str;
+			if(str==&#34;PUSH&#34;)
+			{
+				set&lt;int&gt; temps;
+				int temp=getid(temps);
+				s.push(temp);
+			}
+			else if(str==&#34;DUP&#34;)
+			{
+				s.push(s.top());
+			}
+			else 
+			{
+				set&lt;int&gt; first =setcache[s.top()]; //这时要取的是vetor中的元素，是set&lt;int&gt;类型，而s里元素是int类型
+				s.pop();  
+				set&lt;int&gt; second=setcache[s.top()]; 
+				s.pop(); 
+				set&lt;int&gt; ans;
+				if(str==&#34;INTERSECT&#34;)  
+				{
+					set&lt;int&gt;::iterator i=first.begin();
+					for(;i!=first.end();i++)
+					{
+						set&lt;int&gt;::iterator j=second.begin();
+						for(;j!=second.end();j++)
+						{
+							if(*i==*j)
+								ans.insert(*i);
+						}
+					}
+				}
+				if(str==&#34;UNION&#34;)
+				{
+					ans=second;    //直接赋值set&lt;int&gt;
+					set&lt;int&gt;::iterator i=first.begin();
+					for(;i!=first.end();i++)				
+					{
+						ans.insert(*i);
+					}
+				}
+				if(str==&#34;ADD&#34;)
+				{
+					ans=second;    //直接赋值set&lt;int&gt;
+					ans.insert(getid(first)); //插入int型，是first对应的编号，将first作为了ans的一个元素
+				}
+				s.push(getid(ans));
+			}	
+			cout&lt;&lt;setcache[s.top()].size()&lt;&lt;endl;
+
+			// cout&lt;&lt;str&lt;&lt;&#34;:&#34;&lt;&lt;endl;
+			// stack&lt;int&gt; t=s;
+			// for(int i=0;i&lt;s.size();i++)
+			// {	int ii=t.top();
+			// 	t.pop();
+			// 	set&lt;int&gt;::iterator it=setcache[ii].begin();
+			// 	for(;it!=setcache[ii].end();it++)
+			// 		cout&lt;&lt; *it&lt;&lt;&#34; &#34;;
+			// 	cout&lt;&lt;&#34;|&#34;&lt;&lt;endl;
+			// }
+			// cout&lt;&lt;endl;
+
+		}	
+		cout&lt;&lt;&#34;***&#34;&lt;&lt;endl;
+	}
+	return 0;
+}
+//AC at 2018/5/7
+</code></pre>
+
+  </div>
+
+  <footer class="post-footer">
+<nav class="paginav">
+  <a class="prev" href="https://sucicada.github.io/blog/posts/uvaoj/uva-11853-paintbal%E6%88%98%E5%9C%BA-by-sucicada/">
+    <span class="title">« Prev</span>
+    <br>
+    <span>UVA 11853 - Paintbal(战场) By SuCicada</span>
+  </a>
+  <a class="next" href="https://sucicada.github.io/blog/posts/uvaoj/uva-12171-sculpture%E9%9B%95%E5%A1%91-by-sucicada/">
+    <span class="title">Next »</span>
+    <br>
+    <span>UVA 12171 - Sculpture(雕塑) By SuCicada</span>
+  </a>
+</nav>
+
+
+<div class="share-buttons">
+    <a target="_blank" rel="noopener noreferrer" aria-label="share uva 12096 - The SetStack Computer（集合栈） on twitter"
+        href="https://twitter.com/intent/tweet/?text=uva%2012096%20-%20The%20SetStack%20Computer%ef%bc%88%e9%9b%86%e5%90%88%e6%a0%88%ef%bc%89&amp;url=https%3a%2f%2fsucicada.github.io%2fblog%2fposts%2fuvaoj%2fuva-12096-the-setstack-computer%25E9%259B%2586%25E5%2590%2588%25E6%25A0%2588%2f&amp;hashtags=UVaOJ">
+        <svg version="1.1" viewBox="0 0 512 512" xml:space="preserve" height="30px" width="30px" fill="currentColor">
+            <path
+                d="M449.446,0c34.525,0 62.554,28.03 62.554,62.554l0,386.892c0,34.524 -28.03,62.554 -62.554,62.554l-386.892,0c-34.524,0 -62.554,-28.03 -62.554,-62.554l0,-386.892c0,-34.524 28.029,-62.554 62.554,-62.554l386.892,0Zm-253.927,424.544c135.939,0 210.268,-112.643 210.268,-210.268c0,-3.218 0,-6.437 -0.153,-9.502c14.406,-10.421 26.973,-23.448 36.935,-38.314c-13.18,5.824 -27.433,9.809 -42.452,11.648c15.326,-9.196 26.973,-23.602 32.49,-40.92c-14.252,8.429 -30.038,14.56 -46.896,17.931c-13.487,-14.406 -32.644,-23.295 -53.946,-23.295c-40.767,0 -73.87,33.104 -73.87,73.87c0,5.824 0.613,11.494 1.992,16.858c-61.456,-3.065 -115.862,-32.49 -152.337,-77.241c-6.284,10.881 -9.962,23.601 -9.962,37.088c0,25.594 13.027,48.276 32.95,61.456c-12.107,-0.307 -23.448,-3.678 -33.41,-9.196l0,0.92c0,35.862 25.441,65.594 59.311,72.49c-6.13,1.686 -12.72,2.606 -19.464,2.606c-4.751,0 -9.348,-0.46 -13.946,-1.38c9.349,29.426 36.628,50.728 68.965,51.341c-25.287,19.771 -57.164,31.571 -91.8,31.571c-5.977,0 -11.801,-0.306 -17.625,-1.073c32.337,21.15 71.264,33.41 112.95,33.41Z" />
+        </svg>
+    </a>
+    <a target="_blank" rel="noopener noreferrer" aria-label="share uva 12096 - The SetStack Computer（集合栈） on telegram"
+        href="https://telegram.me/share/url?text=uva%2012096%20-%20The%20SetStack%20Computer%ef%bc%88%e9%9b%86%e5%90%88%e6%a0%88%ef%bc%89&amp;url=https%3a%2f%2fsucicada.github.io%2fblog%2fposts%2fuvaoj%2fuva-12096-the-setstack-computer%25E9%259B%2586%25E5%2590%2588%25E6%25A0%2588%2f">
+        <svg version="1.1" xml:space="preserve" viewBox="2 2 28 28" height="30px" width="30px" fill="currentColor">
+            <path
+                d="M26.49,29.86H5.5a3.37,3.37,0,0,1-2.47-1,3.35,3.35,0,0,1-1-2.47V5.48A3.36,3.36,0,0,1,3,3,3.37,3.37,0,0,1,5.5,2h21A3.38,3.38,0,0,1,29,3a3.36,3.36,0,0,1,1,2.46V26.37a3.35,3.35,0,0,1-1,2.47A3.38,3.38,0,0,1,26.49,29.86Zm-5.38-6.71a.79.79,0,0,0,.85-.66L24.73,9.24a.55.55,0,0,0-.18-.46.62.62,0,0,0-.41-.17q-.08,0-16.53,6.11a.59.59,0,0,0-.41.59.57.57,0,0,0,.43.52l4,1.24,1.61,4.83a.62.62,0,0,0,.63.43.56.56,0,0,0,.4-.17L16.54,20l4.09,3A.9.9,0,0,0,21.11,23.15ZM13.8,20.71l-1.21-4q8.72-5.55,8.78-5.55c.15,0,.23,0,.23.16a.18.18,0,0,1,0,.06s-2.51,2.3-7.52,6.8Z" />
+        </svg>
+    </a>
+</div>
+
+  </footer><div id="disqus_thread"></div>
+<script type="application/javascript">
+    window.disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "sucicada" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+</article>
+    </main>
+    
+<footer class="footer">
+    <span>&copy; 2022 <a href="https://sucicada.github.io/blog">SuCicada</a></span>
+    <span>
+        Powered by
+        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+        <path d="M12 6H0l6-6z" />
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu')
+    if (menu) {
+        menu.scrollLeft = localStorage.getItem("menu-scroll-position");
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var mybutton = document.getElementById("top-link");
+    window.onscroll = function () {
+        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
+            mybutton.style.visibility = "visible";
+            mybutton.style.opacity = "1";
+        } else {
+            mybutton.style.visibility = "hidden";
+            mybutton.style.opacity = "0";
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        if (document.body.className.includes("dark")) {
+            document.body.classList.remove('dark');
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            document.body.classList.add('dark');
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+<script>
+    document.querySelectorAll('pre > code').forEach((codeblock) => {
+        const container = codeblock.parentNode.parentNode;
+
+        const copybutton = document.createElement('button');
+        copybutton.classList.add('copy-code');
+        copybutton.innerHTML = 'copy';
+
+        function copyingDone() {
+            copybutton.innerHTML = 'copied!';
+            setTimeout(() => {
+                copybutton.innerHTML = 'copy';
+            }, 2000);
+        }
+
+        copybutton.addEventListener('click', (cb) => {
+            if ('clipboard' in navigator) {
+                navigator.clipboard.writeText(codeblock.textContent);
+                copyingDone();
+                return;
+            }
+
+            const range = document.createRange();
+            range.selectNodeContents(codeblock);
+            const selection = window.getSelection();
+            selection.removeAllRanges();
+            selection.addRange(range);
+            try {
+                document.execCommand('copy');
+                copyingDone();
+            } catch (e) { };
+            selection.removeRange(range);
+        });
+
+        if (container.classList.contains("highlight")) {
+            container.appendChild(copybutton);
+        } else if (container.parentNode.firstChild == container) {
+            
+        } else if (codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName == "TABLE") {
+            
+            codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(copybutton);
+        } else {
+            
+            codeblock.parentNode.appendChild(copybutton);
+        }
+    });
+</script>
+</body>
+
+</html>

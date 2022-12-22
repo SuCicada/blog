@@ -1,0 +1,607 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto">
+
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>UVA 1592 - Database (数据库) By SuCicada | SuCicada</title>
+<meta name="keywords" content="UVaOJ">
+<meta name="description" content="例题5-9 数据库（Database，ACM/ICPC NEERC 2009，UVa1592）
+输入一个n行m列的数据库（1≤n≤10000，1≤i≤10），是否存在两个不同行r1，r2和两个
+不同列c1，c2，使得这两行和这两列相同（即（r1，c1）和（r2，c1）相同，（r1，c2）和
+（r2，c2）相同）。例如，对于如图5-3所示的数据库，第2、3行和第2、3列满足要求。
+Sample Input
+3 3
+How to compete in ACM ICPC,Peter,peter@neerc.ifmo.ru
+How to win ACM ICPC,Michael,michael@neerc.ifmo.ru
+Notes from ACM ICPC champion,Michael,michael@neerc.ifmo.ru
+2 3
+1,Peter,peter@neerc.ifmo.ru
+2,Michael,michael@neerc.ifmo.ru
+Sample Output
+NO
+2 3
+2 3
+YES
+本家地址
+设计存储的结构
+[ { (c1.value, c2.value) -&gt; r0.index } ] 列表中存储每一行中列列的组合（map存储）。列表的大小会是数据库的列*(列-1)/2。map的键是一个存有2个元素的列表（列表中存的是列值），map的值是对应的行下标。map的大小为总行数。
+存储：
+我们在存储时，针对每一行进行列的两两组合，然后对每一个组合在当前列组合下标中进行map查找，如果总排列数过完之后，有2个map匹配项，那我们就找到了。
+在这里也用到了字符串索引存储的方式。类比指针，我们对每一个字符串给定一个编号，然后存在数据库中的就只是这个编号，而不用存字符串，节省了很大空间。
+#include&lt;iostream&gt; #include&lt;map&gt; #include&lt;string&gt; #include&lt;vector&gt; #include&lt;cstring&gt; #include&lt;cstdio&gt; #include&lt;set&gt; using namespace std; /* [ { (c1.value, c2.value) -&gt; r0.">
+<meta name="author" content="SuCicada">
+<link rel="canonical" href="https://sucicada.github.io/blog/posts/uvaoj/uva-1592-database-%E6%95%B0%E6%8D%AE%E5%BA%93-by-sucicada/">
+<link crossorigin="anonymous" href="/blog/assets/css/stylesheet.5b5501da54f21435c8f8010d1de02123ae8d1ada696b48c6530ec4eea283e7d6.css" integrity="sha256-W1UB2lTyFDXI&#43;AENHeAhI66NGtppa0jGUw7E7qKD59Y=" rel="preload stylesheet" as="style">
+<link rel="icon" href="https://sucicada.github.io/blog/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="https://sucicada.github.io/blog/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://sucicada.github.io/blog/favicon-32x32.png">
+<link rel="apple-touch-icon" href="https://sucicada.github.io/blog/apple-touch-icon.png">
+<link rel="mask-icon" href="https://sucicada.github.io/blog/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --hljs-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-track {
+                background: 0 0;
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-thumb {
+                border-color: var(--theme);
+            }
+        }
+
+    </style>
+</noscript><meta property="og:title" content="UVA 1592 - Database (数据库) By SuCicada" />
+<meta property="og:description" content="例题5-9 数据库（Database，ACM/ICPC NEERC 2009，UVa1592）
+输入一个n行m列的数据库（1≤n≤10000，1≤i≤10），是否存在两个不同行r1，r2和两个
+不同列c1，c2，使得这两行和这两列相同（即（r1，c1）和（r2，c1）相同，（r1，c2）和
+（r2，c2）相同）。例如，对于如图5-3所示的数据库，第2、3行和第2、3列满足要求。
+Sample Input
+3 3
+How to compete in ACM ICPC,Peter,peter@neerc.ifmo.ru
+How to win ACM ICPC,Michael,michael@neerc.ifmo.ru
+Notes from ACM ICPC champion,Michael,michael@neerc.ifmo.ru
+2 3
+1,Peter,peter@neerc.ifmo.ru
+2,Michael,michael@neerc.ifmo.ru
+Sample Output
+NO
+2 3
+2 3
+YES
+本家地址
+设计存储的结构
+[ { (c1.value, c2.value) -&gt; r0.index } ] 列表中存储每一行中列列的组合（map存储）。列表的大小会是数据库的列*(列-1)/2。map的键是一个存有2个元素的列表（列表中存的是列值），map的值是对应的行下标。map的大小为总行数。
+存储：
+我们在存储时，针对每一行进行列的两两组合，然后对每一个组合在当前列组合下标中进行map查找，如果总排列数过完之后，有2个map匹配项，那我们就找到了。
+在这里也用到了字符串索引存储的方式。类比指针，我们对每一个字符串给定一个编号，然后存在数据库中的就只是这个编号，而不用存字符串，节省了很大空间。
+#include&lt;iostream&gt; #include&lt;map&gt; #include&lt;string&gt; #include&lt;vector&gt; #include&lt;cstring&gt; #include&lt;cstdio&gt; #include&lt;set&gt; using namespace std; /* [ { (c1.value, c2.value) -&gt; r0." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://sucicada.github.io/blog/posts/uvaoj/uva-1592-database-%E6%95%B0%E6%8D%AE%E5%BA%93-by-sucicada/" /><meta property="og:image" content="https://sucicada.github.io/blog/papermod-cover.png"/><meta property="article:section" content="posts" />
+
+
+
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="https://sucicada.github.io/blog/papermod-cover.png"/>
+
+<meta name="twitter:title" content="UVA 1592 - Database (数据库) By SuCicada"/>
+<meta name="twitter:description" content="例题5-9 数据库（Database，ACM/ICPC NEERC 2009，UVa1592）
+输入一个n行m列的数据库（1≤n≤10000，1≤i≤10），是否存在两个不同行r1，r2和两个
+不同列c1，c2，使得这两行和这两列相同（即（r1，c1）和（r2，c1）相同，（r1，c2）和
+（r2，c2）相同）。例如，对于如图5-3所示的数据库，第2、3行和第2、3列满足要求。
+Sample Input
+3 3
+How to compete in ACM ICPC,Peter,peter@neerc.ifmo.ru
+How to win ACM ICPC,Michael,michael@neerc.ifmo.ru
+Notes from ACM ICPC champion,Michael,michael@neerc.ifmo.ru
+2 3
+1,Peter,peter@neerc.ifmo.ru
+2,Michael,michael@neerc.ifmo.ru
+Sample Output
+NO
+2 3
+2 3
+YES
+本家地址
+设计存储的结构
+[ { (c1.value, c2.value) -&gt; r0.index } ] 列表中存储每一行中列列的组合（map存储）。列表的大小会是数据库的列*(列-1)/2。map的键是一个存有2个元素的列表（列表中存的是列值），map的值是对应的行下标。map的大小为总行数。
+存储：
+我们在存储时，针对每一行进行列的两两组合，然后对每一个组合在当前列组合下标中进行map查找，如果总排列数过完之后，有2个map匹配项，那我们就找到了。
+在这里也用到了字符串索引存储的方式。类比指针，我们对每一个字符串给定一个编号，然后存在数据库中的就只是这个编号，而不用存字符串，节省了很大空间。
+#include&lt;iostream&gt; #include&lt;map&gt; #include&lt;string&gt; #include&lt;vector&gt; #include&lt;cstring&gt; #include&lt;cstdio&gt; #include&lt;set&gt; using namespace std; /* [ { (c1.value, c2.value) -&gt; r0."/>
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "Posts",
+      "item": "https://sucicada.github.io/blog/posts/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  3 ,
+      "name": "UVA 1592 - Database (数据库) By SuCicada",
+      "item": "https://sucicada.github.io/blog/posts/uvaoj/uva-1592-database-%E6%95%B0%E6%8D%AE%E5%BA%93-by-sucicada/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "UVA 1592 - Database (数据库) By SuCicada",
+  "name": "UVA 1592 - Database (数据库) By SuCicada",
+  "description": "例题5-9 数据库（Database，ACM/ICPC NEERC 2009，UVa1592）\n输入一个n行m列的数据库（1≤n≤10000，1≤i≤10），是否存在两个不同行r1，r2和两个\n不同列c1，c2，使得这两行和这两列相同（即（r1，c1）和（r2，c1）相同，（r1，c2）和\n（r2，c2）相同）。例如，对于如图5-3所示的数据库，第2、3行和第2、3列满足要求。\nSample Input\n3 3\nHow to compete in ACM ICPC,Peter,peter@neerc.ifmo.ru\nHow to win ACM ICPC,Michael,michael@neerc.ifmo.ru\nNotes from ACM ICPC champion,Michael,michael@neerc.ifmo.ru\n2 3\n1,Peter,peter@neerc.ifmo.ru\n2,Michael,michael@neerc.ifmo.ru\nSample Output\nNO\n2 3\n2 3\nYES\n本家地址\n设计存储的结构\n[ { (c1.value, c2.value) -\u0026gt; r0.index } ] 列表中存储每一行中列列的组合（map存储）。列表的大小会是数据库的列*(列-1)/2。map的键是一个存有2个元素的列表（列表中存的是列值），map的值是对应的行下标。map的大小为总行数。\n存储：\n我们在存储时，针对每一行进行列的两两组合，然后对每一个组合在当前列组合下标中进行map查找，如果总排列数过完之后，有2个map匹配项，那我们就找到了。\n在这里也用到了字符串索引存储的方式。类比指针，我们对每一个字符串给定一个编号，然后存在数据库中的就只是这个编号，而不用存字符串，节省了很大空间。\n#include\u0026lt;iostream\u0026gt; #include\u0026lt;map\u0026gt; #include\u0026lt;string\u0026gt; #include\u0026lt;vector\u0026gt; #include\u0026lt;cstring\u0026gt; #include\u0026lt;cstdio\u0026gt; #include\u0026lt;set\u0026gt; using namespace std; /* [ { (c1.value, c2.value) -\u0026gt; r0.",
+  "keywords": [
+    "UVaOJ"
+  ],
+  "articleBody": " 例题5-9 数据库（Database，ACM/ICPC NEERC 2009，UVa1592）\n输入一个n行m列的数据库（1≤n≤10000，1≤i≤10），是否存在两个不同行r1，r2和两个\n不同列c1，c2，使得这两行和这两列相同（即（r1，c1）和（r2，c1）相同，（r1，c2）和\n（r2，c2）相同）。例如，对于如图5-3所示的数据库，第2、3行和第2、3列满足要求。\nSample Input\n3 3\nHow to compete in ACM ICPC,Peter,peter@neerc.ifmo.ru\nHow to win ACM ICPC,Michael,michael@neerc.ifmo.ru\nNotes from ACM ICPC champion,Michael,michael@neerc.ifmo.ru\n2 3\n1,Peter,peter@neerc.ifmo.ru\n2,Michael,michael@neerc.ifmo.ru\nSample Output\nNO\n2 3\n2 3\nYES\n本家地址\n设计存储的结构\n[ { (c1.value, c2.value) -\u003e r0.index } ] 列表中存储每一行中列列的组合（map存储）。列表的大小会是数据库的列*(列-1)/2。map的键是一个存有2个元素的列表（列表中存的是列值），map的值是对应的行下标。map的大小为总行数。\n存储：\n我们在存储时，针对每一行进行列的两两组合，然后对每一个组合在当前列组合下标中进行map查找，如果总排列数过完之后，有2个map匹配项，那我们就找到了。\n在这里也用到了字符串索引存储的方式。类比指针，我们对每一个字符串给定一个编号，然后存在数据库中的就只是这个编号，而不用存字符串，节省了很大空间。\n#include #include #include #include #include #include #include using namespace std; /* [ { (c1.value, c2.value) -\u003e r0.index } ] */ vector\u003c map\u003c vector\u003cint\u003e,int\u003e \u003e parquet; map\u003cstring, int\u003e dict; /* temp of one row */ vector\u003cint\u003e rowTemp; int X,Y; char tmp[99]; int getIndexOfStr(string str){ if(!dict.count(str)){ dict[str] = dict.size(); } return dict[str]; } int calc(int row,int* col1,int* col2){ vector\u003cint\u003e tuple2; int tuple2_index = 0; for(int i=0;i\u003cY;i++){ for(int j=i+1;j\u003cY;j++){ tuple2.clear(); tuple2.push_back(rowTemp[i]); tuple2.push_back(rowTemp[j]); // cout\u003c",
+  "wordCount" : "265",
+  "inLanguage": "en",
+  "datePublished": "0001-01-01T00:00:00Z",
+  "dateModified": "0001-01-01T00:00:00Z",
+  "author":{
+    "@type": "Person",
+    "name": "SuCicada"
+  },
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://sucicada.github.io/blog/posts/uvaoj/uva-1592-database-%E6%95%B0%E6%8D%AE%E5%BA%93-by-sucicada/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "SuCicada",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://sucicada.github.io/blog/favicon.ico"
+    }
+  }
+}
+</script>
+</head>
+
+<body class="" id="top">
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.body.classList.add('dark');
+    } else if (localStorage.getItem("pref-theme") === "light") {
+        document.body.classList.remove('dark')
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.body.classList.add('dark');
+    }
+
+</script>
+
+<header class="header">
+    <nav class="nav">
+        <div class="logo">
+            <a href="https://sucicada.github.io/blog" accesskey="h" title="SuCicada (Alt + H)">SuCicada</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" accesskey="t" title="(Alt + T)">
+                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu">
+            <li>
+                <a href="https://sucicada.github.io/blog/archives/" title="Archive">
+                    <span>Archive</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://sucicada.github.io/blog/search/" title="Search (Alt &#43; /)" accesskey=/>
+                    <span>Search</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://sucicada.github.io/blog/tags/" title="Tags">
+                    <span>Tags</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://sucicada.github.io/blog/about/" title="About">
+                    <span>About</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+
+    <h1 class="post-title">
+      UVA 1592 - Database (数据库) By SuCicada
+    </h1>
+    <div class="post-meta">SuCicada&nbsp;|&nbsp;<a href="https://github.com/SuCicada/mysite-hugo/content/posts/UVaOJ/UVA%201592%20-%20Database%20%28%e6%95%b0%e6%8d%ae%e5%ba%93%29%20By%20SuCicada.md" rel="noopener noreferrer" target="_blank">Suggest Changes</a>
+
+</div>
+    <ul class="post-tags">
+      <li><a href="https://sucicada.github.io/blog/tags/uvaoj/">UVaOJ</a></li>
+    </ul>
+  </header> 
+
+  <div class="post-content"><blockquote>
+<p>例题5-9 数据库（Database，ACM/ICPC NEERC 2009，UVa1592）<br>
+输入一个n行m列的数据库（1≤n≤10000，1≤i≤10），是否存在两个不同行r1，r2和两个<br>
+不同列c1，c2，使得这两行和这两列相同（即（r1，c1）和（r2，c1）相同，（r1，c2）和<br>
+（r2，c2）相同）。例如，对于如图5-3所示的数据库，第2、3行和第2、3列满足要求。<br>
+<strong>Sample Input</strong><br>
+3 3<br>
+How to compete in ACM ICPC,Peter,peter@neerc.ifmo.ru<br>
+How to win ACM ICPC,Michael,michael@neerc.ifmo.ru<br>
+Notes from ACM ICPC champion,Michael,michael@neerc.ifmo.ru<br>
+2 3<br>
+1,Peter,peter@neerc.ifmo.ru<br>
+2,Michael,michael@neerc.ifmo.ru<br>
+<strong>Sample Output</strong><br>
+NO<br>
+2 3<br>
+2 3<br>
+YES</p>
+</blockquote>
+<p><a href="https://onlinejudge.org/index.php?option=com_onlinejudge&amp;Itemid=8&amp;category=835&amp;page=show_problem&amp;problem=4467">本家地址</a></p>
+<hr>
+<p>设计存储的结构</p>
+<pre tabindex="0"><code>[
+    {
+        (c1.value, c2.value) -&gt; r0.index
+    }
+]
+</code></pre><p>列表中存储每一行中列列的组合（map存储）。列表的大小会是数据库的列*(列-1)/2。map的键是一个存有2个元素的列表（列表中存的是列值），map的值是对应的行下标。map的大小为总行数。</p>
+<p>存储：<br>
+我们在存储时，针对每一行进行列的两两组合，然后对每一个组合在当前列组合下标中进行map查找，如果总排列数过完之后，有2个map匹配项，那我们就找到了。</p>
+<p>在这里也用到了字符串索引存储的方式。类比指针，我们对每一个字符串给定一个编号，然后存在数据库中的就只是这个编号，而不用存字符串，节省了很大空间。</p>
+<hr>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="cp">#include</span><span class="cpf">&lt;iostream&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span><span class="cpf">&lt;map&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span><span class="cpf">&lt;string&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span><span class="cpf">&lt;vector&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span><span class="cpf">&lt;cstring&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span><span class="cpf">&lt;cstdio&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span><span class="cpf">&lt;set&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp"></span><span class="k">using</span> <span class="k">namespace</span> <span class="n">std</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="cm">/* 
+</span></span></span><span class="line"><span class="cl"><span class="cm">[
+</span></span></span><span class="line"><span class="cl"><span class="cm">    {
+</span></span></span><span class="line"><span class="cl"><span class="cm">        (c1.value, c2.value) -&gt; r0.index
+</span></span></span><span class="line"><span class="cl"><span class="cm">    }
+</span></span></span><span class="line"><span class="cl"><span class="cm">]
+</span></span></span><span class="line"><span class="cl"><span class="cm">*/</span>
+</span></span><span class="line"><span class="cl"><span class="n">vector</span><span class="o">&lt;</span> <span class="n">map</span><span class="o">&lt;</span> <span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="p">,</span><span class="kt">int</span><span class="o">&gt;</span> <span class="o">&gt;</span> <span class="n">parquet</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="n">map</span><span class="o">&lt;</span><span class="n">string</span><span class="p">,</span> <span class="kt">int</span><span class="o">&gt;</span> <span class="n">dict</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="cm">/* temp of one row */</span>
+</span></span><span class="line"><span class="cl"><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span> <span class="n">rowTemp</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="n">X</span><span class="p">,</span><span class="n">Y</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kt">char</span> <span class="n">tmp</span><span class="p">[</span><span class="mi">99</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="nf">getIndexOfStr</span><span class="p">(</span><span class="n">string</span> <span class="n">str</span><span class="p">){</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="n">dict</span><span class="p">.</span><span class="n">count</span><span class="p">(</span><span class="n">str</span><span class="p">)){</span>
+</span></span><span class="line"><span class="cl">        <span class="n">dict</span><span class="p">[</span><span class="n">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">dict</span><span class="p">.</span><span class="n">size</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="n">dict</span><span class="p">[</span><span class="n">str</span><span class="p">];</span>    
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="nf">calc</span><span class="p">(</span><span class="kt">int</span> <span class="n">row</span><span class="p">,</span><span class="kt">int</span><span class="o">*</span> <span class="n">col1</span><span class="p">,</span><span class="kt">int</span><span class="o">*</span> <span class="n">col2</span><span class="p">){</span>
+</span></span><span class="line"><span class="cl">    <span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span> <span class="n">tuple2</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="n">tuple2_index</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span><span class="n">i</span><span class="o">&lt;</span><span class="n">Y</span><span class="p">;</span><span class="n">i</span><span class="o">++</span><span class="p">){</span>
+</span></span><span class="line"><span class="cl">        <span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">j</span><span class="o">=</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">;</span><span class="n">j</span><span class="o">&lt;</span><span class="n">Y</span><span class="p">;</span><span class="n">j</span><span class="o">++</span><span class="p">){</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">            <span class="n">tuple2</span><span class="p">.</span><span class="n">clear</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">            <span class="n">tuple2</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">rowTemp</span><span class="p">[</span><span class="n">i</span><span class="p">]);</span>
+</span></span><span class="line"><span class="cl">            <span class="n">tuple2</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">rowTemp</span><span class="p">[</span><span class="n">j</span><span class="p">]);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">            <span class="c1">// cout&lt;&lt;i&lt;&lt;&#34; &#34;&lt;&lt;j&lt;&lt;&#34; &#34;&lt;&lt;tuple2_index&lt;&lt;endl;
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>            <span class="k">if</span><span class="p">(</span><span class="n">parquet</span><span class="p">[</span><span class="n">tuple2_index</span><span class="p">].</span><span class="n">count</span><span class="p">(</span><span class="n">tuple2</span><span class="p">)){</span>
+</span></span><span class="line"><span class="cl">                <span class="kt">int</span> <span class="n">row1</span> <span class="o">=</span> <span class="n">parquet</span><span class="p">[</span><span class="n">tuple2_index</span><span class="p">][</span><span class="n">tuple2</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl">                <span class="o">*</span><span class="n">col1</span> <span class="o">=</span> <span class="n">i</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">                <span class="o">*</span><span class="n">col2</span> <span class="o">=</span> <span class="n">j</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">                <span class="k">return</span> <span class="n">row1</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">            <span class="p">}</span><span class="k">else</span><span class="p">{</span>
+</span></span><span class="line"><span class="cl">                <span class="n">parquet</span><span class="p">[</span><span class="n">tuple2_index</span><span class="p">][</span><span class="n">tuple2</span><span class="p">]</span> <span class="o">=</span> <span class="n">row</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">            <span class="p">}</span>
+</span></span><span class="line"><span class="cl">            <span class="n">tuple2_index</span><span class="o">++</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="nf">main</span><span class="p">(){</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="n">a</span><span class="p">,</span><span class="n">b</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="k">while</span><span class="p">(</span><span class="n">cin</span><span class="o">&gt;&gt;</span><span class="n">a</span><span class="o">&gt;&gt;</span><span class="n">b</span><span class="p">){</span>
+</span></span><span class="line"><span class="cl">        <span class="n">getchar</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">        <span class="n">X</span><span class="o">=</span><span class="n">a</span><span class="p">,</span><span class="n">Y</span><span class="o">=</span><span class="n">b</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="cm">/* 新的一组 */</span>
+</span></span><span class="line"><span class="cl">        <span class="cm">/* init vector */</span>
+</span></span><span class="line"><span class="cl">        <span class="n">parquet</span><span class="p">.</span><span class="n">clear</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">        <span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span><span class="n">i</span><span class="o">&lt;</span><span class="n">Y</span><span class="o">*</span><span class="p">(</span><span class="n">Y</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="o">/</span><span class="mi">2</span><span class="p">;</span><span class="n">i</span><span class="o">++</span><span class="p">){</span>
+</span></span><span class="line"><span class="cl">            <span class="n">map</span><span class="o">&lt;</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="p">,</span> <span class="kt">int</span><span class="o">&gt;</span> <span class="n">tempMap</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">            <span class="n">parquet</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">tempMap</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">        
+</span></span><span class="line"><span class="cl">        <span class="cm">/* 过一行中的一列 */</span>
+</span></span><span class="line"><span class="cl">        <span class="kt">int</span> <span class="n">right</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="kt">int</span> <span class="n">row1</span><span class="p">,</span><span class="n">row2</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="kt">int</span> <span class="n">col1</span><span class="p">,</span><span class="n">col2</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">row</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span><span class="n">row</span><span class="o">&lt;</span><span class="n">a</span><span class="p">;</span><span class="n">row</span><span class="o">++</span><span class="p">){</span>
+</span></span><span class="line"><span class="cl">            <span class="cm">/* 新的一行开始了 */</span>
+</span></span><span class="line"><span class="cl">            <span class="n">rowTemp</span><span class="p">.</span><span class="n">clear</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">            <span class="kt">char</span> <span class="n">c</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">            <span class="kt">int</span> <span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span><span class="n">col</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">            <span class="k">while</span><span class="p">((</span><span class="n">c</span><span class="o">=</span><span class="n">getchar</span><span class="p">())</span> <span class="o">&amp;&amp;</span><span class="n">c</span> <span class="o">!=</span><span class="sc">&#39;\n&#39;</span> <span class="o">&amp;&amp;</span> <span class="n">c</span><span class="o">!=</span><span class="n">EOF</span><span class="p">){</span>
+</span></span><span class="line"><span class="cl">                <span class="k">if</span><span class="p">(</span><span class="n">c</span><span class="o">==</span><span class="sc">&#39;,&#39;</span><span class="p">){</span>
+</span></span><span class="line"><span class="cl">                    <span class="n">string</span> <span class="n">s</span><span class="p">(</span><span class="n">tmp</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="n">i</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">                    <span class="n">rowTemp</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">getIndexOfStr</span><span class="p">(</span><span class="n">s</span><span class="p">));</span>
+</span></span><span class="line"><span class="cl">                    
+</span></span><span class="line"><span class="cl">                    <span class="n">col</span><span class="o">++</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">                    <span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">                <span class="p">}</span><span class="k">else</span><span class="p">{</span>
+</span></span><span class="line"><span class="cl">                    <span class="n">tmp</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">=</span><span class="n">c</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">                    <span class="n">i</span><span class="o">++</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">                <span class="p">}</span>
+</span></span><span class="line"><span class="cl">            <span class="p">}</span>
+</span></span><span class="line"><span class="cl">            <span class="n">string</span> <span class="n">s</span><span class="p">(</span><span class="n">tmp</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="n">i</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">            <span class="n">rowTemp</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">getIndexOfStr</span><span class="p">(</span><span class="n">s</span><span class="p">));</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">            <span class="cm">/* 存入新的一行中的2列组合 */</span>
+</span></span><span class="line"><span class="cl">            <span class="k">if</span><span class="p">(</span><span class="n">right</span><span class="o">==</span><span class="mi">0</span><span class="p">){</span>
+</span></span><span class="line"><span class="cl">                <span class="kt">int</span> <span class="n">ccol1</span><span class="p">,</span><span class="n">ccol2</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">                <span class="kt">int</span> <span class="n">rrow1</span> <span class="o">=</span> <span class="n">calc</span><span class="p">(</span><span class="n">row</span><span class="p">,</span><span class="o">&amp;</span><span class="n">ccol1</span><span class="p">,</span><span class="o">&amp;</span><span class="n">ccol2</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">                <span class="k">if</span><span class="p">(</span><span class="n">rrow1</span> <span class="o">!=</span> <span class="o">-</span><span class="mi">1</span><span class="p">){</span>
+</span></span><span class="line"><span class="cl">                    <span class="n">right</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">                    <span class="n">col1</span> <span class="o">=</span> <span class="n">ccol1</span><span class="o">+</span><span class="mi">1</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">                    <span class="n">col2</span> <span class="o">=</span> <span class="n">ccol2</span><span class="o">+</span><span class="mi">1</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">                    <span class="n">row1</span> <span class="o">=</span> <span class="n">rrow1</span><span class="o">+</span><span class="mi">1</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">                    <span class="n">row2</span> <span class="o">=</span> <span class="n">row</span><span class="o">+</span><span class="mi">1</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">                <span class="p">}</span>
+</span></span><span class="line"><span class="cl">            <span class="p">}</span>
+</span></span><span class="line"><span class="cl">            <span class="cm">/* 这一行过完了 */</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">        <span class="cm">/* 这一组过完了 */</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span><span class="p">(</span><span class="n">right</span><span class="p">){</span>
+</span></span><span class="line"><span class="cl">            <span class="n">cout</span><span class="o">&lt;&lt;</span><span class="s">&#34;NO&#34;</span><span class="o">&lt;&lt;</span><span class="n">endl</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">            <span class="n">cout</span><span class="o">&lt;&lt;</span><span class="n">row1</span><span class="o">&lt;&lt;</span><span class="s">&#34; &#34;</span><span class="o">&lt;&lt;</span><span class="n">row2</span><span class="o">&lt;&lt;</span><span class="n">endl</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">            <span class="n">cout</span><span class="o">&lt;&lt;</span><span class="n">col1</span><span class="o">&lt;&lt;</span><span class="s">&#34; &#34;</span><span class="o">&lt;&lt;</span><span class="n">col2</span><span class="o">&lt;&lt;</span><span class="n">endl</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span><span class="k">else</span><span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="n">cout</span><span class="o">&lt;&lt;</span><span class="s">&#34;YES&#34;</span><span class="o">&lt;&lt;</span><span class="n">endl</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// AC at 2020/09/08
+</span></span></span></code></pre></div><hr>
+<p>ps：这一道题重点在于设计数据库存储方式上，我居然最终求助于刘汝佳，真是太逊了。</p>
+
+
+  </div>
+
+  <footer class="post-footer">
+<nav class="paginav">
+  <a class="prev" href="https://sucicada.github.io/blog/posts/uvaoj/uva-1590-ip-networksip%E5%9C%B0%E5%9D%80/">
+    <span class="title">« Prev</span>
+    <br>
+    <span>uva 1590 - IP Networks（IP地址）</span>
+  </a>
+  <a class="next" href="https://sucicada.github.io/blog/posts/uvaoj/uva-1599-ideal-path%E7%90%86%E6%83%B3%E8%B7%AF%E5%BE%84-by-sucicada/">
+    <span class="title">Next »</span>
+    <br>
+    <span>UVA 1599 - Ideal Path(理想路径) By SuCicada</span>
+  </a>
+</nav>
+
+
+<div class="share-buttons">
+    <a target="_blank" rel="noopener noreferrer" aria-label="share UVA 1592 - Database (数据库) By SuCicada on twitter"
+        href="https://twitter.com/intent/tweet/?text=UVA%201592%20-%20Database%20%28%e6%95%b0%e6%8d%ae%e5%ba%93%29%20By%20SuCicada&amp;url=https%3a%2f%2fsucicada.github.io%2fblog%2fposts%2fuvaoj%2fuva-1592-database-%25E6%2595%25B0%25E6%258D%25AE%25E5%25BA%2593-by-sucicada%2f&amp;hashtags=UVaOJ">
+        <svg version="1.1" viewBox="0 0 512 512" xml:space="preserve" height="30px" width="30px" fill="currentColor">
+            <path
+                d="M449.446,0c34.525,0 62.554,28.03 62.554,62.554l0,386.892c0,34.524 -28.03,62.554 -62.554,62.554l-386.892,0c-34.524,0 -62.554,-28.03 -62.554,-62.554l0,-386.892c0,-34.524 28.029,-62.554 62.554,-62.554l386.892,0Zm-253.927,424.544c135.939,0 210.268,-112.643 210.268,-210.268c0,-3.218 0,-6.437 -0.153,-9.502c14.406,-10.421 26.973,-23.448 36.935,-38.314c-13.18,5.824 -27.433,9.809 -42.452,11.648c15.326,-9.196 26.973,-23.602 32.49,-40.92c-14.252,8.429 -30.038,14.56 -46.896,17.931c-13.487,-14.406 -32.644,-23.295 -53.946,-23.295c-40.767,0 -73.87,33.104 -73.87,73.87c0,5.824 0.613,11.494 1.992,16.858c-61.456,-3.065 -115.862,-32.49 -152.337,-77.241c-6.284,10.881 -9.962,23.601 -9.962,37.088c0,25.594 13.027,48.276 32.95,61.456c-12.107,-0.307 -23.448,-3.678 -33.41,-9.196l0,0.92c0,35.862 25.441,65.594 59.311,72.49c-6.13,1.686 -12.72,2.606 -19.464,2.606c-4.751,0 -9.348,-0.46 -13.946,-1.38c9.349,29.426 36.628,50.728 68.965,51.341c-25.287,19.771 -57.164,31.571 -91.8,31.571c-5.977,0 -11.801,-0.306 -17.625,-1.073c32.337,21.15 71.264,33.41 112.95,33.41Z" />
+        </svg>
+    </a>
+    <a target="_blank" rel="noopener noreferrer" aria-label="share UVA 1592 - Database (数据库) By SuCicada on telegram"
+        href="https://telegram.me/share/url?text=UVA%201592%20-%20Database%20%28%e6%95%b0%e6%8d%ae%e5%ba%93%29%20By%20SuCicada&amp;url=https%3a%2f%2fsucicada.github.io%2fblog%2fposts%2fuvaoj%2fuva-1592-database-%25E6%2595%25B0%25E6%258D%25AE%25E5%25BA%2593-by-sucicada%2f">
+        <svg version="1.1" xml:space="preserve" viewBox="2 2 28 28" height="30px" width="30px" fill="currentColor">
+            <path
+                d="M26.49,29.86H5.5a3.37,3.37,0,0,1-2.47-1,3.35,3.35,0,0,1-1-2.47V5.48A3.36,3.36,0,0,1,3,3,3.37,3.37,0,0,1,5.5,2h21A3.38,3.38,0,0,1,29,3a3.36,3.36,0,0,1,1,2.46V26.37a3.35,3.35,0,0,1-1,2.47A3.38,3.38,0,0,1,26.49,29.86Zm-5.38-6.71a.79.79,0,0,0,.85-.66L24.73,9.24a.55.55,0,0,0-.18-.46.62.62,0,0,0-.41-.17q-.08,0-16.53,6.11a.59.59,0,0,0-.41.59.57.57,0,0,0,.43.52l4,1.24,1.61,4.83a.62.62,0,0,0,.63.43.56.56,0,0,0,.4-.17L16.54,20l4.09,3A.9.9,0,0,0,21.11,23.15ZM13.8,20.71l-1.21-4q8.72-5.55,8.78-5.55c.15,0,.23,0,.23.16a.18.18,0,0,1,0,.06s-2.51,2.3-7.52,6.8Z" />
+        </svg>
+    </a>
+</div>
+
+  </footer><div id="disqus_thread"></div>
+<script type="application/javascript">
+    window.disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "sucicada" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+</article>
+    </main>
+    
+<footer class="footer">
+    <span>&copy; 2022 <a href="https://sucicada.github.io/blog">SuCicada</a></span>
+    <span>
+        Powered by
+        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+        <path d="M12 6H0l6-6z" />
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu')
+    if (menu) {
+        menu.scrollLeft = localStorage.getItem("menu-scroll-position");
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var mybutton = document.getElementById("top-link");
+    window.onscroll = function () {
+        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
+            mybutton.style.visibility = "visible";
+            mybutton.style.opacity = "1";
+        } else {
+            mybutton.style.visibility = "hidden";
+            mybutton.style.opacity = "0";
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        if (document.body.className.includes("dark")) {
+            document.body.classList.remove('dark');
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            document.body.classList.add('dark');
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+<script>
+    document.querySelectorAll('pre > code').forEach((codeblock) => {
+        const container = codeblock.parentNode.parentNode;
+
+        const copybutton = document.createElement('button');
+        copybutton.classList.add('copy-code');
+        copybutton.innerHTML = 'copy';
+
+        function copyingDone() {
+            copybutton.innerHTML = 'copied!';
+            setTimeout(() => {
+                copybutton.innerHTML = 'copy';
+            }, 2000);
+        }
+
+        copybutton.addEventListener('click', (cb) => {
+            if ('clipboard' in navigator) {
+                navigator.clipboard.writeText(codeblock.textContent);
+                copyingDone();
+                return;
+            }
+
+            const range = document.createRange();
+            range.selectNodeContents(codeblock);
+            const selection = window.getSelection();
+            selection.removeAllRanges();
+            selection.addRange(range);
+            try {
+                document.execCommand('copy');
+                copyingDone();
+            } catch (e) { };
+            selection.removeRange(range);
+        });
+
+        if (container.classList.contains("highlight")) {
+            container.appendChild(copybutton);
+        } else if (container.parentNode.firstChild == container) {
+            
+        } else if (codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName == "TABLE") {
+            
+            codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(copybutton);
+        } else {
+            
+            codeblock.parentNode.appendChild(copybutton);
+        }
+    });
+</script>
+</body>
+
+</html>
