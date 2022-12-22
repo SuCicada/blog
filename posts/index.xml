@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>Posts on SuCicada</title>
+    <link>https://sucicada.github.io/blog/posts/</link>
+    <description>Recent content in Posts on SuCicada</description>
+    <image>
+      <url>https://sucicada.github.io/blog/papermod-cover.png</url>
+      <link>https://sucicada.github.io/blog/papermod-cover.png</link>
+    </image>
+    <generator>Hugo -- gohugo.io</generator>
+    <lastBuildDate>Tue, 13 Dec 2022 16:23:31 +0900</lastBuildDate><atom:link href="https://sucicada.github.io/blog/posts/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>理想路径（Ideal Path, NEERC 2010, UVa1599）</title>
+      <link>https://sucicada.github.io/blog/posts/uvaoj/%E7%90%86%E6%83%B3%E8%B7%AF%E5%BE%84ideal-path-neerc-2010-uva1599/</link>
+      <pubDate>Tue, 13 Dec 2022 16:23:31 +0900</pubDate>
+      
+      <guid>https://sucicada.github.io/blog/posts/uvaoj/%E7%90%86%E6%83%B3%E8%B7%AF%E5%BE%84ideal-path-neerc-2010-uva1599/</guid>
+      <description>例题6-20 理想路径（Ideal Path, NEERC 2010, UVa1599）
+给一个n个点m条边（2≤n≤100000，1≤m≤200000）的无向图，每条边上都涂有一种颜
+色。求从结点1到结点n的一条路径，使得经过的边数尽量少，在此前提下，经过边的颜色序
+列的字典序最小。一对结点间可能有多条边，一条边可能连接两个相同结点。输入保证结点
+1可以达到结点n。颜色为1～10
+9的整数。
+Sample Input
+4 6
+1 2 1
+1 3 2
+3 4 3
+2 3 1
+2 4 4
+3 1 1
+Sample Output
+2
+1 3
+本家链接
+先找最短路：倒序从终点bfs找。
+在此认为倒序和正序效果一样。只是某些处理逻辑相反。
+bfs之后，可能存在多条最短路，所以再需要一次bfs，来选出颜色最小的路。 降低时间的注意点：
+选择合适的数据结构存储图。 一开始使用了map作为存储图的结构，后来在遍历过程中实在比vector慢了太多。 使用标记记录走过的结点，减少bfs重复计算。 对了2:00 - 2:30 期间uva oj 判题特别慢特别慢。尽量避开。
+#include&amp;lt;iostream&amp;gt; #include&amp;lt;vector&amp;gt; #include&amp;lt;map&amp;gt; #include&amp;lt;queue&amp;gt; #include&amp;lt;cmath&amp;gt; #include&amp;lt;cstring&amp;gt; #include&amp;lt;set&amp;gt; using namespace std; #define mapiter map&amp;lt;int,int&amp;gt;::iterator const int MAX_N = 100005; /* 先找最短路：倒序从终点bfs找。 - 在此认为倒序和正序效果一样。只是某些处理逻辑相反。 bfs之后，可能存在多条最短路，所以再需要一次bfs，来选出颜色最小的路。 一开始使用了map作为存储图的结构，后来在遍历过程中实在比vector慢了太多。 */ /* a-&amp;gt;b map[a][b] == color */ class Node{ public: int next; int color; }; // map&amp;lt;int,int&amp;gt; door[MAX_N]; vector&amp;lt;Node&amp;gt; door[MAX_N]; /* 存储无向图，因为结点太多了 */ int book[MAX_N]; /* 记录每个点距离终点`的最小距离 */ int visit[MAX_N]; /* 记录走过的点 */ int big = (1L&amp;lt;&amp;lt;31)-1; int res[MAX_N]; int N,M; /* n下各点 到n 的距离取最短+1 door[a][b] a -&amp;gt; b log[b] = min(log[b], log[a]+1) */ void bfs(){ queue&amp;lt;int&amp;gt; tmp; tmp.</description>
+    </item>
+    
+  </channel>
+</rss>
