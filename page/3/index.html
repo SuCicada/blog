@@ -150,6 +150,41 @@
 
 <article class="post-entry"> 
   <header class="entry-header">
+    <h2>uva 253 - Cube painting（相同骰子）
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>习题4-4 骰子涂色（Cube painting, UVa 253）
+输入两个骰子，判断二者是否等价。每个骰子用6个字母表示，如图4-7所示。
+图4-7 骰子涂色
+例如rbgggr和rggbgr分别表示如图4-8所示的两个骰子。二者是等价的，因为图4-8（a）
+所示的骰子沿着竖直轴旋转90°之后就可以得到图4-8（b）所示的骰子。
+（a） （b）
+图4-8 旋转前后的两个骰子
+.
+Sample Input
+rbgggrrggbgr
+rrrbbbrrbbbr
+rbgrbgrrrrrg
+Sample Output
+TRUE
+FALSE
+FALSE
+思路：暴力枚举，将一个骰子的所有姿态都列出来，
+1、注意第一个图上的数字，那个是记录骰子面的顺序
+2、先找最上面的，也就是1的位置，能排列6种（1，2，3，4，5，6）
+3、然后找到了上面也就找到了与其相对的面，就是下面，就是字串中第六个元素。这个不会额外记录，因为有上就有下了。
+4、然后就是中间四个的排列了，很显然，4种。
+5、然后我们变换第二个骰子，看看它在这24种情况中，有没有一种的情况和第一个骰子的记录是相同的。（比较字串即可）
+6、请注意骰子面的转换是否正确，虽然这个逻辑简单，但是容易写错，要好好检查，我就因为写错下标错了两次。
+#include&lt;iostream&gt; #include&lt;string&gt; using namespace std; /* 1 3 2 4 5 1在顶上 6 2 3 6 4 1 2在顶上 5 3 5 6 2 1	3在顶上 4 4 2 6 5 1	4在顶上 3 5 4 6 3 1	5在顶上 2 6 3 5 4 2	6在顶上 1 */ string s1,s2;//记录两个骰子的字符串 int str_equal(string a,char s1,char s2,char s3,char s4,char s5,char s6)//比较两个字串相等吗 { string b=&#34;0000000&#34;; b[1]=s1; b[2]=s2; b[3]=s3; b[4]=s4; b[5]=s5; b[6]=s6; //cout&lt;&lt;b....</p>
+  </div>
+  <footer class="entry-footer">SuCicada</footer>
+  <a class="entry-link" aria-label="post link to uva 253 - Cube painting（相同骰子）" href="https://sucicada.github.io/blog/posts/uvaoj/uva-253-cube-painting%E7%9B%B8%E5%90%8C%E9%AA%B0%E5%AD%90/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
     <h2>UVA 297 - Quadtrees （四分数） By SuCicada
     </h2>
   </header>
@@ -829,22 +864,6 @@ https://uva.onlinejudge.org/index.php?option=com_onlinejudge&amp;Itemid=8&amp;ca
   </div>
   <footer class="entry-footer">SuCicada</footer>
   <a class="entry-link" aria-label="post link to uva1583 - Digit Generator （生成元）" href="https://sucicada.github.io/blog/posts/uvaoj/uva1583-digit-generator-%E7%94%9F%E6%88%90%E5%85%83/"></a>
-</article>
-
-<article class="post-entry"> 
-  <header class="entry-header">
-    <h2>uva272 （TeX）
-    </h2>
-  </header>
-  <div class="entry-content">
-    <p>https://uva.onlinejudge.org/index.php?option=com_onlinejudge&amp;Itemid=8&amp;category=829&amp;page=show_problem&amp;problem=208
-TEX is a typesetting language developed by Donald Knuth. It takes source text together with a few
-typesetting instructions and produces, one hopes, a beautiful document. Beautiful documents use “
-and ” to delimit quotations, rather than the mundane &#34; which is what is provided by most keyboards.
-Keyboards typically do not have an oriented double-quote, but they do have a left-single-quote and a right-single-quote &#39;. Check your keyboard now to locate the left-single-quote key (sometimes...</p>
-  </div>
-  <footer class="entry-footer">SuCicada</footer>
-  <a class="entry-link" aria-label="post link to uva272 （TeX）" href="https://sucicada.github.io/blog/posts/uvaoj/uva272-tex/"></a>
 </article>
 <footer class="page-footer">
   <nav class="pagination">

@@ -150,6 +150,59 @@
 
 <article class="post-entry"> 
   <header class="entry-header">
+    <h2>uva 1368 - DNA Consensus String（DNA汉明距离）
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>习题3-7 DNA序列（DNA Consensus String, ACM/ICPC Seoul 2006, UVa1368）
+输入m个长度均为n的DNA序列，求一个DNA序列，到所有序列的总Hamming距离尽量
+小。两个等长字符串的Hamming距离等于字符不同的位置个数，例如，ACGT和GCGA的
+Hamming距离为2（左数第1, 4个字符不同）。
+输入整数m和n（4≤m≤50, 4≤n≤1000），以及m个长度为n的DNA序列（只包含字母
+A，C，G，T），输出到m个序列的Hamming距离和最小的DNA序列和对应的距离。如有多
+解，要求为字典序最小的解。例如，对于下面5个DNA序列，最优解为TAAGATAC。
+TATGATAC
+TAAGCTAC
+AAAGATCC
+TGAGATAC
+TAAGATGT
+（汉明距离：算出 每列与 此列最多量的字符 不同的字符的个数 ，各个列相加）
+Sample Input
+3
+5 8
+TATGATAC
+TAAGCTAC
+AAAGATCC
+TGAGATAC
+TAAGATGT
+4 10
+ACGTACGTAC
+CCGTACGTAG
+GCGTACGTAT
+TCGTACGTAA
+6 10
+ATGTTACCAT
+AAGTTACGAT
+AACAAAGCAA
+AAGTTACCTT
+AAGTTACCAA
+TACTTACCAA
+Sample Output
+TAAGATAC
+7
+ACGTACGTAA
+6
+AAGTTACCAA
+12
+https://uva.onlinejudge.org/index.php?option=com_onlinejudge&amp;Itemid=8&amp;page=show_problem&amp;category=830&amp;problem=4114&amp;mosmsg=Submission&#43;received&#43;with&#43;ID&#43;20524214
+//能解出来就是好的，有时候略微繁琐一些是在所难免的。 //It&#39;s not necessary to tack such a toxic attitude around that it&#39;s slightly difficult....</p>
+  </div>
+  <footer class="entry-footer">SuCicada</footer>
+  <a class="entry-link" aria-label="post link to uva 1368 - DNA Consensus String（DNA汉明距离）" href="https://sucicada.github.io/blog/posts/uvaoj/uva-1368-dna-consensus-stringdna%E6%B1%89%E6%98%8E%E8%B7%9D%E7%A6%BB/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
     <h2>UVA 156 - Ananagrams (反片语)
     </h2>
   </header>
@@ -844,41 +897,6 @@ Down
   </div>
   <footer class="entry-footer">SuCicada</footer>
   <a class="entry-link" aria-label="post link to uva 232 - Crossword Answers（纵横迷宫）" href="https://sucicada.github.io/blog/posts/uvaoj/uva-232-crossword-answers%E7%BA%B5%E6%A8%AA%E8%BF%B7%E5%AE%AB/"></a>
-</article>
-
-<article class="post-entry"> 
-  <header class="entry-header">
-    <h2>uva 253 - Cube painting（相同骰子）
-    </h2>
-  </header>
-  <div class="entry-content">
-    <p>习题4-4 骰子涂色（Cube painting, UVa 253）
-输入两个骰子，判断二者是否等价。每个骰子用6个字母表示，如图4-7所示。
-图4-7 骰子涂色
-例如rbgggr和rggbgr分别表示如图4-8所示的两个骰子。二者是等价的，因为图4-8（a）
-所示的骰子沿着竖直轴旋转90°之后就可以得到图4-8（b）所示的骰子。
-（a） （b）
-图4-8 旋转前后的两个骰子
-.
-Sample Input
-rbgggrrggbgr
-rrrbbbrrbbbr
-rbgrbgrrrrrg
-Sample Output
-TRUE
-FALSE
-FALSE
-思路：暴力枚举，将一个骰子的所有姿态都列出来，
-1、注意第一个图上的数字，那个是记录骰子面的顺序
-2、先找最上面的，也就是1的位置，能排列6种（1，2，3，4，5，6）
-3、然后找到了上面也就找到了与其相对的面，就是下面，就是字串中第六个元素。这个不会额外记录，因为有上就有下了。
-4、然后就是中间四个的排列了，很显然，4种。
-5、然后我们变换第二个骰子，看看它在这24种情况中，有没有一种的情况和第一个骰子的记录是相同的。（比较字串即可）
-6、请注意骰子面的转换是否正确，虽然这个逻辑简单，但是容易写错，要好好检查，我就因为写错下标错了两次。
-#include&lt;iostream&gt; #include&lt;string&gt; using namespace std; /* 1 3 2 4 5 1在顶上 6 2 3 6 4 1 2在顶上 5 3 5 6 2 1	3在顶上 4 4 2 6 5 1	4在顶上 3 5 4 6 3 1	5在顶上 2 6 3 5 4 2	6在顶上 1 */ string s1,s2;//记录两个骰子的字符串 int str_equal(string a,char s1,char s2,char s3,char s4,char s5,char s6)//比较两个字串相等吗 { string b=&#34;0000000&#34;; b[1]=s1; b[2]=s2; b[3]=s3; b[4]=s4; b[5]=s5; b[6]=s6; //cout&lt;&lt;b....</p>
-  </div>
-  <footer class="entry-footer">SuCicada</footer>
-  <a class="entry-link" aria-label="post link to uva 253 - Cube painting（相同骰子）" href="https://sucicada.github.io/blog/posts/uvaoj/uva-253-cube-painting%E7%9B%B8%E5%90%8C%E9%AA%B0%E5%AD%90/"></a>
 </article>
 <footer class="page-footer">
   <nav class="pagination">
