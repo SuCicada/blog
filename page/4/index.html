@@ -150,6 +150,30 @@
 
 <article class="post-entry"> 
   <header class="entry-header">
+    <h2>uva1583 - Digit Generator （生成元）
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>如果x加上x的各个数字之和得到y，就说x是y的生成元。给出n（1≤n≤100000），求最小
+生成元。无解输出0。例如，n=216，121，2005时的解分别为198，0，1979。
+Sample Input
+3
+216
+121
+2005
+Sample Output
+198
+0
+1979
+https://uva.onlinejudge.org/index.php?option=com_onlinejudge&amp;Itemid=8&amp;category=829&amp;page=show_problem&amp;problem=4458
+//先算出所有的生成元x的原数y，以s[y]=x的形式将其存起，在求y的解x的时候，直接输出是s[y]即可 //所以为了求最小生成元也就是x，就要从尾到头的循环算y。 #include&lt;iostream&gt; #include&lt;cstdio&gt; #include&lt;string.h&gt; using namespace std; int const N = 100000; int sn[N&#43;5]={0}; int main() { memset(sn,0,sizeof(sn)); for(int i=N;i&gt;=0;i--) { int n=i; int s=i; while(n&gt;0) { s&#43;=n%10; n/=10; } sn[s]=i; } //for(int i=0;i&lt;N;i&#43;&#43;) // cout&lt;&lt;sn[i]&lt;&lt;&#34; &#34;; // cout&lt;&lt;endl; int n,T; cin&gt;&gt;T; while(T--) { int i; cin&gt;&gt;n; cout&lt;&lt;sn[n]&lt;&lt;endl; } return 0; } //AC at 2017/12/7 以下算法虽然一样可以算出正确答案，但是超时，oj不通过。...</p>
+  </div>
+  <footer class="entry-footer">SuCicada</footer>
+  <a class="entry-link" aria-label="post link to uva1583 - Digit Generator （生成元）" href="https://sucicada.github.io/blog/posts/uvaoj/uva1583-digit-generator-%E7%94%9F%E6%88%90%E5%85%83/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
     <h2>uva272 （TeX）
     </h2>
   </header>

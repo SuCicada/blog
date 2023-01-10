@@ -163,6 +163,19 @@
 
 <article class="post-entry"> 
   <header class="entry-header">
+    <h2>role
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>遇到一些事情的时候，分心，因为总想要以一个好的状态来办事，所以当有一些坏感觉出现的时候，就分心去想办法解决坏感觉。最终一事无成。
+目前自己想到并接受的方法：不管这些坏感觉，出现就出现吧，难受就难受吧，办事情更重要。一边难受一边办事也不是办不了。</p>
+  </div>
+  <footer class="entry-footer"><span title='2023-01-10 00:00:00 +0000 UTC'>2023-01-10 00:00:00</span>&nbsp;·&nbsp;SuCicada</footer>
+  <a class="entry-link" aria-label="post link to role" href="https://sucicada.github.io/blog/posts/role/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
     <h2>使用多巴胺原理解释并解决成瘾性行为，并利用多巴胺追求爱好使之成为信仰
     </h2>
   </header>
@@ -746,41 +759,6 @@ https://uva.onlinejudge.org/index.php?option=com_onlinejudge&amp;Itemid=8&amp;ca
   </div>
   <footer class="entry-footer">SuCicada</footer>
   <a class="entry-link" aria-label="post link to uva 133 - The Dole Queue（救济金点人）" href="https://sucicada.github.io/blog/posts/uvaoj/uva-133-the-dole-queue%E6%95%91%E6%B5%8E%E9%87%91%E7%82%B9%E4%BA%BA/"></a>
-</article>
-
-<article class="post-entry"> 
-  <header class="entry-header">
-    <h2>uva 1339 - Ancient Cipher（映射密码）
-    </h2>
-  </header>
-  <div class="entry-content">
-    <p>例题4-1 古老的密码（Ancient Cipher, NEERC 2004, UVa1339）
-给定两个长度相同且不超过100的字符串，判断是否能把其中一个字符串的各个字母重
-排，然后对26个字母做一个一一映射，使得两个字符串相同。例如，JWPUDJSTVP重排后可
-以得到WJDUPSJPVT，然后把每个字母映射到它前一个字母（B-&gt;A, C-&gt;B, …, Z-&gt;Y, A-
-Z），得到VICTORIOUS。输入两个字符串，输出YES或者NO。
-Sample Input
-JWPUDJSTVP
-VICTORIOUS
-MAMA
-ROME
-HAHA
-HEHE
-AAA
-AAA
-NEERCISTHEBEST
-SECRETMESSAGES
-Sample Output
-YES
-NO
-YES
-YES
-NO
-https://uva.onlinejudge.org/index.php?option=com_onlinejudge&amp;Itemid=8&amp;page=show_problem&amp;category=832&amp;problem=4085&amp;mosmsg=Submission&#43;received&#43;with&#43;ID&#43;20728592
-//1、我们只需要分别记录两个字串里出现的各个字母的数量， //2、然后从小到大或从大到小排序， //3、之后进行比较，如果两个字串对应，那么他们的字母数量表相同下标的元素值（代表字母的数量）也应该相同。 #include&lt;iostream&gt; #include&lt;string&gt; using namespace std; void ssqrt(int *str) { //cout&lt;&lt;str&lt;&lt;endl; for(int i=0;i&lt;26;i&#43;&#43;) for(int j=i&#43;1;j&lt;26;j&#43;&#43;) if(str[i]&gt;str[j]) { int temp=str[i]; str[i]=str[j]; str[j]=temp; } //cout&lt;&lt;str&lt;&lt;endl; } int main() { string str,guess;//输入的两个字串 while(cin&gt;&gt;str&gt;&gt;guess) { int cha1[26]={0},cha2[26]={0};//分别记录两个字串里的各个字母的数量 for(int i=0;i&lt;str....</p>
-  </div>
-  <footer class="entry-footer">SuCicada</footer>
-  <a class="entry-link" aria-label="post link to uva 1339 - Ancient Cipher（映射密码）" href="https://sucicada.github.io/blog/posts/uvaoj/uva-1339-ancient-cipher%E6%98%A0%E5%B0%84%E5%AF%86%E7%A0%81/"></a>
 </article>
 <footer class="page-footer">
   <nav class="pagination">
