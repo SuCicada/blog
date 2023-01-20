@@ -163,6 +163,105 @@
 
 <article class="post-entry"> 
   <header class="entry-header">
+    <h2>UVA 816 - Abbott‘s Revenge (Abbott的复仇) By SuCicada
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>例题6-14 Abbott的复仇（Abbott’s Revenge, ACM/ICPC World Finals 2000, UVa 816）
+有一个最多包含9*9个交叉点的迷宫。输入起点、离开起点时的朝向和终点，求一条最
+短路（多解时任意输出一个即可）。
+图6-14 迷宫及走向
+这个迷宫的特殊之处在于：进入一个交叉点
+的方向（用NEWS这4个字母分别表示北东西
+南，即上右左下）不同，允许出去的方向也不
+同。例如，1 2 WLF NR ER 表示交叉点(1,2)
+（上数第1行，左数第2列）有3个路标（字
+符“”只是结束标志），如果进入该交叉点时的
+朝向为W（即朝左），则可以左转（L）或者直
+行（F）；如果进入时朝向为N或者E则只能右转
+（R），如图6-14所示。
+注意：初始状态是“刚刚离开入口”，所以即
+使出口和入口重合，最短路也不为空。例如，图
+6-14中的一条最短路为(3,1) (2,1) (1,1) (1,2)
+(2,2) (2,3) (1,3) (1,2) (1,1) (2,1) (2,2) (1,2) (1,3) (2,3) (3,3)。
+Sample Input
+SAMPLE
+3 1 N 3 3
+1 1 WL NR *
+1 2 WLF NR ER *
+1 3 NL ER *
+2 1 SL WR NF *...</p>
+  </div>
+  <footer class="entry-footer">SuCicada</footer>
+  <a class="entry-link" aria-label="post link to UVA 816 - Abbott‘s Revenge (Abbott的复仇) By SuCicada" href="https://sucicada.github.io/blog/posts/uvaoj/uva-816-abbotts-revenge-abbott%E7%9A%84%E5%A4%8D%E4%BB%87-by-sucicada/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2>UVA 839 - Not so Mobile （天平）By SuCicada
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>例题6-9 天平（Not so Mobile, UVa 839）
+输入一个树状天平，根据力矩相等原则判断是否平衡。如图6-5所示，所谓力矩相等，
+就是WlDl=WrDr，其中Wl和Wr分别为左右两边砝码的重量，D为距离。
+采用递归（先序）方式输入：每个天平的格式为Wl，Dl，Wr，Dr，当Wl或Wr为0时，表
+示该“砝码”实际是一个子天平，接下来会描述这个子天平。当Wl=Wr=0时，会先描述左子天
+平，然后是右子天平。
+样例输入：
+1
+0 2 0 4
+0 3 0 1
+1 1 1 1
+2 4 4 2
+1 6 3 2
+Sample Output
+YES
+【注意】 输出结果之间空一行
+本家地址
+递归走，一边输入每一结点，一边递归判断这个结点的左结点结果（左子树重量总和）和右结点结果（右子树重量总和）是否满足要求。
+这样的话在建立树的时候也就直接计算结束了。
+#include&lt;iostream&gt; using namespace std; int lair(){ int wl,dl,wr,dr; cin&gt;&gt;wl&gt;&gt;dl&gt;&gt;wr&gt;&gt;dr; if(wl == 0){ /* have left branch */ wl = lair(); } if(wr == 0){ wr = lair(); } if(wl==0 || wr==0 || wl*dl !...</p>
+  </div>
+  <footer class="entry-footer">SuCicada</footer>
+  <a class="entry-link" aria-label="post link to UVA 839 - Not so Mobile （天平）By SuCicada" href="https://sucicada.github.io/blog/posts/uvaoj/uva-839-not-so-mobile-%E5%A4%A9%E5%B9%B3by-sucicada/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2>UVa Online Judge 西班牙Valladolid 在线判官 和 uDebug使用简单教程
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>udebug使用在后面
+https://uva.onlinejudge.org/
+1、这是主界面，如果你还没有账号，那么就点击图中的register。
+2、然后就是填写信息，邮箱要用gmail，信息填写完成后点击下方的register
+3、之后打开邮箱查看接受的邮件，并点击其中的链接完成注册确认，之后会转到uva oj，如果页面显示 your account is now active.You may now log in!则表示注册完成。
+4、然后输入用户名密码登录
+5、然后在左边的栏目中，点击Browse Problems 就可以找到有关刘汝佳以及其他一些著名套题了。
+6、然后是关于如何答题，现在我们打开了一道题目，看图上红框住的左上角，
+（1）其中我们点击PDF，会下载下来本道题的pdf格式文件
+（2）我们点击submit就是提交代码了。
+其中如果是用的C语言或C&#43;&#43;选择第一个c&#43;&#43;，提交结果没有ac，如果不是代码问题，那么试试选择c&#43;&#43;11吧。
+参考了UVAOJ的注册和评测入门
+（3）最后我想说一下在看题界面的那个Debug选项，就是旁边有个红色的甲虫的。
+若果打不开udebug就挂vpn试试吧
+https://www.udebug.com/UVa/1589 （当前是1589号题）
+我们点进去后，一共四部分。上左边就是一些用户上传的关于本题的一些样例。点击其中一个，这些样例就会显示在右边的框中。
+然后我们点击下方写着Get Accepted Output蓝格，就会在下方的左边出现这些样例的正确输出结果。我们可以把这些样例用我们的代码输出的结果粘到右边的框中。之后点击Compare Outputs 进行对比。
+这样我就能很方便的知道我们的代码在处理哪一个样例上出现里问题，更改起来也更有方向性。还有如果出现了图中的情况，明明都对但还是显示不对，那是因为他的输出默认多了一个空行，这个一般和代码没有关系。默认为对就行了。
+我们还可以在上面快速搜索你需要的题号。
+目前支持这些oj
+这是主页https://www.udebug.com/
+可以去他的Twitter和Facebook上看看，网上关于udegug的信息不多。</p>
+  </div>
+  <footer class="entry-footer">SuCicada</footer>
+  <a class="entry-link" aria-label="post link to UVa Online Judge 西班牙Valladolid 在线判官 和 uDebug使用简单教程" href="https://sucicada.github.io/blog/posts/uvaoj/uva-online-judge-%E8%A5%BF%E7%8F%AD%E7%89%99valladolid-%E5%9C%A8%E7%BA%BF%E5%88%A4%E5%AE%98-%E5%92%8C-udebug%E4%BD%BF%E7%94%A8%E7%AE%80%E5%8D%95%E6%95%99%E7%A8%8B/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
     <h2>uva1583 - Digit Generator （生成元）
     </h2>
   </header>

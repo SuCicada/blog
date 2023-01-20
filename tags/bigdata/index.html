@@ -5,11 +5,11 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <meta name="robots" content="index, follow">
-<title>Tags | SuCicada</title>
+<title>BigData | SuCicada</title>
 <meta name="keywords" content="">
 <meta name="description" content="SuCicada - https://github.com/SuCicada">
 <meta name="author" content="SuCicada">
-<link rel="canonical" href="https://sucicada.github.io/blog/tags/">
+<link rel="canonical" href="https://sucicada.github.io/blog/tags/bigdata/">
 <link crossorigin="anonymous" href="/blog/assets/css/stylesheet.5b5501da54f21435c8f8010d1de02123ae8d1ada696b48c6530ec4eea283e7d6.css" integrity="sha256-W1UB2lTyFDXI&#43;AENHeAhI66NGtppa0jGUw7E7qKD59Y=" rel="preload stylesheet" as="style">
 <link rel="icon" href="https://sucicada.github.io/blog/favicon.ico">
 <link rel="icon" type="image/png" sizes="16x16" href="https://sucicada.github.io/blog/favicon-16x16.png">
@@ -18,7 +18,7 @@
 <link rel="mask-icon" href="https://sucicada.github.io/blog/safari-pinned-tab.svg">
 <meta name="theme-color" content="#2e2e33">
 <meta name="msapplication-TileColor" content="#2e2e33">
-<link rel="alternate" type="application/rss+xml" href="https://sucicada.github.io/blog/tags/index.xml">
+<link rel="alternate" type="application/rss+xml" href="https://sucicada.github.io/blog/tags/bigdata/index.xml">
 <noscript>
     <style>
         #theme-toggle,
@@ -55,15 +55,15 @@
         }
 
     </style>
-</noscript><meta property="og:title" content="Tags" />
+</noscript><meta property="og:title" content="BigData" />
 <meta property="og:description" content="SuCicada - https://github.com/SuCicada" />
 <meta property="og:type" content="website" />
-<meta property="og:url" content="https://sucicada.github.io/blog/tags/" /><meta property="og:image" content="https://sucicada.github.io/blog/papermod-cover.png"/>
+<meta property="og:url" content="https://sucicada.github.io/blog/tags/bigdata/" /><meta property="og:image" content="https://sucicada.github.io/blog/papermod-cover.png"/>
 
 <meta name="twitter:card" content="summary_large_image"/>
 <meta name="twitter:image" content="https://sucicada.github.io/blog/papermod-cover.png"/>
 
-<meta name="twitter:title" content="Tags"/>
+<meta name="twitter:title" content="BigData"/>
 <meta name="twitter:description" content="SuCicada - https://github.com/SuCicada"/>
 
 </head>
@@ -120,7 +120,7 @@
             </li>
             <li>
                 <a href="https://sucicada.github.io/blog/tags/" title="Tags">
-                    <span class="active">Tags</span>
+                    <span>Tags</span>
                 </a>
             </li>
             <li>
@@ -131,31 +131,67 @@
         </ul>
     </nav>
 </header>
-<main class="main">
-<header class="page-header">
-    <h1>Tags</h1>
+<main class="main"> 
+<header class="page-header"><div class="breadcrumbs"><a href="https://sucicada.github.io/blog">Home</a>&nbsp;»&nbsp;<a href="https://sucicada.github.io/blog/tags/">Tags</a></div>
+  <h1>
+    BigData
+    <a href="index.xml" title="RSS" aria-label="RSS">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+        stroke-linecap="round" stroke-linejoin="round" height="23">
+        <path d="M4 11a9 9 0 0 1 9 9" />
+        <path d="M4 4a16 16 0 0 1 16 16" />
+        <circle cx="5" cy="19" r="1" />
+      </svg>
+    </a>
+  </h1>
 </header>
 
-<ul class="terms-tags">
-    <li>
-        <a href="https://sucicada.github.io/blog/tags/bigdata/">BigData <sup><strong><sup>3</sup></strong></sup> </a>
-    </li>
-    <li>
-        <a href="https://sucicada.github.io/blog/tags/math/">math <sup><strong><sup>1</sup></strong></sup> </a>
-    </li>
-    <li>
-        <a href="https://sucicada.github.io/blog/tags/uvaoj/">UVaOJ <sup><strong><sup>59</sup></strong></sup> </a>
-    </li>
-    <li>
-        <a href="https://sucicada.github.io/blog/tags/%E4%BF%A1%E6%9D%A1/">信条 <sup><strong><sup>1</sup></strong></sup> </a>
-    </li>
-    <li>
-        <a href="https://sucicada.github.io/blog/tags/%E6%95%B0%E5%AD%A6%E5%BF%85%E7%9F%A5%E5%BF%85%E4%BC%9A-%E5%AF%BC%E6%95%B0%E6%A2%AF%E5%BA%A6%E4%B8%8E%E7%A7%AF%E5%88%86/">数学必知必会-导数、梯度与积分 <sup><strong><sup>1</sup></strong></sup> </a>
-    </li>
-    <li>
-        <a href="https://sucicada.github.io/blog/tags/%E6%97%A5%E8%A8%98/">日記 <sup><strong><sup>1</sup></strong></sup> </a>
-    </li>
-</ul>
+<article class="post-entry tag-entry"> 
+  <header class="entry-header">
+    <h2>Flink 内存模型的分配策略 主公式推导
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>结论: 启动flink设定的 ytm数值 与实际监控展示的JVM_Heap数值关系是 (ytm大于1920的简化公式)
+JVM_Heap = ytm * 0.45 - 256
+啓動參數: -ytm 设定的实际是 进程总内存,相当于yarn容器大小
+Total_Process_Memory: ytm JVM_Metaspace: 默認 256m JVM_Overhead: 默認 jtm * 0.1 (必須在 192m ~ 1g (默認)) Total_Flink_Memory: Total_Process_Memory - JVM_Overhead - JVM_Metaspace Framework_Heap: 默認 128m Managed_Memory: 默認 Total_Flink_Memory * 0.4 Framework_Off-Heap: 默認 128m Task_Off-Heap: 默認 0 Network: 默認 Total_Flink_Memory * 0.1 (必須在 64m ~ 1g (默認)) 所以 Task_Heap = Total_Flink_Memory - Framework_Heap - Managed_Memory - Framework_Off-Heap - Task_Off-Heap - Network 如果都用默认配置,那么代入化简就是...</p>
+  </div>
+  <footer class="entry-footer">SuCicada</footer>
+  <a class="entry-link" aria-label="post link to Flink 内存模型的分配策略 主公式推导" href="https://sucicada.github.io/blog/posts/bigdata/flink-%E5%86%85%E5%AD%98%E6%A8%A1%E5%9E%8B%E7%9A%84%E5%88%86%E9%85%8D%E7%AD%96%E7%95%A5-%E4%B8%BB%E5%85%AC%E5%BC%8F%E6%8E%A8%E5%AF%BC/"></a>
+</article>
+
+<article class="post-entry tag-entry"> 
+  <header class="entry-header">
+    <h2>Flink 算子Function实例化的坑
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>问题回顾 关于一段代码：
+object MySingleObj{ // 陷阱： // 单例对象中一个是可变引用，一个是可变数组 var str:String = _ val list = new ListBuffer[String] } ... dataStream .map(new RichMapFunction(){ // 问题1：obj1 和 obj2 的实例方式有什么区别。 // 问题2：考虑参数0的作用以及是否会得到预期效果。 val obj1:MyClass = new MyClass(参数0) var obj2:MyClass = _ override def open(paramation:Configuration): Unit = { obj2 = new MyClass(参数0) } override def map(value, ....) = { // 问题3：如果在这里使用 obj1 和 obj2 会有什么区别。 // 问题4：单个slot中对单例对象中的变量修改，造成的影响是。 MySingleObj.str = value MySingleObj.list &#43;= value } }) ....</p>
+  </div>
+  <footer class="entry-footer">SuCicada</footer>
+  <a class="entry-link" aria-label="post link to Flink 算子Function实例化的坑" href="https://sucicada.github.io/blog/posts/bigdata/flink-%E7%AE%97%E5%AD%90function%E5%AE%9E%E4%BE%8B%E5%8C%96%E7%9A%84%E5%9D%91/"></a>
+</article>
+
+<article class="post-entry tag-entry"> 
+  <header class="entry-header">
+    <h2>Flume 数据流的处理过程 从源码看 Source Channel Sink
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>Event 构成 Source Flume的三个部分：Source，Channel，Sink
+数据是存储在Event对象中在这三部分之间传递
+Event 构成 Event 接口
+public interface Event { public Map&lt;String, String&gt; getHeaders(); public void setHeaders(Map&lt;String, String&gt; headers); public byte[] getBody(); public void setBody(byte[] body); } 以 最简单的实现类 SimpleEvent 为例子
+public class SimpleEvent implements Event { private Map&lt;String, String&gt; headers; private byte[] body; ... } 可见
+header 以 Map&lt;String, String&gt; 的形式存储键值对信息
+body 二进制形式存储，从Source接收到的数据会存储在这里
+Source 带着问题 header 里有什么 一些实现类 ExecSource ExecRunnable 主要处理 通过 EventBuilder.withBody 基础创建 Event ， 一行一个 Event header 为空 flushEventBatch 中 ChannelProcessor :: processEventBatch...</p>
+  </div>
+  <footer class="entry-footer">SuCicada</footer>
+  <a class="entry-link" aria-label="post link to Flume 数据流的处理过程 从源码看 Source Channel Sink" href="https://sucicada.github.io/blog/posts/bigdata/flume-%E6%95%B0%E6%8D%AE%E6%B5%81%E7%9A%84%E5%A4%84%E7%90%86%E8%BF%87%E7%A8%8B-%E4%BB%8E%E6%BA%90%E7%A0%81%E7%9C%8B-source-channel-sink/"></a>
+</article>
     </main>
     
 <footer class="footer">

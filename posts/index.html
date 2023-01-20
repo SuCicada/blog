@@ -251,6 +251,53 @@
 
 <article class="post-entry"> 
   <header class="entry-header">
+    <h2>Flink 内存模型的分配策略 主公式推导
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>结论: 启动flink设定的 ytm数值 与实际监控展示的JVM_Heap数值关系是 (ytm大于1920的简化公式)
+JVM_Heap = ytm * 0.45 - 256
+啓動參數: -ytm 设定的实际是 进程总内存,相当于yarn容器大小
+Total_Process_Memory: ytm JVM_Metaspace: 默認 256m JVM_Overhead: 默認 jtm * 0.1 (必須在 192m ~ 1g (默認)) Total_Flink_Memory: Total_Process_Memory - JVM_Overhead - JVM_Metaspace Framework_Heap: 默認 128m Managed_Memory: 默認 Total_Flink_Memory * 0.4 Framework_Off-Heap: 默認 128m Task_Off-Heap: 默認 0 Network: 默認 Total_Flink_Memory * 0.1 (必須在 64m ~ 1g (默認)) 所以 Task_Heap = Total_Flink_Memory - Framework_Heap - Managed_Memory - Framework_Off-Heap - Task_Off-Heap - Network 如果都用默认配置,那么代入化简就是...</p>
+  </div>
+  <footer class="entry-footer">SuCicada</footer>
+  <a class="entry-link" aria-label="post link to Flink 内存模型的分配策略 主公式推导" href="https://sucicada.github.io/blog/posts/bigdata/flink-%E5%86%85%E5%AD%98%E6%A8%A1%E5%9E%8B%E7%9A%84%E5%88%86%E9%85%8D%E7%AD%96%E7%95%A5-%E4%B8%BB%E5%85%AC%E5%BC%8F%E6%8E%A8%E5%AF%BC/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2>Flink 算子Function实例化的坑
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>问题回顾 关于一段代码：
+object MySingleObj{ // 陷阱： // 单例对象中一个是可变引用，一个是可变数组 var str:String = _ val list = new ListBuffer[String] } ... dataStream .map(new RichMapFunction(){ // 问题1：obj1 和 obj2 的实例方式有什么区别。 // 问题2：考虑参数0的作用以及是否会得到预期效果。 val obj1:MyClass = new MyClass(参数0) var obj2:MyClass = _ override def open(paramation:Configuration): Unit = { obj2 = new MyClass(参数0) } override def map(value, ....) = { // 问题3：如果在这里使用 obj1 和 obj2 会有什么区别。 // 问题4：单个slot中对单例对象中的变量修改，造成的影响是。 MySingleObj.str = value MySingleObj.list &#43;= value } }) ....</p>
+  </div>
+  <footer class="entry-footer">SuCicada</footer>
+  <a class="entry-link" aria-label="post link to Flink 算子Function实例化的坑" href="https://sucicada.github.io/blog/posts/bigdata/flink-%E7%AE%97%E5%AD%90function%E5%AE%9E%E4%BE%8B%E5%8C%96%E7%9A%84%E5%9D%91/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2>Flume 数据流的处理过程 从源码看 Source Channel Sink
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>Event 构成 Source Flume的三个部分：Source，Channel，Sink
+数据是存储在Event对象中在这三部分之间传递
+Event 构成 Event 接口
+public interface Event { public Map&lt;String, String&gt; getHeaders(); public void setHeaders(Map&lt;String, String&gt; headers); public byte[] getBody(); public void setBody(byte[] body); } 以 最简单的实现类 SimpleEvent 为例子
+public class SimpleEvent implements Event { private Map&lt;String, String&gt; headers; private byte[] body; ... } 可见
+header 以 Map&lt;String, String&gt; 的形式存储键值对信息
+body 二进制形式存储，从Source接收到的数据会存储在这里
+Source 带着问题 header 里有什么 一些实现类 ExecSource ExecRunnable 主要处理 通过 EventBuilder.withBody 基础创建 Event ， 一行一个 Event header 为空 flushEventBatch 中 ChannelProcessor :: processEventBatch...</p>
+  </div>
+  <footer class="entry-footer">SuCicada</footer>
+  <a class="entry-link" aria-label="post link to Flume 数据流的处理过程 从源码看 Source Channel Sink" href="https://sucicada.github.io/blog/posts/bigdata/flume-%E6%95%B0%E6%8D%AE%E6%B5%81%E7%9A%84%E5%A4%84%E7%90%86%E8%BF%87%E7%A8%8B-%E4%BB%8E%E6%BA%90%E7%A0%81%E7%9C%8B-source-channel-sink/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
     <h2>UUA 506 - System Dependencies(系统依赖) By SuCicada
     </h2>
   </header>
@@ -665,101 +712,6 @@ https://uva.onlinejudge.org/index.php?option=com_onlinejudge&amp;Itemid=8&amp;pa
   </div>
   <footer class="entry-footer">SuCicada</footer>
   <a class="entry-link" aria-label="post link to uva 1225 - Digit Counting（数数）" href="https://sucicada.github.io/blog/posts/uvaoj/uva-1225-digit-counting%E6%95%B0%E6%95%B0/"></a>
-</article>
-
-<article class="post-entry"> 
-  <header class="entry-header">
-    <h2>UVA 12333 - Revenge of Fibonacci (斐波那契的复仇) 【后日谈】by SuCicada
-    </h2>
-  </header>
-  <div class="entry-content">
-    <p>正篇以及正确解题思路和代码参见 UVA 12333 - Revenge of Fibonacci (斐波那契的复仇) by SuCicada 此篇为后日谈 要说为什么专门开一篇来记录想法呢，主要是因为想说的太多了。首先从UVA的提交记录上来看，上一次答题是在足足1年之前了。
-这么久以来都没有再好好做算法，感觉快要忘本了。而且出来之后脑子也不是那么灵光了，虽然更理性，但是却少了些抽象的想象力。
-再说这道题，一开始我根本不知道什么字典序，完全是打表暴力比对的。把前40位算出来那里都是没错的。
-但是之后我想的是：用map排个序，然后二分查找。但是这样会有问题，因为二分找到的可能并不是最小的，所以找到之后还需要分别找到同样匹配前缀的那一区域的数字，因为是map排过序的，所以他们都是挨着的。
-但是之后在极端痛苦了两个晚上之后，我放弃了这种做法，经过测试计算，发现我电脑中g&#43;&#43;在一秒钟可以进行4亿次运算，假设有5万个40位数字需要比对，4亿除以5万除以40 有20万呢，或者保险点我们取个1000。（一直到当时我都以为这道题的时间限制是1秒）
-然后我就在死灰复燃的状态下在下2天晚上把位数比对写出了（暴力）。为了减少比对量，我打表了前3位，也就是记录下前三位的数字第一次出现的序数，而且这个序数是map中的序数，map中的序数和fibo的序数可是不同的。
-而且map不能随机读取，怎么办，我又创造了两个数组专门存放键和值。
-后来我还发现个位数的搜索起来比较慢，因为他们要暴力比对的数是最多的，所以我又用一个map来记录已经查找过的结果。
-我真的是要疯，一直到昨天晚上我把这套模型整通。本地一跑，通过，time测下来 1.2秒，我巨喜。提交，time limit exceeded。把udebug上的样例全部跑了一遍，没有超过1.5秒的。我随机生成各种5万个数的组合，2秒之内绝对能过。
-但是 time limit exceeded， time limit exceeded，time limit exceeded，time limit exceeded，time limit exceeded。
-”难道是表打的太小了？“我又将打表位数升到4，升到5。然而为什么更慢了。
-那会已经3点钟了，我感到生命力的衰减，在极度无望的情况下，我打开百度，UVA 12333，我真特么被这道题23333了，
-这道题考大数&#43;字典树
-我惊住，一个新的窗子仿佛打开了，一查，全懂了，完全懂了。我缩在床上颤抖不已，脑子瞬间就明白了我该怎么做，但是身体已经无法支撑下去，为了能保持住自己的生命力。我艰难的进入睡眠。
-第二天我写，真的很快，因为我已经知道了，虽然遇到了oj离奇而严厉的 runtime error错误。但是我很冷静，因为我知道这个方法肯定是没错的，这条路一定是对的。就是这种知道目的的坚定。
-当Accepted出现在屏幕上，我想哭了。太痛苦了，太刺激了，太疯狂了。再加上17个小时没有进食带来的虚弱感让我恍惚，感觉我活下来了。
-劫后余生的感激之情。
-而现在已经5点怅然若失感时不时在席卷我，跨时两个星期，4个夜晚的崩溃，20余小时的挣扎，20多次的错误。我太弱了，我为我的弱小感到伤心，但是我又为我的成功感到高兴。
-算法拯救我，算法伤害我，算法摧残我，算法安慰我。
-我时尝为我的自艾感到痛苦。
-但是我害怕痛苦吗，不如说我正喜欢痛苦。
-附赠更快的却更错的代码：
-#include&lt;iostream&gt; #include&lt;algorithm&gt; #include&lt;iterator&gt; #include&lt;vector&gt; #include&lt;string&gt; #include&lt;cstdio&gt; #include&lt;iomanip&gt; #include&lt;map&gt; #include&lt;cmath&gt; #include&lt;cstring&gt; using namespace std; vector&lt;string&gt; fibonacci(100005); map&lt;string,int&gt; fiboSorted; vector&lt;string&gt; fiboName(100005); vector&lt;int&gt; fiboIndex(100005); int limitSite = 52; string add(string a,string b){ int aLen = a....</p>
-  </div>
-  <footer class="entry-footer">SuCicada</footer>
-  <a class="entry-link" aria-label="post link to UVA 12333 - Revenge of Fibonacci (斐波那契的复仇) 【后日谈】by SuCicada" href="https://sucicada.github.io/blog/posts/uvaoj/uva-12333-revenge-of-fibonacci-%E6%96%90%E6%B3%A2%E9%82%A3%E5%A5%91%E7%9A%84%E5%A4%8D%E4%BB%87-%E5%90%8E%E6%97%A5%E8%B0%88by-sucicada/"></a>
-</article>
-
-<article class="post-entry"> 
-  <header class="entry-header">
-    <h2>UVA 12333 - Revenge of Fibonacci (斐波那契的复仇) by SuCicada
-    </h2>
-  </header>
-  <div class="entry-content">
-    <p>合适的思路 大数加法 字典树 代码 注意点 附录 后日谈 习题5-15 Fibonacci的复仇（Revenge of Fibonacci, ACM/ICPC Shanghai 2011,
-UVa12333）
-Fibonacci数的定义为：F(0)=F(1)=1，然后从F(2)开始，F(i)=F(i-1)&#43;F(i-2)。例如，前10
-项Fibonacci数分别为1, 1, 2, 3, 5, 8, 13, 21, 34, 55……
-有一天晚上，你梦到了Fibonacci，它告诉你一个有趣的Fibonacci数。醒来以后，你只记
-得了它的开头几个数字。你的任务是找出以它开头的最小Fibonacci数的序号。例如以12开头
-的最小Fibonacci数是F(25)。输入不超过40个数字，输出满足条件的序号。
-如果序号小于100000的Fibonacci数均不满足条件，输出-1。
-提示：本题有一定效率要求。如果高精度代码比较慢，可能会超时。
-原题链接 合适的思路 首先想我们该怎么样能匹配前缀，首先我们不知道完整的数字是什么，所以我们要先得到符合要求的数字数据集。
-然后将这些数据集放入字典树中
-所以我们要做的就是
-使用大数加法技巧，计算前100000个fibonacci 将每一个fibo数存入字典树中 大数加法 首先先做大数加法，使用字符串存储数字，两个字符串（数字）从最后一位即个位开始一位一位加。
-问题在于：
-100000个fibo数字，到后期位数是相当恐怖的，测试时发现第10万个数字有足足2万多位。这会造成在运算时时间和空间的非常糟糕的消耗。
-所以我们就可以遵从题意，只关心前40位，我们只截取每个数字的前面一部分做计算。这就要引出第2个和第3个问题。 如果我们使用40位，不论后面多少位，就把第40位当作个位。这会产生一个误差的问题。 比如两个数字 11001 和88999，如果我们只取他们的前2位算出来下一个数的前2位是99，但是实际上下一个数的前2位是10。这就是误差。 在解决第1个问题的时候，我们需要考虑数字进位的情况，因为我们只能看到数字的前一部分，不知道两个相加的数字是否位数相等，比如1234和345相加，假设取前2位，那么我们只能看到12和34，这样直接相加是不对的。 解决
-问题:3：先解决位数问题，我们可以将位数记录在字符串中，比如加入一个最后一位专门用来放位数。但是这样我们只能放256个无符号数字（因为使用char型元素存储）。那么换个思路，因为我们的问题在于两个数字位数不等，而不是位数究竟多少，所以可以只记录位数的奇偶即可。
-（另：其他办法，因为是Fibo数，位数不等的情况下，后一个数是大的数字，位数肯定多，而且第一位肯定是1，可以用这些关键点来解决） 问题:2：为了解决误差问题，我们就不能只选取前40位，那么应该选几位呢，经过测试发现最小能保证前40位没有问题的位数是52，测试方法见附录。
-不过要是不能测试的时候可以以10位为单位扩大范围，反正50和60位的差距远比50和2万的差距小。 字典树 每一个结点中存有
-从根节点到此结点的最小的Fibo序数，即最小前缀数字。 一个map，存有下一位的数字到下一位所在的结点的位置映射关系。 结点之间的关系如下图
-在存储的时候，存入的字符串在经过每一个结点的时候，都要比一下这个结点中存储的minIndex（FIbo最小前缀序号），并将其替换成两者中更小的。
-这样就能保证按照字典树的脉络寻找，寻找到的结点中的序号，一定是前缀数所在的最小的Fibo序号。
-注意点 不知道现在的UVA 编译器是怎么回事，我定义的 int型返回值函数没有给返回值，返回判我 Runtime error。我一开始压根不明觉厉，一行一行注释，然后一次次提交看看哪部分代码没有才会不报 re，以此来判断问题出在哪部分。光是这样就提交了十几次。
-我愿称之为绝活。
-在 线 O J ，现 场 调 试。...</p>
-  </div>
-  <footer class="entry-footer">SuCicada</footer>
-  <a class="entry-link" aria-label="post link to UVA 12333 - Revenge of Fibonacci (斐波那契的复仇) by SuCicada" href="https://sucicada.github.io/blog/posts/uvaoj/uva-12333-revenge-of-fibonacci-%E6%96%90%E6%B3%A2%E9%82%A3%E5%A5%91%E7%9A%84%E5%A4%8D%E4%BB%87-by-sucicada/"></a>
-</article>
-
-<article class="post-entry"> 
-  <header class="entry-header">
-    <h2>uva 133 - The Dole Queue（救济金点人）
-    </h2>
-  </header>
-  <div class="entry-content">
-    <p>例题4-3 救济金发放（The Dole Queue, UVa 133）
-n(n&lt;20)个人站成一圈，逆时针编号为1～n。有两个官员，A从1开始逆时针数，B从n开
-始顺时针数。在每一轮中，官员A数k个就停下来，官员B数m个就停下来（注意有可能两个
-官员停在同一个人上）。接下来被官员选中的人（1个或者2个）离开队伍。
-输入n，k，m输出每轮里被选中的人的编号（如果有两个人，先输出被A选中的）。例
-如，n=10，k=4，m=3，输出为4 8, 9 5, 3 1, 2 6, 10, 7。注意：输出的每个数应当恰好占3格。（即setw(3)）
-Sample Input
-10 4 3
-0 0 0
-Sample Output
-␣␣4␣␣8,␣␣9␣␣5,␣␣3␣␣1,␣␣2␣␣6,␣10,␣␣7
-https://uva.onlinejudge.org/index.php?option=com_onlinejudge&amp;Itemid=8&amp;category=832&amp;page=show_problem&amp;problem=69
-有一个数组来表示队列里的人，然后分别用两个循环，从头和尾开始依次过，并且记录下每一轮最后的落脚点，在下一轮中就当做是起始点了。点出来的人的位置可以直接用0代替。
-#include&lt;iostream&gt; #include&lt;iomanip&gt; using namespace std; int dole[25]; int n,a,b; int cycle(int j)//int n,int ab) { //int j=0; for(int i=0;i&lt;a;i&#43;&#43;) { do { j&#43;&#43;; if(j==n) j=0; continue; } while(dole[j]==0); //j&#43;&#43;; } return j; } int cycle2(int j)//int n,int b) { //int j=n-1; for(int i=0;i&lt;b;i&#43;&#43;) { do { j--; if(j&lt;0) j=n-1; continue; } while(dole[j]==0); } //cout&lt;&lt;&#34;j &#34;&lt;&lt;j&lt;&lt;endl; return j; } int main() { while(cin&gt;&gt;n&gt;&gt;a&gt;&gt;b&amp;&amp;(n!...</p>
-  </div>
-  <footer class="entry-footer">SuCicada</footer>
-  <a class="entry-link" aria-label="post link to uva 133 - The Dole Queue（救济金点人）" href="https://sucicada.github.io/blog/posts/uvaoj/uva-133-the-dole-queue%E6%95%91%E6%B5%8E%E9%87%91%E7%82%B9%E4%BA%BA/"></a>
 </article>
 <footer class="page-footer">
   <nav class="pagination">

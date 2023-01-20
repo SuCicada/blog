@@ -96,6 +96,44 @@
     </item>
     
     
+    <item>
+      <title>Flink 内存模型的分配策略 主公式推导</title>
+      <link>https://sucicada.github.io/blog/posts/bigdata/flink-%E5%86%85%E5%AD%98%E6%A8%A1%E5%9E%8B%E7%9A%84%E5%88%86%E9%85%8D%E7%AD%96%E7%95%A5-%E4%B8%BB%E5%85%AC%E5%BC%8F%E6%8E%A8%E5%AF%BC/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://sucicada.github.io/blog/posts/bigdata/flink-%E5%86%85%E5%AD%98%E6%A8%A1%E5%9E%8B%E7%9A%84%E5%88%86%E9%85%8D%E7%AD%96%E7%95%A5-%E4%B8%BB%E5%85%AC%E5%BC%8F%E6%8E%A8%E5%AF%BC/</guid>
+      <description>结论: 启动flink设定的 ytm数值 与实际监控展示的JVM_Heap数值关系是 (ytm大于1920的简化公式)
+JVM_Heap = ytm * 0.45 - 256
+啓動參數: -ytm 设定的实际是 进程总内存,相当于yarn容器大小
+Total_Process_Memory: ytm JVM_Metaspace: 默認 256m JVM_Overhead: 默認 jtm * 0.1 (必須在 192m ~ 1g (默認)) Total_Flink_Memory: Total_Process_Memory - JVM_Overhead - JVM_Metaspace Framework_Heap: 默認 128m Managed_Memory: 默認 Total_Flink_Memory * 0.4 Framework_Off-Heap: 默認 128m Task_Off-Heap: 默認 0 Network: 默認 Total_Flink_Memory * 0.1 (必須在 64m ~ 1g (默認)) 所以 Task_Heap = Total_Flink_Memory - Framework_Heap - Managed_Memory - Framework_Off-Heap - Task_Off-Heap - Network 如果都用默认配置,那么代入化简就是</description>
+    </item>
+    
+    <item>
+      <title>Flink 算子Function实例化的坑</title>
+      <link>https://sucicada.github.io/blog/posts/bigdata/flink-%E7%AE%97%E5%AD%90function%E5%AE%9E%E4%BE%8B%E5%8C%96%E7%9A%84%E5%9D%91/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://sucicada.github.io/blog/posts/bigdata/flink-%E7%AE%97%E5%AD%90function%E5%AE%9E%E4%BE%8B%E5%8C%96%E7%9A%84%E5%9D%91/</guid>
+      <description>问题回顾 关于一段代码：
+object MySingleObj{ // 陷阱： // 单例对象中一个是可变引用，一个是可变数组 var str:String = _ val list = new ListBuffer[String] } ... dataStream .map(new RichMapFunction(){ // 问题1：obj1 和 obj2 的实例方式有什么区别。 // 问题2：考虑参数0的作用以及是否会得到预期效果。 val obj1:MyClass = new MyClass(参数0) var obj2:MyClass = _ override def open(paramation:Configuration): Unit = { obj2 = new MyClass(参数0) } override def map(value, ....) = { // 问题3：如果在这里使用 obj1 和 obj2 会有什么区别。 // 问题4：单个slot中对单例对象中的变量修改，造成的影响是。 MySingleObj.str = value MySingleObj.list += value } }) .</description>
+    </item>
+    
+    <item>
+      <title>Flume 数据流的处理过程 从源码看 Source Channel Sink</title>
+      <link>https://sucicada.github.io/blog/posts/bigdata/flume-%E6%95%B0%E6%8D%AE%E6%B5%81%E7%9A%84%E5%A4%84%E7%90%86%E8%BF%87%E7%A8%8B-%E4%BB%8E%E6%BA%90%E7%A0%81%E7%9C%8B-source-channel-sink/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://sucicada.github.io/blog/posts/bigdata/flume-%E6%95%B0%E6%8D%AE%E6%B5%81%E7%9A%84%E5%A4%84%E7%90%86%E8%BF%87%E7%A8%8B-%E4%BB%8E%E6%BA%90%E7%A0%81%E7%9C%8B-source-channel-sink/</guid>
+      <description>Event 构成 Source Flume的三个部分：Source，Channel，Sink
+数据是存储在Event对象中在这三部分之间传递
+Event 构成 Event 接口
+public interface Event { public Map&amp;lt;String, String&amp;gt; getHeaders(); public void setHeaders(Map&amp;lt;String, String&amp;gt; headers); public byte[] getBody(); public void setBody(byte[] body); } 以 最简单的实现类 SimpleEvent 为例子
+public class SimpleEvent implements Event { private Map&amp;lt;String, String&amp;gt; headers; private byte[] body; ... } 可见
+header 以 Map&amp;lt;String, String&amp;gt; 的形式存储键值对信息
+body 二进制形式存储，从Source接收到的数据会存储在这里
+Source 带着问题 header 里有什么 一些实现类 ExecSource ExecRunnable 主要处理 通过 EventBuilder.withBody 基础创建 Event ， 一行一个 Event header 为空 flushEventBatch 中 ChannelProcessor :: processEventBatch</description>
+    </item>
+    
     
     <item>
       <title>UUA 506 - System Dependencies(系统依赖) By SuCicada</title>

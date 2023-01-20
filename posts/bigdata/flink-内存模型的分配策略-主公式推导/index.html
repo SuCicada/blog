@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto">
+
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>Flink 内存模型的分配策略 主公式推导 | SuCicada</title>
+<meta name="keywords" content="BigData">
+<meta name="description" content="结论: 启动flink设定的 ytm数值 与实际监控展示的JVM_Heap数值关系是 (ytm大于1920的简化公式)
+JVM_Heap = ytm * 0.45 - 256
+啓動參數: -ytm 设定的实际是 进程总内存,相当于yarn容器大小
+Total_Process_Memory: ytm JVM_Metaspace: 默認 256m JVM_Overhead: 默認 jtm * 0.1 (必須在 192m ~ 1g (默認)) Total_Flink_Memory: Total_Process_Memory - JVM_Overhead - JVM_Metaspace Framework_Heap: 默認 128m Managed_Memory: 默認 Total_Flink_Memory * 0.4 Framework_Off-Heap: 默認 128m Task_Off-Heap: 默認 0 Network: 默認 Total_Flink_Memory * 0.1 (必須在 64m ~ 1g (默認)) 所以 Task_Heap = Total_Flink_Memory - Framework_Heap - Managed_Memory - Framework_Off-Heap - Task_Off-Heap - Network 如果都用默认配置,那么代入化简就是">
+<meta name="author" content="SuCicada">
+<link rel="canonical" href="https://sucicada.github.io/blog/posts/bigdata/flink-%E5%86%85%E5%AD%98%E6%A8%A1%E5%9E%8B%E7%9A%84%E5%88%86%E9%85%8D%E7%AD%96%E7%95%A5-%E4%B8%BB%E5%85%AC%E5%BC%8F%E6%8E%A8%E5%AF%BC/">
+<link crossorigin="anonymous" href="/blog/assets/css/stylesheet.5b5501da54f21435c8f8010d1de02123ae8d1ada696b48c6530ec4eea283e7d6.css" integrity="sha256-W1UB2lTyFDXI&#43;AENHeAhI66NGtppa0jGUw7E7qKD59Y=" rel="preload stylesheet" as="style">
+<link rel="icon" href="https://sucicada.github.io/blog/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="https://sucicada.github.io/blog/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://sucicada.github.io/blog/favicon-32x32.png">
+<link rel="apple-touch-icon" href="https://sucicada.github.io/blog/apple-touch-icon.png">
+<link rel="mask-icon" href="https://sucicada.github.io/blog/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --hljs-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-track {
+                background: 0 0;
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-thumb {
+                border-color: var(--theme);
+            }
+        }
+
+    </style>
+</noscript><meta property="og:title" content="Flink 内存模型的分配策略 主公式推导" />
+<meta property="og:description" content="结论: 启动flink设定的 ytm数值 与实际监控展示的JVM_Heap数值关系是 (ytm大于1920的简化公式)
+JVM_Heap = ytm * 0.45 - 256
+啓動參數: -ytm 设定的实际是 进程总内存,相当于yarn容器大小
+Total_Process_Memory: ytm JVM_Metaspace: 默認 256m JVM_Overhead: 默認 jtm * 0.1 (必須在 192m ~ 1g (默認)) Total_Flink_Memory: Total_Process_Memory - JVM_Overhead - JVM_Metaspace Framework_Heap: 默認 128m Managed_Memory: 默認 Total_Flink_Memory * 0.4 Framework_Off-Heap: 默認 128m Task_Off-Heap: 默認 0 Network: 默認 Total_Flink_Memory * 0.1 (必須在 64m ~ 1g (默認)) 所以 Task_Heap = Total_Flink_Memory - Framework_Heap - Managed_Memory - Framework_Off-Heap - Task_Off-Heap - Network 如果都用默认配置,那么代入化简就是" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://sucicada.github.io/blog/posts/bigdata/flink-%E5%86%85%E5%AD%98%E6%A8%A1%E5%9E%8B%E7%9A%84%E5%88%86%E9%85%8D%E7%AD%96%E7%95%A5-%E4%B8%BB%E5%85%AC%E5%BC%8F%E6%8E%A8%E5%AF%BC/" /><meta property="og:image" content="https://sucicada.github.io/blog/papermod-cover.png"/><meta property="article:section" content="posts" />
+
+
+
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="https://sucicada.github.io/blog/papermod-cover.png"/>
+
+<meta name="twitter:title" content="Flink 内存模型的分配策略 主公式推导"/>
+<meta name="twitter:description" content="结论: 启动flink设定的 ytm数值 与实际监控展示的JVM_Heap数值关系是 (ytm大于1920的简化公式)
+JVM_Heap = ytm * 0.45 - 256
+啓動參數: -ytm 设定的实际是 进程总内存,相当于yarn容器大小
+Total_Process_Memory: ytm JVM_Metaspace: 默認 256m JVM_Overhead: 默認 jtm * 0.1 (必須在 192m ~ 1g (默認)) Total_Flink_Memory: Total_Process_Memory - JVM_Overhead - JVM_Metaspace Framework_Heap: 默認 128m Managed_Memory: 默認 Total_Flink_Memory * 0.4 Framework_Off-Heap: 默認 128m Task_Off-Heap: 默認 0 Network: 默認 Total_Flink_Memory * 0.1 (必須在 64m ~ 1g (默認)) 所以 Task_Heap = Total_Flink_Memory - Framework_Heap - Managed_Memory - Framework_Off-Heap - Task_Off-Heap - Network 如果都用默认配置,那么代入化简就是"/>
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "Posts",
+      "item": "https://sucicada.github.io/blog/posts/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  3 ,
+      "name": "Flink 内存模型的分配策略 主公式推导",
+      "item": "https://sucicada.github.io/blog/posts/bigdata/flink-%E5%86%85%E5%AD%98%E6%A8%A1%E5%9E%8B%E7%9A%84%E5%88%86%E9%85%8D%E7%AD%96%E7%95%A5-%E4%B8%BB%E5%85%AC%E5%BC%8F%E6%8E%A8%E5%AF%BC/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "Flink 内存模型的分配策略 主公式推导",
+  "name": "Flink 内存模型的分配策略 主公式推导",
+  "description": "结论: 启动flink设定的 ytm数值 与实际监控展示的JVM_Heap数值关系是 (ytm大于1920的简化公式)\nJVM_Heap = ytm * 0.45 - 256\n啓動參數: -ytm 设定的实际是 进程总内存,相当于yarn容器大小\nTotal_Process_Memory: ytm JVM_Metaspace: 默認 256m JVM_Overhead: 默認 jtm * 0.1 (必須在 192m ~ 1g (默認)) Total_Flink_Memory: Total_Process_Memory - JVM_Overhead - JVM_Metaspace Framework_Heap: 默認 128m Managed_Memory: 默認 Total_Flink_Memory * 0.4 Framework_Off-Heap: 默認 128m Task_Off-Heap: 默認 0 Network: 默認 Total_Flink_Memory * 0.1 (必須在 64m ~ 1g (默認)) 所以 Task_Heap = Total_Flink_Memory - Framework_Heap - Managed_Memory - Framework_Off-Heap - Task_Off-Heap - Network 如果都用默认配置,那么代入化简就是",
+  "keywords": [
+    "BigData"
+  ],
+  "articleBody": "结论: 启动flink设定的 ytm数值 与实际监控展示的JVM_Heap数值关系是 (ytm大于1920的简化公式)\nJVM_Heap = ytm * 0.45 - 256\n啓動參數: -ytm 设定的实际是 进程总内存,相当于yarn容器大小\nTotal_Process_Memory: ytm JVM_Metaspace: 默認 256m JVM_Overhead: 默認 jtm * 0.1 (必須在 192m ~ 1g (默認)) Total_Flink_Memory: Total_Process_Memory - JVM_Overhead - JVM_Metaspace Framework_Heap: 默認 128m Managed_Memory: 默認 Total_Flink_Memory * 0.4 Framework_Off-Heap: 默認 128m Task_Off-Heap: 默認 0 Network: 默認 Total_Flink_Memory * 0.1 (必須在 64m ~ 1g (默認)) 所以 Task_Heap = Total_Flink_Memory - Framework_Heap - Managed_Memory - Framework_Off-Heap - Task_Off-Heap - Network 如果都用默认配置,那么代入化简就是\nTotal_Flink_Memory = ytm - 256 - min(max(ytm * 0.1, 192), 1024) JVM_Heap = Total_Flink_Memory - min(max(Total_Flink_Memory * 0.1,64), 1024) - Total_Flink_Memory * 0.4 - 128 - 0 - 128 = Total_Flink_Memory * 0.6 - min(max(Total_Flink_Memory * 0.1,64), 1024) - 256 = (ytm - 256 - min(max(ytm * 0.1, 192), 1024))*0.6 - min(max((ytm - 256 - min(max(ytm * 0.1, 192), 1024))*0.1,64), 1024) - 128 Task_Heap = JVM_Heap - 128 = (ytm - 256 - min(max(ytm * 0.1, 192), 1024))*0.6 - min(max((ytm - 256 - min(max(ytm * 0.1, 192), 1024)) * 0.1,64), 1024) - 256 附带公式计算的小程序\ndef full(ytm, pri=True): Total_Process_Memory = ytm JVM_Metaspace = 256 JVM_Overhead = min(max(Total_Process_Memory * 0.1, 192), 1024) Total_Flink_Memory = Total_Process_Memory - JVM_Metaspace - JVM_Overhead Network = min(max(Total_Flink_Memory * 0.1, 64), 1024) Task_Off_Heap = 0 Framework_Off_Heap = 128 Managed_Memory = Total_Flink_Memory * 0.4 Framework_Heap = 128 JVM_Heap = Total_Flink_Memory - Network - Task_Off_Heap - Framework_Off_Heap - Managed_Memory Task_Heap = JVM_Heap - Framework_Heap if pri: print(\"-------------------------------\") print(\"Total_Process_Memory: \", Total_Process_Memory) print(\"JVM_Metaspace: \", JVM_Metaspace) print(\"JVM_Overhead: \", JVM_Overhead) print(\"Total_Flink_Memory: \", Total_Flink_Memory) print(\"Network: \", Network) print(\"Task_Off_Heap: \", Task_Off_Heap) print(\"Framework_Off_Heap: \", Framework_Off_Heap) print(\"Managed_Memory: \", Managed_Memory) print(\"Framework_Heap: \", Framework_Heap) print(\"JVM_Heap: \", JVM_Heap) print(\"Task_Heap: \", Task_Heap) return JVM_Heap def simple(ytm): return ytm * 0.45 - 256 参考\nhttps://blog.csdn.net/ytp552200ytp/article/details/107508034\nhttps://ci.apache.org/projects/flink/flink-docs-release-1.11/zh/ops/deployment/yarn_setup.html\n",
+  "wordCount" : "279",
+  "inLanguage": "en",
+  "datePublished": "0001-01-01T00:00:00Z",
+  "dateModified": "0001-01-01T00:00:00Z",
+  "author":{
+    "@type": "Person",
+    "name": "SuCicada"
+  },
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://sucicada.github.io/blog/posts/bigdata/flink-%E5%86%85%E5%AD%98%E6%A8%A1%E5%9E%8B%E7%9A%84%E5%88%86%E9%85%8D%E7%AD%96%E7%95%A5-%E4%B8%BB%E5%85%AC%E5%BC%8F%E6%8E%A8%E5%AF%BC/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "SuCicada",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://sucicada.github.io/blog/favicon.ico"
+    }
+  }
+}
+</script>
+</head>
+
+<body class="" id="top">
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.body.classList.add('dark');
+    } else if (localStorage.getItem("pref-theme") === "light") {
+        document.body.classList.remove('dark')
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.body.classList.add('dark');
+    }
+
+</script>
+
+<header class="header">
+    <nav class="nav">
+        <div class="logo">
+            <a href="https://sucicada.github.io/blog" accesskey="h" title="SuCicada (Alt + H)">SuCicada</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" accesskey="t" title="(Alt + T)">
+                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu">
+            <li>
+                <a href="https://sucicada.github.io/blog/archives/" title="Archive">
+                    <span>Archive</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://sucicada.github.io/blog/search/" title="Search (Alt &#43; /)" accesskey=/>
+                    <span>Search</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://sucicada.github.io/blog/tags/" title="Tags">
+                    <span>Tags</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://sucicada.github.io/blog/about/" title="About">
+                    <span>About</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+
+    <h1 class="post-title">
+      Flink 内存模型的分配策略 主公式推导
+    </h1>
+    <div class="post-meta">SuCicada&nbsp;|&nbsp;<a href="https://github.com/SuCicada/mysite-hugo/blob/master/content/posts/BigData/Flink%20%e5%86%85%e5%ad%98%e6%a8%a1%e5%9e%8b%e7%9a%84%e5%88%86%e9%85%8d%e7%ad%96%e7%95%a5%20%e4%b8%bb%e5%85%ac%e5%bc%8f%e6%8e%a8%e5%af%bc.md" rel="noopener noreferrer" target="_blank">Suggest Changes</a>
+
+</div>
+    <ul class="post-tags">
+      <li><a href="https://sucicada.github.io/blog/tags/bigdata/">BigData</a></li>
+    </ul>
+  </header> 
+
+  <div class="post-content"><p>结论: 启动flink设定的 ytm数值 与实际监控展示的JVM_Heap数值关系是 (ytm大于1920的简化公式)</p>
+<p><code>JVM_Heap = ytm * 0.45 - 256</code></p>
+<hr>
+<p>啓動參數: -ytm  设定的实际是 进程总内存,相当于yarn容器大小</p>
+<pre tabindex="0"><code>Total_Process_Memory: ytm
+JVM_Metaspace: 默認 256m
+JVM_Overhead: 默認 jtm * 0.1 (必須在 192m ~ 1g (默認))
+
+Total_Flink_Memory: Total_Process_Memory - JVM_Overhead - JVM_Metaspace
+Framework_Heap: 默認 128m
+Managed_Memory: 默認 Total_Flink_Memory * 0.4
+Framework_Off-Heap: 默認 128m
+Task_Off-Heap: 默認 0
+Network: 默認 Total_Flink_Memory * 0.1 (必須在 64m ~ 1g (默認))
+
+所以 Task_Heap = Total_Flink_Memory - Framework_Heap - Managed_Memory - Framework_Off-Heap - Task_Off-Heap - Network
+</code></pre><p>如果都用默认配置,那么代入化简就是</p>
+<pre tabindex="0"><code>Total_Flink_Memory = ytm - 256 - min(max(ytm * 0.1, 192), 1024)
+JVM_Heap = Total_Flink_Memory - min(max(Total_Flink_Memory * 0.1,64), 1024) - Total_Flink_Memory * 0.4 - 128 - 0 - 128
+         = Total_Flink_Memory * 0.6 - min(max(Total_Flink_Memory * 0.1,64), 1024) - 256
+         = (ytm - 256 - min(max(ytm * 0.1, 192), 1024))*0.6 - min(max((ytm - 256 - min(max(ytm * 0.1, 192), 1024))*0.1,64), 1024) - 128
+Task_Heap = JVM_Heap - 128 
+          = (ytm - 256 - min(max(ytm * 0.1, 192), 1024))*0.6 - min(max((ytm - 256 - min(max(ytm * 0.1, 192), 1024)) * 0.1,64), 1024) - 256
+</code></pre><p>附带公式计算的小程序</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="k">def</span> <span class="nf">full</span><span class="p">(</span><span class="n">ytm</span><span class="p">,</span> <span class="n">pri</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">    <span class="n">Total_Process_Memory</span> <span class="o">=</span> <span class="n">ytm</span>
+</span></span><span class="line"><span class="cl">    <span class="n">JVM_Metaspace</span> <span class="o">=</span> <span class="mi">256</span>
+</span></span><span class="line"><span class="cl">    <span class="n">JVM_Overhead</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="nb">max</span><span class="p">(</span><span class="n">Total_Process_Memory</span> <span class="o">*</span> <span class="mf">0.1</span><span class="p">,</span> <span class="mi">192</span><span class="p">),</span> <span class="mi">1024</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="n">Total_Flink_Memory</span> <span class="o">=</span> <span class="n">Total_Process_Memory</span> <span class="o">-</span> <span class="n">JVM_Metaspace</span> <span class="o">-</span> <span class="n">JVM_Overhead</span>
+</span></span><span class="line"><span class="cl">    <span class="n">Network</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="nb">max</span><span class="p">(</span><span class="n">Total_Flink_Memory</span> <span class="o">*</span> <span class="mf">0.1</span><span class="p">,</span> <span class="mi">64</span><span class="p">),</span> <span class="mi">1024</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="n">Task_Off_Heap</span> <span class="o">=</span> <span class="mi">0</span>
+</span></span><span class="line"><span class="cl">    <span class="n">Framework_Off_Heap</span> <span class="o">=</span> <span class="mi">128</span>
+</span></span><span class="line"><span class="cl">    <span class="n">Managed_Memory</span> <span class="o">=</span> <span class="n">Total_Flink_Memory</span> <span class="o">*</span> <span class="mf">0.4</span>
+</span></span><span class="line"><span class="cl">    <span class="n">Framework_Heap</span> <span class="o">=</span> <span class="mi">128</span>
+</span></span><span class="line"><span class="cl">    <span class="n">JVM_Heap</span> <span class="o">=</span> <span class="n">Total_Flink_Memory</span> <span class="o">-</span> <span class="n">Network</span> <span class="o">-</span> <span class="n">Task_Off_Heap</span> <span class="o">-</span> <span class="n">Framework_Off_Heap</span> <span class="o">-</span> <span class="n">Managed_Memory</span>
+</span></span><span class="line"><span class="cl">    <span class="n">Task_Heap</span> <span class="o">=</span> <span class="n">JVM_Heap</span> <span class="o">-</span> <span class="n">Framework_Heap</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="n">pri</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">        <span class="nb">print</span><span class="p">(</span><span class="s2">&#34;-------------------------------&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="nb">print</span><span class="p">(</span><span class="s2">&#34;Total_Process_Memory: &#34;</span><span class="p">,</span> <span class="n">Total_Process_Memory</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="nb">print</span><span class="p">(</span><span class="s2">&#34;JVM_Metaspace: &#34;</span><span class="p">,</span> <span class="n">JVM_Metaspace</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="nb">print</span><span class="p">(</span><span class="s2">&#34;JVM_Overhead: &#34;</span><span class="p">,</span> <span class="n">JVM_Overhead</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="nb">print</span><span class="p">(</span><span class="s2">&#34;Total_Flink_Memory: &#34;</span><span class="p">,</span> <span class="n">Total_Flink_Memory</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="nb">print</span><span class="p">(</span><span class="s2">&#34;Network: &#34;</span><span class="p">,</span> <span class="n">Network</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="nb">print</span><span class="p">(</span><span class="s2">&#34;Task_Off_Heap: &#34;</span><span class="p">,</span> <span class="n">Task_Off_Heap</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="nb">print</span><span class="p">(</span><span class="s2">&#34;Framework_Off_Heap: &#34;</span><span class="p">,</span> <span class="n">Framework_Off_Heap</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="nb">print</span><span class="p">(</span><span class="s2">&#34;Managed_Memory: &#34;</span><span class="p">,</span> <span class="n">Managed_Memory</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="nb">print</span><span class="p">(</span><span class="s2">&#34;Framework_Heap: &#34;</span><span class="p">,</span> <span class="n">Framework_Heap</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="nb">print</span><span class="p">(</span><span class="s2">&#34;JVM_Heap: &#34;</span><span class="p">,</span> <span class="n">JVM_Heap</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="nb">print</span><span class="p">(</span><span class="s2">&#34;Task_Heap: &#34;</span><span class="p">,</span> <span class="n">Task_Heap</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="n">JVM_Heap</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">def</span> <span class="nf">simple</span><span class="p">(</span><span class="n">ytm</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="n">ytm</span> <span class="o">*</span> <span class="mf">0.45</span> <span class="o">-</span> <span class="mi">256</span>
+</span></span></code></pre></div><p>参考<br>
+<a href="https://blog.csdn.net/ytp552200ytp/article/details/107508034">https://blog.csdn.net/ytp552200ytp/article/details/107508034</a><br>
+<a href="https://ci.apache.org/projects/flink/flink-docs-release-1.11/zh/ops/deployment/yarn_setup.html">https://ci.apache.org/projects/flink/flink-docs-release-1.11/zh/ops/deployment/yarn_setup.html</a></p>
+
+
+  </div>
+
+  <footer class="post-footer">
+<nav class="paginav">
+  <a class="prev" href="https://sucicada.github.io/blog/posts/uvaoj/uva-1103-ancient-messages%E5%8F%A4%E4%BB%A3%E8%B1%A1%E5%BD%A2%E7%AC%A6%E5%8F%B7-by-sucicada/">
+    <span class="title">« Prev</span>
+    <br>
+    <span>UVA 1103 - Ancient Messages（古代象形符号） By SuCicada</span>
+  </a>
+  <a class="next" href="https://sucicada.github.io/blog/posts/bigdata/flink-%E7%AE%97%E5%AD%90function%E5%AE%9E%E4%BE%8B%E5%8C%96%E7%9A%84%E5%9D%91/">
+    <span class="title">Next »</span>
+    <br>
+    <span>Flink 算子Function实例化的坑</span>
+  </a>
+</nav>
+
+
+<div class="share-buttons">
+    <a target="_blank" rel="noopener noreferrer" aria-label="share Flink 内存模型的分配策略 主公式推导 on twitter"
+        href="https://twitter.com/intent/tweet/?text=Flink%20%e5%86%85%e5%ad%98%e6%a8%a1%e5%9e%8b%e7%9a%84%e5%88%86%e9%85%8d%e7%ad%96%e7%95%a5%20%e4%b8%bb%e5%85%ac%e5%bc%8f%e6%8e%a8%e5%af%bc&amp;url=https%3a%2f%2fsucicada.github.io%2fblog%2fposts%2fbigdata%2fflink-%25E5%2586%2585%25E5%25AD%2598%25E6%25A8%25A1%25E5%259E%258B%25E7%259A%2584%25E5%2588%2586%25E9%2585%258D%25E7%25AD%2596%25E7%2595%25A5-%25E4%25B8%25BB%25E5%2585%25AC%25E5%25BC%258F%25E6%258E%25A8%25E5%25AF%25BC%2f&amp;hashtags=BigData">
+        <svg version="1.1" viewBox="0 0 512 512" xml:space="preserve" height="30px" width="30px" fill="currentColor">
+            <path
+                d="M449.446,0c34.525,0 62.554,28.03 62.554,62.554l0,386.892c0,34.524 -28.03,62.554 -62.554,62.554l-386.892,0c-34.524,0 -62.554,-28.03 -62.554,-62.554l0,-386.892c0,-34.524 28.029,-62.554 62.554,-62.554l386.892,0Zm-253.927,424.544c135.939,0 210.268,-112.643 210.268,-210.268c0,-3.218 0,-6.437 -0.153,-9.502c14.406,-10.421 26.973,-23.448 36.935,-38.314c-13.18,5.824 -27.433,9.809 -42.452,11.648c15.326,-9.196 26.973,-23.602 32.49,-40.92c-14.252,8.429 -30.038,14.56 -46.896,17.931c-13.487,-14.406 -32.644,-23.295 -53.946,-23.295c-40.767,0 -73.87,33.104 -73.87,73.87c0,5.824 0.613,11.494 1.992,16.858c-61.456,-3.065 -115.862,-32.49 -152.337,-77.241c-6.284,10.881 -9.962,23.601 -9.962,37.088c0,25.594 13.027,48.276 32.95,61.456c-12.107,-0.307 -23.448,-3.678 -33.41,-9.196l0,0.92c0,35.862 25.441,65.594 59.311,72.49c-6.13,1.686 -12.72,2.606 -19.464,2.606c-4.751,0 -9.348,-0.46 -13.946,-1.38c9.349,29.426 36.628,50.728 68.965,51.341c-25.287,19.771 -57.164,31.571 -91.8,31.571c-5.977,0 -11.801,-0.306 -17.625,-1.073c32.337,21.15 71.264,33.41 112.95,33.41Z" />
+        </svg>
+    </a>
+    <a target="_blank" rel="noopener noreferrer" aria-label="share Flink 内存模型的分配策略 主公式推导 on telegram"
+        href="https://telegram.me/share/url?text=Flink%20%e5%86%85%e5%ad%98%e6%a8%a1%e5%9e%8b%e7%9a%84%e5%88%86%e9%85%8d%e7%ad%96%e7%95%a5%20%e4%b8%bb%e5%85%ac%e5%bc%8f%e6%8e%a8%e5%af%bc&amp;url=https%3a%2f%2fsucicada.github.io%2fblog%2fposts%2fbigdata%2fflink-%25E5%2586%2585%25E5%25AD%2598%25E6%25A8%25A1%25E5%259E%258B%25E7%259A%2584%25E5%2588%2586%25E9%2585%258D%25E7%25AD%2596%25E7%2595%25A5-%25E4%25B8%25BB%25E5%2585%25AC%25E5%25BC%258F%25E6%258E%25A8%25E5%25AF%25BC%2f">
+        <svg version="1.1" xml:space="preserve" viewBox="2 2 28 28" height="30px" width="30px" fill="currentColor">
+            <path
+                d="M26.49,29.86H5.5a3.37,3.37,0,0,1-2.47-1,3.35,3.35,0,0,1-1-2.47V5.48A3.36,3.36,0,0,1,3,3,3.37,3.37,0,0,1,5.5,2h21A3.38,3.38,0,0,1,29,3a3.36,3.36,0,0,1,1,2.46V26.37a3.35,3.35,0,0,1-1,2.47A3.38,3.38,0,0,1,26.49,29.86Zm-5.38-6.71a.79.79,0,0,0,.85-.66L24.73,9.24a.55.55,0,0,0-.18-.46.62.62,0,0,0-.41-.17q-.08,0-16.53,6.11a.59.59,0,0,0-.41.59.57.57,0,0,0,.43.52l4,1.24,1.61,4.83a.62.62,0,0,0,.63.43.56.56,0,0,0,.4-.17L16.54,20l4.09,3A.9.9,0,0,0,21.11,23.15ZM13.8,20.71l-1.21-4q8.72-5.55,8.78-5.55c.15,0,.23,0,.23.16a.18.18,0,0,1,0,.06s-2.51,2.3-7.52,6.8Z" />
+        </svg>
+    </a>
+</div>
+
+  </footer><div id="disqus_thread"></div>
+<script type="application/javascript">
+    window.disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "sucicada" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+</article>
+    </main>
+    
+<footer class="footer">
+    <span>&copy; 2023 <a href="https://sucicada.github.io/blog">SuCicada</a></span>
+    <span>
+        Powered by
+        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+        <path d="M12 6H0l6-6z" />
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu')
+    if (menu) {
+        menu.scrollLeft = localStorage.getItem("menu-scroll-position");
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var mybutton = document.getElementById("top-link");
+    window.onscroll = function () {
+        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
+            mybutton.style.visibility = "visible";
+            mybutton.style.opacity = "1";
+        } else {
+            mybutton.style.visibility = "hidden";
+            mybutton.style.opacity = "0";
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        if (document.body.className.includes("dark")) {
+            document.body.classList.remove('dark');
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            document.body.classList.add('dark');
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+<script>
+    document.querySelectorAll('pre > code').forEach((codeblock) => {
+        const container = codeblock.parentNode.parentNode;
+
+        const copybutton = document.createElement('button');
+        copybutton.classList.add('copy-code');
+        copybutton.innerHTML = 'copy';
+
+        function copyingDone() {
+            copybutton.innerHTML = 'copied!';
+            setTimeout(() => {
+                copybutton.innerHTML = 'copy';
+            }, 2000);
+        }
+
+        copybutton.addEventListener('click', (cb) => {
+            if ('clipboard' in navigator) {
+                navigator.clipboard.writeText(codeblock.textContent);
+                copyingDone();
+                return;
+            }
+
+            const range = document.createRange();
+            range.selectNodeContents(codeblock);
+            const selection = window.getSelection();
+            selection.removeAllRanges();
+            selection.addRange(range);
+            try {
+                document.execCommand('copy');
+                copyingDone();
+            } catch (e) { };
+            selection.removeRange(range);
+        });
+
+        if (container.classList.contains("highlight")) {
+            container.appendChild(copybutton);
+        } else if (container.parentNode.firstChild == container) {
+            
+        } else if (codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName == "TABLE") {
+            
+            codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(copybutton);
+        } else {
+            
+            codeblock.parentNode.appendChild(copybutton);
+        }
+    });
+</script>
+</body>
+
+</html>
