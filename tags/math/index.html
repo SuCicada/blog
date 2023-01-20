@@ -5,11 +5,11 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <meta name="robots" content="index, follow">
-<title>Posts | SuCicada</title>
+<title>math | SuCicada</title>
 <meta name="keywords" content="">
-<meta name="description" content="Posts - SuCicada">
+<meta name="description" content="SuCicada - https://github.com/SuCicada">
 <meta name="author" content="SuCicada">
-<link rel="canonical" href="https://sucicada.github.io/blog/posts/">
+<link rel="canonical" href="https://sucicada.github.io/blog/tags/math/">
 <link crossorigin="anonymous" href="/blog/assets/css/stylesheet.5b5501da54f21435c8f8010d1de02123ae8d1ada696b48c6530ec4eea283e7d6.css" integrity="sha256-W1UB2lTyFDXI&#43;AENHeAhI66NGtppa0jGUw7E7qKD59Y=" rel="preload stylesheet" as="style">
 <link rel="icon" href="https://sucicada.github.io/blog/favicon.ico">
 <link rel="icon" type="image/png" sizes="16x16" href="https://sucicada.github.io/blog/favicon-16x16.png">
@@ -18,7 +18,7 @@
 <link rel="mask-icon" href="https://sucicada.github.io/blog/safari-pinned-tab.svg">
 <meta name="theme-color" content="#2e2e33">
 <meta name="msapplication-TileColor" content="#2e2e33">
-<link rel="alternate" type="application/rss+xml" href="https://sucicada.github.io/blog/posts/index.xml">
+<link rel="alternate" type="application/rss+xml" href="https://sucicada.github.io/blog/tags/math/index.xml">
 <noscript>
     <style>
         #theme-toggle,
@@ -55,32 +55,17 @@
         }
 
     </style>
-</noscript><meta property="og:title" content="Posts" />
+</noscript><meta property="og:title" content="math" />
 <meta property="og:description" content="SuCicada - https://github.com/SuCicada" />
 <meta property="og:type" content="website" />
-<meta property="og:url" content="https://sucicada.github.io/blog/posts/" /><meta property="og:image" content="https://sucicada.github.io/blog/papermod-cover.png"/>
+<meta property="og:url" content="https://sucicada.github.io/blog/tags/math/" /><meta property="og:image" content="https://sucicada.github.io/blog/papermod-cover.png"/>
 
 <meta name="twitter:card" content="summary_large_image"/>
 <meta name="twitter:image" content="https://sucicada.github.io/blog/papermod-cover.png"/>
 
-<meta name="twitter:title" content="Posts"/>
+<meta name="twitter:title" content="math"/>
 <meta name="twitter:description" content="SuCicada - https://github.com/SuCicada"/>
 
-
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "BreadcrumbList",
-  "itemListElement": [, 
-    {
-      "@type": "ListItem",
-      "position":  2 ,
-      "name": "Posts",
-      "item": "https://sucicada.github.io/blog/posts/"
-    }
-  ]
-}
-</script>
 </head>
 
 <body class="list" id="top">
@@ -147,9 +132,9 @@
     </nav>
 </header>
 <main class="main"> 
-<header class="page-header"><div class="breadcrumbs"><a href="https://sucicada.github.io/blog">Home</a></div>
+<header class="page-header"><div class="breadcrumbs"><a href="https://sucicada.github.io/blog">Home</a>&nbsp;»&nbsp;<a href="https://sucicada.github.io/blog/tags/">Tags</a></div>
   <h1>
-    Posts
+    math
     <a href="index.xml" title="RSS" aria-label="RSS">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
         stroke-linecap="round" stroke-linejoin="round" height="23">
@@ -161,47 +146,7 @@
   </h1>
 </header>
 
-<article class="post-entry"> 
-  <header class="entry-header">
-    <h2>uva1583 - Digit Generator （生成元）
-    </h2>
-  </header>
-  <div class="entry-content">
-    <p>如果x加上x的各个数字之和得到y，就说x是y的生成元。给出n（1≤n≤100000），求最小
-生成元。无解输出0。例如，n=216，121，2005时的解分别为198，0，1979。
-Sample Input
-3
-216
-121
-2005
-Sample Output
-198
-0
-1979
-https://uva.onlinejudge.org/index.php?option=com_onlinejudge&amp;Itemid=8&amp;category=829&amp;page=show_problem&amp;problem=4458
-//先算出所有的生成元x的原数y，以s[y]=x的形式将其存起，在求y的解x的时候，直接输出是s[y]即可 //所以为了求最小生成元也就是x，就要从尾到头的循环算y。 #include&lt;iostream&gt; #include&lt;cstdio&gt; #include&lt;string.h&gt; using namespace std; int const N = 100000; int sn[N&#43;5]={0}; int main() { memset(sn,0,sizeof(sn)); for(int i=N;i&gt;=0;i--) { int n=i; int s=i; while(n&gt;0) { s&#43;=n%10; n/=10; } sn[s]=i; } //for(int i=0;i&lt;N;i&#43;&#43;) // cout&lt;&lt;sn[i]&lt;&lt;&#34; &#34;; // cout&lt;&lt;endl; int n,T; cin&gt;&gt;T; while(T--) { int i; cin&gt;&gt;n; cout&lt;&lt;sn[n]&lt;&lt;endl; } return 0; } //AC at 2017/12/7 以下算法虽然一样可以算出正确答案，但是超时，oj不通过。...</p>
-  </div>
-  <footer class="entry-footer">SuCicada</footer>
-  <a class="entry-link" aria-label="post link to uva1583 - Digit Generator （生成元）" href="https://sucicada.github.io/blog/posts/uvaoj/uva1583-digit-generator-%E7%94%9F%E6%88%90%E5%85%83/"></a>
-</article>
-
-<article class="post-entry"> 
-  <header class="entry-header">
-    <h2>uva272 （TeX）
-    </h2>
-  </header>
-  <div class="entry-content">
-    <p>https://uva.onlinejudge.org/index.php?option=com_onlinejudge&amp;Itemid=8&amp;category=829&amp;page=show_problem&amp;problem=208
-TEX is a typesetting language developed by Donald Knuth. It takes source text together with a few
-typesetting instructions and produces, one hopes, a beautiful document. Beautiful documents use “
-and ” to delimit quotations, rather than the mundane &#34; which is what is provided by most keyboards.
-Keyboards typically do not have an oriented double-quote, but they do have a left-single-quote and a right-single-quote &#39;. Check your keyboard now to locate the left-single-quote key (sometimes...</p>
-  </div>
-  <footer class="entry-footer">SuCicada</footer>
-  <a class="entry-link" aria-label="post link to uva272 （TeX）" href="https://sucicada.github.io/blog/posts/uvaoj/uva272-tex/"></a>
-</article>
-
-<article class="post-entry"> 
+<article class="post-entry tag-entry"> 
   <header class="entry-header">
     <h2>数学必知必会-导数、梯度与积分
     </h2>
@@ -220,13 +165,6 @@ Keyboards typically do not have an oriented double-quote, but they do have a lef
   <footer class="entry-footer">SuCicada</footer>
   <a class="entry-link" aria-label="post link to 数学必知必会-导数、梯度与积分" href="https://sucicada.github.io/blog/posts/math/%E6%95%B0%E5%AD%A6%E5%BF%85%E7%9F%A5%E5%BF%85%E4%BC%9A-%E5%AF%BC%E6%95%B0%E6%A2%AF%E5%BA%A6%E4%B8%8E%E7%A7%AF%E5%88%86/"></a>
 </article>
-<footer class="page-footer">
-  <nav class="pagination">
-    <a class="prev" href="https://sucicada.github.io/blog/posts/page/3/">
-      «&nbsp;Prev&nbsp;
-    </a>
-  </nav>
-</footer>
     </main>
     
 <footer class="footer">

@@ -1,0 +1,760 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto">
+
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>数学必知必会-导数、梯度与积分 | SuCicada</title>
+<meta name="keywords" content="math, 数学必知必会-导数、梯度与积分">
+<meta name="description" content="(238条消息) 数学必知必会&mdash;-导数、梯度与积分_sakura小樱的博客-CSDN博客_梯度求积分 数学必知必会&mdash;-导数、梯度与积分 sakura小樱 于 2018-06-12 19:18:22 发布 3204 收藏 6
+文章标签： 导数 数学 微积分
+版权
+一、导数 1.1常用的倒数 1.2复合函数求导 1.2.1链式法则 1.2.2多元函数求导：偏导数（偏微分） 二、积分 定积分 不定积分 拓展 三、均方误差 3.1导数应用 3.2线性回归的应用 四、梯度 4.1导入 4.2定义： 4.3事例 4.4理解方法 4.5梯度下降法定义 4.6局部极限值 4.7下降法求最小值方法 4.7.1抛小球法—momentum 4.7.2Nesterov 4.7.3自适应 4.7.4AdaDelta以及RMSprop 4.7.5选择 from sympy import * x=Symbol(&#34;x&#34;) diff(x**3 &#43; x**2) #3x**2 &#43; 2**x 一、导数 导数的实质就是曲线切线的斜率
+1.1常用的倒数 1.2复合函数求导 1.2.1链式法则 1.2.2多元函数求导：偏导数（偏微分） 链式法则
+多元函数求导的法则
+二、积分 积分是微分的逆运算，即知道了函数的 导函数，反求原函数。在应用上，积分作用不仅如此，它被大量应用于求和，通俗的说是求 曲边三角形的面积，这巧妙的求解方法是积分特殊的性质决定的。
+更多推导公式点击这里
+定积分 不定积分 拓展 ● 微分的相关知识">
+<meta name="author" content="SuCicada">
+<link rel="canonical" href="https://sucicada.github.io/blog/posts/math/%E6%95%B0%E5%AD%A6%E5%BF%85%E7%9F%A5%E5%BF%85%E4%BC%9A-%E5%AF%BC%E6%95%B0%E6%A2%AF%E5%BA%A6%E4%B8%8E%E7%A7%AF%E5%88%86/">
+<link crossorigin="anonymous" href="/blog/assets/css/stylesheet.5b5501da54f21435c8f8010d1de02123ae8d1ada696b48c6530ec4eea283e7d6.css" integrity="sha256-W1UB2lTyFDXI&#43;AENHeAhI66NGtppa0jGUw7E7qKD59Y=" rel="preload stylesheet" as="style">
+<link rel="icon" href="https://sucicada.github.io/blog/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="https://sucicada.github.io/blog/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://sucicada.github.io/blog/favicon-32x32.png">
+<link rel="apple-touch-icon" href="https://sucicada.github.io/blog/apple-touch-icon.png">
+<link rel="mask-icon" href="https://sucicada.github.io/blog/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --hljs-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-track {
+                background: 0 0;
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-thumb {
+                border-color: var(--theme);
+            }
+        }
+
+    </style>
+</noscript><meta property="og:title" content="数学必知必会-导数、梯度与积分" />
+<meta property="og:description" content="(238条消息) 数学必知必会&mdash;-导数、梯度与积分_sakura小樱的博客-CSDN博客_梯度求积分 数学必知必会&mdash;-导数、梯度与积分 sakura小樱 于 2018-06-12 19:18:22 发布 3204 收藏 6
+文章标签： 导数 数学 微积分
+版权
+一、导数 1.1常用的倒数 1.2复合函数求导 1.2.1链式法则 1.2.2多元函数求导：偏导数（偏微分） 二、积分 定积分 不定积分 拓展 三、均方误差 3.1导数应用 3.2线性回归的应用 四、梯度 4.1导入 4.2定义： 4.3事例 4.4理解方法 4.5梯度下降法定义 4.6局部极限值 4.7下降法求最小值方法 4.7.1抛小球法—momentum 4.7.2Nesterov 4.7.3自适应 4.7.4AdaDelta以及RMSprop 4.7.5选择 from sympy import * x=Symbol(&#34;x&#34;) diff(x**3 &#43; x**2) #3x**2 &#43; 2**x 一、导数 导数的实质就是曲线切线的斜率
+1.1常用的倒数 1.2复合函数求导 1.2.1链式法则 1.2.2多元函数求导：偏导数（偏微分） 链式法则
+多元函数求导的法则
+二、积分 积分是微分的逆运算，即知道了函数的 导函数，反求原函数。在应用上，积分作用不仅如此，它被大量应用于求和，通俗的说是求 曲边三角形的面积，这巧妙的求解方法是积分特殊的性质决定的。
+更多推导公式点击这里
+定积分 不定积分 拓展 ● 微分的相关知识" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://sucicada.github.io/blog/posts/math/%E6%95%B0%E5%AD%A6%E5%BF%85%E7%9F%A5%E5%BF%85%E4%BC%9A-%E5%AF%BC%E6%95%B0%E6%A2%AF%E5%BA%A6%E4%B8%8E%E7%A7%AF%E5%88%86/" /><meta property="og:image" content="https://sucicada.github.io/blog/papermod-cover.png"/><meta property="article:section" content="posts" />
+
+
+
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="https://sucicada.github.io/blog/papermod-cover.png"/>
+
+<meta name="twitter:title" content="数学必知必会-导数、梯度与积分"/>
+<meta name="twitter:description" content="(238条消息) 数学必知必会&mdash;-导数、梯度与积分_sakura小樱的博客-CSDN博客_梯度求积分 数学必知必会&mdash;-导数、梯度与积分 sakura小樱 于 2018-06-12 19:18:22 发布 3204 收藏 6
+文章标签： 导数 数学 微积分
+版权
+一、导数 1.1常用的倒数 1.2复合函数求导 1.2.1链式法则 1.2.2多元函数求导：偏导数（偏微分） 二、积分 定积分 不定积分 拓展 三、均方误差 3.1导数应用 3.2线性回归的应用 四、梯度 4.1导入 4.2定义： 4.3事例 4.4理解方法 4.5梯度下降法定义 4.6局部极限值 4.7下降法求最小值方法 4.7.1抛小球法—momentum 4.7.2Nesterov 4.7.3自适应 4.7.4AdaDelta以及RMSprop 4.7.5选择 from sympy import * x=Symbol(&#34;x&#34;) diff(x**3 &#43; x**2) #3x**2 &#43; 2**x 一、导数 导数的实质就是曲线切线的斜率
+1.1常用的倒数 1.2复合函数求导 1.2.1链式法则 1.2.2多元函数求导：偏导数（偏微分） 链式法则
+多元函数求导的法则
+二、积分 积分是微分的逆运算，即知道了函数的 导函数，反求原函数。在应用上，积分作用不仅如此，它被大量应用于求和，通俗的说是求 曲边三角形的面积，这巧妙的求解方法是积分特殊的性质决定的。
+更多推导公式点击这里
+定积分 不定积分 拓展 ● 微分的相关知识"/>
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "Posts",
+      "item": "https://sucicada.github.io/blog/posts/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  3 ,
+      "name": "数学必知必会-导数、梯度与积分",
+      "item": "https://sucicada.github.io/blog/posts/math/%E6%95%B0%E5%AD%A6%E5%BF%85%E7%9F%A5%E5%BF%85%E4%BC%9A-%E5%AF%BC%E6%95%B0%E6%A2%AF%E5%BA%A6%E4%B8%8E%E7%A7%AF%E5%88%86/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "数学必知必会-导数、梯度与积分",
+  "name": "数学必知必会-导数、梯度与积分",
+  "description": "(238条消息) 数学必知必会\u0026mdash;-导数、梯度与积分_sakura小樱的博客-CSDN博客_梯度求积分 数学必知必会\u0026mdash;-导数、梯度与积分 sakura小樱 于 2018-06-12 19:18:22 发布 3204 收藏 6\n文章标签： 导数 数学 微积分\n版权\n一、导数 1.1常用的倒数 1.2复合函数求导 1.2.1链式法则 1.2.2多元函数求导：偏导数（偏微分） 二、积分 定积分 不定积分 拓展 三、均方误差 3.1导数应用 3.2线性回归的应用 四、梯度 4.1导入 4.2定义： 4.3事例 4.4理解方法 4.5梯度下降法定义 4.6局部极限值 4.7下降法求最小值方法 4.7.1抛小球法—momentum 4.7.2Nesterov 4.7.3自适应 4.7.4AdaDelta以及RMSprop 4.7.5选择 from sympy import * x=Symbol(\u0026#34;x\u0026#34;) diff(x**3 + x**2) #3x**2 + 2**x 一、导数 导数的实质就是曲线切线的斜率\n1.1常用的倒数 1.2复合函数求导 1.2.1链式法则 1.2.2多元函数求导：偏导数（偏微分） 链式法则\n多元函数求导的法则\n二、积分 积分是微分的逆运算，即知道了函数的 导函数，反求原函数。在应用上，积分作用不仅如此，它被大量应用于求和，通俗的说是求 曲边三角形的面积，这巧妙的求解方法是积分特殊的性质决定的。\n更多推导公式点击这里\n定积分 不定积分 拓展 ● 微分的相关知识",
+  "keywords": [
+    "math", "数学必知必会-导数、梯度与积分"
+  ],
+  "articleBody": "(238条消息) 数学必知必会—-导数、梯度与积分_sakura小樱的博客-CSDN博客_梯度求积分 数学必知必会—-导数、梯度与积分 sakura小樱 于 2018-06-12 19:18:22 发布 3204 收藏 6\n文章标签： 导数 数学 微积分\n版权\n一、导数 1.1常用的倒数 1.2复合函数求导 1.2.1链式法则 1.2.2多元函数求导：偏导数（偏微分） 二、积分 定积分 不定积分 拓展 三、均方误差 3.1导数应用 3.2线性回归的应用 四、梯度 4.1导入 4.2定义： 4.3事例 4.4理解方法 4.5梯度下降法定义 4.6局部极限值 4.7下降法求最小值方法 4.7.1抛小球法—momentum 4.7.2Nesterov 4.7.3自适应 4.7.4AdaDelta以及RMSprop 4.7.5选择 from sympy import * x=Symbol(\"x\") diff(x**3 + x**2) #3x**2 + 2**x 一、导数 导数的实质就是曲线切线的斜率\n1.1常用的倒数 1.2复合函数求导 1.2.1链式法则 1.2.2多元函数求导：偏导数（偏微分） 链式法则\n多元函数求导的法则\n二、积分 积分是微分的逆运算，即知道了函数的 导函数，反求原函数。在应用上，积分作用不仅如此，它被大量应用于求和，通俗的说是求 曲边三角形的面积，这巧妙的求解方法是积分特殊的性质决定的。\n更多推导公式点击这里\n定积分 不定积分 拓展 ● 微分的相关知识\n三、均方误差 3.1导数应用 3.2线性回归的应用 四、梯度 4.1导入 4.2定义： 一元函数在y=f(x)在点x^o的梯度是\n二元函数在y=f(x，y)在点(x^o,y^0)的梯度是 4.3事例 4.4理解方法 4.5梯度下降法定义 4.6局部极限值 4.7下降法求最小值方法 定义\n4.7.1抛小球法—momentum 4.7.2Nesterov 4.7.3自适应 4.7.4AdaDelta以及RMSprop 4.7.5选择 ",
+  "wordCount" : "89",
+  "inLanguage": "en",
+  "datePublished": "0001-01-01T00:00:00Z",
+  "dateModified": "0001-01-01T00:00:00Z",
+  "author":{
+    "@type": "Person",
+    "name": "SuCicada"
+  },
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://sucicada.github.io/blog/posts/math/%E6%95%B0%E5%AD%A6%E5%BF%85%E7%9F%A5%E5%BF%85%E4%BC%9A-%E5%AF%BC%E6%95%B0%E6%A2%AF%E5%BA%A6%E4%B8%8E%E7%A7%AF%E5%88%86/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "SuCicada",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://sucicada.github.io/blog/favicon.ico"
+    }
+  }
+}
+</script>
+</head>
+
+<body class="" id="top">
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.body.classList.add('dark');
+    } else if (localStorage.getItem("pref-theme") === "light") {
+        document.body.classList.remove('dark')
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.body.classList.add('dark');
+    }
+
+</script>
+
+<header class="header">
+    <nav class="nav">
+        <div class="logo">
+            <a href="https://sucicada.github.io/blog" accesskey="h" title="SuCicada (Alt + H)">SuCicada</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" accesskey="t" title="(Alt + T)">
+                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu">
+            <li>
+                <a href="https://sucicada.github.io/blog/archives/" title="Archive">
+                    <span>Archive</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://sucicada.github.io/blog/search/" title="Search (Alt &#43; /)" accesskey=/>
+                    <span>Search</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://sucicada.github.io/blog/tags/" title="Tags">
+                    <span>Tags</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://sucicada.github.io/blog/about/" title="About">
+                    <span>About</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+
+    <h1 class="post-title">
+      数学必知必会-导数、梯度与积分
+    </h1>
+    <div class="post-meta">SuCicada&nbsp;|&nbsp;<a href="https://github.com/SuCicada/mysite-hugo/blob/master/content/posts/math/%e6%95%b0%e5%ad%a6%e5%bf%85%e7%9f%a5%e5%bf%85%e4%bc%9a-%e5%af%bc%e6%95%b0%e3%80%81%e6%a2%af%e5%ba%a6%e4%b8%8e%e7%a7%af%e5%88%86/index.md" rel="noopener noreferrer" target="_blank">Suggest Changes</a>
+
+</div>
+    <ul class="post-tags">
+      <li><a href="https://sucicada.github.io/blog/tags/math/">math</a></li>
+      <li><a href="https://sucicada.github.io/blog/tags/%E6%95%B0%E5%AD%A6%E5%BF%85%E7%9F%A5%E5%BF%85%E4%BC%9A-%E5%AF%BC%E6%95%B0%E6%A2%AF%E5%BA%A6%E4%B8%8E%E7%A7%AF%E5%88%86/">数学必知必会-导数、梯度与积分</a></li>
+    </ul>
+  </header> <div class="toc">
+    <details  open>
+        <summary accesskey="c" title="(Alt + C)">
+            <span class="details">Table of Contents</span>
+        </summary>
+
+        <div class="inner"><ul>
+                <li>
+                    <a href="#238%e6%9d%a1%e6%b6%88%e6%81%af-%e6%95%b0%e5%ad%a6%e5%bf%85%e7%9f%a5%e5%bf%85%e4%bc%9a----%e5%af%bc%e6%95%b0%e6%a2%af%e5%ba%a6%e4%b8%8e%e7%a7%af%e5%88%86_sakura%e5%b0%8f%e6%a8%b1%e7%9a%84%e5%8d%9a%e5%ae%a2-csdn%e5%8d%9a%e5%ae%a2_%e6%a2%af%e5%ba%a6%e6%b1%82%e7%a7%af%e5%88%86" aria-label="(238条消息) 数学必知必会&amp;mdash;-导数、梯度与积分_sakura小樱的博客-CSDN博客_梯度求积分">(238条消息) 数学必知必会&mdash;-导数、梯度与积分_sakura小樱的博客-CSDN博客_梯度求积分</a></li>
+                <li>
+                    <a href="#%e6%95%b0%e5%ad%a6%e5%bf%85%e7%9f%a5%e5%bf%85%e4%bc%9a----%e5%af%bc%e6%95%b0%e6%a2%af%e5%ba%a6%e4%b8%8e%e7%a7%af%e5%88%86" aria-label="数学必知必会&amp;mdash;-导数、梯度与积分">数学必知必会&mdash;-导数、梯度与积分</a></li>
+                <li>
+                    <a href="#%e4%b8%80%e5%af%bc%e6%95%b0" aria-label="一、导数">一、导数</a><ul>
+                        
+                <li>
+                    <a href="#11%e5%b8%b8%e7%94%a8%e7%9a%84%e5%80%92%e6%95%b0" aria-label="1.1常用的倒数">1.1常用的倒数</a></li>
+                <li>
+                    <a href="#12%e5%a4%8d%e5%90%88%e5%87%bd%e6%95%b0httpssocsdnnetsosearchqe5a48de59088e587bde695b0spm1001210130017020%e6%b1%82%e5%af%bc" aria-label="1.2复合函数求导">1.2<a href="https://so.csdn.net/so/search?q=%E5%A4%8D%E5%90%88%E5%87%BD%E6%95%B0&amp;spm=1001.2101.3001.7020">复合函数</a>求导</a><ul>
+                        
+                <li>
+                    <a href="#121%e9%93%be%e5%bc%8f%e6%b3%95%e5%88%99" aria-label="1.2.1链式法则">1.2.1链式法则</a></li>
+                <li>
+                    <a href="#122%e5%a4%9a%e5%85%83%e5%87%bd%e6%95%b0%e6%b1%82%e5%af%bc%e5%81%8f%e5%af%bc%e6%95%b0%e5%81%8f%e5%be%ae%e5%88%86" aria-label="1.2.2多元函数求导：偏导数（偏微分）">1.2.2多元函数求导：偏导数（偏微分）</a></li></ul>
+                </li></ul>
+                </li>
+                <li>
+                    <a href="#%e4%ba%8c%e7%a7%af%e5%88%86" aria-label="二、积分">二、积分</a><ul>
+                        
+                <li>
+                    <a href="#%e5%ae%9a%e7%a7%af%e5%88%86" aria-label="定积分">定积分</a></li>
+                <li>
+                    <a href="#%e4%b8%8d%e5%ae%9a%e7%a7%af%e5%88%86" aria-label="不定积分">不定积分</a></li>
+                <li>
+                    <a href="#%e6%8b%93%e5%b1%95" aria-label="拓展">拓展</a></li></ul>
+                </li>
+                <li>
+                    <a href="#%e4%b8%89%e5%9d%87%e6%96%b9%e8%af%af%e5%b7%ae" aria-label="三、均方误差">三、均方误差</a><ul>
+                        
+                <li>
+                    <a href="#31%e5%af%bc%e6%95%b0%e5%ba%94%e7%94%a8" aria-label="3.1导数应用">3.1导数应用</a></li>
+                <li>
+                    <a href="#32%e7%ba%bf%e6%80%a7%e5%9b%9e%e5%bd%92%e7%9a%84%e5%ba%94%e7%94%a8" aria-label="3.2线性回归的应用">3.2线性回归的应用</a></li></ul>
+                </li>
+                <li>
+                    <a href="#%e5%9b%9b%e6%a2%af%e5%ba%a6" aria-label="四、梯度">四、梯度</a><ul>
+                        
+                <li>
+                    <a href="#41%e5%af%bc%e5%85%a5" aria-label="4.1导入">4.1导入</a></li>
+                <li>
+                    <a href="#42%e5%ae%9a%e4%b9%89" aria-label="4.2定义：">4.2定义：</a></li>
+                <li>
+                    <a href="#43%e4%ba%8b%e4%be%8b" aria-label="4.3事例">4.3事例</a></li>
+                <li>
+                    <a href="#44%e7%90%86%e8%a7%a3%e6%96%b9%e6%b3%95" aria-label="4.4理解方法">4.4理解方法</a></li>
+                <li>
+                    <a href="#45%e6%a2%af%e5%ba%a6%e4%b8%8b%e9%99%8d%e6%b3%95%e5%ae%9a%e4%b9%89" aria-label="4.5梯度下降法定义">4.5梯度下降法定义</a></li>
+                <li>
+                    <a href="#46%e5%b1%80%e9%83%a8%e6%9e%81%e9%99%90%e5%80%bc" aria-label="4.6局部极限值">4.6局部极限值</a></li>
+                <li>
+                    <a href="#47%e4%b8%8b%e9%99%8d%e6%b3%95%e6%b1%82%e6%9c%80%e5%b0%8f%e5%80%bc%e6%96%b9%e6%b3%95" aria-label="4.7下降法求最小值方法">4.7下降法求最小值方法</a><ul>
+                        
+                <li>
+                    <a href="#471%e6%8a%9b%e5%b0%8f%e7%90%83%e6%b3%95momentum" aria-label="4.7.1抛小球法—momentum">4.7.1抛小球法—momentum</a></li>
+                <li>
+                    <a href="#472nesterov" aria-label="4.7.2Nesterov">4.7.2Nesterov</a></li>
+                <li>
+                    <a href="#473%e8%87%aa%e9%80%82%e5%ba%94" aria-label="4.7.3自适应">4.7.3自适应</a></li>
+                <li>
+                    <a href="#474adadelta%e4%bb%a5%e5%8f%8armsprop" aria-label="4.7.4AdaDelta以及RMSprop">4.7.4AdaDelta以及RMSprop</a></li>
+                <li>
+                    <a href="#475%e9%80%89%e6%8b%a9" aria-label="4.7.5选择">4.7.5选择</a>
+                </li>
+            </ul>
+            </li>
+            </ul>
+            </li>
+            </ul>
+        </div>
+    </details>
+</div>
+
+  <div class="post-content"><h1 id="238条消息-数学必知必会----导数梯度与积分_sakura小樱的博客-csdn博客_梯度求积分">(238条消息) 数学必知必会&mdash;-导数、梯度与积分_sakura小樱的博客-CSDN博客_梯度求积分<a hidden class="anchor" aria-hidden="true" href="#238条消息-数学必知必会----导数梯度与积分_sakura小樱的博客-csdn博客_梯度求积分">#</a></h1>
+<h1 id="数学必知必会----导数梯度与积分">数学必知必会&mdash;-导数、梯度与积分<a hidden class="anchor" aria-hidden="true" href="#数学必知必会----导数梯度与积分">#</a></h1>
+<p>
+
+
+
+<img loading="lazy" src="../assets/1674019388-426136e8363e68fc321f3d3551b0d579.png" alt=""  />
+</p>
+<p><a href="https://blog.csdn.net/Sakura55" title="sakura小樱">sakura小樱</a> 
+
+
+
+<img loading="lazy" src="../assets/1674019388-829b50e1a754811a0f05afff88b5db50.png" alt=""  />
+ 于 2018-06-12 19:18:22 发布 
+
+
+
+<img loading="lazy" src="../assets/1674019388-12234b4519a7e1441526c49ab7fc9a0d.png" alt=""  />
+ 3204 
+
+
+
+<img loading="lazy" src="../assets/1674019388-169ac251df55845562af7f2f9151a130.png" alt=""  />
+ 收藏 6</p>
+<p>文章标签： <a href="https://so.csdn.net/so/search/s.do?q=%E5%AF%BC%E6%95%B0&amp;t=blog&amp;o=vip&amp;s=&amp;l=&amp;f=&amp;viparticle=">导数</a> <a href="https://so.csdn.net/so/search/s.do?q=%E6%95%B0%E5%AD%A6&amp;t=blog&amp;o=vip&amp;s=&amp;l=&amp;f=&amp;viparticle=">数学</a> <a href="https://so.csdn.net/so/search/s.do?q=%E5%BE%AE%E7%A7%AF%E5%88%86&amp;t=blog&amp;o=vip&amp;s=&amp;l=&amp;f=&amp;viparticle=">微积分</a></p>
+<p>版权</p>
+<ul>
+<li><a href="#%E4%B8%80%E5%AF%BC%E6%95%B0">一、导数</a>
+<ul>
+<li><a href="#11%E5%B8%B8%E7%94%A8%E7%9A%84%E5%80%92%E6%95%B0">1.1常用的倒数</a></li>
+<li><a href="#12%E5%A4%8D%E5%90%88%E5%87%BD%E6%95%B0%E6%B1%82%E5%AF%BC">1.2复合函数求导</a>
+<ul>
+<li><a href="#121%E9%93%BE%E5%BC%8F%E6%B3%95%E5%88%99">1.2.1链式法则</a></li>
+<li><a href="#122%E5%A4%9A%E5%85%83%E5%87%BD%E6%95%B0%E6%B1%82%E5%AF%BC%E5%81%8F%E5%AF%BC%E6%95%B0%E5%81%8F%E5%BE%AE%E5%88%86">1.2.2多元函数求导：偏导数（偏微分）</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#%E4%BA%8C%E7%A7%AF%E5%88%86">二、积分</a>
+<ul>
+<li><a href="#%E5%AE%9A%E7%A7%AF%E5%88%86">定积分</a></li>
+<li><a href="#%E4%B8%8D%E5%AE%9A%E7%A7%AF%E5%88%86">不定积分</a></li>
+<li><a href="#%E6%8B%93%E5%B1%95">拓展</a></li>
+</ul>
+</li>
+<li><a href="#%E4%B8%89%E5%9D%87%E6%96%B9%E8%AF%AF%E5%B7%AE">三、均方误差</a>
+<ul>
+<li><a href="#31%E5%AF%BC%E6%95%B0%E5%BA%94%E7%94%A8">3.1导数应用</a></li>
+<li><a href="#32%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92%E7%9A%84%E5%BA%94%E7%94%A8">3.2线性回归的应用</a></li>
+</ul>
+</li>
+<li><a href="#%E5%9B%9B%E6%A2%AF%E5%BA%A6">四、梯度</a>
+<ul>
+<li><a href="#41%E5%AF%BC%E5%85%A5">4.1导入</a></li>
+<li><a href="#42%E5%AE%9A%E4%B9%89">4.2定义：</a></li>
+<li><a href="#43%E4%BA%8B%E4%BE%8B">4.3事例</a></li>
+<li><a href="#44%E7%90%86%E8%A7%A3%E6%96%B9%E6%B3%95">4.4理解方法</a></li>
+<li><a href="#45%E6%A2%AF%E5%BA%A6%E4%B8%8B%E9%99%8D%E6%B3%95%E5%AE%9A%E4%B9%89">4.5梯度下降法定义</a></li>
+<li><a href="#46%E5%B1%80%E9%83%A8%E6%9E%81%E9%99%90%E5%80%BC">4.6局部极限值</a></li>
+<li><a href="#47%E4%B8%8B%E9%99%8D%E6%B3%95%E6%B1%82%E6%9C%80%E5%B0%8F%E5%80%BC%E6%96%B9%E6%B3%95">4.7下降法求最小值方法</a>
+<ul>
+<li><a href="#471%E6%8A%9B%E5%B0%8F%E7%90%83%E6%B3%95momentum">4.7.1抛小球法—momentum</a></li>
+<li><a href="#472nesterov">4.7.2Nesterov</a></li>
+<li><a href="#473%E8%87%AA%E9%80%82%E5%BA%94">4.7.3自适应</a></li>
+<li><a href="#474adadelta%E4%BB%A5%E5%8F%8Armsprop">4.7.4AdaDelta以及RMSprop</a></li>
+<li><a href="#475%E9%80%89%E6%8B%A9">4.7.5选择</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<pre tabindex="0"><code>from sympy import *
+x=Symbol(&#34;x&#34;)
+diff(x**3 + x**2)
+#3x**2 + 2**x
+</code></pre><h1 id="一导数">一、导数<a hidden class="anchor" aria-hidden="true" href="#一导数">#</a></h1>
+<p>
+
+
+
+<img loading="lazy" src="../assets/1674019388-eb1993f49988de69146b367b919a0359.png" alt="这里写图片描述"  />
+</p>
+<blockquote>
+<p>导数的实质就是曲线切线的斜率</p>
+</blockquote>
+<h2 id="11常用的倒数">1.1常用的倒数<a hidden class="anchor" aria-hidden="true" href="#11常用的倒数">#</a></h2>
+<p>
+
+
+
+<img loading="lazy" src="../assets/1674019388-454ba91edfc7adde1a23206ae0516c18.png" alt="这里写图片描述"  />
+<br>
+
+
+
+
+<img loading="lazy" src="../assets/1674019388-5d4bceee440dd8b027e81c23a03a487b.png" alt="这里写图片描述"  />
+</p>
+<h2 id="12复合函数httpssocsdnnetsosearchqe5a48de59088e587bde695b0spm1001210130017020求导">1.2<a href="https://so.csdn.net/so/search?q=%E5%A4%8D%E5%90%88%E5%87%BD%E6%95%B0&amp;spm=1001.2101.3001.7020">复合函数</a>求导<a hidden class="anchor" aria-hidden="true" href="#12复合函数httpssocsdnnetsosearchqe5a48de59088e587bde695b0spm1001210130017020求导">#</a></h2>
+<h3 id="121链式法则">1.2.1链式法则<a hidden class="anchor" aria-hidden="true" href="#121链式法则">#</a></h3>
+<p>
+
+
+
+<img loading="lazy" src="../assets/1674019388-a82fe3bdbb6a87ae4300e6336a9b3a38.png" alt="这里写图片描述"  />
+</p>
+<p>
+
+
+
+<img loading="lazy" src="../assets/1674019388-236f9934e05ef3c227afc5dbe2c72b54.png" alt="这里写图片描述"  />
+</p>
+<h3 id="122多元函数求导偏导数偏微分">1.2.2多元函数求导：偏导数（偏微分）<a hidden class="anchor" aria-hidden="true" href="#122多元函数求导偏导数偏微分">#</a></h3>
+<p>
+
+
+
+<img loading="lazy" src="../assets/1674019388-16835c384a5ac07198e0c391167c8a43.png" alt="这里写图片描述"  />
+</p>
+<blockquote>
+<p>链式法则<br>
+
+
+
+
+<img loading="lazy" src="../assets/1674019388-13328110e9da6f13ac881ce085ed11ba.png" alt="这里写图片描述"  />
+</p>
+<p>多元函数求导的法则<br>
+
+
+
+
+<img loading="lazy" src="../assets/1674019388-40450eb27eae9ea53c6781c616f9a107.png" alt="这里写图片描述"  />
+</p>
+</blockquote>
+<h1 id="二积分">二、积分<a hidden class="anchor" aria-hidden="true" href="#二积分">#</a></h1>
+<p><strong>积分是微分的逆运算</strong>，即知道了函数的 导函数，反求原函数。在应用上，积分作用不仅如此，它被大量应用于<strong>求和</strong>，通俗的说是求 曲边三角形的面积，这巧妙的求解方法是积分特殊的性质决定的。</p>
+<p><a href="https://baike.sogou.com/v360196.htm">更多推导公式点击这里</a></p>
+<h2 id="定积分">定积分<a hidden class="anchor" aria-hidden="true" href="#定积分">#</a></h2>
+<p>
+
+
+
+<img loading="lazy" src="../assets/1674019388-34cee8661fa90b90724cbb3a309a2fc6.png" alt="这里写图片描述"  />
+</p>
+<p>
+
+
+
+<img loading="lazy" src="../assets/1674019388-ed84a1bf165fd56acba5dd8a323805ca.png" alt="这里写图片描述"  />
+</p>
+<h2 id="不定积分">不定积分<a hidden class="anchor" aria-hidden="true" href="#不定积分">#</a></h2>
+<p>
+
+
+
+<img loading="lazy" src="../assets/1674019388-686eb53b2a3ef4cc1422cef82b87298a.png" alt="这里写图片描述"  />
+</p>
+<h2 id="拓展">拓展<a hidden class="anchor" aria-hidden="true" href="#拓展">#</a></h2>
+<p>● <a href="http://ishare.iask.sina.com.cn/f/6652047.html">微分的相关知识</a></p>
+<hr>
+<h1 id="三均方误差">三、均方误差<a hidden class="anchor" aria-hidden="true" href="#三均方误差">#</a></h1>
+<h2 id="31导数应用">3.1导数应用<a hidden class="anchor" aria-hidden="true" href="#31导数应用">#</a></h2>
+<p>
+
+
+
+<img loading="lazy" src="../assets/1674019388-20e594b7edfc285c94dbcb4b94589b9b.png" alt="这里写图片描述"  />
+</p>
+<p>
+
+
+
+<img loading="lazy" src="../assets/1674019388-875f85d9012fb2b984118f2fd53c588b.png" alt="这里写图片描述"  />
+</p>
+<h2 id="32线性回归的应用">3.2线性回归的应用<a hidden class="anchor" aria-hidden="true" href="#32线性回归的应用">#</a></h2>
+<p>
+
+
+
+<img loading="lazy" src="../assets/1674019388-7c7c01f05bf484dbe6cb2b363bd26ac7.png" alt="这里写图片描述"  />
+</p>
+<h1 id="四梯度">四、梯度<a hidden class="anchor" aria-hidden="true" href="#四梯度">#</a></h1>
+<h2 id="41导入">4.1导入<a hidden class="anchor" aria-hidden="true" href="#41导入">#</a></h2>
+<p>
+
+
+
+<img loading="lazy" src="../assets/1674019388-f4e7ce229ddfc3d294bc1cf01d8faef0.png" alt="这里写图片描述"  />
+</p>
+<h2 id="42定义">4.2定义：<a hidden class="anchor" aria-hidden="true" href="#42定义">#</a></h2>
+<blockquote>
+<p>一元函数在y=f(x)在点x^o的梯度是<br>
+
+
+
+
+<img loading="lazy" src="../assets/1674019388-2fb2809de235f4aa591e083db368671c.png" alt="这里写图片描述"  />
+</p>
+<p>二元函数在y=f(x，y)在点(x^o,y^0)的梯度是
+
+
+
+<img loading="lazy" src="../assets/1674019388-12de166968842d79ace34547ef370145.png" alt="这里写图片描述"  />
+</p>
+</blockquote>
+<h2 id="43事例">4.3事例<a hidden class="anchor" aria-hidden="true" href="#43事例">#</a></h2>
+<p>
+
+
+
+<img loading="lazy" src="../assets/1674019388-0897b4c2749dea7c42963dee10477d9a.png" alt="这里写图片描述"  />
+</p>
+<h2 id="44理解方法">4.4理解方法<a hidden class="anchor" aria-hidden="true" href="#44理解方法">#</a></h2>
+<p>
+
+
+
+<img loading="lazy" src="../assets/1674019388-7d71abf4adbd7ec9a28260e3ad6a280d.png" alt="这里写图片描述"  />
+</p>
+<h2 id="45梯度下降法定义">4.5梯度下降法定义<a hidden class="anchor" aria-hidden="true" href="#45梯度下降法定义">#</a></h2>
+<p>
+
+
+
+<img loading="lazy" src="../assets/1674019388-db84fe846dc88e16b93fb7b68e58de64.png" alt="这里写图片描述"  />
+</p>
+<h2 id="46局部极限值">4.6局部极限值<a hidden class="anchor" aria-hidden="true" href="#46局部极限值">#</a></h2>
+<p>
+
+
+
+<img loading="lazy" src="../assets/1674019388-24e9138fc76070436476e0bf2b5819eb.png" alt="这里写图片描述"  />
+</p>
+<h2 id="47下降法求最小值方法">4.7下降法求最小值方法<a hidden class="anchor" aria-hidden="true" href="#47下降法求最小值方法">#</a></h2>
+<blockquote>
+<p>定义<br>
+
+
+
+
+<img loading="lazy" src="../assets/1674019388-932775227f0251bd02291a3841aad4ef.png" alt="这里写图片描述"  />
+</p>
+</blockquote>
+<h3 id="471抛小球法momentum">4.7.1抛小球法—momentum<a hidden class="anchor" aria-hidden="true" href="#471抛小球法momentum">#</a></h3>
+<p>
+
+
+
+<img loading="lazy" src="../assets/1674019388-8912ef079bea46bab089363e7e871d6f.png" alt="这里写图片描述"  />
+</p>
+<h3 id="472nesterov">4.7.2Nesterov<a hidden class="anchor" aria-hidden="true" href="#472nesterov">#</a></h3>
+<p>
+
+
+
+<img loading="lazy" src="../assets/1674019388-e7ddb087f3ee4b22a749ff4c88308a4d.png" alt="这里写图片描述"  />
+</p>
+<h3 id="473自适应">4.7.3自适应<a hidden class="anchor" aria-hidden="true" href="#473自适应">#</a></h3>
+<p>
+
+
+
+<img loading="lazy" src="../assets/1674019388-afd8dcd0c9da5dcc084e009c8fa7a3dd.png" alt="这里写图片描述"  />
+</p>
+<h3 id="474adadelta以及rmsprop">4.7.4AdaDelta以及RMSprop<a hidden class="anchor" aria-hidden="true" href="#474adadelta以及rmsprop">#</a></h3>
+<p>
+
+
+
+<img loading="lazy" src="../assets/1674019388-b5592656cc654e02fc998c00fb927432.png" alt="这里写图片描述"  />
+</p>
+<h3 id="475选择">4.7.5选择<a hidden class="anchor" aria-hidden="true" href="#475选择">#</a></h3>
+<p>
+
+
+
+<img loading="lazy" src="../assets/1674019388-cedaedb4d69830bf5febc3b9e5f9c3eb.png" alt="这里写图片描述"  />
+</p>
+
+
+  </div>
+
+  <footer class="post-footer">
+<nav class="paginav">
+  <a class="prev" href="https://sucicada.github.io/blog/posts/uvaoj/uva272-tex/">
+    <span class="title">« Prev</span>
+    <br>
+    <span>uva272 （TeX）</span>
+  </a>
+</nav>
+
+
+<div class="share-buttons">
+    <a target="_blank" rel="noopener noreferrer" aria-label="share 数学必知必会-导数、梯度与积分 on twitter"
+        href="https://twitter.com/intent/tweet/?text=%e6%95%b0%e5%ad%a6%e5%bf%85%e7%9f%a5%e5%bf%85%e4%bc%9a-%e5%af%bc%e6%95%b0%e3%80%81%e6%a2%af%e5%ba%a6%e4%b8%8e%e7%a7%af%e5%88%86&amp;url=https%3a%2f%2fsucicada.github.io%2fblog%2fposts%2fmath%2f%25E6%2595%25B0%25E5%25AD%25A6%25E5%25BF%2585%25E7%259F%25A5%25E5%25BF%2585%25E4%25BC%259A-%25E5%25AF%25BC%25E6%2595%25B0%25E6%25A2%25AF%25E5%25BA%25A6%25E4%25B8%258E%25E7%25A7%25AF%25E5%2588%2586%2f&amp;hashtags=math%2c%e6%95%b0%e5%ad%a6%e5%bf%85%e7%9f%a5%e5%bf%85%e4%bc%9a-%e5%af%bc%e6%95%b0%e3%80%81%e6%a2%af%e5%ba%a6%e4%b8%8e%e7%a7%af%e5%88%86">
+        <svg version="1.1" viewBox="0 0 512 512" xml:space="preserve" height="30px" width="30px" fill="currentColor">
+            <path
+                d="M449.446,0c34.525,0 62.554,28.03 62.554,62.554l0,386.892c0,34.524 -28.03,62.554 -62.554,62.554l-386.892,0c-34.524,0 -62.554,-28.03 -62.554,-62.554l0,-386.892c0,-34.524 28.029,-62.554 62.554,-62.554l386.892,0Zm-253.927,424.544c135.939,0 210.268,-112.643 210.268,-210.268c0,-3.218 0,-6.437 -0.153,-9.502c14.406,-10.421 26.973,-23.448 36.935,-38.314c-13.18,5.824 -27.433,9.809 -42.452,11.648c15.326,-9.196 26.973,-23.602 32.49,-40.92c-14.252,8.429 -30.038,14.56 -46.896,17.931c-13.487,-14.406 -32.644,-23.295 -53.946,-23.295c-40.767,0 -73.87,33.104 -73.87,73.87c0,5.824 0.613,11.494 1.992,16.858c-61.456,-3.065 -115.862,-32.49 -152.337,-77.241c-6.284,10.881 -9.962,23.601 -9.962,37.088c0,25.594 13.027,48.276 32.95,61.456c-12.107,-0.307 -23.448,-3.678 -33.41,-9.196l0,0.92c0,35.862 25.441,65.594 59.311,72.49c-6.13,1.686 -12.72,2.606 -19.464,2.606c-4.751,0 -9.348,-0.46 -13.946,-1.38c9.349,29.426 36.628,50.728 68.965,51.341c-25.287,19.771 -57.164,31.571 -91.8,31.571c-5.977,0 -11.801,-0.306 -17.625,-1.073c32.337,21.15 71.264,33.41 112.95,33.41Z" />
+        </svg>
+    </a>
+    <a target="_blank" rel="noopener noreferrer" aria-label="share 数学必知必会-导数、梯度与积分 on telegram"
+        href="https://telegram.me/share/url?text=%e6%95%b0%e5%ad%a6%e5%bf%85%e7%9f%a5%e5%bf%85%e4%bc%9a-%e5%af%bc%e6%95%b0%e3%80%81%e6%a2%af%e5%ba%a6%e4%b8%8e%e7%a7%af%e5%88%86&amp;url=https%3a%2f%2fsucicada.github.io%2fblog%2fposts%2fmath%2f%25E6%2595%25B0%25E5%25AD%25A6%25E5%25BF%2585%25E7%259F%25A5%25E5%25BF%2585%25E4%25BC%259A-%25E5%25AF%25BC%25E6%2595%25B0%25E6%25A2%25AF%25E5%25BA%25A6%25E4%25B8%258E%25E7%25A7%25AF%25E5%2588%2586%2f">
+        <svg version="1.1" xml:space="preserve" viewBox="2 2 28 28" height="30px" width="30px" fill="currentColor">
+            <path
+                d="M26.49,29.86H5.5a3.37,3.37,0,0,1-2.47-1,3.35,3.35,0,0,1-1-2.47V5.48A3.36,3.36,0,0,1,3,3,3.37,3.37,0,0,1,5.5,2h21A3.38,3.38,0,0,1,29,3a3.36,3.36,0,0,1,1,2.46V26.37a3.35,3.35,0,0,1-1,2.47A3.38,3.38,0,0,1,26.49,29.86Zm-5.38-6.71a.79.79,0,0,0,.85-.66L24.73,9.24a.55.55,0,0,0-.18-.46.62.62,0,0,0-.41-.17q-.08,0-16.53,6.11a.59.59,0,0,0-.41.59.57.57,0,0,0,.43.52l4,1.24,1.61,4.83a.62.62,0,0,0,.63.43.56.56,0,0,0,.4-.17L16.54,20l4.09,3A.9.9,0,0,0,21.11,23.15ZM13.8,20.71l-1.21-4q8.72-5.55,8.78-5.55c.15,0,.23,0,.23.16a.18.18,0,0,1,0,.06s-2.51,2.3-7.52,6.8Z" />
+        </svg>
+    </a>
+</div>
+
+  </footer><div id="disqus_thread"></div>
+<script type="application/javascript">
+    window.disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "sucicada" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+</article>
+    </main>
+    
+<footer class="footer">
+    <span>&copy; 2023 <a href="https://sucicada.github.io/blog">SuCicada</a></span>
+    <span>
+        Powered by
+        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+        <path d="M12 6H0l6-6z" />
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu')
+    if (menu) {
+        menu.scrollLeft = localStorage.getItem("menu-scroll-position");
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var mybutton = document.getElementById("top-link");
+    window.onscroll = function () {
+        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
+            mybutton.style.visibility = "visible";
+            mybutton.style.opacity = "1";
+        } else {
+            mybutton.style.visibility = "hidden";
+            mybutton.style.opacity = "0";
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        if (document.body.className.includes("dark")) {
+            document.body.classList.remove('dark');
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            document.body.classList.add('dark');
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+<script>
+    document.querySelectorAll('pre > code').forEach((codeblock) => {
+        const container = codeblock.parentNode.parentNode;
+
+        const copybutton = document.createElement('button');
+        copybutton.classList.add('copy-code');
+        copybutton.innerHTML = 'copy';
+
+        function copyingDone() {
+            copybutton.innerHTML = 'copied!';
+            setTimeout(() => {
+                copybutton.innerHTML = 'copy';
+            }, 2000);
+        }
+
+        copybutton.addEventListener('click', (cb) => {
+            if ('clipboard' in navigator) {
+                navigator.clipboard.writeText(codeblock.textContent);
+                copyingDone();
+                return;
+            }
+
+            const range = document.createRange();
+            range.selectNodeContents(codeblock);
+            const selection = window.getSelection();
+            selection.removeAllRanges();
+            selection.addRange(range);
+            try {
+                document.execCommand('copy');
+                copyingDone();
+            } catch (e) { };
+            selection.removeRange(range);
+        });
+
+        if (container.classList.contains("highlight")) {
+            container.appendChild(copybutton);
+        } else if (container.parentNode.firstChild == container) {
+            
+        } else if (codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName == "TABLE") {
+            
+            codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(copybutton);
+        } else {
+            
+            codeblock.parentNode.appendChild(copybutton);
+        }
+    });
+</script>
+</body>
+
+</html>
