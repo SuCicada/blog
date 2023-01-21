@@ -163,6 +163,39 @@
 
 <article class="post-entry"> 
   <header class="entry-header">
+    <h2>UVA 699 - The Falling Leaves (落叶) By SuCicada
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>例题6-10 下落的树叶（The Falling Leaves, UVa 699）
+给一棵二叉树，每个结点都有一个水平位
+置：左子结点在它左边1个单位，右子结点在右
+边1个单位。从左向右输出每个水平位置的所有
+结点的权值之和。如图6-7所示，从左到右的3个
+位置的权和分别为7，11，3。按照递归（先序）
+方式输入，用-1表示空树。
+样例输入：
+5 7 -1 6 -1 -1 3 -1 -1
+8 2 9 -1 -1 6 5 -1 -1 12 -1
+-1 3 7 -1 -1 -1
+-1
+样例输出：
+Case 1:
+7 11 3
+Case 2:
+9 7 21 15
+【注意】 一棵树的输[入可能分为多行。输出最多一行80个（代表树最多80列）
+本家地址
+一边输入一边记录左右结点的值，放在数组中叠加。唯一的问题就是存在左右子树，无法确定左右范围具体为多少，所以可以采用两种方法：
+设定一个最大的范围，80*2-1 范围，选择最中点为root结点，然后左右放置子节点。 将左右子树分开存放，右子树包含根节点，放置一个数组，下标递增代表结点向右扩增。将左子树放置另一个数组，下标递增代表结点向左扩增。如果以根节点为坐标轴0，那么左子树放置的坐标中就是反坐标轴，只是方向相反。 我采用第2种，因为一开始不知道范围（貌似）
+#include&lt;iostream&gt; #include&lt;cmath&gt; #include&lt;cstdio&gt; #include&lt;cstring&gt; using namespace std; int leftTree[100] = {0}; int rightTree[100] = {0}; /* include root */ int leftIndex = 0; int rightIndex = 0; char c; int tree(int index){ int n; cin&gt;&gt;n; if(n!...</p>
+  </div>
+  <footer class="entry-footer">SuCicada</footer>
+  <a class="entry-link" aria-label="post link to UVA 699 - The Falling Leaves (落叶) By SuCicada" href="https://sucicada.github.io/blog/posts/uvaoj/uva-699-the-falling-leaves-%E8%90%BD%E5%8F%B6-by-sucicada/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
     <h2>UVA 816 - Abbott‘s Revenge (Abbott的复仇) By SuCicada
     </h2>
   </header>
