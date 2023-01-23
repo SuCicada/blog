@@ -163,6 +163,179 @@
 
 <article class="post-entry"> 
   <header class="entry-header">
+    <h2>UVA 11853 - Paintbal(战场) By SuCicada
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>例题6-22 战场（Paintball, UVa 11853）
+有一个1000×1000的正方形战场，战场西南角的坐标为(0,0)，西北角的坐标为(0,1000)。
+战场上有n（0≤n≤1000）个敌人，第i个敌人的坐标为(xi
+,yi
+)，攻击范围为ri。为了避开敌人的
+攻击，在任意时刻，你与每个敌人的距离都必须严格大于它的攻击范围。你的任务是从战场
+的西边（x=0的某个点）进入，东边（x=1000的某个点）离开。如果有多个位置可以进/出，
+你应当求出最靠北的位置。输入每个敌人的xi、yi、ri，输出进入战场和离开战场的坐标。
+Sample Input
+3
+500 500 499
+0 0 999
+1000 1000 200
+Sample Output
+0.00 1000.00 1000.00 800.00
+本家地址
+关键在于抓住问题的本质，即问题的核心，即问题去除了表面保护层之下的那个最纯粹的那个命脉。
+初看，我们发现，这是要在坐标图上画圆啊。过分可怕。
+但是我们鼓起勇气再细看问题：
+求最靠上的进入战场和离开战场的坐标。
+解剖一下：
+能否离开 若能，最上 最左边进，最后边出。 然后我们随便画几个图来看看。
+怎么样就不能离开：
+当有一条敌人从最上一直连通到最下。
+若能，最靠上的地方是哪里：
+如果我们最左边进入的地方的下方有一条敌线一直连通到最上边。
+那么这条敌线就把我们包住了。
+所以 敌线（从上方延伸 and 延伸到左边），就不能被我们在其上方进入。
+所以我们只要求敌线的连通性和敌线范围（从上方开始的）在最左边和最右边的最下方坐标即可。
+#include&lt;iostream&gt; #include&lt;map&gt; #include&lt;cmath&gt; #include&lt;cstring&gt; #include&lt;vector&gt; #include&lt;queue&gt; #include&lt;cstdio&gt; using namespace std; /* 关键在于抓住问题的本质，即问题的核心，即问题去除了表面保护层之下的那个最纯粹的那个命脉。 初看，我们发现，这是要在坐标图上画圆啊。过分可怕。 但是我们鼓起勇气再细看问题： 求最靠上的进入战场和离开战场的坐标。 解剖一下： 1. 能否离开 2. 若能，最上 3....</p>
+  </div>
+  <footer class="entry-footer">SuCicada</footer>
+  <a class="entry-link" aria-label="post link to UVA 11853 - Paintbal(战场) By SuCicada" href="https://sucicada.github.io/blog/posts/uvaoj/uva-11853-paintbal%E6%88%98%E5%9C%BA-by-sucicada/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2>uva 12096 - The SetStack Computer（集合栈）
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>例题5-5
+集合栈计算机(The
+Set
+Stack
+Computer,ACM/ICPC
+NWERC
+2006,UVa12096)
+有一个专门为了集合运算而设计的“集合栈”计算机。该机器有一个初始为空的栈,并且
+支持以下操作。
+PUSH:空集“{}”入栈。
+DUP:把当前栈顶元素复制一份后再入栈。
+UNION:出栈两个集合,然后把二者的并集入栈。
+INTERSECT:出栈两个集合,然后把二者的交集入栈。ADD:出栈两个集合,然后把先出栈的集合加入到后出栈的集合中,把结果入栈。
+每次操作后,输出栈顶集合的大小(即元素个数)。例如,栈顶元素是A={{},
+{{}}},下一个元素是B={{},{{{}}}},则:
+UNION操作将得到{{},{{}},{{{}}}},输出3。
+INTERSECT操作将得到{{}},输出1。
+ADD操作将得到{{},{{{}}},{{},{{}}}},输出3。
+输入不超过2000个操作,并且保证操作均能顺利进行(不需要对空栈执行出栈操作)。
+Sample Input
+2
+9
+PUSH
+DUP
+ADD
+PUSH
+ADD
+DUP
+ADD
+DUP
+UNION
+5
+PUSH
+PUSH
+ADD
+PUSH
+INTERSECT
+Sample Output
+0
+0
+1
+0
+1
+1
+2
+2
+2
+***
+0
+0
+1
+0
+0
+***
+https://uva.onlinejudge.org/index.php?option=com_onlinejudge&amp;Itemid=8&amp;page=show_problem&amp;category=835&amp;problem=3248&amp;mosmsg=Submission&#43;received&#43;with&#43;ID&#43;21273791
+性质：
+１、set&lt; int &gt;　代表是集合
+２、idcache 是集合与其编号的映射，每一个集合都有唯一的编号。
+３、setcache是向量，即下标与其存的是集合的元素相映射。
+４、每一个集合都只在以上容器中存在一个。
+５、栈里存的只是集合的编号。
+#include &lt;iostream&gt; #include &lt;set&gt; #include &lt;map&gt; #include &lt;stack&gt; #include &lt;vector&gt; using namespace std; map&lt; set&lt;int&gt; ,int&gt; idcache; //每一个集合对应一个编号 vector&lt; set&lt;int&gt; &gt; setcache; //每一个编号对应一个集合 int getid(set&lt;int&gt; s) { if(idcache....</p>
+  </div>
+  <footer class="entry-footer">SuCicada</footer>
+  <a class="entry-link" aria-label="post link to uva 12096 - The SetStack Computer（集合栈）" href="https://sucicada.github.io/blog/posts/uvaoj/uva-12096-the-setstack-computer%E9%9B%86%E5%90%88%E6%A0%88/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2>UVA 12171 - Sculpture(雕塑) By SuCicada
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>例题6-18 雕塑（Sculpture, ACM/ICPC NWERC 2008, UVa12171）
+某雕塑由n（n≤50）个边平行于坐标轴的长方体组成。每个长方体用6个整
+数x0，y0，z0，x，y，z表示（均为1～500的整数），其中x0为长方体的顶点中x坐标的最小
+值，x表示长方体在x方向的总长度。其他4个值类似定义。你的任务是统计这个雕像的体积
+和表面积。注意，雕塑内部可能会有密闭的空间，其体积应计算在总体积中，但从“外部”看
+不见的面不应计入表面积。雕塑可能会由多个连通块组成。
+Sample Input
+2
+2
+1 2 3 3 4 5
+6 2 3 3 4 5
+7
+1 1 1 5 5 1
+1 1 10 5 5 1
+1 1 2 1 4 8
+2 1 2 4 1 8
+5 2 2 1 4 8
+1 5 2 4 1 8
+3 3 4 1 1 1...</p>
+  </div>
+  <footer class="entry-footer">SuCicada</footer>
+  <a class="entry-link" aria-label="post link to UVA 12171 - Sculpture(雕塑) By SuCicada" href="https://sucicada.github.io/blog/posts/uvaoj/uva-12171-sculpture%E9%9B%95%E5%A1%91-by-sucicada/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2>UVA 122 - Trees on the level, Duke 1993 (树的层次遍历)
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>例题6-7 树的层次遍历（Trees on the level, Duke 1993, UVa 122）
+输入一棵二叉树，你的任务是按从上到下、从左到右的顺序输出各个结点的值。每个结
+点都按照从根结点到它的移动序列给出（L表示左，R表示右）。在输入中，每个结点的左
+括号和右括号之间没有空格，相邻结点之间用一个空格隔开。每棵树的输入用一对空括
+号“()”结束（这对括号本身不代表一个结点），如图6-3所示。
+图6-3 一棵二叉树
+注意，如果从根到某个叶结点的路径上有的结点没有在输入中给出，或者给出超过一
+次，应当输出-1。结点个数不超过256。
+样例输入：
+(11,LL) (7,LLL) (8,R)
+(5,) (4,L) (13,RL) (2,LLR) (1,RRR) (4,RR) ()
+(3,L) (4,R) ()
+样例输出：
+5 4 8 11 13 4 7 2 1
+not complete
+本家地址
+祭出对象大法
+#include&lt;iostream&gt; #include&lt;sstream&gt; #include&lt;string&gt; #include&lt;cstring&gt; #include&lt;cstdio&gt; #include&lt;cstdlib&gt; using namespace std; class Node{ public: int value; Node* left; Node* right; }; Node* queue[256]; void show(Node* root){ memset(queue,0,sizeof(queue)); int qbegin=0; int qend=0; int qlen = sizeof(queue)/sizeof(Node*); stringstream out; queue[qend] = root; qend = (qend&#43;1) % qlen; while(qbegin!...</p>
+  </div>
+  <footer class="entry-footer">SuCicada</footer>
+  <a class="entry-link" aria-label="post link to UVA 122 - Trees on the level, Duke 1993 (树的层次遍历)" href="https://sucicada.github.io/blog/posts/uvaoj/uva-122-trees-on-the-level-duke-1993-%E6%A0%91%E7%9A%84%E5%B1%82%E6%AC%A1%E9%81%8D%E5%8E%86/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
     <h2>uva 1225 - Digit Counting（数数）
     </h2>
   </header>
@@ -697,135 +870,6 @@ YES
   </div>
   <footer class="entry-footer">SuCicada</footer>
   <a class="entry-link" aria-label="post link to UVA 1592 - Database (数据库) By SuCicada" href="https://sucicada.github.io/blog/posts/uvaoj/uva-1592-database-%E6%95%B0%E6%8D%AE%E5%BA%93-by-sucicada/"></a>
-</article>
-
-<article class="post-entry"> 
-  <header class="entry-header">
-    <h2>UVA 1599 - Ideal Path(理想路径) By SuCicada
-    </h2>
-  </header>
-  <div class="entry-content">
-    <p>例题6-20 理想路径（Ideal Path, NEERC 2010, UVa1599）
-给一个n个点m条边（2≤n≤100000，1≤m≤200000）的无向图，每条边上都涂有一种颜
-色。求从结点1到结点n的一条路径，使得经过的边数尽量少，在此前提下，经过边的颜色序
-列的字典序最小。一对结点间可能有多条边，一条边可能连接两个相同结点。输入保证结点
-1可以达到结点n。颜色为1～10
-9的整数。
-Sample Input
-4 6
-1 2 1
-1 3 2
-3 4 3
-2 3 1
-2 4 4
-3 1 1
-Sample Output
-2
-1 3
-本家链接
-先找最短路：倒序从终点bfs找。
-- 在此认为倒序和正序效果一样。只是某些处理逻辑相反。
-bfs之后，可能存在多条最短路，所以再需要一次bfs，来选出颜色最小的路。
-降低时间的注意点：
-选择合适的数据结构存储图。 一开始使用了map作为存储图的结构，后来在遍历过程中实在比vector慢了太多。 使用标记记录走过的结点，减少bfs重复计算。 对了2:00 - 2:30 期间uva oj 判题特别慢特别慢。尽量避开。
-#include&lt;iostream&gt; #include&lt;vector&gt; #include&lt;map&gt; #include&lt;queue&gt; #include&lt;cmath&gt; #include&lt;cstring&gt; #include&lt;set&gt; using namespace std; #define mapiter map&lt;int,int&gt;::iterator const int MAX_N = 100005; /* 先找最短路：倒序从终点bfs找。 - 在此认为倒序和正序效果一样。只是某些处理逻辑相反。 bfs之后，可能存在多条最短路，所以再需要一次bfs，来选出颜色最小的路。 一开始使用了map作为存储图的结构，后来在遍历过程中实在比vector慢了太多。 */ /* a-&gt;b map[a][b] == color */ class Node{ public: int next; int color; }; // map&lt;int,int&gt; door[MAX_N]; vector&lt;Node&gt; door[MAX_N]; /* 存储无向图，因为结点太多了 */ int book[MAX_N]; /* 记录每个点距离终点`的最小距离 */ int visit[MAX_N]; /* 记录走过的点 */ int big = (1L&lt;&lt;31)-1; int res[MAX_N]; int N,M; /* n下各点 到n 的距离取最短&#43;1 door[a][b] a -&gt; b log[b] = min(log[b], log[a]&#43;1) */ void bfs(){ queue&lt;int&gt; tmp; tmp....</p>
-  </div>
-  <footer class="entry-footer">SuCicada</footer>
-  <a class="entry-link" aria-label="post link to UVA 1599 - Ideal Path(理想路径) By SuCicada" href="https://sucicada.github.io/blog/posts/uvaoj/uva-1599-ideal-path%E7%90%86%E6%83%B3%E8%B7%AF%E5%BE%84-by-sucicada/"></a>
-</article>
-
-<article class="post-entry"> 
-  <header class="entry-header">
-    <h2>uva 201 - Squares（数正方形）
-    </h2>
-  </header>
-  <div class="entry-content">
-    <p>习题4-2 正方形（Squares, ACM/ICPC World Finals 1990, UVa201）
-有n行n列（2≤n≤9）的小黑点，还有m条线段连接其中的一些黑点。统计这些线段连成
-了多少个正方形（每种边长分别统计）。
-行从上到下编号为1～n，列从左到右编号为1～n。边用H i j和V i j表示，分别代表边
-(i,j)-(i,j&#43;1)和(i,j)-(i&#43;1,j)。如图4-5所示最左边的线段用V 1 1表示。图中包含两个边长为1的正
-方形和一个边长为2的正方形。
-Sample Input
-4
-16
-H 1 1
-H 1 3
-H 2 1
-H 2 2
-H 2 3
-H 3 2
-H 4 2
-H 4 3
-V 1 1
-V 2 1
-V 2 2
-V 2 3
-V 3 2
-V 4 1
-V 4 2
-V 4 3...</p>
-  </div>
-  <footer class="entry-footer">SuCicada</footer>
-  <a class="entry-link" aria-label="post link to uva 201 - Squares（数正方形）" href="https://sucicada.github.io/blog/posts/uvaoj/uva-201-squares%E6%95%B0%E6%AD%A3%E6%96%B9%E5%BD%A2/"></a>
-</article>
-
-<article class="post-entry"> 
-  <header class="entry-header">
-    <h2>uva 202 - Repeating Decimals（循环小数）
-    </h2>
-  </header>
-  <div class="entry-content">
-    <p>习题3-8 循环小数（Repeating Decimals, ACM/ICPC World Finals 1990, UVa202）
-输入整数a和b（0≤a≤3000，1≤b≤3000），输出a/b的循环小数表示以及循环节长度。例
-如a=5，b=43，小数表示为0.(116279069767441860465)，循环节长度为21。
-注意：有些即便是原题也可能没用看清的要求
-（如果小数位大于50括号里显示到50个小数位即可，后面加…）
-（但是输出的小数位要是确实的位数，即便几百几千）
-https://uva.onlinejudge.org/index.php?option=com_onlinejudge&amp;Itemid=8&amp;page=show_problem&amp;category=830&amp;problem=138&amp;mosmsg=Submission&#43;received&#43;with&#43;ID&#43;20551105
-Sample Input
-76 25
-5 43
-1 397
-Sample Output
-76/25 = 3.04(0)
-1 = number of digits in repeating cycle
-5/43 = 0.(116279069767441860465)
-21 = number of digits in repeating cycle
-1/397 = 0.(00251889168765743073047858942065491183879093198992…)
-99 = number of digits in repeating cycle
-（ps：这个案例的99就很是误导人）
-思路：从手算的除法公式下手，每一次的被除数都是 上一个被除数 – 上一位商*除数，而我们只要找到从哪里开始的被除数和之前的某一个被除数一样，那么从这一位便开始循环；如果不懂，看下面的例子：2/3
-0.6 6 // 3|2.0 //一开始不够除，补零 1.8 //28 = 4（商）* 7（除数） 2 0 //20 = (30（被除数）- 4（商）* 7（除数）)*10 //开始循环 //同时我们发现 这里的被除数20 和第二行的被除数20 一样， 如果还不懂，亲自写一下除法运算，真的可以秒懂。...</p>
-  </div>
-  <footer class="entry-footer">SuCicada</footer>
-  <a class="entry-link" aria-label="post link to uva 202 - Repeating Decimals（循环小数）" href="https://sucicada.github.io/blog/posts/uvaoj/uva-202-repeating-decimals%E5%BE%AA%E7%8E%AF%E5%B0%8F%E6%95%B0/"></a>
-</article>
-
-<article class="post-entry"> 
-  <header class="entry-header">
-    <h2>uva 210 - Concurrency Simulator (并行程序模拟)
-    </h2>
-  </header>
-  <div class="entry-content">
-    <p>例题6-1 并行程序模拟（ Concurrency Simulator, ACM/ICPC World Finals 1991,
-UVa210）
-你的任务是模拟n个程序（ 按输入顺序编号为1～ n） 的并行执行。 每个程序包含不超过
-25条语句， 格式一共有5种： var = constant（ 赋值） ； print var（ 打印） ； lock； unlock； end。
-变量用单个小写字母表示， 初始为0， 为所有程序公有（ 因此在一个程序里对某个变量
-赋值可能会影响另一个程序） 。 常数是小于100的非负整数。
-每个时刻只能有一个程序处于运行态， 其他程序均处于等待态。 上述5种语句分别需
-要t1、 t2、 t3、 t4、 t5单位时间。 运行态的程序每次最多运行Q个单位时间（ 称为配额） 。 当
-一个程序的配额用完之后， 把当前语句（ 如果存在） 执行完之后该程序会被插入一个等待队
-列中， 然后处理器从队首取出一个程序继续执行。 初始等待队列包含按输入顺序排列的各个
-程序， 但由于lock/unlock语句的出现， 这个顺序可能会改变。
-lock的作用是申请对所有变量的独占访问。 lock和unlock总是成对出现， 并且不会嵌套。
-lock总是在unlock的前面。 当一个程序成功执行完lock指令之后， 其他程序一旦试图执行lock
-指令， 就会马上被放到一个所谓的阻止队列的尾部（ 没有用完的配额就浪费了） 。 当unlock
-执行完毕后， 阻止队列的第一个程序进入等待队列的首部。...</p>
-  </div>
-  <footer class="entry-footer">SuCicada</footer>
-  <a class="entry-link" aria-label="post link to uva 210 - Concurrency Simulator (并行程序模拟)" href="https://sucicada.github.io/blog/posts/uvaoj/uva-210-concurrency-simulator-%E5%B9%B6%E8%A1%8C%E7%A8%8B%E5%BA%8F%E6%A8%A1%E6%8B%9F/"></a>
 </article>
 <footer class="page-footer">
   <nav class="pagination">

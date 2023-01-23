@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>soft on SuCicada</title>
+    <link>https://sucicada.github.io/blog/tags/soft/</link>
+    <description>Recent content in soft on SuCicada</description>
+    <image>
+      <url>https://sucicada.github.io/blog/papermod-cover.png</url>
+      <link>https://sucicada.github.io/blog/papermod-cover.png</link>
+    </image>
+    <generator>Hugo -- gohugo.io</generator><atom:link href="https://sucicada.github.io/blog/tags/soft/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>（C语言）换热器报价生成器设计报告</title>
+      <link>https://sucicada.github.io/blog/posts/soft/c%E8%AF%AD%E8%A8%80%E6%8D%A2%E7%83%AD%E5%99%A8%E6%8A%A5%E4%BB%B7%E7%94%9F%E6%88%90%E5%99%A8%E8%AE%BE%E8%AE%A1%E6%8A%A5%E5%91%8A/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://sucicada.github.io/blog/posts/soft/c%E8%AF%AD%E8%A8%80%E6%8D%A2%E7%83%AD%E5%99%A8%E6%8A%A5%E4%BB%B7%E7%94%9F%E6%88%90%E5%99%A8%E8%AE%BE%E8%AE%A1%E6%8A%A5%E5%91%8A/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>hdu 1022 栈</title>
+      <link>https://sucicada.github.io/blog/posts/soft/hdu-1022-%E6%A0%88/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://sucicada.github.io/blog/posts/soft/hdu-1022-%E6%A0%88/</guid>
+      <description>久违的ac，真是艰难。第一次提交的竟然是直接判断b字符串是否为a的倒序。
+#include&amp;lt;iostream&amp;gt; #include&amp;lt;stack&amp;gt; #include&amp;lt;string&amp;gt; using namespace std; int main() { int t; string a,b; while(cin&amp;gt;&amp;gt;t&amp;gt;&amp;gt;a&amp;gt;&amp;gt;b) { stack&amp;lt;char&amp;gt;s; string p; int i=0; t=a.size(); while(t--) { s.push(a[a.size()-t-1]); p+=&amp;#34;in\n&amp;#34;;//cout&amp;lt;&amp;lt;s.top()&amp;lt;&amp;lt;&amp;#34; &amp;#34;&amp;lt;&amp;lt;b[i]; while(!s.empty()&amp;amp;&amp;amp;s.top()==b[i]) { //cout&amp;lt;&amp;lt;&amp;#34;i&amp;#34;&amp;lt;&amp;lt;i&amp;lt;&amp;lt;endl; s.pop(); p+=&amp;#34;out\n&amp;#34;; i++; //cout&amp;lt;&amp;lt;s.size()&amp;lt;&amp;lt;&amp;#34;!!&amp;#34;&amp;lt;&amp;lt;endl; } } if(s.size()==0) cout&amp;lt;&amp;lt;&amp;#34;Yes.&amp;#34;&amp;lt;&amp;lt;endl&amp;lt;&amp;lt;p; else cout&amp;lt;&amp;lt;&amp;#34;No.&amp;#34;&amp;lt;&amp;lt;endl; cout&amp;lt;&amp;lt;&amp;#34;FINISH&amp;#34;&amp;lt;&amp;lt;endl; } return 0; } </description>
+    </item>
+    
+    <item>
+      <title>hdu 1062（倒置句中单词）&lt;未戳破的玄学&gt;</title>
+      <link>https://sucicada.github.io/blog/posts/soft/hdu-1062%E5%80%92%E7%BD%AE%E5%8F%A5%E4%B8%AD%E5%8D%95%E8%AF%8D%E6%9C%AA%E6%88%B3%E7%A0%B4%E7%9A%84%E7%8E%84%E5%AD%A6/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://sucicada.github.io/blog/posts/soft/hdu-1062%E5%80%92%E7%BD%AE%E5%8F%A5%E4%B8%AD%E5%8D%95%E8%AF%8D%E6%9C%AA%E6%88%B3%E7%A0%B4%E7%9A%84%E7%8E%84%E5%AD%A6/</guid>
+      <description>pe诅咒，多人见证的玄学，终有一天能破解
+初回进阶版
+#include&amp;lt;stdio.h&amp;gt; #include&amp;lt;string.h&amp;gt; int main() { int T,i,j,t; char a[1000];//=&amp;#34;123 4567&amp;#34;; while(scanf(&amp;#34;%d&amp;#34;,&amp;amp;T)==1) { while(T--) { getchar(); //setbuf(stdin,NULL);//失败了，暂不知为什么 scanf(&amp;#34;%[^\n]&amp;#34;,a); i=0;////j是大移动位，i是执行位 //xprintf(&amp;#34;origin %s\n&amp;#34;); for(j=0;j&amp;lt;strlen(a);j++) { //printf(&amp;#34;!!%s\n&amp;#34;,a); if(a[j+1]==&amp;#39; &amp;#39;||a[j+1]==&amp;#39;\0&amp;#39;) { //printf(&amp;#34;a[] %c\n&amp;#34;,a[j]); t=i; for(;i&amp;lt;(j+t+1)/2;i++) { a[i]+=a[j-i+t]; a[j-i+t]=a[i]-a[j-i+t]; a[i]=a[i]-a[j-i+t]; //printf(&amp;#34;!%s\n&amp;#34;,a); } i=j+2; } } printf(&amp;#34;%s\n&amp;#34;,a); } //printf(&amp;#34;end\n&amp;#34;); } } 临终版
+#include&amp;lt;stdio.h&amp;gt; #include&amp;lt;string.h&amp;gt; int main() { int T,i,j,t; char a[1003]; scanf(&amp;#34;%d&amp;#34;,&amp;amp;T); while(T--) { getchar(); scanf(&amp;#34;%[^\n]&amp;#34;,a); i=0; for(j=0;j&amp;lt;strlen(a);j++) { if(a[j+1]==&amp;#39; &amp;#39;||(j+1)==strlen(a))) { t=j; while(t&amp;gt;=i) printf(&amp;#34;%c&amp;#34;,a[t--]); if(a[j+1]==&amp;#39; &amp;#39;) printf(&amp;#34; &amp;#34;); i=j+2; } } printf(&amp;#34;\n&amp;#34;); } return 0; } </description>
+    </item>
+    
+    <item>
+      <title>hdu1002（超超长数字相加）</title>
+      <link>https://sucicada.github.io/blog/posts/soft/hdu1002%E8%B6%85%E8%B6%85%E9%95%BF%E6%95%B0%E5%AD%97%E7%9B%B8%E5%8A%A0/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://sucicada.github.io/blog/posts/soft/hdu1002%E8%B6%85%E8%B6%85%E9%95%BF%E6%95%B0%E5%AD%97%E7%9B%B8%E5%8A%A0/</guid>
+      <description>差点gg，用的是字符串数组来存数，加数，下面是原题
+*保留了所有的注释
+*没有进行代码缩减
+Input
+The first line of the input contains an integer T(1&amp;lt;=T&amp;lt;=20) which means the number of test cases. Then T lines follow, each line consists of two positive integers, A and B. Notice that the integers are very large, that means you should not process them by using 32-bit integer. You may assume the length of each integer will not exceed 1000.
+Output
+For each test case, you should output two lines.</description>
+    </item>
+    
+    <item>
+      <title>刘汝佳p35,2-6（123排列）算法竞赛入门经典第二版</title>
+      <link>https://sucicada.github.io/blog/posts/soft/%E5%88%98%E6%B1%9D%E4%BD%B3p352-6123%E6%8E%92%E5%88%97%E7%AE%97%E6%B3%95%E7%AB%9E%E8%B5%9B%E5%85%A5%E9%97%A8%E7%BB%8F%E5%85%B8%E7%AC%AC%E4%BA%8C%E7%89%88/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://sucicada.github.io/blog/posts/soft/%E5%88%98%E6%B1%9D%E4%BD%B3p352-6123%E6%8E%92%E5%88%97%E7%AE%97%E6%B3%95%E7%AB%9E%E8%B5%9B%E5%85%A5%E9%97%A8%E7%BB%8F%E5%85%B8%E7%AC%AC%E4%BA%8C%E7%89%88/</guid>
+      <description>算法竞赛入门经典第二版
+刘汝佳p35 , 2-6
+用1,2,3，&amp;hellip;.，9组成3个三位数abc，def和ghi，每个数字恰好使用一次，要求abc:def:ghi=1:2:3。输出所有解。
+#include&amp;lt;cstdio&amp;gt; #include&amp;lt;iostream&amp;gt; using namespace std; int nn(int a,int *n) { //cout&amp;lt;&amp;lt;&amp;#34;a&amp;#34;&amp;lt;&amp;lt;a&amp;lt;&amp;lt;endl; for(int i=0;i&amp;lt;8;i++) { if(a==n[i]) { //cout&amp;lt;&amp;lt;n[i]&amp;lt;&amp;lt;endl; n[i]=-1; return 0; } } return 1; } void num(int a) { int n[9]; for(int i=0;i&amp;lt;8;i++) n[i]=i+1; int b=a*2; int c=a*3; int s[9]; s[0]=a/100; s[1]=(a/10)%10; s[2]=a%10; s[3]=b/100; s[4]=(b/10)%10; s[5]=b%10; s[6]=c/100; s[7]=(c/10)%10; s[8]=c%10; for(int i=0;i&amp;lt;8;i++) { //cout&amp;lt;&amp;lt;&amp;#34;si&amp;#34;&amp;lt;&amp;lt;s[i]&amp;lt;&amp;lt;endl; if(nn(s[i],n)==1) { //cout&amp;lt;&amp;lt;&amp;#34;return&amp;#34;&amp;lt;&amp;lt;endl; return; } } cout&amp;lt;&amp;lt;a&amp;lt;&amp;lt;&amp;#34; &amp;#34;&amp;lt;&amp;lt;b&amp;lt;&amp;lt;&amp;#34; &amp;#34;&amp;lt;&amp;lt;c&amp;lt;&amp;lt;endl; } int main() { for(int a=100;a&amp;lt;=333;a++) { num(a); } return 0; } 所以结果是</description>
+    </item>
+    
+    <item>
+      <title>判断字符是否为字母或数字</title>
+      <link>https://sucicada.github.io/blog/posts/soft/%E5%88%A4%E6%96%AD%E5%AD%97%E7%AC%A6%E6%98%AF%E5%90%A6%E4%B8%BA%E5%AD%97%E6%AF%8D%E6%88%96%E6%95%B0%E5%AD%97/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://sucicada.github.io/blog/posts/soft/%E5%88%A4%E6%96%AD%E5%AD%97%E7%AC%A6%E6%98%AF%E5%90%A6%E4%B8%BA%E5%AD%97%E6%AF%8D%E6%88%96%E6%95%B0%E5%AD%97/</guid>
+      <description>参考：
+C语言中isalnum()函数和isalpha()函数的对比使用
+C语言 判断字符的大小写 isalpha()函数
+#include&amp;lt;ctype.h&amp;gt;//或&amp;lt;cctype&amp;gt; int isalpha(int ch)//为英文字母时返回不一定为1的非零，否则返回零 isalnum(c)//判断c是否为英文字母或数字 isupper(c)//判断c是否为大写英文字母 islower(c)//判断c是否为小写英文字母 isdigit(c)//判断c是否为数字 以上若不是所判断字符类型则都返回零</description>
+    </item>
+    
+    <item>
+      <title>十六进制转十进制.h</title>
+      <link>https://sucicada.github.io/blog/posts/soft/%E5%8D%81%E5%85%AD%E8%BF%9B%E5%88%B6%E8%BD%AC%E5%8D%81%E8%BF%9B%E5%88%B6.h/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://sucicada.github.io/blog/posts/soft/%E5%8D%81%E5%85%AD%E8%BF%9B%E5%88%B6%E8%BD%AC%E5%8D%81%E8%BF%9B%E5%88%B6.h/</guid>
+      <description>#include&amp;lt;stdio.h&amp;gt; #include&amp;lt;ctype.h&amp;gt; int sc(char a[])//传进来代表十六进制的字符串数组，返回十进制 { int i,n=0,t; for(i=0;a[i];i++) { a[i]=toupper(a[i]); if(a[i]&amp;gt;=&amp;#39;A&amp;#39;) t=a[i]-&amp;#39;A&amp;#39;+10; else t=a[i]-&amp;#39;0&amp;#39;; n=n*16+t; } return n; } </description>
+    </item>
+    
+    <item>
+      <title>控制台光标移动(有尾迹）</title>
+      <link>https://sucicada.github.io/blog/posts/soft/%E6%8E%A7%E5%88%B6%E5%8F%B0%E5%85%89%E6%A0%87%E7%A7%BB%E5%8A%A8%E6%9C%89%E5%B0%BE%E8%BF%B9/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://sucicada.github.io/blog/posts/soft/%E6%8E%A7%E5%88%B6%E5%8F%B0%E5%85%89%E6%A0%87%E7%A7%BB%E5%8A%A8%E6%9C%89%E5%B0%BE%E8%BF%B9/</guid>
+      <description>更改了网上的代码，实现有尾迹的移动，
+用键盘上的上下左右来控制
+这是借鉴地址：C语言之实现控制台光标随意移动
+#include &amp;lt;stdio.h&amp;gt; #include &amp;lt;windows.h&amp;gt; #include &amp;lt;conio.h&amp;gt; HANDLE hout; //获得输入 char getInput() { int ch; //输入字符串 COORD coord; //屏幕上的坐标 CONSOLE_SCREEN_BUFFER_INFO csbi; //控制台屏幕缓冲区信息 coord.X=11; coord.Y=10; ch=getch(); csbi.dwCursorPosition.X=11; csbi.dwCursorPosition.Y=10; //0x0d表示回车，0XE0表示上下左右等键的键码 while(ch==0xE0||ch==0x0d) { GetConsoleScreenBufferInfo(hout,&amp;amp;csbi);//读取控制台屏幕缓冲信息 coord.X=csbi.dwCursorPosition.X; //得到坐标X的值 coord.Y=csbi.dwCursorPosition.Y; //得到坐标Y的值 ch=getch(); //printf(&amp;#34; &amp;#34;); //上 if(ch==0x48) { if(coord.Y!=0) { coord.Y--; //printf(&amp;#34;%c&amp;#34;,&amp;#39;A&amp;#39;); } } //下 else if(ch==0x50) { coord.Y++; //printf(&amp;#34;%c&amp;#34;,&amp;#39;A&amp;#39;); } //左 else if(ch==0x4b) { if(coord.X!=0){coord.X--;}//printf(&amp;#34;%c&amp;#34;,&amp;#39;A&amp;#39;);} } //右 else if(ch==0x4d) { if(coord.X!=79) { coord.X++; //printf(&amp;#34;%c&amp;#34;,&amp;#39;A&amp;#39;); } } printf(&amp;#34;%c&amp;#34;,&amp;#39;.</description>
+    </item>
+    
+    <item>
+      <title>求int型的最大取值（正数）</title>
+      <link>https://sucicada.github.io/blog/posts/soft/%E6%B1%82int%E5%9E%8B%E7%9A%84%E6%9C%80%E5%A4%A7%E5%8F%96%E5%80%BC%E6%AD%A3%E6%95%B0/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://sucicada.github.io/blog/posts/soft/%E6%B1%82int%E5%9E%8B%E7%9A%84%E6%9C%80%E5%A4%A7%E5%8F%96%E5%80%BC%E6%AD%A3%E6%95%B0/</guid>
+      <description>用的是夹值法
+#include&amp;lt;stdio.h&amp;gt; int main(){ int i=1,n=1,m; do { n=i; i=i*2; printf(&amp;#34;%d\n&amp;#34;,n); } while((i/2)==n);//n是存数，i去趟雷 putchar(&amp;#39;\n&amp;#39;); m=n; for(;;) { n=m; m+=1; if((m-1)!=n) { printf(&amp;#34;break&amp;#34;); break; } else m-=1; i=1; while(1) { if(i!=1) if((n-i/2)!=m) { printf(&amp;#34;int %d\n&amp;#34;,m); return; } printf(&amp;#34;!!!\n&amp;#34;); if(i!=1) m=n;//m是存数，n去趟雷 n=n+i; i*=2; printf(&amp;#34;%d %d\n&amp;#34;,m,n); } } getchar(); return 0; } 最大值：2147483647</description>
+    </item>
+    
+    <item>
+      <title>求最长回文子串</title>
+      <link>https://sucicada.github.io/blog/posts/soft/%E6%B1%82%E6%9C%80%E9%95%BF%E5%9B%9E%E6%96%87%E5%AD%90%E4%B8%B2/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://sucicada.github.io/blog/posts/soft/%E6%B1%82%E6%9C%80%E9%95%BF%E5%9B%9E%E6%96%87%E5%AD%90%E4%B8%B2/</guid>
+      <description>一段字符串中出现的正反读一样的子串
+当时自己写下的泛泛之词
+#include&amp;lt;stdio.h&amp;gt; #define N 20 int main() { char a[N]=&amp;#34;abcb&amp;#34;; char b[N]=&amp;#34;0000&amp;#34;; int i,j,m; for(i=0;i&amp;lt;strlen(a)/2;i++) { for(j=i+1;j&amp;lt;strlen(a);j++) { if(a[i]==a[j]) { printf(&amp;#34;%d %d %d &amp;#34;,i,j ,m); for(m=i;m&amp;lt;=j;m++) { if(a[m]!=a[j+i-m]) break; b[m-i]=a[m]; b[j-i-m]=a[j+i-m]; if((m==j+i-m)||(m==j+i-m-1)) i=j; printf(&amp;#34;%s\n&amp;#34;,b); } } } } printf(&amp;#34;%s\n&amp;#34;,b); return 0; } </description>
+    </item>
+    
+    <item>
+      <title>颠倒字符串（整体，子串）</title>
+      <link>https://sucicada.github.io/blog/posts/soft/%E9%A2%A0%E5%80%92%E5%AD%97%E7%AC%A6%E4%B8%B2%E6%95%B4%E4%BD%93%E5%AD%90%E4%B8%B2/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://sucicada.github.io/blog/posts/soft/%E9%A2%A0%E5%80%92%E5%AD%97%E7%AC%A6%E4%B8%B2%E6%95%B4%E4%BD%93%E5%AD%90%E4%B8%B2/</guid>
+      <description>这是对整体的字符串镜像
+#include &amp;lt;stdio.h&amp;gt; int main(void) { char a[9] = &amp;#34;abcdef&amp;#34;; int i,j;//j是最后一位，i是执行位 j=strlen(a)-1; printf(&amp;#34;%s\n&amp;#34;,a); for(i=0;i&amp;lt;strlen(a)/2;i++) { a[i]+=a[j-i]; a[j-i]=a[i]-a[j-i]; a[i]=a[i]-a[j-i]; printf(&amp;#34;%s\n&amp;#34;,a); } return 0; } 这是对子串镜像
+#include &amp;lt;stdio.h&amp;gt; int main(void) { char a[] = &amp;#34;012 4567 910&amp;#34;; int i,j,t;//j是最后一位，i是执行位 j=7; t=i=4;//t记录下变换部分的第一位 printf(&amp;#34;%s\n&amp;#34;,a); for(;i&amp;lt;(j+t+1)/2;i++) { a[i]+=a[j-i+t]; a[j-i+t]=a[i]-a[j-i+t]; a[i]=a[i]-a[j-i+t]; printf(&amp;#34;%s\n&amp;#34;,a); } return 0; } </description>
+    </item>
+    
+  </channel>
+</rss>

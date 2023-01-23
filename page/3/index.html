@@ -150,6 +150,135 @@
 
 <article class="post-entry"> 
   <header class="entry-header">
+    <h2>UVA 1599 - Ideal Path(理想路径) By SuCicada
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>例题6-20 理想路径（Ideal Path, NEERC 2010, UVa1599）
+给一个n个点m条边（2≤n≤100000，1≤m≤200000）的无向图，每条边上都涂有一种颜
+色。求从结点1到结点n的一条路径，使得经过的边数尽量少，在此前提下，经过边的颜色序
+列的字典序最小。一对结点间可能有多条边，一条边可能连接两个相同结点。输入保证结点
+1可以达到结点n。颜色为1～10
+9的整数。
+Sample Input
+4 6
+1 2 1
+1 3 2
+3 4 3
+2 3 1
+2 4 4
+3 1 1
+Sample Output
+2
+1 3
+本家链接
+先找最短路：倒序从终点bfs找。
+- 在此认为倒序和正序效果一样。只是某些处理逻辑相反。
+bfs之后，可能存在多条最短路，所以再需要一次bfs，来选出颜色最小的路。
+降低时间的注意点：
+选择合适的数据结构存储图。 一开始使用了map作为存储图的结构，后来在遍历过程中实在比vector慢了太多。 使用标记记录走过的结点，减少bfs重复计算。 对了2:00 - 2:30 期间uva oj 判题特别慢特别慢。尽量避开。
+#include&lt;iostream&gt; #include&lt;vector&gt; #include&lt;map&gt; #include&lt;queue&gt; #include&lt;cmath&gt; #include&lt;cstring&gt; #include&lt;set&gt; using namespace std; #define mapiter map&lt;int,int&gt;::iterator const int MAX_N = 100005; /* 先找最短路：倒序从终点bfs找。 - 在此认为倒序和正序效果一样。只是某些处理逻辑相反。 bfs之后，可能存在多条最短路，所以再需要一次bfs，来选出颜色最小的路。 一开始使用了map作为存储图的结构，后来在遍历过程中实在比vector慢了太多。 */ /* a-&gt;b map[a][b] == color */ class Node{ public: int next; int color; }; // map&lt;int,int&gt; door[MAX_N]; vector&lt;Node&gt; door[MAX_N]; /* 存储无向图，因为结点太多了 */ int book[MAX_N]; /* 记录每个点距离终点`的最小距离 */ int visit[MAX_N]; /* 记录走过的点 */ int big = (1L&lt;&lt;31)-1; int res[MAX_N]; int N,M; /* n下各点 到n 的距离取最短&#43;1 door[a][b] a -&gt; b log[b] = min(log[b], log[a]&#43;1) */ void bfs(){ queue&lt;int&gt; tmp; tmp....</p>
+  </div>
+  <footer class="entry-footer">SuCicada</footer>
+  <a class="entry-link" aria-label="post link to UVA 1599 - Ideal Path(理想路径) By SuCicada" href="https://sucicada.github.io/blog/posts/uvaoj/uva-1599-ideal-path%E7%90%86%E6%83%B3%E8%B7%AF%E5%BE%84-by-sucicada/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2>uva 201 - Squares（数正方形）
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>习题4-2 正方形（Squares, ACM/ICPC World Finals 1990, UVa201）
+有n行n列（2≤n≤9）的小黑点，还有m条线段连接其中的一些黑点。统计这些线段连成
+了多少个正方形（每种边长分别统计）。
+行从上到下编号为1～n，列从左到右编号为1～n。边用H i j和V i j表示，分别代表边
+(i,j)-(i,j&#43;1)和(i,j)-(i&#43;1,j)。如图4-5所示最左边的线段用V 1 1表示。图中包含两个边长为1的正
+方形和一个边长为2的正方形。
+Sample Input
+4
+16
+H 1 1
+H 1 3
+H 2 1
+H 2 2
+H 2 3
+H 3 2
+H 4 2
+H 4 3
+V 1 1
+V 2 1
+V 2 2
+V 2 3
+V 3 2
+V 4 1
+V 4 2
+V 4 3...</p>
+  </div>
+  <footer class="entry-footer">SuCicada</footer>
+  <a class="entry-link" aria-label="post link to uva 201 - Squares（数正方形）" href="https://sucicada.github.io/blog/posts/uvaoj/uva-201-squares%E6%95%B0%E6%AD%A3%E6%96%B9%E5%BD%A2/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2>uva 202 - Repeating Decimals（循环小数）
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>习题3-8 循环小数（Repeating Decimals, ACM/ICPC World Finals 1990, UVa202）
+输入整数a和b（0≤a≤3000，1≤b≤3000），输出a/b的循环小数表示以及循环节长度。例
+如a=5，b=43，小数表示为0.(116279069767441860465)，循环节长度为21。
+注意：有些即便是原题也可能没用看清的要求
+（如果小数位大于50括号里显示到50个小数位即可，后面加…）
+（但是输出的小数位要是确实的位数，即便几百几千）
+https://uva.onlinejudge.org/index.php?option=com_onlinejudge&amp;Itemid=8&amp;page=show_problem&amp;category=830&amp;problem=138&amp;mosmsg=Submission&#43;received&#43;with&#43;ID&#43;20551105
+Sample Input
+76 25
+5 43
+1 397
+Sample Output
+76/25 = 3.04(0)
+1 = number of digits in repeating cycle
+5/43 = 0.(116279069767441860465)
+21 = number of digits in repeating cycle
+1/397 = 0.(00251889168765743073047858942065491183879093198992…)
+99 = number of digits in repeating cycle
+（ps：这个案例的99就很是误导人）
+思路：从手算的除法公式下手，每一次的被除数都是 上一个被除数 – 上一位商*除数，而我们只要找到从哪里开始的被除数和之前的某一个被除数一样，那么从这一位便开始循环；如果不懂，看下面的例子：2/3
+0.6 6 // 3|2.0 //一开始不够除，补零 1.8 //28 = 4（商）* 7（除数） 2 0 //20 = (30（被除数）- 4（商）* 7（除数）)*10 //开始循环 //同时我们发现 这里的被除数20 和第二行的被除数20 一样， 如果还不懂，亲自写一下除法运算，真的可以秒懂。...</p>
+  </div>
+  <footer class="entry-footer">SuCicada</footer>
+  <a class="entry-link" aria-label="post link to uva 202 - Repeating Decimals（循环小数）" href="https://sucicada.github.io/blog/posts/uvaoj/uva-202-repeating-decimals%E5%BE%AA%E7%8E%AF%E5%B0%8F%E6%95%B0/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2>uva 210 - Concurrency Simulator (并行程序模拟)
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>例题6-1 并行程序模拟（ Concurrency Simulator, ACM/ICPC World Finals 1991,
+UVa210）
+你的任务是模拟n个程序（ 按输入顺序编号为1～ n） 的并行执行。 每个程序包含不超过
+25条语句， 格式一共有5种： var = constant（ 赋值） ； print var（ 打印） ； lock； unlock； end。
+变量用单个小写字母表示， 初始为0， 为所有程序公有（ 因此在一个程序里对某个变量
+赋值可能会影响另一个程序） 。 常数是小于100的非负整数。
+每个时刻只能有一个程序处于运行态， 其他程序均处于等待态。 上述5种语句分别需
+要t1、 t2、 t3、 t4、 t5单位时间。 运行态的程序每次最多运行Q个单位时间（ 称为配额） 。 当
+一个程序的配额用完之后， 把当前语句（ 如果存在） 执行完之后该程序会被插入一个等待队
+列中， 然后处理器从队首取出一个程序继续执行。 初始等待队列包含按输入顺序排列的各个
+程序， 但由于lock/unlock语句的出现， 这个顺序可能会改变。
+lock的作用是申请对所有变量的独占访问。 lock和unlock总是成对出现， 并且不会嵌套。
+lock总是在unlock的前面。 当一个程序成功执行完lock指令之后， 其他程序一旦试图执行lock
+指令， 就会马上被放到一个所谓的阻止队列的尾部（ 没有用完的配额就浪费了） 。 当unlock
+执行完毕后， 阻止队列的第一个程序进入等待队列的首部。...</p>
+  </div>
+  <footer class="entry-footer">SuCicada</footer>
+  <a class="entry-link" aria-label="post link to uva 210 - Concurrency Simulator (并行程序模拟)" href="https://sucicada.github.io/blog/posts/uvaoj/uva-210-concurrency-simulator-%E5%B9%B6%E8%A1%8C%E7%A8%8B%E5%BA%8F%E6%A8%A1%E6%8B%9F/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
     <h2>uva 213 - Message Decoding（二进制编码）
     </h2>
   </header>
@@ -790,161 +919,6 @@ https://uva.onlinejudge.org/index.php?option=com_onlinejudge&amp;Itemid=8&amp;ca
   </div>
   <footer class="entry-footer">SuCicada</footer>
   <a class="entry-link" aria-label="post link to UVA 514 - Rails ( 铁轨)" href="https://sucicada.github.io/blog/posts/uvaoj/uva-514-rails-%E9%93%81%E8%BD%A8/"></a>
-</article>
-
-<article class="post-entry"> 
-  <header class="entry-header">
-    <h2>uva 540 - Team Queue（插队队列）
-    </h2>
-  </header>
-  <div class="entry-content">
-    <p>例题5-6 团体队列(Team Queue,UVa540)
-有t个团队的人正在排一个长队。每次新来一个人时,如果他有队友在排队,那么这个
-新人会插队到最后一个队友的身后。如果没有任何一个队友排队,则他会排到长队的队尾。
-输入每个团队中所有队员的编号,要求支持如下3种指令(前两种指令可以穿插进
-行)。
-ENQUEUEx:编号为x的人进入长队。
-DEQUEUE:长队的队首出队。
-STOP:停止模拟。
-对于每个DEQUEUE指令,输出出队的人的编号。
-Sample Input
-2
-3 101 102 103
-3 201 202 203
-ENQUEUE 101
-ENQUEUE 201
-ENQUEUE 102
-ENQUEUE 202
-ENQUEUE 103
-ENQUEUE 203
-DEQUEUE
-DEQUEUE
-DEQUEUE
-DEQUEUE
-DEQUEUE
-DEQUEUE
-STOP
-2
-5 259001 259002 259003 259004 259005
-6 260001 260002 260003 260004 260005 260006
-ENQUEUE 259001
-ENQUEUE 260001
-ENQUEUE 259002
-ENQUEUE 259003
-ENQUEUE 259004
-ENQUEUE 259005
-DEQUEUE
-DEQUEUE...</p>
-  </div>
-  <footer class="entry-footer">SuCicada</footer>
-  <a class="entry-link" aria-label="post link to uva 540 - Team Queue（插队队列）" href="https://sucicada.github.io/blog/posts/uvaoj/uva-540-team-queue%E6%8F%92%E9%98%9F%E9%98%9F%E5%88%97/"></a>
-</article>
-
-<article class="post-entry"> 
-  <header class="entry-header">
-    <h2>UVA 548 - Tree(树) By SuCicada
-    </h2>
-  </header>
-  <div class="entry-content">
-    <p>例题6-8 树（Tree, UVa 548）
-给一棵点带权（权值各不相同，都是小于10000的正整数）的二叉树的中序和后序遍
-历，找一个叶子使得它到根的路径上的权和最小。如果有多解，该叶子本身的权应尽量小。
-输入中每两行表示一棵树，其中第一行为中序遍历，第二行为后序遍历。
-样例输入：
-3 2 1 4 5 7 6
-3 1 2 5 6 7 4
-7 8 11 3 5 16 12 18
-8 3 11 7 16 18 12 5
-255
-255
-样例输出：
-1
-3
-255
-本家地址
-在根据中序和后序遍历进行构造的时候，同时计算叶子的权值和，比较选择最小的权值的叶子，记录最小权值和的叶子和权值和。
-#include&lt;iostream&gt; #include&lt;cstdio&gt; #include&lt;sstream&gt; #include&lt;cstring&gt; using namespace std; int inorder[10004]; int postorder[10004]; int inindex[10004]; int min_top_value = 100000004; // 最小的权和 int loft = -1; // 叶子本身的值, /* 参数: 当前子树的 中序前,后 后序前,后 */ int calcul(int in_begin, int in_end, int post_begin, int post_end, int alculate_root_value){ // in_end - in_begin == post_end - post_begin int root_value = postorder[post_end]; // 根, 从后序 int root_in_index = inindex[root_value];//fin_inorder(in_begin, in_end, root_value); alculate_root_value = alculate_root_value &#43; root_value; // 新的累计根值, 加上自己身上的 if(in_end &lt;= in_begin){ // 叶子了 if(loft == -1 || // 第一个叶子 (alculate_root_value &lt; min_top_value) || (alculate_root_value == min_top_value &amp;&amp; inorder[in_begin] &lt; loft) ) { min_top_value = alculate_root_value; loft = inorder[in_begin]; } return 0; } int len = root_in_index-1-in_begin; if(root_in_index &gt; in_begin){ calcul(in_begin, root_in_index-1, post_begin, post_begin &#43; len, alculate_root_value); // 左枝 } len = in_end - root_in_index-1; if(root_in_index &lt; in_end){ calcul(root_in_index&#43;1, in_end, post_end-1-len , post_end-1, alculate_root_value); // 右枝 } return 0; } void init(){ memset(inorder,0,sizeof(inorder)); memset(postorder,0,sizeof(postorder)); memset(inindex,0,sizeof(inindex)); min_top_value = 100000004; // 最小的权和 loft = -1; // 叶子本身的值 } int main() { int row = 0; string line; while(getline(cin,line)){ // cout&lt;&lt;n&lt;&lt;&#34; &#34;; stringstream ss(line); int i=0; int n; if(row==0){ // 新的一组, 要初始化 // 代表是一组中的第一行,即中序遍历 init(); while(ss&gt;&gt;n){ inorder[i] = n; inindex[n] = i; i&#43;&#43;; } row = 1; }else{ // 一组中的第二行, 即后序遍历 while(ss&gt;&gt;n){ postorder[i&#43;&#43;] = n; } row = 0; calcul(0,i-1,0,i-1,0); cout&lt;&lt;loft&lt;&lt;endl; } return 0; } // AC at 2020/03/21 ps：债还清了，这个代码提交了12次数，uva因为赞助商跑路的关系（不知道也没有关系），感觉现在更加慢了。网站首页筹集代码贡献。也想做点贡献，但是C&#43;&#43;的网站。。。</p>
-  </div>
-  <footer class="entry-footer">SuCicada</footer>
-  <a class="entry-link" aria-label="post link to UVA 548 - Tree(树) By SuCicada" href="https://sucicada.github.io/blog/posts/uvaoj/uva-548-tree%E6%A0%91-by-sucicada/"></a>
-</article>
-
-<article class="post-entry"> 
-  <header class="entry-header">
-    <h2>UVA 572 - Oil Deposits (油田) By SuCicada
-    </h2>
-  </header>
-  <div class="entry-content">
-    <p>例题6-12 油田（Oil Deposits, UVa 572）
-输入一个m行n列的字符矩阵，统计字符“@”组成多少个八连块。如果两个字符“@”所在
-的格子相邻（横、竖或者对角线方向），就说它们属于同一个八连块。例如，图6-9中有两
-个八连块。
-Sample Input
-1 1
-*
-3 5
-@@*
-@
-@@*
-1 8
-@@***@
-5 5
-****@
-@@@
-@**@
-@@@@
-@@**@
-0 0
-Sample Output
-0
-1
-2
-2
-本家连接
-恩，嘛，遍历跑呗。反正到处都有。
-#include&lt;iostream&gt; using namespace std; char oil[110][110]; int sum=0; int length,width; int isOil=0; void show(){ for(int i=0;i&lt;length;i&#43;&#43;){ for(int j=0;j&lt;width;j&#43;&#43;) cout&lt;&lt;oil[i][j]; cout&lt;&lt;endl; } // cout&lt;&lt;&#34;========================&#34;&lt;&lt;endl; cout&lt;&lt;endl; } int dfs(int x,int y){ char plot = oil[x][y]; if(x&lt;0 || x&gt;=length || y&lt;0 || y&gt;=width || plot!...</p>
-  </div>
-  <footer class="entry-footer">SuCicada</footer>
-  <a class="entry-link" aria-label="post link to UVA 572 - Oil Deposits (油田) By SuCicada" href="https://sucicada.github.io/blog/posts/uvaoj/uva-572-oil-deposits-%E6%B2%B9%E7%94%B0-by-sucicada/"></a>
-</article>
-
-<article class="post-entry"> 
-  <header class="entry-header">
-    <h2>UVA 679 - Dropping Balls (小球下落) By SuCicada
-    </h2>
-  </header>
-  <div class="entry-content">
-    <p>例题6-6 小球下落（Dropping Balls, UVa 679）
-有一棵二叉树，最大深度为D，且所有叶子的深度都相同。所有结点从上到下从左到右
-编号为1, 2, 3,…, 2D-1。在结点1处放一个小球，它会往下落。每个内结点上都有一个开关，
-初始全部关闭，当每次有小球落到一个开关上时，状态都会改变。当小球到达一个内结点
-时，如果该结点上的开关关闭，则往左走，否则往右走，直到走到叶子结点，如图所
-示。
-一些小球从结点1处依次开始下落，最后一个小球将会落到哪里呢？输入叶子深度D和
-小球个数I，输出第I个小球最后所在的叶子编号。假设I不超过整棵树的叶子个数。D≤20。
-输入最多包含1000组数据。
-样例输入：
-6
-4 2
-3 4
-10 1
-2 2
-8 128
-16 12345
--1
-样例输出：
-12
-7
-512
-3
-255
-36358
-本家链接
-最简单能想到的就是模拟，模拟球的下落，但是输入一旦大了就超时了。 所以我们可以，找规律。 首先假设有6层，我们来扔球看看情况
-球数 落下位置（最后一行,第一个为0计数） 0 0 1 16 2 8 3 24 4 4 5 20 6 12 7 28 8 2 9 18 10 10 11 26 12 6 13 22 14 14 15 30 --- 16 1 17 17 18 9 19 25 20 5 21 21 22 13 23 29 24 3 25 19 26 11 27 27 28 7 29 23 30 15 31 31 ==== 第33开始轮回 === 32 0 33 16 34 8 35 24 36 4 37 20 38 12 39 28 发现规律了吧。...</p>
-  </div>
-  <footer class="entry-footer">SuCicada</footer>
-  <a class="entry-link" aria-label="post link to UVA 679 - Dropping Balls (小球下落) By SuCicada" href="https://sucicada.github.io/blog/posts/uvaoj/uva-679-dropping-balls-%E5%B0%8F%E7%90%83%E4%B8%8B%E8%90%BD-by-sucicada/"></a>
 </article>
 <footer class="page-footer">
   <nav class="pagination">

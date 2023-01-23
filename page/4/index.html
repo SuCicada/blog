@@ -150,6 +150,161 @@
 
 <article class="post-entry"> 
   <header class="entry-header">
+    <h2>uva 540 - Team Queue（插队队列）
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>例题5-6 团体队列(Team Queue,UVa540)
+有t个团队的人正在排一个长队。每次新来一个人时,如果他有队友在排队,那么这个
+新人会插队到最后一个队友的身后。如果没有任何一个队友排队,则他会排到长队的队尾。
+输入每个团队中所有队员的编号,要求支持如下3种指令(前两种指令可以穿插进
+行)。
+ENQUEUEx:编号为x的人进入长队。
+DEQUEUE:长队的队首出队。
+STOP:停止模拟。
+对于每个DEQUEUE指令,输出出队的人的编号。
+Sample Input
+2
+3 101 102 103
+3 201 202 203
+ENQUEUE 101
+ENQUEUE 201
+ENQUEUE 102
+ENQUEUE 202
+ENQUEUE 103
+ENQUEUE 203
+DEQUEUE
+DEQUEUE
+DEQUEUE
+DEQUEUE
+DEQUEUE
+DEQUEUE
+STOP
+2
+5 259001 259002 259003 259004 259005
+6 260001 260002 260003 260004 260005 260006
+ENQUEUE 259001
+ENQUEUE 260001
+ENQUEUE 259002
+ENQUEUE 259003
+ENQUEUE 259004
+ENQUEUE 259005
+DEQUEUE
+DEQUEUE...</p>
+  </div>
+  <footer class="entry-footer">SuCicada</footer>
+  <a class="entry-link" aria-label="post link to uva 540 - Team Queue（插队队列）" href="https://sucicada.github.io/blog/posts/uvaoj/uva-540-team-queue%E6%8F%92%E9%98%9F%E9%98%9F%E5%88%97/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2>UVA 548 - Tree(树) By SuCicada
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>例题6-8 树（Tree, UVa 548）
+给一棵点带权（权值各不相同，都是小于10000的正整数）的二叉树的中序和后序遍
+历，找一个叶子使得它到根的路径上的权和最小。如果有多解，该叶子本身的权应尽量小。
+输入中每两行表示一棵树，其中第一行为中序遍历，第二行为后序遍历。
+样例输入：
+3 2 1 4 5 7 6
+3 1 2 5 6 7 4
+7 8 11 3 5 16 12 18
+8 3 11 7 16 18 12 5
+255
+255
+样例输出：
+1
+3
+255
+本家地址
+在根据中序和后序遍历进行构造的时候，同时计算叶子的权值和，比较选择最小的权值的叶子，记录最小权值和的叶子和权值和。
+#include&lt;iostream&gt; #include&lt;cstdio&gt; #include&lt;sstream&gt; #include&lt;cstring&gt; using namespace std; int inorder[10004]; int postorder[10004]; int inindex[10004]; int min_top_value = 100000004; // 最小的权和 int loft = -1; // 叶子本身的值, /* 参数: 当前子树的 中序前,后 后序前,后 */ int calcul(int in_begin, int in_end, int post_begin, int post_end, int alculate_root_value){ // in_end - in_begin == post_end - post_begin int root_value = postorder[post_end]; // 根, 从后序 int root_in_index = inindex[root_value];//fin_inorder(in_begin, in_end, root_value); alculate_root_value = alculate_root_value &#43; root_value; // 新的累计根值, 加上自己身上的 if(in_end &lt;= in_begin){ // 叶子了 if(loft == -1 || // 第一个叶子 (alculate_root_value &lt; min_top_value) || (alculate_root_value == min_top_value &amp;&amp; inorder[in_begin] &lt; loft) ) { min_top_value = alculate_root_value; loft = inorder[in_begin]; } return 0; } int len = root_in_index-1-in_begin; if(root_in_index &gt; in_begin){ calcul(in_begin, root_in_index-1, post_begin, post_begin &#43; len, alculate_root_value); // 左枝 } len = in_end - root_in_index-1; if(root_in_index &lt; in_end){ calcul(root_in_index&#43;1, in_end, post_end-1-len , post_end-1, alculate_root_value); // 右枝 } return 0; } void init(){ memset(inorder,0,sizeof(inorder)); memset(postorder,0,sizeof(postorder)); memset(inindex,0,sizeof(inindex)); min_top_value = 100000004; // 最小的权和 loft = -1; // 叶子本身的值 } int main() { int row = 0; string line; while(getline(cin,line)){ // cout&lt;&lt;n&lt;&lt;&#34; &#34;; stringstream ss(line); int i=0; int n; if(row==0){ // 新的一组, 要初始化 // 代表是一组中的第一行,即中序遍历 init(); while(ss&gt;&gt;n){ inorder[i] = n; inindex[n] = i; i&#43;&#43;; } row = 1; }else{ // 一组中的第二行, 即后序遍历 while(ss&gt;&gt;n){ postorder[i&#43;&#43;] = n; } row = 0; calcul(0,i-1,0,i-1,0); cout&lt;&lt;loft&lt;&lt;endl; } return 0; } // AC at 2020/03/21 ps：债还清了，这个代码提交了12次数，uva因为赞助商跑路的关系（不知道也没有关系），感觉现在更加慢了。网站首页筹集代码贡献。也想做点贡献，但是C&#43;&#43;的网站。。。</p>
+  </div>
+  <footer class="entry-footer">SuCicada</footer>
+  <a class="entry-link" aria-label="post link to UVA 548 - Tree(树) By SuCicada" href="https://sucicada.github.io/blog/posts/uvaoj/uva-548-tree%E6%A0%91-by-sucicada/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2>UVA 572 - Oil Deposits (油田) By SuCicada
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>例题6-12 油田（Oil Deposits, UVa 572）
+输入一个m行n列的字符矩阵，统计字符“@”组成多少个八连块。如果两个字符“@”所在
+的格子相邻（横、竖或者对角线方向），就说它们属于同一个八连块。例如，图6-9中有两
+个八连块。
+Sample Input
+1 1
+*
+3 5
+@@*
+@
+@@*
+1 8
+@@***@
+5 5
+****@
+@@@
+@**@
+@@@@
+@@**@
+0 0
+Sample Output
+0
+1
+2
+2
+本家连接
+恩，嘛，遍历跑呗。反正到处都有。
+#include&lt;iostream&gt; using namespace std; char oil[110][110]; int sum=0; int length,width; int isOil=0; void show(){ for(int i=0;i&lt;length;i&#43;&#43;){ for(int j=0;j&lt;width;j&#43;&#43;) cout&lt;&lt;oil[i][j]; cout&lt;&lt;endl; } // cout&lt;&lt;&#34;========================&#34;&lt;&lt;endl; cout&lt;&lt;endl; } int dfs(int x,int y){ char plot = oil[x][y]; if(x&lt;0 || x&gt;=length || y&lt;0 || y&gt;=width || plot!...</p>
+  </div>
+  <footer class="entry-footer">SuCicada</footer>
+  <a class="entry-link" aria-label="post link to UVA 572 - Oil Deposits (油田) By SuCicada" href="https://sucicada.github.io/blog/posts/uvaoj/uva-572-oil-deposits-%E6%B2%B9%E7%94%B0-by-sucicada/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2>UVA 679 - Dropping Balls (小球下落) By SuCicada
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>例题6-6 小球下落（Dropping Balls, UVa 679）
+有一棵二叉树，最大深度为D，且所有叶子的深度都相同。所有结点从上到下从左到右
+编号为1, 2, 3,…, 2D-1。在结点1处放一个小球，它会往下落。每个内结点上都有一个开关，
+初始全部关闭，当每次有小球落到一个开关上时，状态都会改变。当小球到达一个内结点
+时，如果该结点上的开关关闭，则往左走，否则往右走，直到走到叶子结点，如图所
+示。
+一些小球从结点1处依次开始下落，最后一个小球将会落到哪里呢？输入叶子深度D和
+小球个数I，输出第I个小球最后所在的叶子编号。假设I不超过整棵树的叶子个数。D≤20。
+输入最多包含1000组数据。
+样例输入：
+6
+4 2
+3 4
+10 1
+2 2
+8 128
+16 12345
+-1
+样例输出：
+12
+7
+512
+3
+255
+36358
+本家链接
+最简单能想到的就是模拟，模拟球的下落，但是输入一旦大了就超时了。 所以我们可以，找规律。 首先假设有6层，我们来扔球看看情况
+球数 落下位置（最后一行,第一个为0计数） 0 0 1 16 2 8 3 24 4 4 5 20 6 12 7 28 8 2 9 18 10 10 11 26 12 6 13 22 14 14 15 30 --- 16 1 17 17 18 9 19 25 20 5 21 21 22 13 23 29 24 3 25 19 26 11 27 27 28 7 29 23 30 15 31 31 ==== 第33开始轮回 === 32 0 33 16 34 8 35 24 36 4 37 20 38 12 39 28 发现规律了吧。...</p>
+  </div>
+  <footer class="entry-footer">SuCicada</footer>
+  <a class="entry-link" aria-label="post link to UVA 679 - Dropping Balls (小球下落) By SuCicada" href="https://sucicada.github.io/blog/posts/uvaoj/uva-679-dropping-balls-%E5%B0%8F%E7%90%83%E4%B8%8B%E8%90%BD-by-sucicada/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
     <h2>UVA 699 - The Falling Leaves (落叶) By SuCicada
     </h2>
   </header>
@@ -322,6 +477,63 @@ Keyboards typically do not have an oriented double-quote, but they do have a lef
 
 <article class="post-entry"> 
   <header class="entry-header">
+    <h2>刘汝佳p35,2-6（123排列）算法竞赛入门经典第二版
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>算法竞赛入门经典第二版
+刘汝佳p35 , 2-6
+用1,2,3，….，9组成3个三位数abc，def和ghi，每个数字恰好使用一次，要求abc:def:ghi=1:2:3。输出所有解。
+#include&lt;cstdio&gt; #include&lt;iostream&gt; using namespace std; int nn(int a,int *n) { //cout&lt;&lt;&#34;a&#34;&lt;&lt;a&lt;&lt;endl; for(int i=0;i&lt;8;i&#43;&#43;) { if(a==n[i]) { //cout&lt;&lt;n[i]&lt;&lt;endl; n[i]=-1; return 0; } } return 1; } void num(int a) { int n[9]; for(int i=0;i&lt;8;i&#43;&#43;) n[i]=i&#43;1; int b=a*2; int c=a*3; int s[9]; s[0]=a/100; s[1]=(a/10)%10; s[2]=a%10; s[3]=b/100; s[4]=(b/10)%10; s[5]=b%10; s[6]=c/100; s[7]=(c/10)%10; s[8]=c%10; for(int i=0;i&lt;8;i&#43;&#43;) { //cout&lt;&lt;&#34;si&#34;&lt;&lt;s[i]&lt;&lt;endl; if(nn(s[i],n)==1) { //cout&lt;&lt;&#34;return&#34;&lt;&lt;endl; return; } } cout&lt;&lt;a&lt;&lt;&#34; &#34;&lt;&lt;b&lt;&lt;&#34; &#34;&lt;&lt;c&lt;&lt;endl; } int main() { for(int a=100;a&lt;=333;a&#43;&#43;) { num(a); } return 0; } 所以结果是...</p>
+  </div>
+  <footer class="entry-footer">SuCicada</footer>
+  <a class="entry-link" aria-label="post link to 刘汝佳p35,2-6（123排列）算法竞赛入门经典第二版" href="https://sucicada.github.io/blog/posts/soft/%E5%88%98%E6%B1%9D%E4%BD%B3p352-6123%E6%8E%92%E5%88%97%E7%AE%97%E6%B3%95%E7%AB%9E%E8%B5%9B%E5%85%A5%E9%97%A8%E7%BB%8F%E5%85%B8%E7%AC%AC%E4%BA%8C%E7%89%88/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2>判断字符是否为字母或数字
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>参考：
+C语言中isalnum()函数和isalpha()函数的对比使用
+C语言 判断字符的大小写 isalpha()函数
+#include&lt;ctype.h&gt;//或&lt;cctype&gt; int isalpha(int ch)//为英文字母时返回不一定为1的非零，否则返回零 isalnum(c)//判断c是否为英文字母或数字 isupper(c)//判断c是否为大写英文字母 islower(c)//判断c是否为小写英文字母 isdigit(c)//判断c是否为数字 以上若不是所判断字符类型则都返回零</p>
+  </div>
+  <footer class="entry-footer">SuCicada</footer>
+  <a class="entry-link" aria-label="post link to 判断字符是否为字母或数字" href="https://sucicada.github.io/blog/posts/soft/%E5%88%A4%E6%96%AD%E5%AD%97%E7%AC%A6%E6%98%AF%E5%90%A6%E4%B8%BA%E5%AD%97%E6%AF%8D%E6%88%96%E6%95%B0%E5%AD%97/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2>十六进制转十进制.h
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>#include&lt;stdio.h&gt; #include&lt;ctype.h&gt; int sc(char a[])//传进来代表十六进制的字符串数组，返回十进制 { int i,n=0,t; for(i=0;a[i];i&#43;&#43;) { a[i]=toupper(a[i]); if(a[i]&gt;=&#39;A&#39;) t=a[i]-&#39;A&#39;&#43;10; else t=a[i]-&#39;0&#39;; n=n*16&#43;t; } return n; } </p>
+  </div>
+  <footer class="entry-footer">SuCicada</footer>
+  <a class="entry-link" aria-label="post link to 十六进制转十进制.h" href="https://sucicada.github.io/blog/posts/soft/%E5%8D%81%E5%85%AD%E8%BF%9B%E5%88%B6%E8%BD%AC%E5%8D%81%E8%BF%9B%E5%88%B6.h/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2>控制台光标移动(有尾迹）
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>更改了网上的代码，实现有尾迹的移动，
+用键盘上的上下左右来控制
+这是借鉴地址：C语言之实现控制台光标随意移动
+#include &lt;stdio.h&gt; #include &lt;windows.h&gt; #include &lt;conio.h&gt; HANDLE hout; //获得输入 char getInput() { int ch; //输入字符串 COORD coord; //屏幕上的坐标 CONSOLE_SCREEN_BUFFER_INFO csbi; //控制台屏幕缓冲区信息 coord.X=11; coord.Y=10; ch=getch(); csbi.dwCursorPosition.X=11; csbi.dwCursorPosition.Y=10; //0x0d表示回车，0XE0表示上下左右等键的键码 while(ch==0xE0||ch==0x0d) { GetConsoleScreenBufferInfo(hout,&amp;csbi);//读取控制台屏幕缓冲信息 coord.X=csbi.dwCursorPosition.X; //得到坐标X的值 coord.Y=csbi.dwCursorPosition.Y; //得到坐标Y的值 ch=getch(); //printf(&#34; &#34;); //上 if(ch==0x48) { if(coord.Y!=0) { coord.Y--; //printf(&#34;%c&#34;,&#39;A&#39;); } } //下 else if(ch==0x50) { coord.Y&#43;&#43;; //printf(&#34;%c&#34;,&#39;A&#39;); } //左 else if(ch==0x4b) { if(coord.X!=0){coord.X--;}//printf(&#34;%c&#34;,&#39;A&#39;);} } //右 else if(ch==0x4d) { if(coord.X!=79) { coord.X&#43;&#43;; //printf(&#34;%c&#34;,&#39;A&#39;); } } printf(&#34;%c&#34;,&#39;....</p>
+  </div>
+  <footer class="entry-footer">SuCicada</footer>
+  <a class="entry-link" aria-label="post link to 控制台光标移动(有尾迹）" href="https://sucicada.github.io/blog/posts/soft/%E6%8E%A7%E5%88%B6%E5%8F%B0%E5%85%89%E6%A0%87%E7%A7%BB%E5%8A%A8%E6%9C%89%E5%B0%BE%E8%BF%B9/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
     <h2>数学必知必会-导数、梯度与积分
     </h2>
   </header>
@@ -338,6 +550,47 @@ Keyboards typically do not have an oriented double-quote, but they do have a lef
   </div>
   <footer class="entry-footer">SuCicada</footer>
   <a class="entry-link" aria-label="post link to 数学必知必会-导数、梯度与积分" href="https://sucicada.github.io/blog/posts/math/%E6%95%B0%E5%AD%A6%E5%BF%85%E7%9F%A5%E5%BF%85%E4%BC%9A-%E5%AF%BC%E6%95%B0%E6%A2%AF%E5%BA%A6%E4%B8%8E%E7%A7%AF%E5%88%86/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2>求int型的最大取值（正数）
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>用的是夹值法
+#include&lt;stdio.h&gt; int main(){ int i=1,n=1,m; do { n=i; i=i*2; printf(&#34;%d\n&#34;,n); } while((i/2)==n);//n是存数，i去趟雷 putchar(&#39;\n&#39;); m=n; for(;;) { n=m; m&#43;=1; if((m-1)!=n) { printf(&#34;break&#34;); break; } else m-=1; i=1; while(1) { if(i!=1) if((n-i/2)!=m) { printf(&#34;int %d\n&#34;,m); return; } printf(&#34;!!!\n&#34;); if(i!=1) m=n;//m是存数，n去趟雷 n=n&#43;i; i*=2; printf(&#34;%d %d\n&#34;,m,n); } } getchar(); return 0; } 最大值：2147483647</p>
+  </div>
+  <footer class="entry-footer">SuCicada</footer>
+  <a class="entry-link" aria-label="post link to 求int型的最大取值（正数）" href="https://sucicada.github.io/blog/posts/soft/%E6%B1%82int%E5%9E%8B%E7%9A%84%E6%9C%80%E5%A4%A7%E5%8F%96%E5%80%BC%E6%AD%A3%E6%95%B0/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2>求最长回文子串
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>一段字符串中出现的正反读一样的子串
+当时自己写下的泛泛之词
+#include&lt;stdio.h&gt; #define N 20 int main() { char a[N]=&#34;abcb&#34;; char b[N]=&#34;0000&#34;; int i,j,m; for(i=0;i&lt;strlen(a)/2;i&#43;&#43;) { for(j=i&#43;1;j&lt;strlen(a);j&#43;&#43;) { if(a[i]==a[j]) { printf(&#34;%d %d %d &#34;,i,j ,m); for(m=i;m&lt;=j;m&#43;&#43;) { if(a[m]!=a[j&#43;i-m]) break; b[m-i]=a[m]; b[j-i-m]=a[j&#43;i-m]; if((m==j&#43;i-m)||(m==j&#43;i-m-1)) i=j; printf(&#34;%s\n&#34;,b); } } } } printf(&#34;%s\n&#34;,b); return 0; } </p>
+  </div>
+  <footer class="entry-footer">SuCicada</footer>
+  <a class="entry-link" aria-label="post link to 求最长回文子串" href="https://sucicada.github.io/blog/posts/soft/%E6%B1%82%E6%9C%80%E9%95%BF%E5%9B%9E%E6%96%87%E5%AD%90%E4%B8%B2/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2>颠倒字符串（整体，子串）
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>这是对整体的字符串镜像
+#include &lt;stdio.h&gt; int main(void) { char a[9] = &#34;abcdef&#34;; int i,j;//j是最后一位，i是执行位 j=strlen(a)-1; printf(&#34;%s\n&#34;,a); for(i=0;i&lt;strlen(a)/2;i&#43;&#43;) { a[i]&#43;=a[j-i]; a[j-i]=a[i]-a[j-i]; a[i]=a[i]-a[j-i]; printf(&#34;%s\n&#34;,a); } return 0; } 这是对子串镜像
+#include &lt;stdio.h&gt; int main(void) { char a[] = &#34;012 4567 910&#34;; int i,j,t;//j是最后一位，i是执行位 j=7; t=i=4;//t记录下变换部分的第一位 printf(&#34;%s\n&#34;,a); for(;i&lt;(j&#43;t&#43;1)/2;i&#43;&#43;) { a[i]&#43;=a[j-i&#43;t]; a[j-i&#43;t]=a[i]-a[j-i&#43;t]; a[i]=a[i]-a[j-i&#43;t]; printf(&#34;%s\n&#34;,a); } return 0; } </p>
+  </div>
+  <footer class="entry-footer">SuCicada</footer>
+  <a class="entry-link" aria-label="post link to 颠倒字符串（整体，子串）" href="https://sucicada.github.io/blog/posts/soft/%E9%A2%A0%E5%80%92%E5%AD%97%E7%AC%A6%E4%B8%B2%E6%95%B4%E4%BD%93%E5%AD%90%E4%B8%B2/"></a>
 </article>
 <footer class="page-footer">
   <nav class="pagination">
