@@ -96,6 +96,223 @@
     </item>
     
     <item>
+      <title>[leetcode][Algorithm] -13. Roman to Integer with [Java]</title>
+      <link>https://sucicada.github.io/blog/posts/soft/leetcodealgorithm-13.-roman-to-integer-with-java/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://sucicada.github.io/blog/posts/soft/leetcodealgorithm-13.-roman-to-integer-with-java/</guid>
+      <description>problem
+class Solution { public int romanToInt(String s) { int N = s.length(); int sum = 0; char a = 0; int b = 0; int c = 0; for(int i=0;i&amp;lt;N;i++){ c = b; a = s.charAt(i); if(a == &amp;#39;I&amp;#39;){ b = 1; }else if(a == &amp;#39;V&amp;#39;){ b = 5; }else if(a == &amp;#39;X&amp;#39;){ b = 10; }else if(a == &amp;#39;L&amp;#39;){ b = 50; }else if(a == &amp;#39;C&amp;#39;){ b = 100; }else if(a == &amp;#39;D&amp;#39;){ b = 500; }else if(a == &amp;#39;M&amp;#39;){ b = 1000; } // System.</description>
+    </item>
+    
+    <item>
+      <title>[leetcode][DataBase] - 175. Combine Two Tables with MySQL</title>
+      <link>https://sucicada.github.io/blog/posts/soft/leetcodedatabase-175.-combine-two-tables-with-mysql/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://sucicada.github.io/blog/posts/soft/leetcodedatabase-175.-combine-two-tables-with-mysql/</guid>
+      <description>题目
+select FirstName, LastName, City, State from Person left join Address using (PersonId); or
+select FirstName, LastName, City, State from Person left join Address on Person.PersonId=Address.PersonId; </description>
+    </item>
+    
+    <item>
+      <title>[leetcode][DataBase] - 176. Second Highest Salary with [MySQL]</title>
+      <link>https://sucicada.github.io/blog/posts/soft/leetcodedatabase-176.-second-highest-salary-with-mysql/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://sucicada.github.io/blog/posts/soft/leetcodedatabase-176.-second-highest-salary-with-mysql/</guid>
+      <description>problem
+select ifnull((select distinct Salary from Employee order by Salary desc limit 1,1), null) as SecondHighestSalary; or other
+select max(Salary) as SecondHighestSalary from employee where Salary &amp;lt; (select max(Salary) from employee); </description>
+    </item>
+    
+    <item>
+      <title>[leetcode][DataBase] - 177. Nth Highest Salary with [MySQL]</title>
+      <link>https://sucicada.github.io/blog/posts/soft/leetcodedatabase-177.-nth-highest-salary-with-mysql/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://sucicada.github.io/blog/posts/soft/leetcodedatabase-177.-nth-highest-salary-with-mysql/</guid>
+      <description>problem
+# 184ms select min(aa.Salary) from (select distinct Salary from employee order by Salary desc limit N) as aa where (select count(distinct Salary) from employee) &amp;gt;= N or
+# 188ms select aa.Salary as ass from (select distinct Salary from employee order by Salary desc limit N) as aa where (select count(distinct Salary) from employee) &amp;gt;= N order by ass limit 1 </description>
+    </item>
+    
+    <item>
+      <title>[leetcode][DataBase] - 178. Rank Scores with [MySQL]</title>
+      <link>https://sucicada.github.io/blog/posts/soft/leetcodedatabase-178.-rank-scores-with-mysql/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://sucicada.github.io/blog/posts/soft/leetcodedatabase-178.-rank-scores-with-mysql/</guid>
+      <description>problem
+select inn.Score,inn.Rank from ( select ss.Score,@row:=@row+1 as Rank from (select @row:=0) a, (select Score from Scores group by Score) as ss order by ss.Score desc ) as inn right join Scores as sss on inn.Score = sss.Score order by inn.Score desc ; </description>
+    </item>
+    
+    <item>
+      <title>[Solve Error] Install g&#43;&#43; in Ubuntu20.04 :  g&#43;&#43; : Depends: g&#43;&#43;-7 (＞= 7.4.0-1~)</title>
+      <link>https://sucicada.github.io/blog/posts/soft/solve-error-install-g&#43;&#43;-in-ubuntu20.04-g&#43;&#43;-depends-g&#43;&#43;-7-7.4.0-1~/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://sucicada.github.io/blog/posts/soft/solve-error-install-g&#43;&#43;-in-ubuntu20.04-g&#43;&#43;-depends-g&#43;&#43;-7-7.4.0-1~/</guid>
+      <description>这是在Windows10上的Ubuntu WSL环境中遇到的问题。
+目前的Ubuntu版本是Ubuntu 20.04.1 LTS。并且使用了阿里的apt镜像源。
+先说结论，Ubuntu版本之高使得本机使用apt源中没有所需的库版本。所以可以尝试将apt源换回官方源。然后apt update再安装g++。
+以下是断案过程。
+在使用命令sudo apt install g++遇到了依赖问题。整个依赖链排查结果如下：
+sucicada@20200702-143805:/etc/apt/sources.list.d$ sudo apt install g++ Reading package lists... Done Building dependency tree Reading state information... Done Some packages could not be installed. This may mean that you have requested an impossible situation or if you are using the unstable distribution that some required packages have not yet been created or been moved out of Incoming. The following information may help to resolve the situation: The following packages have unmet dependencies: g++ : Depends: g++-7 (&amp;gt;= 7.</description>
+    </item>
+    
+    <item>
+      <title>8086汇编   在屏幕上显现动态菱形图案</title>
+      <link>https://sucicada.github.io/blog/posts/soft/8086%E6%B1%87%E7%BC%96-%E5%9C%A8%E5%B1%8F%E5%B9%95%E4%B8%8A%E6%98%BE%E7%8E%B0%E5%8A%A8%E6%80%81%E8%8F%B1%E5%BD%A2%E5%9B%BE%E6%A1%88/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://sucicada.github.io/blog/posts/soft/8086%E6%B1%87%E7%BC%96-%E5%9C%A8%E5%B1%8F%E5%B9%95%E4%B8%8A%E6%98%BE%E7%8E%B0%E5%8A%A8%E6%80%81%E8%8F%B1%E5%BD%A2%E5%9B%BE%E6%A1%88/</guid>
+      <description> 在屏幕上显现动态菱形图案。
+* * * * * * * * * * *	* * * * * * * * * * * * * * * * * * * * * * * * &amp;lt;图一&amp;gt; &amp;lt;图二&amp;gt; &amp;lt;图三&amp;gt; &amp;lt;图四&amp;gt; &amp;lt;图五&amp;gt; 思路示例：
+&amp;lt;1&amp;gt;编写程序p1:
+显示一个字符
+&amp;lt;2&amp;gt;把程序p1做成子程序，调用子程序编写程序p2:
+显示一个菱形&amp;lt;图三&amp;gt;
+&amp;lt;3&amp;gt;把p2做成一个子程序，调用子程序编写程序p3:
+循环显示出如图五种图形
+&amp;lt;4&amp;gt;修改程序p2,实现动态效果:
+添加清屏子程序和延时子程序,完成完整程序。
+注意点：
+要求以统一逻辑实现全部的五个图形。
+第三层的公式见代码
+assume cs:code code segment start: ; [ input: al: row ] ; [ ah: column ] mov cx,10 start_s: mov di,0 mov si,1 call p3 mov di,4 mov si,-1 call p3 loop start_s mov ax,4c00h int 21h p3: ; -- input: di (index of p2) si (1 or -1) push ax push bx push cx push dx push di ; mov cx,5 ; times ; cmp di,3 ; jne p3_di_not_4 ; p3_di_not_4: mov cx,4 ; times ; mov di,0 p3_s: push cx mov cx,di mov dl,&amp;#39;*&amp;#39; call p2 pop cx ; bx ax lay time mov ax,0 mov bx,1 push cx p3_layout: sub ax,1 sbb bx,0 mov cx,ax or cx,bx cmp cx,0 jne p3_layout pop cx push cx mov cx,di mov dl,&amp;#39; &amp;#39; call p2 pop cx add di,si loop p3_s pop di pop dx pop cx pop bx pop ax ret p2: push ax push bx push cx ; ----- [1] ----------- mov al,10 mov ah,10 mov bl,al mov bh,ah call p1 add bl,1 ; ----- [2] ----------- push cx cmp cx,0 je p2_2_cx_is_0 sub cx,1 p2_2_cx_is_0: mov al,bl mov ah,bh sub ah,cl call p1 mov ah,bh add ah,cl call p1 pop cx add bl,1 ; ----- [3] ----------- ; left:ah = bh-1-(1+1+(cl-2))*(cl-1)/2 ; = bh-1-cl*(cl-1)/2 = bh-segdis ; right: bh+1+cl*(cl-1)/2 = bh+segdis ; segdis = 1+cl*(cl-1)/2 push cx cmp cx,0 je p2_3_cx_is_0 mov al,cl ; cl sub cl,1 ; cl-1 mul cl ; cl*(cl-1) -&amp;gt; ax mov cl,2 ; 2 div cl ; cl*(cl-1)/2 -&amp;gt; al add al,1 ; cl*(cl-1)/2+1 mov cl,al ; segdis p2_3_cx_is_0: mov al,bl mov ah,bh sub ah,cl ; bh - segdis call p1 mov ah,bh add ah,cl ; bh + segdis call p1 pop cx add bl,1 ; ----- [4] ----------- push cx cmp cx,0 je p2_4_cx_is_0 sub cx,1 p2_4_cx_is_0: mov al,bl mov ah,bh sub ah,cl call p1 mov ah,bh add ah,cl call p1 pop cx add bl,1 ; ----- [5] ----------- mov al,bl mov ah,bh call p1 pop cx pop bx pop ax ret p1: ; ----- input: al: row ah: column dl:char push ax push bx push es mov bx,0b800h mov es,bx mov bl,ah mov bh,al mov al,160 mul bh add bl,bl mov bh,0 add ax,bx mov bx,ax mov byte ptr es:[bx],dl mov byte ptr es:[bx+1],2 pop es pop bx pop ax ret code ends end start ; -------*------- 7 ; -------*------- 7 7 ; -------*------- 7 7 ; -------*------- ; -------*------- ; -------*------- 7 ; -------*------- 7 7 ; ------*-*------ 6 8 ; -------*------- ; -------*------- ; 7-1-(1+1+(n-2))*(n-1)/2 ; 2 ; -------*------- 7 ; ------*-*------ 6 8 ; -----*---*----- 5 9 ; ------*-*------ ; -------*------- ; 3 ; -------*------- 7 ; -----*---*----- 5 9 ; ---*-------*--- 3 11 ; -----*---*----- ; -------*------- ; -------*------- 7 ; ----*-----*---- 4 10 ; *-------------* 0 14 ; ----*-----*---- ; -------*------- </description>
+    </item>
+    
+    <item>
+      <title>8086汇编：在安全空间画金字塔</title>
+      <link>https://sucicada.github.io/blog/posts/soft/8086%E6%B1%87%E7%BC%96%E5%9C%A8%E5%AE%89%E5%85%A8%E7%A9%BA%E9%97%B4%E7%94%BB%E9%87%91%E5%AD%97%E5%A1%94/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://sucicada.github.io/blog/posts/soft/8086%E6%B1%87%E7%BC%96%E5%9C%A8%E5%AE%89%E5%85%A8%E7%A9%BA%E9%97%B4%E7%94%BB%E9%87%91%E5%AD%97%E5%A1%94/</guid>
+      <description>assume cs:code code segment mov ax,20h mov ds,ax mov cx,8 s: mov dx,cx mov bx,cx sub bx,1 ; -------------------- mov cx,9 sub cx,dx ; mov cx,bx add cx,cx sub cx,1 j: mov al,&amp;#39;a&amp;#39; mov [bx],al inc bx loop j ; mov cx,dx ; add bx,10h mov ax,ds add ax,1 mov ds,ax ; mov bx,cx loop s mov ax,4c00h int 21h code ends end 。。。。</description>
+    </item>
+    
+    <item>
+      <title>8086汇编：清空0020:0 到0020:0ff空间</title>
+      <link>https://sucicada.github.io/blog/posts/soft/8086%E6%B1%87%E7%BC%96%E6%B8%85%E7%A9%BA00200-%E5%88%B000200ff%E7%A9%BA%E9%97%B4/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://sucicada.github.io/blog/posts/soft/8086%E6%B1%87%E7%BC%96%E6%B8%85%E7%A9%BA00200-%E5%88%B000200ff%E7%A9%BA%E9%97%B4/</guid>
+      <description>assume cs:code code segment ; This code is used to clear the memory ; of the safe area from 0020:0 to 0020:ff mov ax,20 mov ds,ax mov cx,0ffh mov bx,0 s: mov ax,0 mov ds:[bx],ax inc bx loop s mov ax,4c00h int 21h code ends end </description>
+    </item>
+    
+    <item>
+      <title>8086汇编：自动编译链接脚本</title>
+      <link>https://sucicada.github.io/blog/posts/soft/8086%E6%B1%87%E7%BC%96%E8%87%AA%E5%8A%A8%E7%BC%96%E8%AF%91%E9%93%BE%E6%8E%A5%E8%84%9A%E6%9C%AC/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://sucicada.github.io/blog/posts/soft/8086%E6%B1%87%E7%BC%96%E8%87%AA%E5%8A%A8%E7%BC%96%E8%AF%91%E9%93%BE%E6%8E%A5%E8%84%9A%E6%9C%AC/</guid>
+      <description>@echo off echo code: %1 echo masm..... masm %1; echo link....... link %1; del %1.obj echo delete %1.obj echo finish 起个名 比如 run.bat 放到环境变量下，很方便</description>
+    </item>
+    
+    <item>
+      <title>8086汇编语言王爽  17.3 字符串的输入 (含输入溢出问题分析)</title>
+      <link>https://sucicada.github.io/blog/posts/soft/8086%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80%E7%8E%8B%E7%88%BD-17.3-%E5%AD%97%E7%AC%A6%E4%B8%B2%E7%9A%84%E8%BE%93%E5%85%A5-%E5%90%AB%E8%BE%93%E5%85%A5%E6%BA%A2%E5%87%BA%E9%97%AE%E9%A2%98%E5%88%86%E6%9E%90/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://sucicada.github.io/blog/posts/soft/8086%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80%E7%8E%8B%E7%88%BD-17.3-%E5%AD%97%E7%AC%A6%E4%B8%B2%E7%9A%84%E8%BE%93%E5%85%A5-%E5%90%AB%E8%BE%93%E5%85%A5%E6%BA%A2%E5%87%BA%E9%97%AE%E9%A2%98%E5%88%86%E6%9E%90/</guid>
+      <description>如果直接使用书上的代码, 会发现输入一定字符就会卡死
+先上代码, 或者跳到问题 assume cs:code ; dsstack segment ; db 16 dup(0) ; dsstack ends code segment start: ; mov ax,dsstack ; mov ds,ax ; mov si,13 ; mov sp,160 call getstr mov ax,4c00h int 21h getstr: push ax getstrs: mov ah,0 int 16h cmp al,20h jb nochar mov ah,0 call charstack mov ah,2 call charstack jmp getstrs nochar: cmp ah,0eh je backspace cmp ah,1ch je enter jmp getstrs backspace: mov ah,1 call charstack mov ah,2 call charstack jmp getstrs enter: mov al,0 mov ah,0 call charstack mov ah,2 call charstack pop ax ret ; ================================== charstack: jmp short charstart table dw charpush,charpop,charshow top dw 0 ; top of stack charstart: push bx push dx push di push es cmp ah,2 ja charret mov bl,ah mov bh,0 add bx,bx jmp word ptr table[bx] charpush: mov bx,top mov ds:[si][bx],al add top,1 jmp charret charpop: cmp top,0 je charret dec top mov bx,top mov al,[si][bx] jmp charret charshow: mov bx,0b800h mov es,bx mov al,160 mov ah,0 mul dh mov di,ax add dl,dl mov dh,0 add di,dx mov bx,0 charshows: cmp bx,top jne noempty mov byte ptr es:[di],&amp;#39;+&amp;#39; ; 结束符 jmp charret noempty: mov al,[si][bx] mov es:[di],al mov byte ptr es:[di+2],&amp;#39;+&amp;#39; ; 结束符 inc bx add di,2 jmp charshows charret: pop es pop di pop dx pop bx ret code ends end start 问题 问题现象:</description>
+    </item>
+    
+    <item>
+      <title>APG -- Algorithm PlayGround 基于Phaser 的算法游戏（类rpg）框架</title>
+      <link>https://sucicada.github.io/blog/posts/soft/apg--algorithm-playground-%E5%9F%BA%E4%BA%8Ephaser-%E7%9A%84%E7%AE%97%E6%B3%95%E6%B8%B8%E6%88%8F%E7%B1%BBrpg%E6%A1%86%E6%9E%B6/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://sucicada.github.io/blog/posts/soft/apg--algorithm-playground-%E5%9F%BA%E4%BA%8Ephaser-%E7%9A%84%E7%AE%97%E6%B3%95%E6%B8%B8%E6%88%8F%E7%B1%BBrpg%E6%A1%86%E6%9E%B6/</guid>
+      <description>APG——Algorithm PlayGround 项目地址 一个有趣，智能和简单的HTML5游戏框架
+简单的开发方式，将你的算法变成游戏
+对PhaserCE库的封装开发
+70+个函数接口可供使用，通过配置文件智能优化游戏
+提供可视化的地图编辑方案
+官网 官网(备用)
+Demo 演示 git page(可能会慢) 国内使用
+使用在线地图编辑器 APG MapEditor 下载 APG.js
+MapEditor
+使用在线库 github直连 https://sucicada.github.io/Algorithm-PlayGround/dist/APG.js 国内使用（更快） http://sucicada.tk:39/APG/dist/APG.js 最后 十分感谢 @llwwdbd, @lesen-bee 在开发期间所提供的帮助 </description>
+    </item>
+    
+    <item>
+      <title>assmbly 8086汇编：判断奇数偶数</title>
+      <link>https://sucicada.github.io/blog/posts/soft/assmbly-8086%E6%B1%87%E7%BC%96%E5%88%A4%E6%96%AD%E5%A5%87%E6%95%B0%E5%81%B6%E6%95%B0/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://sucicada.github.io/blog/posts/soft/assmbly-8086%E6%B1%87%E7%BC%96%E5%88%A4%E6%96%AD%E5%A5%87%E6%95%B0%E5%81%B6%E6%95%B0/</guid>
+      <description>如果ax中的数是奇数：bx为0
+否则bx为1
+; judge which the number in ax is odd or even assume cs:code code segment mov ax,[bx] mov cx,ax mov bx,0 s: loop i ; if can&amp;#39;t loop , cx is 1 ; every loop, cx -= 2 ; odd mov bx,0 loop k i: ; sub cx,1 loop s ; even mov bx,1 ; loop k k: ;over mov ax,4c00h int 21h code ends end </description>
+    </item>
+    
+    <item>
+      <title>atom删除文件: The following file couldn&#39;t be moved to trash (is gvfs-trash installed?)</title>
+      <link>https://sucicada.github.io/blog/posts/soft/atom%E5%88%A0%E9%99%A4%E6%96%87%E4%BB%B6-the-following-file-couldnt-be-moved-to-trash-is-gvfs-trash-installed/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://sucicada.github.io/blog/posts/soft/atom%E5%88%A0%E9%99%A4%E6%96%87%E4%BB%B6-the-following-file-couldnt-be-moved-to-trash-is-gvfs-trash-installed/</guid>
+      <description>参考这个
+在使用加环境变量无果
+环境
+ubuntu 16
+atom 1.4
+执行以下命令
+sudo mkdir -p /.Trash-1000/{expunged,files,info} sudo chown -R $USER /.Trash-1000 </description>
+    </item>
+    
+    <item>
+      <title>cin、cin.get()、cin.getline()、getline()、gets()等函数的用法</title>
+      <link>https://sucicada.github.io/blog/posts/soft/cincin.getcin.getlinegetlinegets%E7%AD%89%E5%87%BD%E6%95%B0%E7%9A%84%E7%94%A8%E6%B3%95/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://sucicada.github.io/blog/posts/soft/cincin.getcin.getlinegetlinegets%E7%AD%89%E5%87%BD%E6%95%B0%E7%9A%84%E7%94%A8%E6%B3%95/</guid>
+      <description>参考于cin、cin.get()、cin.getline()、getline()、gets()等函数的用法
+cin&amp;raquo;
+(1) &amp;raquo; 是会过滤掉不可见字符（如 空格 回车，TAB 等） cin.get()
+(1) cin.get(char);//接受一个字符
+(2) cin.get(char*,接收字符数目);//可以接收空格，接收数目=实际接收字符+1个&amp;rsquo;\0&#39; cin.getline()
+(1) cin.getline(char*,接收数目);
+//可以接收空格，接收数目=实际接收字符+1个&amp;rsquo;\0&#39;
+(2) cin.getline(char*,接收数目,结束字符)
+//当第三个参数省略时，系统默认为&amp;rsquo;\0&amp;rsquo;
+//cin.getline(str,5,&amp;lsquo;a&amp;rsquo;);当输入abcdef时输出abcd，输入jkaljkljkl时，输出jk #include&amp;lt;string&amp;gt;
+1.getline(cin,string str);//可以接收空格
+2.gets(char *str);//可以接收空格
+3.getchar()//getchar()是C语言的函数，C++也可以兼容，但是尽量不用或少用；</description>
+    </item>
+    
+    <item>
+      <title>clion 代码补全很慢 ( clion code completion slow)  clangd 配置</title>
+      <link>https://sucicada.github.io/blog/posts/soft/clion-%E4%BB%A3%E7%A0%81%E8%A1%A5%E5%85%A8%E5%BE%88%E6%85%A2-clion-code-completion-slow-clangd-%E9%85%8D%E7%BD%AE/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://sucicada.github.io/blog/posts/soft/clion-%E4%BB%A3%E7%A0%81%E8%A1%A5%E5%85%A8%E5%BE%88%E6%85%A2-clion-code-completion-slow-clangd-%E9%85%8D%E7%BD%AE/</guid>
+      <description>查看官网
+https://www.jetbrains.com/help/clion/settings-languages-cpp-clangd.html中 关于code completion 的说明
+以下配置开启路径：
+File | Settings | Languages and Frameworks | C/C++ | Clangd for Windows and Linux
+CLion | Preferences | Languages and Frameworks | C/C++ | Clangd for macOS
+我们得知 CLion 提供了两种代码提示引擎一种内置，一种是 Clangd。
+默认的选择是只用Clangd，而不会优先用内置引擎。我们选择剩下两个会发现代码提示的速度快了很多。
+这个现象能初步判断内置引擎比Clangd要快。至于更深层的原因还待研究。</description>
+    </item>
+    
+    <item>
+      <title>DFS的递归实现</title>
+      <link>https://sucicada.github.io/blog/posts/soft/dfs%E7%9A%84%E9%80%92%E5%BD%92%E5%AE%9E%E7%8E%B0/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://sucicada.github.io/blog/posts/soft/dfs%E7%9A%84%E9%80%92%E5%BD%92%E5%AE%9E%E7%8E%B0/</guid>
+      <description>对一个例子的理解，以下是关系图的关系矩阵，求从1开始能到哪个数
+#include&amp;lt;iostream&amp;gt; #include&amp;lt;queue&amp;gt; # e&amp;lt;cstdio&amp;gt; #include&amp;lt;vector&amp;gt; #include&amp;lt;stack&amp;gt; using namespace std; int const N =5; int maze[N][N]={ {0,1,1,0,0}, {0,0,1,0,1}, {0,0,1,0,0}, {1,1,0,0,1}, {0,0,1,0,0} }; int visit[N+1]={0}; //循环的思路： //用递归，一旦有更深的点就产生新的循环，当深的点操作完了，就结束了这个陷得最深的循环。 void dfs1(int start) { visit[start]=1; for(int i=1;i&amp;lt;=N;i++) { if(!visit[i]&amp;amp;&amp;amp;maze[start-1][i-1]==1) { dfs1 (i); } } cout&amp;lt;&amp;lt;start&amp;lt;&amp;lt;&amp;#34; &amp;#34;; } void dfs2(int start) { stack&amp;lt;int&amp;gt;s; s.push(start); visit[start]=1; int iff=0; while(!s.empty()) { iff=0; int v=s.top(); for(int i=1;i&amp;lt;=N;i++) { if(visit[i]==0&amp;amp;&amp;amp;maze[v-1][i-1]==1) { iff=1;//代表if了 visit[i]=1;//第一层 s.push(i); break;//保证当前只走一条路 } } if(iff==0)//到头不if才执行 { cout&amp;lt;&amp;lt;v&amp;lt;&amp;lt;&amp;#34; &amp;#34;; s.</description>
+    </item>
+    
+    <item>
       <title>Flink 内存模型的分配策略 主公式推导</title>
       <link>https://sucicada.github.io/blog/posts/bigdata/flink-%E5%86%85%E5%AD%98%E6%A8%A1%E5%9E%8B%E7%9A%84%E5%88%86%E9%85%8D%E7%AD%96%E7%95%A5-%E4%B8%BB%E5%85%AC%E5%BC%8F%E6%8E%A8%E5%AF%BC/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
@@ -108,11 +325,33 @@ Total_Process_Memory: ytm JVM_Metaspace: 默認 256m JVM_Overhead: 默認 jtm * 
     </item>
     
     <item>
+      <title>Flink 内存模型的分配策略 主公式推导</title>
+      <link>https://sucicada.github.io/blog/posts/soft/flink-%E5%86%85%E5%AD%98%E6%A8%A1%E5%9E%8B%E7%9A%84%E5%88%86%E9%85%8D%E7%AD%96%E7%95%A5-%E4%B8%BB%E5%85%AC%E5%BC%8F%E6%8E%A8%E5%AF%BC/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://sucicada.github.io/blog/posts/soft/flink-%E5%86%85%E5%AD%98%E6%A8%A1%E5%9E%8B%E7%9A%84%E5%88%86%E9%85%8D%E7%AD%96%E7%95%A5-%E4%B8%BB%E5%85%AC%E5%BC%8F%E6%8E%A8%E5%AF%BC/</guid>
+      <description>结论: 启动flink设定的 ytm数值 与实际监控展示的JVM_Heap数值关系是 (ytm大于1920的简化公式)
+JVM_Heap = ytm * 0.45 - 256
+啓動參數: -ytm 设定的实际是 进程总内存,相当于yarn容器大小
+Total_Process_Memory: ytm JVM_Metaspace: 默認 256m JVM_Overhead: 默認 jtm * 0.1 (必須在 192m ~ 1g (默認)) Total_Flink_Memory: Total_Process_Memory - JVM_Overhead - JVM_Metaspace Framework_Heap: 默認 128m Managed_Memory: 默認 Total_Flink_Memory * 0.4 Framework_Off-Heap: 默認 128m Task_Off-Heap: 默認 0 Network: 默認 Total_Flink_Memory * 0.1 (必須在 64m ~ 1g (默認)) 所以 Task_Heap = Total_Flink_Memory - Framework_Heap - Managed_Memory - Framework_Off-Heap - Task_Off-Heap - Network 如果都用默认配置,那么代入化简就是</description>
+    </item>
+    
+    <item>
       <title>Flink 算子Function实例化的坑</title>
       <link>https://sucicada.github.io/blog/posts/bigdata/flink-%E7%AE%97%E5%AD%90function%E5%AE%9E%E4%BE%8B%E5%8C%96%E7%9A%84%E5%9D%91/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>https://sucicada.github.io/blog/posts/bigdata/flink-%E7%AE%97%E5%AD%90function%E5%AE%9E%E4%BE%8B%E5%8C%96%E7%9A%84%E5%9D%91/</guid>
+      <description>问题回顾 关于一段代码：
+object MySingleObj{ // 陷阱： // 单例对象中一个是可变引用，一个是可变数组 var str:String = _ val list = new ListBuffer[String] } ... dataStream .map(new RichMapFunction(){ // 问题1：obj1 和 obj2 的实例方式有什么区别。 // 问题2：考虑参数0的作用以及是否会得到预期效果。 val obj1:MyClass = new MyClass(参数0) var obj2:MyClass = _ override def open(paramation:Configuration): Unit = { obj2 = new MyClass(参数0) } override def map(value, ....) = { // 问题3：如果在这里使用 obj1 和 obj2 会有什么区别。 // 问题4：单个slot中对单例对象中的变量修改，造成的影响是。 MySingleObj.str = value MySingleObj.list += value } }) .</description>
+    </item>
+    
+    <item>
+      <title>Flink 算子Function实例化的坑</title>
+      <link>https://sucicada.github.io/blog/posts/soft/flink-%E7%AE%97%E5%AD%90function%E5%AE%9E%E4%BE%8B%E5%8C%96%E7%9A%84%E5%9D%91/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://sucicada.github.io/blog/posts/soft/flink-%E7%AE%97%E5%AD%90function%E5%AE%9E%E4%BE%8B%E5%8C%96%E7%9A%84%E5%9D%91/</guid>
       <description>问题回顾 关于一段代码：
 object MySingleObj{ // 陷阱： // 单例对象中一个是可变引用，一个是可变数组 var str:String = _ val list = new ListBuffer[String] } ... dataStream .map(new RichMapFunction(){ // 问题1：obj1 和 obj2 的实例方式有什么区别。 // 问题2：考虑参数0的作用以及是否会得到预期效果。 val obj1:MyClass = new MyClass(参数0) var obj2:MyClass = _ override def open(paramation:Configuration): Unit = { obj2 = new MyClass(参数0) } override def map(value, ....) = { // 问题3：如果在这里使用 obj1 和 obj2 会有什么区别。 // 问题4：单个slot中对单例对象中的变量修改，造成的影响是。 MySingleObj.str = value MySingleObj.list += value } }) .</description>
     </item>
@@ -134,6 +373,22 @@ Source 带着问题 header 里有什么 一些实现类 ExecSource ExecRunnable 
     </item>
     
     <item>
+      <title>Flume 数据流的处理过程 从源码看 Source Channel Sink</title>
+      <link>https://sucicada.github.io/blog/posts/soft/flume-%E6%95%B0%E6%8D%AE%E6%B5%81%E7%9A%84%E5%A4%84%E7%90%86%E8%BF%87%E7%A8%8B-%E4%BB%8E%E6%BA%90%E7%A0%81%E7%9C%8B-source-channel-sink/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://sucicada.github.io/blog/posts/soft/flume-%E6%95%B0%E6%8D%AE%E6%B5%81%E7%9A%84%E5%A4%84%E7%90%86%E8%BF%87%E7%A8%8B-%E4%BB%8E%E6%BA%90%E7%A0%81%E7%9C%8B-source-channel-sink/</guid>
+      <description>Event 构成 Source Flume的三个部分：Source，Channel，Sink
+数据是存储在Event对象中在这三部分之间传递
+Event 构成 Event 接口
+public interface Event { public Map&amp;lt;String, String&amp;gt; getHeaders(); public void setHeaders(Map&amp;lt;String, String&amp;gt; headers); public byte[] getBody(); public void setBody(byte[] body); } 以 最简单的实现类 SimpleEvent 为例子
+public class SimpleEvent implements Event { private Map&amp;lt;String, String&amp;gt; headers; private byte[] body; ... } 可见
+header 以 Map&amp;lt;String, String&amp;gt; 的形式存储键值对信息
+body 二进制形式存储，从Source接收到的数据会存储在这里
+Source 带着问题 header 里有什么 一些实现类 ExecSource ExecRunnable 主要处理 通过 EventBuilder.withBody 基础创建 Event ， 一行一个 Event header 为空 flushEventBatch 中 ChannelProcessor :: processEventBatch</description>
+    </item>
+    
+    <item>
       <title>fuck</title>
       <link>https://sucicada.github.io/blog/posts/%E6%97%A5%E8%A8%98/fuck/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
@@ -141,6 +396,16 @@ Source 带着问题 header 里有什么 一些实现类 ExecSource ExecRunnable 
       <guid>https://sucicada.github.io/blog/posts/%E6%97%A5%E8%A8%98/fuck/</guid>
       <description>&amp;ldquo;火山般的怒火燃烧着我的心，我的思绪如暴风般激荡，不断地翻涌着。我的身体紧张得像弦张到极限的琴弦，随时都可能爆裂。我的心跳如鼓舞，我的呼吸急促不安。我的脑海中充满了迷雾，我无法让自己冷静下来。我的身体像一个沸腾的锅，压抑不住的爆发。我的怒气如烈焰般燃烧，烧焦了我内心深处的一切。我是烦躁，焦虑和
 暴躁的火山，永远不知道什么时候会喷发。我像一阵狂风，吹得人们无法立足。我是一道闪电，瞬间点燃所有的希望。我是一颗炸弹，随时都可能爆炸。我是一段痛苦的乐章，让人难受的和声。我是不安定的海洋，无尽的汹涌。我是烦躁，焦虑和暴躁的火山，永远不知道什么时候会喷发。&amp;rdquo;</description>
+    </item>
+    
+    <item>
+      <title>Hbase2 没有org.apache.hadoop.hbase.mapreduce.TableInputFormat</title>
+      <link>https://sucicada.github.io/blog/posts/soft/hbase2-%E6%B2%A1%E6%9C%89org.apache.hadoop.hbase.mapreduce.tableinputformat/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://sucicada.github.io/blog/posts/soft/hbase2-%E6%B2%A1%E6%9C%89org.apache.hadoop.hbase.mapreduce.tableinputformat/</guid>
+      <description>导入
+&amp;lt;dependency&amp;gt; &amp;lt;groupId&amp;gt;org.apache.hbase&amp;lt;/groupId&amp;gt; &amp;lt;artifactId&amp;gt;hbase-mapreduce&amp;lt;/artifactId&amp;gt; &amp;lt;version&amp;gt;${hbase.version}&amp;lt;/version&amp;gt; &amp;lt;/dependency&amp;gt; 参考链接：https://juejin.cn/post/6844903959585374221</description>
     </item>
     
     <item>
@@ -178,6 +443,495 @@ Input
 The first line of the input contains an integer T(1&amp;lt;=T&amp;lt;=20) which means the number of test cases. Then T lines follow, each line consists of two positive integers, A and B. Notice that the integers are very large, that means you should not process them by using 32-bit integer. You may assume the length of each integer will not exceed 1000.
 Output
 For each test case, you should output two lines.</description>
+    </item>
+    
+    <item>
+      <title>istringstream、ostringstream、stringstream 类介绍 .</title>
+      <link>https://sucicada.github.io/blog/posts/soft/istringstreamostringstreamstringstream-%E7%B1%BB%E4%BB%8B%E7%BB%8D-./</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://sucicada.github.io/blog/posts/soft/istringstreamostringstreamstringstream-%E7%B1%BB%E4%BB%8B%E7%BB%8D-./</guid>
+      <description>见以下链接
+istringstream、ostringstream、stringstream 类介绍 .
+0、C++的输入输出分为三种：
+(1)基于控制台的I/O
+#include&amp;lt;iostream&amp;gt; (2)基于文件的I/O
+#include&amp;lt;fstream&amp;gt; (3)基于字符串的I/O
+#include&amp;lt;sstream&amp;gt; str()：使istringstream对象返回一个string字符串
+stringstream::clear()//多次使用，先清空此对象的流，不能使用stream.str(&amp;#34;&amp;#34;); //实际上，它并不清空任何内容，它只是重置了流的状态标志而已 ps:但如果你要在程序中用同一个流，反复读写大量的数据，将会造成大量的内存消耗， 这时候，需要适时地清除一下缓冲 (用 stream.str(&amp;quot;&amp;quot;) )。</description>
+    </item>
+    
+    <item>
+      <title>Jetty 报错 Tomcat不报错 maven jetty插件不报错, 可能是jetty版本不统一造成</title>
+      <link>https://sucicada.github.io/blog/posts/soft/jetty-%E6%8A%A5%E9%94%99-tomcat%E4%B8%8D%E6%8A%A5%E9%94%99-maven-jetty%E6%8F%92%E4%BB%B6%E4%B8%8D%E6%8A%A5%E9%94%99-%E5%8F%AF%E8%83%BD%E6%98%AFjetty%E7%89%88%E6%9C%AC%E4%B8%8D%E7%BB%9F%E4%B8%80%E9%80%A0%E6%88%90/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://sucicada.github.io/blog/posts/soft/jetty-%E6%8A%A5%E9%94%99-tomcat%E4%B8%8D%E6%8A%A5%E9%94%99-maven-jetty%E6%8F%92%E4%BB%B6%E4%B8%8D%E6%8A%A5%E9%94%99-%E5%8F%AF%E8%83%BD%E6%98%AFjetty%E7%89%88%E6%9C%AC%E4%B8%8D%E7%BB%9F%E4%B8%80%E9%80%A0%E6%88%90/</guid>
+      <description>要在服务器上部署, jetty报错找不见hibernate某个函数, 然而此函数存在.
+开发环境为 Intellij
+jetty插件版本: 9.2.6.v20141205
+外置jetty版本: 9.4.21.v20190926
+如果你也有类似问题, 不妨试试将jetty版本统一
+我将外置jetty降版本后成功
+来自这里的启发</description>
+    </item>
+    
+    <item>
+      <title>js 生成当前日期时间</title>
+      <link>https://sucicada.github.io/blog/posts/soft/js-%E7%94%9F%E6%88%90%E5%BD%93%E5%89%8D%E6%97%A5%E6%9C%9F%E6%97%B6%E9%97%B4/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://sucicada.github.io/blog/posts/soft/js-%E7%94%9F%E6%88%90%E5%BD%93%E5%89%8D%E6%97%A5%E6%9C%9F%E6%97%B6%E9%97%B4/</guid>
+      <description>精简版
+var date = new Date(); datetime = date.toLocaleDateString().split(&amp;#39;/&amp;#39;).slice(2,3).concat( date.toLocaleDateString().split(&amp;#39;/&amp;#39;).splice(0,2)).join(&amp;#39;-&amp;#39;) + &amp;#34; &amp;#34; + ( date.toLocaleTimeString().split(&amp;#39; &amp;#39;)[1]==&amp;#39;AM&amp;#39; ? date.toLocaleTimeString().split(&amp;#39; &amp;#39;)[0] : [parseInt(date.toLocaleTimeString().split(&amp;#39; &amp;#39;)[0].split(&amp;#39;:&amp;#39;)[0]) + 12].concat( date.toLocaleTimeString().split(&amp;#39; &amp;#39;)[0].split(&amp;#39;:&amp;#39;).splice(1,3)).join(&amp;#39;:&amp;#39;) ); 人看的版
+var date = new Date(); var dd = date.toLocaleDateString().split(&amp;#39;/&amp;#39;); var dd = dd.slice(2,3).concat( dd.splice(0,2)).join(&amp;#39;-&amp;#39;); var time = date.toLocaleTimeString().split(&amp;#39; &amp;#39;); var time = time[1]==&amp;#39;AM&amp;#39; ? time[0] : [parseInt(time[0].split(&amp;#39;:&amp;#39;)[0]) + 12].concat(time[0].split(&amp;#39;:&amp;#39;).splice(1,3)).join(&amp;#39;:&amp;#39;); var datetime = dd + &amp;#34; &amp;#34; + time; </description>
+    </item>
+    
+    <item>
+      <title>leetcode  - 12. Integer to Roman with Java</title>
+      <link>https://sucicada.github.io/blog/posts/soft/leetcode-12.-integer-to-roman-with-java/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://sucicada.github.io/blog/posts/soft/leetcode-12.-integer-to-roman-with-java/</guid>
+      <description>problem
+方法一，一位一位判断。
+class Solution { public String intToRoman1(int num) { StringBuilder sb = new StringBuilder(); char ooo[] = new char[]{&amp;#39;I&amp;#39;,&amp;#39;V&amp;#39;,&amp;#39;X&amp;#39;,&amp;#39;L&amp;#39;,&amp;#39;C&amp;#39;,&amp;#39;D&amp;#39;,&amp;#39;M&amp;#39;}; int wei = 0; while(num&amp;gt;0){ int n = num %10; if(n&amp;lt;4){ for(int i=0;i&amp;lt;n;i++){ sb.append(ooo[wei*2]); } }else if(n==4){ sb.append(ooo[wei*2+1]); sb.append(ooo[wei*2]); }else if(n==5){ sb.append(ooo[wei*2+1]); }else if(n&amp;gt;5 &amp;amp;&amp;amp; n&amp;lt;9){ for(int i=0;i&amp;lt;n-5;i++){ sb.append(ooo[wei*2]); } sb.append(ooo[wei*2+1]); }else if(n==9){ sb.append(ooo[wei*2+1+1]); sb.append(ooo[wei*2]); } wei++; num = num/10; } return sb.reverse().toString(); } 方法二，因为知道最多4位数，所以打表暴力。
+public String intToRoman(int num) { String s1[] = new String[]{&amp;#34;&amp;#34;,&amp;#34;I&amp;#34;,&amp;#34;II&amp;#34;,&amp;#34;III&amp;#34;,&amp;#34;IV&amp;#34;,&amp;#34;V&amp;#34;,&amp;#34;VI&amp;#34;,&amp;#34;VII&amp;#34;,&amp;#34;VIII&amp;#34;,&amp;#34;IX&amp;#34;}; String s2[] = new String[]{&amp;#34;&amp;#34;,&amp;#34;X&amp;#34;,&amp;#34;XX&amp;#34;,&amp;#34;XXX&amp;#34;,&amp;#34;XL&amp;#34;,&amp;#34;L&amp;#34;,&amp;#34;LX&amp;#34;,&amp;#34;LXX&amp;#34;,&amp;#34;LXXX&amp;#34;,&amp;#34;XC&amp;#34;}; String s3[] = new String[]{&amp;#34;&amp;#34;,&amp;#34;C&amp;#34;,&amp;#34;CC&amp;#34;,&amp;#34;CCC&amp;#34;,&amp;#34;CD&amp;#34;,&amp;#34;D&amp;#34;,&amp;#34;DC&amp;#34;,&amp;#34;DCC&amp;#34;,&amp;#34;DCCC&amp;#34;,&amp;#34;CM&amp;#34;}; String s4[] = new String[]{&amp;#34;&amp;#34;,&amp;#34;M&amp;#34;,&amp;#34;MM&amp;#34;,&amp;#34;MMM&amp;#34;}; // return s4[(num/1000)%10]+s3[(num/100)%10]+s2[(num/10)%10]+s1[num%10]; return new StringBuilder().</description>
+    </item>
+    
+    <item>
+      <title>leetcode - 1. Two Sum with Java</title>
+      <link>https://sucicada.github.io/blog/posts/soft/leetcode-1.-two-sum-with-java/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://sucicada.github.io/blog/posts/soft/leetcode-1.-two-sum-with-java/</guid>
+      <description>https://leetcode.com/problems/two-sum/submissions/
+import java.util.*; class Main { public int[] fun(int []nums,int target) { Map&amp;lt;Integer,Integer&amp;gt; map = new HashMap&amp;lt;&amp;gt;(); for(int i=0;i&amp;lt;nums.length;i++){ int f = target - nums[i]; if(map.get(f)!=null){ return new int[]{map.get(f),i}; }else{ map.put(nums[i],i); } } return null; } public static void main(String[] args) { int []nums = {12,3,3,53,45,7,7,3}; int []res = new Main().fun(nums,10); System.out.println(Arrays.toString(nums)); System.out.println(Arrays.toString(res)); } } </description>
+    </item>
+    
+    <item>
+      <title>leetcode - 11. Container With Most Water with Java</title>
+      <link>https://sucicada.github.io/blog/posts/soft/leetcode-11.-container-with-most-water-with-java/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://sucicada.github.io/blog/posts/soft/leetcode-11.-container-with-most-water-with-java/</guid>
+      <description>problem
+import java.lang.reflect.Method; import java.util.*; class Solution { public int maxArea(int[] height) { int max = 0; int left = 0; int right = height.length-1; int a,b; while(left&amp;lt;right){ a = height[left]; b = height[right]; max = Math.max(max, Math.min(a,b)*(right-left)); if(a &amp;gt; b){ right -- ; }else{ left ++; } System.out.println(left+&amp;#34; &amp;#34;+right+&amp;#34; &amp;#34;); } return max; } } class Main { public static void main(String[] args) throws Exception{ Solution solution = new Solution(); int i = solution.</description>
+    </item>
+    
+    <item>
+      <title>leetcode - 2. Add Two Numbers with Java</title>
+      <link>https://sucicada.github.io/blog/posts/soft/leetcode-2.-add-two-numbers-with-java/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://sucicada.github.io/blog/posts/soft/leetcode-2.-add-two-numbers-with-java/</guid>
+      <description>https://leetcode.com/problems/add-two-numbers/submissions/
+/** * Definition for singly-linked list. * public class ListNode { * int val; * ListNode next; * ListNode(int x) { val = x; } * } */ class Solution { public ListNode addTwoNumbers(ListNode l1, ListNode l2) { ListNode res = new ListNode(0); ListNode head = res; int flag = 0; while(l1!=null || l2!=null || flag!=0){ int num = (l1==null?0:l1.val) + (l2==null? 0: l2.val) + flag; res.next = new ListNode(num%10); flag = num/10; res = res.</description>
+    </item>
+    
+    <item>
+      <title>leetcode - 3. Longest Substring Without Repeating Characters with Java</title>
+      <link>https://sucicada.github.io/blog/posts/soft/leetcode-3.-longest-substring-without-repeating-characters-with-java/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://sucicada.github.io/blog/posts/soft/leetcode-3.-longest-substring-without-repeating-characters-with-java/</guid>
+      <description>题目链接
+import java.lang.reflect.Method; class Solution { /*两个方法都是：end无所谓的在一个一个移动，begin则是追寻之前的循环体留下的信标 关键在于信标是怎么设置下的，第一种方法是每一次都从序列中寻找信标。 第二种直接记录了下来。 一个用时间换空间，一个用空间换时间。 */ public int lengthOfLongestSubstring1(String s) { int sum = 0; int begin = 0; int end = 0; for(end = begin;end&amp;lt;s.length();end++){ /*每次都移动尾指针*/ for(int i = begin;i&amp;lt;end;i++){ /*验证重复，和end处比较，如果没有重复，说明这个子串可以加入end处的字符 而无论是否重复，都不影响移动尾指针end，影响的只是begin的位置。 */ if(s.charAt(i) == s.charAt(end)){ sum = Math.max(sum,end-begin); begin = i+1; break; } } } /*最后的end会指向最后一个的下一个，所以需要再判断一下夹住的是不是大的， eg: ab or aab */ return Math.max(sum,end-begin); } public int lengthOfLongestSubstring2(String s) { int ascii[] = new int[128]; int sum = 0; int begin = 0; for(int i=0;i&amp;lt;s.</description>
+    </item>
+    
+    <item>
+      <title>leetcode - 4. Median of Two Sorted Arrays with Java</title>
+      <link>https://sucicada.github.io/blog/posts/soft/leetcode-4.-median-of-two-sorted-arrays-with-java/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://sucicada.github.io/blog/posts/soft/leetcode-4.-median-of-two-sorted-arrays-with-java/</guid>
+      <description>简单做法, 左边哪一些, 右边拿一下, 看谁小拿谁.
+但是时间复杂度达不到要求, 虽然在leetcode上也是很快
+public double findMedianSortedArrays1(int[] A,int[] B){ /* time complexity: O((m+n)/2+1) */ int m = A.length; int n = B.length; int index1 = 0; int index2 = 0; int num1=0; int num2=0; for(int i=0;i&amp;lt;(m+n)/2+1;i++){ num2 = num1; if(index1 == m){ num1 = B[index2]; index2 ++; }else if(index2 == n){ num1 = A[index1]; index1++; }else if(A[index1] &amp;lt; B[index2]){ num1 = A[index1]; index1++; }else{ num1 = B[index2]; index2++; } } System.</description>
+    </item>
+    
+    <item>
+      <title>leetcode - 5. Longest Palindromic Substring with Java</title>
+      <link>https://sucicada.github.io/blog/posts/soft/leetcode-5.-longest-palindromic-substring-with-java/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://sucicada.github.io/blog/posts/soft/leetcode-5.-longest-palindromic-substring-with-java/</guid>
+      <description>题目在我这里
+方法一，大暴力
+public String longestPalindrome1(String s) { /* very force: O(s.length()^2) 空间复杂度 O(1) */ int i=0; int j=0; boolean flag = false; int maxi = i; int maxj = j; for(i=0;i&amp;lt;s.length();i++){ for(j=s.length()-1;j&amp;gt;i;j--){ if(s.charAt(i)==s.charAt(j)){ int ii = i; int jj = j; for(jj=j;jj&amp;gt;ii;jj--,ii++){ if(s.charAt(ii)!=s.charAt(jj)){ // flag = true; break; } } System.out.println(ii+&amp;#34; - &amp;#34;+jj); if(ii&amp;gt;=jj){ flag = true; break; } } } if(flag){ if(j-i &amp;gt; maxj-maxi){ maxj = j; maxi = i; } } } if(s.</description>
+    </item>
+    
+    <item>
+      <title>leetcode - 6. ZigZag Conversion with Java</title>
+      <link>https://sucicada.github.io/blog/posts/soft/leetcode-6.-zigzag-conversion-with-java/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://sucicada.github.io/blog/posts/soft/leetcode-6.-zigzag-conversion-with-java/</guid>
+      <description>题目地址
+这道题涉及到String, StringBuffer, StringBuilder的知识点
+String在拼接时需要new新的String对象, 而它除了hash之外都是final属性, 分配空间会造成时间损耗.
+所以String不适合大量拼接. 使用String可是耗时18ms呢
+StringBuffer解决了这个问题, 它提升了速度, 是线程安全.
+而StringBuilder 和StringBuffer类似, 但它是线程不安全, 这也使得它比StringBuffer拼接更快. 本题只需3ms
+有没有更快的呢, 当然有, 还就是它了 char[], 只需2ms(笑)
+import java.lang.reflect.Method; import java.util.*; class Solution { public String convert(String s, int numRows) { int N = s.length(); // StringBuilder res = new StringBuilder(); char res[] = new char[N]; int cycle = (numRows-1)*2; int index = 0; if(numRows==1){ return s; } for(int row=0;row&amp;lt;numRows;row++){ /* row 0 6 1 4 2 2 2 4 3 0 */ for(int i=row;i&amp;lt;N;i+=cycle){ /* 一个锯齿*/ // res.</description>
+    </item>
+    
+    <item>
+      <title>leetcode - 7. Reverse Integer with Java</title>
+      <link>https://sucicada.github.io/blog/posts/soft/leetcode-7.-reverse-integer-with-java/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://sucicada.github.io/blog/posts/soft/leetcode-7.-reverse-integer-with-java/</guid>
+      <description>where is problem 搞笑的空间复杂度
+使用long，最后进行比较会更小，不知道为什么
+class Solution { public int reverse(int x) { boolean minus = x&amp;lt;0; x *= minus?-1:1; int res = 0; while(x&amp;gt;0){ if(res*10/10 != res){ return 0; } res = res*10 + x%10; x = x/10; } return res * (minus?-1:1); } } </description>
+    </item>
+    
+    <item>
+      <title>leetcode - 8. String to Integer (atoi) with Java</title>
+      <link>https://sucicada.github.io/blog/posts/soft/leetcode-8.-string-to-integer-atoi-with-java/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://sucicada.github.io/blog/posts/soft/leetcode-8.-string-to-integer-atoi-with-java/</guid>
+      <description>题目
+class Solution { public int myAtoi(String str) { int N = str.length(); int minus = 0; long res = 0; for(int i=0;i&amp;lt;N;i++){ char ch = str.charAt(i); System.out.println(ch+&amp;#34; &amp;#34;+minus); if((ch == &amp;#39;-&amp;#39; || ch == &amp;#39;+&amp;#39;) &amp;amp;&amp;amp; minus == 0){ minus = ch==&amp;#39;+&amp;#39;?1:-1; }else if(ch ==&amp;#39; &amp;#39; &amp;amp;&amp;amp; minus==0){ }else if(ch &amp;lt;=&amp;#39;9&amp;#39; &amp;amp;&amp;amp; ch&amp;gt;=&amp;#39;0&amp;#39;){ if(minus == 0){ minus = 1; } res = res*10 + ch-&amp;#39;0&amp;#39;; if(res != (int)res){ return minus==1?</description>
+    </item>
+    
+    <item>
+      <title>leetcode - 9. Palindrome Number with Java</title>
+      <link>https://sucicada.github.io/blog/posts/soft/leetcode-9.-palindrome-number-with-java/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://sucicada.github.io/blog/posts/soft/leetcode-9.-palindrome-number-with-java/</guid>
+      <description>题目
+class Solution { public boolean isPalindrome(int x) { if(x&amp;lt;0){ return false; } int a = 0; int b = x; while(x&amp;gt;0){ a = a * 10 + x%10; x = x/10; } return a==b; } } </description>
+    </item>
+    
+    <item>
+      <title>linux  通过  openconnect  来连接学校内网</title>
+      <link>https://sucicada.github.io/blog/posts/soft/linux-%E9%80%9A%E8%BF%87-openconnect-%E6%9D%A5%E8%BF%9E%E6%8E%A5%E5%AD%A6%E6%A0%A1%E5%86%85%E7%BD%91/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://sucicada.github.io/blog/posts/soft/linux-%E9%80%9A%E8%BF%87-openconnect-%E6%9D%A5%E8%BF%9E%E6%8E%A5%E5%AD%A6%E6%A0%A1%E5%86%85%E7%BD%91/</guid>
+      <description>参考
+http://xingda1989.iteye.com/blog/1969908
+https://blog.csdn.net/edin_blackpoint/article/details/70860101
+sudo apt install openconnect
+在/etc/vpc/目录下新建vpnc-script 文件
+文件内容可以到此处拷贝
+http://git.infradead.org/users/dwmw2/vpnc-scripts.git/blob_plain/HEAD:/vpnc-script
+sudo openconnect --juniper -u [你的学号] --script /etc/vpnc/vpnc-script [你学校的提供的vpn的url]</description>
+    </item>
+    
+    <item>
+      <title>Linux Mint 使用 VNC Server (x11vnc) 进行远程屏幕</title>
+      <link>https://sucicada.github.io/blog/posts/soft/linux-mint-%E4%BD%BF%E7%94%A8-vnc-server-x11vnc-%E8%BF%9B%E8%A1%8C%E8%BF%9C%E7%A8%8B%E5%B1%8F%E5%B9%95/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://sucicada.github.io/blog/posts/soft/linux-mint-%E4%BD%BF%E7%94%A8-vnc-server-x11vnc-%E8%BF%9B%E8%A1%8C%E8%BF%9C%E7%A8%8B%E5%B1%8F%E5%B9%95/</guid>
+      <description>https://community.linuxmint.com/tutorial/view/2334
+This tutorial was adapted from here.
+Remove the default Vino server: sudo apt-get -y remove vino
+Install x11vnc: sudo apt-get -y install x11vnc
+Create the directory for the password file: sudo mkdir /etc/x11vnc
+Create the encrypted password file: sudo x11vnc --storepasswd /etc/x11vnc/vncpwd
+You will be asked to enter and verify the password. Then press Y to
+save the password file.
+Create the systemd service file for the x11vnc service: sudo xed /lib/systemd/system/x11vnc.</description>
+    </item>
+    
+    <item>
+      <title>linux mint系统 cinnamon桌面 发大镜功能</title>
+      <link>https://sucicada.github.io/blog/posts/soft/linux-mint%E7%B3%BB%E7%BB%9F-cinnamon%E6%A1%8C%E9%9D%A2-%E5%8F%91%E5%A4%A7%E9%95%9C%E5%8A%9F%E8%83%BD/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://sucicada.github.io/blog/posts/soft/linux-mint%E7%B3%BB%E7%BB%9F-cinnamon%E6%A1%8C%E9%9D%A2-%E5%8F%91%E5%A4%A7%E9%95%9C%E5%8A%9F%E8%83%BD/</guid>
+      <description>让我来告诉迷途中的你cinnamon桌面一个好用的功能.
+选择设置
+选择窗口 -&amp;gt; 选择行为
+看那个窗口移动和调整大小的特殊键 Alt
+好了按住alt在滑动滑轮 世界不一样了
+对于小屏幕高分辨率电脑极为友好</description>
+    </item>
+    
+    <item>
+      <title>linux remmina 使用rdp协议连接windows显示Failed to startup SSH session:connection refused解决</title>
+      <link>https://sucicada.github.io/blog/posts/soft/linux-remmina-%E4%BD%BF%E7%94%A8rdp%E5%8D%8F%E8%AE%AE%E8%BF%9E%E6%8E%A5windows%E6%98%BE%E7%A4%BAfailed-to-startup-ssh-sessionconnection-refused%E8%A7%A3%E5%86%B3/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://sucicada.github.io/blog/posts/soft/linux-remmina-%E4%BD%BF%E7%94%A8rdp%E5%8D%8F%E8%AE%AE%E8%BF%9E%E6%8E%A5windows%E6%98%BE%E7%A4%BAfailed-to-startup-ssh-sessionconnection-refused%E8%A7%A3%E5%86%B3/</guid>
+      <description>https://cn.aliyun.com/jiaocheng/165641.html
+删除~/.freerdp/known_hosts
+但是我找不见这个文件
+尝试删除~/.remmina/remmina.pref 文件 成功</description>
+    </item>
+    
+    <item>
+      <title>linux 下安装 Cisco Packet Tracer 7.11以及一些注意(辛酸史)</title>
+      <link>https://sucicada.github.io/blog/posts/soft/linux-%E4%B8%8B%E5%AE%89%E8%A3%85-cisco-packet-tracer-7.11%E4%BB%A5%E5%8F%8A%E4%B8%80%E4%BA%9B%E6%B3%A8%E6%84%8F%E8%BE%9B%E9%85%B8%E5%8F%B2/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://sucicada.github.io/blog/posts/soft/linux-%E4%B8%8B%E5%AE%89%E8%A3%85-cisco-packet-tracer-7.11%E4%BB%A5%E5%8F%8A%E4%B8%80%E4%BA%9B%E6%B3%A8%E6%84%8F%E8%BE%9B%E9%85%B8%E5%8F%B2/</guid>
+      <description>https://blog.csdn.net/qq_35882901/article/details/77652571
+https://linux.cn/article-5576-1.html
+开启登录问题
+https://blog.csdn.net/u012321131/article/details/78587383
+到软件的根目录下 执行以下脚本
+sudo ./set_ptenv.sh sudo ./set_qtenv.sh
+**一定按步骤走 **
+安装在默认的/opt/pt 如果因为安装在家目录而导致闪退 就重新安装在默认路径下
+一些依赖库
+sudo apt install libqt5scripttools5
+sudo apt-get install libqt5multimedia5-plugins
+2018/9/18
+因为3560的三层交换机的端口信息不显示,忍不了linux的bug,下了6版本的linux版本.
+安装失败,
+换回7版本,(核心已转储)&amp;hellip;..made?
+一个晚上的尝试,发现只是在当前的这个用户下运行不了,&amp;hellip;..放弃了,
+那么用wine吧
+满心欢喜的安装好了,然后打算慢慢的把7版本的实验在6版本上重打一遍,
+但是,cpu占用28,温度81&amp;hellip;&amp;hellip;.耗不起
+那么赞颂我们伟大的虚拟机吧
+virtualbox的无缝模式太强大了,wine什么的掰掰吧,</description>
+    </item>
+    
+    <item>
+      <title>linux 下的torrent下载器qBitTorrent</title>
+      <link>https://sucicada.github.io/blog/posts/soft/linux-%E4%B8%8B%E7%9A%84torrent%E4%B8%8B%E8%BD%BD%E5%99%A8qbittorrent/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://sucicada.github.io/blog/posts/soft/linux-%E4%B8%8B%E7%9A%84torrent%E4%B8%8B%E8%BD%BD%E5%99%A8qbittorrent/</guid>
+      <description>BT下载利器&amp;ndash;Qbittorrent完全攻
+Ubuntu使用命令安装qBittorrent的方法
+源码下载</description>
+    </item>
+    
+    <item>
+      <title>mysql workbench闪退解决办法</title>
+      <link>https://sucicada.github.io/blog/posts/soft/mysql-workbench%E9%97%AA%E9%80%80%E8%A7%A3%E5%86%B3%E5%8A%9E%E6%B3%95/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://sucicada.github.io/blog/posts/soft/mysql-workbench%E9%97%AA%E9%80%80%E8%A7%A3%E5%86%B3%E5%8A%9E%E6%B3%95/</guid>
+      <description>感谢google，感谢csdn
+linux下：
+rm -rf .mysql/workbench/
+windows下：
+删除C:\Users\Administrator\AppData\Roaming\MySQL\Workbench
+这个问题没有社区的帮助，我就真的没辙了</description>
+    </item>
+    
+    <item>
+      <title>mysql数据库连接以及执行的java类</title>
+      <link>https://sucicada.github.io/blog/posts/soft/mysql%E6%95%B0%E6%8D%AE%E5%BA%93%E8%BF%9E%E6%8E%A5%E4%BB%A5%E5%8F%8A%E6%89%A7%E8%A1%8C%E7%9A%84java%E7%B1%BB/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://sucicada.github.io/blog/posts/soft/mysql%E6%95%B0%E6%8D%AE%E5%BA%93%E8%BF%9E%E6%8E%A5%E4%BB%A5%E5%8F%8A%E6%89%A7%E8%A1%8C%E7%9A%84java%E7%B1%BB/</guid>
+      <description>应该使用json等配置文件来保存要连接的数据库信息,密码等.
+先存一下,以后再说
+DB_connection.java
+/* * To change this license header, choose License Headers in Project Properties. * To change this template file, choose Tools | Templates * and open the template in the editor. */ package com; import java.sql.Connection; import java.sql.DriverManager; import java.sql.ResultSet; import java.sql.SQLException; import java.sql.Statement; /** * * @author peng */ public class DB_connection { // JDBC 驱动名及数据库 URL String JDBC_DRIVER = &amp;#34;com.mysql.jdbc.Driver&amp;#34;; String DB_URL = &amp;#34;jdbc:mysql://localhost:3306/javabbs?useUnicode=true&amp;amp;characterEncoding=UTF-8&amp;#34;; // 数据库的用户名与密码，需要根据自己的设置 String USER = &amp;#34;root&amp;#34;; String PASS = &amp;#34;mysql&amp;#34;; Connection conn = null; // private static DB_connection dB_connection =null; // public static DB_connection getInstance(){ // if(DB_connection == null){ // DB_connection = new DB_connection; // } // return DB_connection; // } public Connection connect(){ try{ Class.</description>
+    </item>
+    
+    <item>
+      <title>NYOJ-1204 魔法少女</title>
+      <link>https://sucicada.github.io/blog/posts/soft/nyoj-1204-%E9%AD%94%E6%B3%95%E5%B0%91%E5%A5%B3/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://sucicada.github.io/blog/posts/soft/nyoj-1204-%E9%AD%94%E6%B3%95%E5%B0%91%E5%A5%B3/</guid>
+      <description>http://nyoj.top/problem/1204
+#include&amp;lt;iostream&amp;gt; using namespace std; int h[10006]; int d[10006][2]; // 每一 //int fun(int a,int b){ // if(a&amp;lt;0) // return 0; // if(b==0){ // if(d[a-1][0]&amp;lt;d[a-1][1]){ // cout&amp;lt;&amp;lt;d[a-1][0]&amp;lt;&amp;lt;&amp;#34; &amp;#34;&amp;lt;&amp;lt;a-1&amp;lt;&amp;lt;&amp;#34; &amp;#34;&amp;lt;&amp;lt;0&amp;lt;&amp;lt;endl; // fun(a-1,0); // }else{ // cout&amp;lt;&amp;lt;d[a-1][1]&amp;lt;&amp;lt;&amp;#34; &amp;#34;&amp;lt;&amp;lt;a-1&amp;lt;&amp;lt;&amp;#34; &amp;#34;&amp;lt;&amp;lt;1&amp;lt;&amp;lt;endl; // fun(a-1,1); // } // }else{ // if(d[a-1][0] &amp;lt; d[a-2][0]){ // cout&amp;lt;&amp;lt;d[a-1][0]&amp;lt;&amp;lt;&amp;#34; &amp;#34;&amp;lt;&amp;lt;a-1&amp;lt;&amp;lt;&amp;#34; &amp;#34;&amp;lt;&amp;lt;0&amp;lt;&amp;lt;endl; // fun(a-1,0); // }else{ // cout&amp;lt;&amp;lt;d[a-2][0]&amp;lt;&amp;lt;&amp;#34; &amp;#34;&amp;lt;&amp;lt;a-2&amp;lt;&amp;lt;&amp;#34; &amp;#34;&amp;lt;&amp;lt;0&amp;lt;&amp;lt;endl; // fun(a-2,0); // } // } //} int main(){ int n; while(cin&amp;gt;&amp;gt;n){ for(int i=0;i&amp;lt;n;i++){ cin&amp;gt;&amp;gt;h[i]; } // 0 not // 1 do d[0][0] = h[0]; d[0][1] = 0; d[1][0] = h[1]; d[1][1] = 0; for(int i=2;i&amp;lt;n;i++){ d[i][0] = min(d[i-1][1], d[i-1][0]) + h[i]; d[i][1] = min(d[i-1][0], d[i-2][0]); // 这一层飞了的时间数，和上一层没有飞，以及上上一层没有飞花费的时间数是一样的 } // for(int j=0;j&amp;lt;2;j++){ // for(int i=0;i&amp;lt;n;i++){ // cout&amp;lt;&amp;lt; d[i][j]&amp;lt;&amp;lt;&amp;#34; &amp;#34;; // } // cout&amp;lt;&amp;lt;endl; // } // // if((d[n-1][0]&amp;lt;d[n-1][1])){ // cout&amp;lt;&amp;lt;d[n-1][0]&amp;lt;&amp;lt;&amp;#34; &amp;#34;&amp;lt;&amp;lt;n-1&amp;lt;&amp;lt;&amp;#34; &amp;#34;&amp;lt;&amp;lt;0&amp;lt;&amp;lt;endl; // fun(n-1,0); // }else{ // cout&amp;lt;&amp;lt;d[n-1][1]&amp;lt;&amp;lt;&amp;#34; &amp;#34;&amp;lt;&amp;lt;n-1&amp;lt;&amp;lt;&amp;#34; &amp;#34;&amp;lt;&amp;lt;1&amp;lt;&amp;lt;endl; // fun(n-1,1); // } cout&amp;lt;&amp;lt; min(d[n-1][0],d[n-1][1]) &amp;lt;&amp;lt;endl; } } 伟大的动态规划，我真是愚蠢</description>
+    </item>
+    
+    <item>
+      <title>Phaser 引擎 中TiledMap 的 json地图配置文件的格式</title>
+      <link>https://sucicada.github.io/blog/posts/soft/phaser-%E5%BC%95%E6%93%8E-%E4%B8%ADtiledmap-%E7%9A%84-json%E5%9C%B0%E5%9B%BE%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6%E7%9A%84%E6%A0%BC%E5%BC%8F/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://sucicada.github.io/blog/posts/soft/phaser-%E5%BC%95%E6%93%8E-%E4%B8%ADtiledmap-%E7%9A%84-json%E5%9C%B0%E5%9B%BE%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6%E7%9A%84%E6%A0%BC%E5%BC%8F/</guid>
+      <description>官方推荐Tiled 地图编辑器,
+https://www.mapeditor.org/
+所以查看地图格式直接看Tiled 的官方帮助文档
+http://doc.mapeditor.org/en/stable/reference/json-map-format/</description>
+    </item>
+    
+    <item>
+      <title>phaser 按键表 keyboard keycode</title>
+      <link>https://sucicada.github.io/blog/posts/soft/phaser-%E6%8C%89%E9%94%AE%E8%A1%A8-keyboard-keycode/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://sucicada.github.io/blog/posts/soft/phaser-%E6%8C%89%E9%94%AE%E8%A1%A8-keyboard-keycode/</guid>
+      <description>https://photonstorm.github.io/phaser-ce/Phaser.KeyCode.html
+帮助文档里都有,但就是没人说</description>
+    </item>
+    
+    <item>
+      <title>PhaserCE 使用 create.texture 出错  Phaser.Cache.addImage: Image &#34;xx&#34; is not complete 并且图形没有显示</title>
+      <link>https://sucicada.github.io/blog/posts/soft/phaserce-%E4%BD%BF%E7%94%A8-create.texture-%E5%87%BA%E9%94%99-phaser.cache.addimage-image-xx-is-not-complete-%E5%B9%B6%E4%B8%94%E5%9B%BE%E5%BD%A2%E6%B2%A1%E6%9C%89%E6%98%BE%E7%A4%BA/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://sucicada.github.io/blog/posts/soft/phaserce-%E4%BD%BF%E7%94%A8-create.texture-%E5%87%BA%E9%94%99-phaser.cache.addimage-image-xx-is-not-complete-%E5%B9%B6%E4%B8%94%E5%9B%BE%E5%BD%A2%E6%B2%A1%E6%9C%89%E6%98%BE%E7%A4%BA/</guid>
+      <description>首先参看官网文档的写法 https://photonstorm.github.io/phaser-ce/Phaser.Create.html#texture
+var game = new Phaser.Game(800, 600, Phaser.CANVAS, &amp;#39;game&amp;#39;, { preload: preload, create: create, }); function preload(){ var data = [ &amp;#39; 333 &amp;#39;, &amp;#39; 777 &amp;#39;, &amp;#39;E333E&amp;#39;, &amp;#39; 333 &amp;#39;, &amp;#39; 3 3 &amp;#39;]; game.create.texture(&amp;#39;bob&amp;#39;, data); } function create() { game.add.sprite(0, 0, &amp;#39;bob&amp;#39;); } 控制台警告
+Phaser.Cache.addImage: Image &amp;#34;xx&amp;#34; is not complete 改为
+...... game.create.texture(&amp;#39;bob&amp;#39;, data,100,10,0,true,function(f){}); ...... 警告
+Phaser.Cache.getImage: Key &amp;#34;xx&amp;#34; not found in Cache. 查找资料无果，实验之后发现
+使用
+game.load.imageFromTexture(&amp;#39;bob&amp;#39;,data,100,1); 替换</description>
+    </item>
+    
+    <item>
+      <title>pyhton 下 使用getch(), 输入字符无需回车</title>
+      <link>https://sucicada.github.io/blog/posts/soft/pyhton-%E4%B8%8B-%E4%BD%BF%E7%94%A8getch-%E8%BE%93%E5%85%A5%E5%AD%97%E7%AC%A6%E6%97%A0%E9%9C%80%E5%9B%9E%E8%BD%A6/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://sucicada.github.io/blog/posts/soft/pyhton-%E4%B8%8B-%E4%BD%BF%E7%94%A8getch-%E8%BE%93%E5%85%A5%E5%AD%97%E7%AC%A6%E6%97%A0%E9%9C%80%E5%9B%9E%E8%BD%A6/</guid>
+      <description>#原代码来自
+https://code.activestate.com/recipes/134892-getch-like-unbuffered-character-reading-from-stdin/
+同时支持windows和unix平台
+class _Getch: &amp;#34;&amp;#34;&amp;#34;Gets a single character from standard input. Does not echo to the screen.&amp;#34;&amp;#34;&amp;#34; def __init__(self): try: self.impl = _GetchWindows() except ImportError: self.impl = _GetchUnix() def __call__(self): return self.impl() class _GetchUnix: def __init__(self): import tty, sys def __call__(self): import sys, tty, termios fd = sys.stdin.fileno() old_settings = termios.tcgetattr(fd) try: tty.setraw(sys.stdin.fileno()) ch = sys.stdin.read(1) finally: termios.tcsetattr(fd, termios.TCSADRAIN, old_settings) return ch class _GetchWindows: def __init__(self): import msvcrt def __call__(self): import msvcrt return msvcrt.</description>
+    </item>
+    
+    <item>
+      <title>python matplotlibmat 包mplot3d工具   三维视图透视取消</title>
+      <link>https://sucicada.github.io/blog/posts/soft/python-matplotlibmat-%E5%8C%85mplot3d%E5%B7%A5%E5%85%B7-%E4%B8%89%E7%BB%B4%E8%A7%86%E5%9B%BE%E9%80%8F%E8%A7%86%E5%8F%96%E6%B6%88/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://sucicada.github.io/blog/posts/soft/python-matplotlibmat-%E5%8C%85mplot3d%E5%B7%A5%E5%85%B7-%E4%B8%89%E7%BB%B4%E8%A7%86%E5%9B%BE%E9%80%8F%E8%A7%86%E5%8F%96%E6%B6%88/</guid>
+      <description>https://stackoverflow.com/questions/23840756/how-to-disable-perspective-in-mplot3d
+简单的解决方法是
+ax = fig.add_subplot(111, projection=&amp;#39;3d&amp;#39;, proj_type=&amp;#39;ortho&amp;#39;) 注意111 和 proj_type=&amp;lsquo;ortho&amp;rsquo;
+辛亏在打算转用Mayavi 前找到了解决方法</description>
+    </item>
+    
+    <item>
+      <title>python pip安装不成功 在windows下</title>
+      <link>https://sucicada.github.io/blog/posts/soft/python-pip%E5%AE%89%E8%A3%85%E4%B8%8D%E6%88%90%E5%8A%9F-%E5%9C%A8windows%E4%B8%8B/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://sucicada.github.io/blog/posts/soft/python-pip%E5%AE%89%E8%A3%85%E4%B8%8D%E6%88%90%E5%8A%9F-%E5%9C%A8windows%E4%B8%8B/</guid>
+      <description>我用的是windows。你可以试试以管理员模式运行终端。
+我在用python安装第三方库时，使用如下方式
+pip install xxxx.whl 但是无论如何都只显示到
+Installing collected packages: xxxx
+然后就没了，和网上说的出来什么success提示完全不，然后我通过import来验证，也是没有安装上的。
+一定要出现
+Successful installed xxxx
+才算成功。
+如果你的问题不是这样的，请查查看别的家的博客。
+花了一个晚上都没有安上pygame。
+于是第二天在整整一个下午琢磨了两个小时为什么。重启电脑，将python卸载再安装，卸载再安装，卸载再安装。删除easy_install 重装ez。删除pip，重装pip。重装wheel，但是如上面那样也失败了。然后我终于发现问题所在了。
+我把powershell当成了是默认的管理员模式，于是我就一直处于安装不成功的地步。
+所以说，如果你也安装不上，试试管理员模式运行终端。
+真的是气，那些三步安装库的人根本不说。</description>
+    </item>
+    
+    <item>
+      <title>python Tkinter 的 Text 保持焦点在行尾</title>
+      <link>https://sucicada.github.io/blog/posts/soft/python-tkinter-%E7%9A%84-text-%E4%BF%9D%E6%8C%81%E7%84%A6%E7%82%B9%E5%9C%A8%E8%A1%8C%E5%B0%BE/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://sucicada.github.io/blog/posts/soft/python-tkinter-%E7%9A%84-text-%E4%BF%9D%E6%8C%81%E7%84%A6%E7%82%B9%E5%9C%A8%E8%A1%8C%E5%B0%BE/</guid>
+      <description>https://bbs.csdn.net/topics/390712532
+text.see(END)</description>
+    </item>
+    
+    <item>
+      <title>Python3 urllib 爬取 花瓣网图片</title>
+      <link>https://sucicada.github.io/blog/posts/soft/python3-urllib-%E7%88%AC%E5%8F%96-%E8%8A%B1%E7%93%A3%E7%BD%91%E5%9B%BE%E7%89%87/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://sucicada.github.io/blog/posts/soft/python3-urllib-%E7%88%AC%E5%8F%96-%E8%8A%B1%E7%93%A3%E7%BD%91%E5%9B%BE%E7%89%87/</guid>
+      <description>点我去我的github上看源码
+**花瓣网是动态的,所以要抓包分析,,但我真的累的不行,不想写教程了,我源码里有注释</description>
+    </item>
+    
+    <item>
+      <title>python3 urllib爬取wallhalla网站图片</title>
+      <link>https://sucicada.github.io/blog/posts/soft/python3-urllib%E7%88%AC%E5%8F%96wallhalla%E7%BD%91%E7%AB%99%E5%9B%BE%E7%89%87/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://sucicada.github.io/blog/posts/soft/python3-urllib%E7%88%AC%E5%8F%96wallhalla%E7%BD%91%E7%AB%99%E5%9B%BE%E7%89%87/</guid>
+      <description>点我去我的github上看源码
+简单使用静态方法爬取https://wallhalla.com/网站的图片
+参考:
+https://blog.csdn.net/cquptcmj/article/details/53526137
+https://www.cnblogs.com/zhouxuchen/p/4341034.html</description>
+    </item>
+    
+    <item>
+      <title>python3.5  安装twisted</title>
+      <link>https://sucicada.github.io/blog/posts/soft/python3.5-%E5%AE%89%E8%A3%85twisted/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://sucicada.github.io/blog/posts/soft/python3.5-%E5%AE%89%E8%A3%85twisted/</guid>
+      <description>https://blog.csdn.net/caimouse/article/details/77647952
+下载地址：http://www.lfd.uci.edu/~gohlke/pythonlibs/
+下载到文件：Twisted-18.7.0-cp35-cp35m-win_amd64.whl
+然后安装：pip install Twisted-18.7.0-cp35-cp35m-win_amd64.whl
+如果不行 下载win32版本试试
+如果不行
+提示Python.h: No such file or directory compilation terminated.
+那么就 sudo apt-get install python-dev
+然后试试 上面步骤
+如果还不行
+sudo pip3 install twisted</description>
+    </item>
+    
+    <item>
+      <title>Spark 2.4.0 cdh6.3.2连接 Hive 2.1.1 cdh6.3.2</title>
+      <link>https://sucicada.github.io/blog/posts/soft/spark-2.4.0-cdh6.3.2%E8%BF%9E%E6%8E%A5-hive-2.1.1-cdh6.3.2/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://sucicada.github.io/blog/posts/soft/spark-2.4.0-cdh6.3.2%E8%BF%9E%E6%8E%A5-hive-2.1.1-cdh6.3.2/</guid>
+      <description>以下maven配置能正确读取hive.
+不该加的不要加. spark版本用cdh的.
+&amp;lt;properties&amp;gt; &amp;lt;maven.compiler.source&amp;gt;8&amp;lt;/maven.compiler.source&amp;gt; &amp;lt;maven.compiler.target&amp;gt;8&amp;lt;/maven.compiler.target&amp;gt; &amp;lt;spark.version&amp;gt;2.4.0-cdh6.3.2&amp;lt;/spark.version&amp;gt; &amp;lt;hive.version&amp;gt;2.1.1-cdh6.3.2&amp;lt;/hive.version&amp;gt; &amp;lt;/properties&amp;gt; &amp;lt;dependencies&amp;gt; &amp;lt;dependency&amp;gt; &amp;lt;groupId&amp;gt;org.apache.spark&amp;lt;/groupId&amp;gt; &amp;lt;artifactId&amp;gt;spark-sql_2.11&amp;lt;/artifactId&amp;gt; &amp;lt;version&amp;gt;${spark.version}&amp;lt;/version&amp;gt; &amp;lt;/dependency&amp;gt; &amp;lt;dependency&amp;gt; &amp;lt;groupId&amp;gt;org.apache.spark&amp;lt;/groupId&amp;gt; &amp;lt;artifactId&amp;gt;spark-core_2.11&amp;lt;/artifactId&amp;gt; &amp;lt;version&amp;gt;${spark.version}&amp;lt;/version&amp;gt; &amp;lt;/dependency&amp;gt; &amp;lt;dependency&amp;gt; &amp;lt;groupId&amp;gt;org.apache.spark&amp;lt;/groupId&amp;gt; &amp;lt;artifactId&amp;gt;spark-hive_2.11&amp;lt;/artifactId&amp;gt; &amp;lt;version&amp;gt;${spark.version}&amp;lt;/version&amp;gt; &amp;lt;exclusions&amp;gt; &amp;lt;exclusion&amp;gt; &amp;lt;artifactId&amp;gt;hive-metastore&amp;lt;/artifactId&amp;gt; &amp;lt;groupId&amp;gt;org.spark-project.hive&amp;lt;/groupId&amp;gt; &amp;lt;/exclusion&amp;gt; &amp;lt;exclusion&amp;gt; &amp;lt;artifactId&amp;gt;hive-exec&amp;lt;/artifactId&amp;gt; &amp;lt;groupId&amp;gt;org.spark-project.hive&amp;lt;/groupId&amp;gt; &amp;lt;/exclusion&amp;gt; &amp;lt;/exclusions&amp;gt; &amp;lt;/dependency&amp;gt; &amp;lt;!-- &amp;lt;dependency&amp;gt;--&amp;gt; &amp;lt;!-- &amp;lt;groupId&amp;gt;org.apache.hive&amp;lt;/groupId&amp;gt;--&amp;gt; &amp;lt;!-- &amp;lt;artifactId&amp;gt;hive-metastore&amp;lt;/artifactId&amp;gt;--&amp;gt; &amp;lt;!-- &amp;lt;version&amp;gt;${hive.version}&amp;lt;/version&amp;gt;--&amp;gt; &amp;lt;!-- &amp;lt;/dependency&amp;gt;--&amp;gt; &amp;lt;dependency&amp;gt; &amp;lt;groupId&amp;gt;org.apache.hive&amp;lt;/groupId&amp;gt; &amp;lt;artifactId&amp;gt;hive-exec&amp;lt;/artifactId&amp;gt; &amp;lt;version&amp;gt;${hive.version}&amp;lt;/version&amp;gt; &amp;lt;exclusions&amp;gt; &amp;lt;exclusion&amp;gt; &amp;lt;groupId&amp;gt;*&amp;lt;/groupId&amp;gt; &amp;lt;artifactId&amp;gt;*&amp;lt;/artifactId&amp;gt; &amp;lt;/exclusion&amp;gt; &amp;lt;/exclusions&amp;gt; &amp;lt;/dependency&amp;gt; &amp;lt;/dependencies&amp;gt; </description>
+    </item>
+    
+    <item>
+      <title>Spark2 Sql 遇到 Caused by: java.lang.NoSuchFieldError: HIVE_STATS_JDBC_TIMEOUT</title>
+      <link>https://sucicada.github.io/blog/posts/soft/spark2-sql-%E9%81%87%E5%88%B0-caused-by-java.lang.nosuchfielderror-hive_stats_jdbc_timeout/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://sucicada.github.io/blog/posts/soft/spark2-sql-%E9%81%87%E5%88%B0-caused-by-java.lang.nosuchfielderror-hive_stats_jdbc_timeout/</guid>
+      <description>问题版本：
+Spark：2.14.0
+Hive：2.1.0
+原因参见spark hive java.lang.NoSuchFieldError: HIVE_STATS_JDBC_TIMEOUT
+解决方案：
+使用 cdh版本的包，比如
+&amp;lt;spark.version&amp;gt;2.4.0-cdh6.3.2&amp;lt;/spark.version&amp;gt; &amp;lt;hive.version&amp;gt;2.1.1-cdh6.3.2&amp;lt;/hive.version&amp;gt; 如果遇到有关 apache的log4j包缺失，加入
+&amp;lt;dependency&amp;gt; &amp;lt;groupId&amp;gt;org.apache.logging.log4j&amp;lt;/groupId&amp;gt; &amp;lt;artifactId&amp;gt;log4j-core&amp;lt;/artifactId&amp;gt; &amp;lt;version&amp;gt;2.8.2&amp;lt;/version&amp;gt; &amp;lt;/dependency&amp;gt; 注意版本
+相关问题参见I&amp;rsquo;m getting “NoClassDefFoundError: org/apache/logging/log4j/util/ReflectionUtil”
+掰掰</description>
+    </item>
+    
+    <item>
+      <title>sublime 自定义主题(linux版)</title>
+      <link>https://sucicada.github.io/blog/posts/soft/sublime-%E8%87%AA%E5%AE%9A%E4%B9%89%E4%B8%BB%E9%A2%98linux%E7%89%88/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://sucicada.github.io/blog/posts/soft/sublime-%E8%87%AA%E5%AE%9A%E4%B9%89%E4%B8%BB%E9%A2%98linux%E7%89%88/</guid>
+      <description>先ctrl+`安装packa：
+import urllib.request,os; pf = &amp;lsquo;Package Control.sublime-package&amp;rsquo;; ipp = sublime.installed_packages_path(); urllib.request.install_opener( urllib.request.build_opener( urllib.request.ProxyHandler()) ); open(os.path.join(ipp, pf), &amp;lsquo;wb&amp;rsquo;).write(urllib.request.urlopen( &amp;lsquo;http://sublime.wbond.net/&#39; + pf.replace(&amp;rsquo; &amp;lsquo;,&amp;rsquo;%20&amp;rsquo;)).read())
+使用快捷键ctrl+shift+p，输入packet control install package
+这个网站上可以自制主题
+http://tmtheme-editor.herokuapp.com/#!/editor/local/undefined
+之后将文件放到home/peng/.config/sublime-text-3/Packages
+从preferences里的theme选项可以换了</description>
+    </item>
+    
+    <item>
+      <title>ubuntu 18.04 使用 Docker 安装 kiwenlau版Hadoop</title>
+      <link>https://sucicada.github.io/blog/posts/soft/ubuntu-18.04-%E4%BD%BF%E7%94%A8-docker-%E5%AE%89%E8%A3%85-kiwenlau%E7%89%88hadoop/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://sucicada.github.io/blog/posts/soft/ubuntu-18.04-%E4%BD%BF%E7%94%A8-docker-%E5%AE%89%E8%A3%85-kiwenlau%E7%89%88hadoop/</guid>
+      <description>1. docker 安装 参考
+sudo apt-get update sudo dpkg --configure -a sudo apt-get install apt-transport-https ca-certificates curl software-properties-common curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add - sudo add-apt-repository &amp;#34;deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable&amp;#34; sudo apt-get update sudo apt-get install docker-ce 1.5 docker换源（可选） 参考
+2. docker验证 docker --version sudo docker run hello-world 3. docker非root使用 参考
+sudo usermod -aG docker $USER sudo service docker restart newgrp docker 4. hadoop的docker image 参考：基于Docker搭建Hadoop集群之升级版</description>
     </item>
     
     <item>
@@ -2040,6 +2794,46 @@ Keyboards typically do not have an oriented double-quote, but they do have a lef
     </item>
     
     <item>
+      <title>三柱体hanoi问题（C_C&#43;&#43;语言版）</title>
+      <link>https://sucicada.github.io/blog/posts/soft/%E4%B8%89%E6%9F%B1%E4%BD%93hanoi%E9%97%AE%E9%A2%98c_c&#43;&#43;%E8%AF%AD%E8%A8%80%E7%89%88/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://sucicada.github.io/blog/posts/soft/%E4%B8%89%E6%9F%B1%E4%BD%93hanoi%E9%97%AE%E9%A2%98c_c&#43;&#43;%E8%AF%AD%E8%A8%80%E7%89%88/</guid>
+      <description>控制台运行输入数据格式 ： xxx（程序名） 3（汉诺塔层数）
+会显示出每一步的移动步骤，以及每一柱上留有的盘数
+#include&amp;lt;iostream&amp;gt; #include&amp;lt;sstream&amp;gt; using namespace std; int a=0,b=0,c=0; void hno(int n,char from,char mid,char to) { if(n&amp;gt;1) { hno(n-1,from,to,mid); hno(1,from,mid,to); hno(n-1,mid,from,to); } else { switch(from) { case &amp;#39;A&amp;#39;:a--;break; case &amp;#39;B&amp;#39;:b--;break; case &amp;#39;C&amp;#39;:c--;break; } switch(to) { case &amp;#39;A&amp;#39;:a++;break; case &amp;#39;B&amp;#39;:b++;break; case &amp;#39;C&amp;#39;:c++;break; } cout&amp;lt;&amp;lt;from&amp;lt;&amp;lt;&amp;#34;--&amp;gt;&amp;#34;&amp;lt;&amp;lt;to&amp;lt;&amp;lt;&amp;#34; A:&amp;#34;&amp;lt;&amp;lt;a&amp;lt;&amp;lt;&amp;#34; B:&amp;#34;&amp;lt;&amp;lt;b&amp;lt;&amp;lt;&amp;#34; C:&amp;#34;&amp;lt;&amp;lt;c&amp;lt;&amp;lt;endl; } } int main(int argc,char *argv[]) { // cout&amp;lt;&amp;lt;argc&amp;lt;&amp;lt;endl; // cout&amp;lt;&amp;lt;&amp;#34;_&amp;#34;&amp;lt;&amp;lt;argv[1]&amp;lt;&amp;lt;&amp;#34;_&amp;#34;&amp;lt;&amp;lt;endl; // return 0; stringstream s; int n;//=*argv[1]; s&amp;lt;&amp;lt;argv[1]; s&amp;gt;&amp;gt;n; //cin&amp;gt;&amp;gt;n; a=n; //hno(n,) hno(n,&amp;#39;A&amp;#39;,&amp;#39;B&amp;#39;,&amp;#39;C&amp;#39;); return 0; } </description>
+    </item>
+    
+    <item>
+      <title>三柱汉诺塔问题（Python版）</title>
+      <link>https://sucicada.github.io/blog/posts/soft/%E4%B8%89%E6%9F%B1%E6%B1%89%E8%AF%BA%E5%A1%94%E9%97%AE%E9%A2%98python%E7%89%88/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://sucicada.github.io/blog/posts/soft/%E4%B8%89%E6%9F%B1%E6%B1%89%E8%AF%BA%E5%A1%94%E9%97%AE%E9%A2%98python%E7%89%88/</guid>
+      <description>思路一样
+def move(n, a, b, c): if(n&amp;gt;1): move(n-1,a,c,b) move(1,a,b,c) move(n-1,b,a,c) else: print a,&amp;#39;--&amp;gt;&amp;#39;,c n = input(&amp;#39;input a number&amp;#39;) #int(raw_input()) move(n, &amp;#39;A&amp;#39;, &amp;#39;B&amp;#39;, &amp;#39;C&amp;#39;) </description>
+    </item>
+    
+    <item>
+      <title>关于 1.0_0.0 以及 0.0_0.0 的值</title>
+      <link>https://sucicada.github.io/blog/posts/soft/%E5%85%B3%E4%BA%8E-1.0_0.0-%E4%BB%A5%E5%8F%8A-0.0_0.0-%E7%9A%84%E5%80%BC/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://sucicada.github.io/blog/posts/soft/%E5%85%B3%E4%BA%8E-1.0_0.0-%E4%BB%A5%E5%8F%8A-0.0_0.0-%E7%9A%84%E5%80%BC/</guid>
+      <description>#include&amp;lt;cstdio&amp;gt; #include&amp;lt;iostream&amp;gt; using namespace std; int main() { printf(&amp;#34;%d\n&amp;#34;,1.0/0.0);//0 printf(&amp;#34;%d\n&amp;#34;,0.0/0.0);//0 printf(&amp;#34;%lld\n&amp;#34;,1.0/0.0);//9218868437227405312 printf(&amp;#34;%lld\n&amp;#34;,0.0/0.0);//-2251799813685248 printf(&amp;#34;%lf\n&amp;#34;,1.0/0.0);//1.#INF00 printf(&amp;#34;%lf\n&amp;#34;,0.0/0.0);//-1.#INF00 cout&amp;lt;&amp;lt;1.0/0.0&amp;lt;&amp;lt;endl;//inf cout&amp;lt;&amp;lt;0.0/0.0&amp;lt;&amp;lt;endl;//nan return 0; } </description>
+    </item>
+    
+    <item>
+      <title>刘汝佳p35,2-5（分数化小数）算法竞赛入门经典第二版</title>
+      <link>https://sucicada.github.io/blog/posts/soft/%E5%88%98%E6%B1%9D%E4%BD%B3p352-5%E5%88%86%E6%95%B0%E5%8C%96%E5%B0%8F%E6%95%B0%E7%AE%97%E6%B3%95%E7%AB%9E%E8%B5%9B%E5%85%A5%E9%97%A8%E7%BB%8F%E5%85%B8%E7%AC%AC%E4%BA%8C%E7%89%88/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://sucicada.github.io/blog/posts/soft/%E5%88%98%E6%B1%9D%E4%BD%B3p352-5%E5%88%86%E6%95%B0%E5%8C%96%E5%B0%8F%E6%95%B0%E7%AE%97%E6%B3%95%E7%AB%9E%E8%B5%9B%E5%85%A5%E9%97%A8%E7%BB%8F%E5%85%B8%E7%AC%AC%E4%BA%8C%E7%89%88/</guid>
+      <description>输入a，b，c，输出a/b的小数形式，精确到小数点后c位，a,b&amp;lt;=10^6,c&amp;lt;=100，以a=b=c=0结束，四舍五入
+#include&amp;lt;stdio.h&amp;gt; int main() { int a,b,c,n=1; while(scanf(&amp;#34;%d%d%d&amp;#34;,&amp;amp;a,&amp;amp;b,&amp;amp;c)&amp;amp;&amp;amp;(a||b||c)) { printf(&amp;#34;Case %d: %d.&amp;#34;,n++,a/b);//整数位和小数点 for(int i=0;i&amp;lt;c-1;i++) { printf(&amp;#34;%d&amp;#34;,(a*10/b)%10); a=(a*10)%b;//为了不让a溢出，用a/b的余数来算并不影响结果 } printf(&amp;#34;%d\n&amp;#34;,((a*100/b)%100+5)/10);//最后一位四舍五入 } return 0; } 已经连这种简单的算法都要上网看别人写的了，自己想出来的都是错的，浪费了一个小时又。</description>
+    </item>
+    
+    <item>
       <title>刘汝佳p35,2-6（123排列）算法竞赛入门经典第二版</title>
       <link>https://sucicada.github.io/blog/posts/soft/%E5%88%98%E6%B1%9D%E4%BD%B3p352-6123%E6%8E%92%E5%88%97%E7%AE%97%E6%B3%95%E7%AB%9E%E8%B5%9B%E5%85%A5%E9%97%A8%E7%BB%8F%E5%85%B8%E7%AC%AC%E4%BA%8C%E7%89%88/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
@@ -2049,6 +2843,58 @@ Keyboards typically do not have an oriented double-quote, but they do have a lef
 刘汝佳p35 , 2-6
 用1,2,3，&amp;hellip;.，9组成3个三位数abc，def和ghi，每个数字恰好使用一次，要求abc:def:ghi=1:2:3。输出所有解。
 #include&amp;lt;cstdio&amp;gt; #include&amp;lt;iostream&amp;gt; using namespace std; int nn(int a,int *n) { //cout&amp;lt;&amp;lt;&amp;#34;a&amp;#34;&amp;lt;&amp;lt;a&amp;lt;&amp;lt;endl; for(int i=0;i&amp;lt;8;i++) { if(a==n[i]) { //cout&amp;lt;&amp;lt;n[i]&amp;lt;&amp;lt;endl; n[i]=-1; return 0; } } return 1; } void num(int a) { int n[9]; for(int i=0;i&amp;lt;8;i++) n[i]=i+1; int b=a*2; int c=a*3; int s[9]; s[0]=a/100; s[1]=(a/10)%10; s[2]=a%10; s[3]=b/100; s[4]=(b/10)%10; s[5]=b%10; s[6]=c/100; s[7]=(c/10)%10; s[8]=c%10; for(int i=0;i&amp;lt;8;i++) { //cout&amp;lt;&amp;lt;&amp;#34;si&amp;#34;&amp;lt;&amp;lt;s[i]&amp;lt;&amp;lt;endl; if(nn(s[i],n)==1) { //cout&amp;lt;&amp;lt;&amp;#34;return&amp;#34;&amp;lt;&amp;lt;endl; return; } } cout&amp;lt;&amp;lt;a&amp;lt;&amp;lt;&amp;#34; &amp;#34;&amp;lt;&amp;lt;b&amp;lt;&amp;lt;&amp;#34; &amp;#34;&amp;lt;&amp;lt;c&amp;lt;&amp;lt;endl; } int main() { for(int a=100;a&amp;lt;=333;a++) { num(a); } return 0; } 所以结果是</description>
+    </item>
+    
+    <item>
+      <title>刘汝佳p39,3-2（开灯问题）算法竞赛入门经典第二版</title>
+      <link>https://sucicada.github.io/blog/posts/soft/%E5%88%98%E6%B1%9D%E4%BD%B3p393-2%E5%BC%80%E7%81%AF%E9%97%AE%E9%A2%98%E7%AE%97%E6%B3%95%E7%AB%9E%E8%B5%9B%E5%85%A5%E9%97%A8%E7%BB%8F%E5%85%B8%E7%AC%AC%E4%BA%8C%E7%89%88/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://sucicada.github.io/blog/posts/soft/%E5%88%98%E6%B1%9D%E4%BD%B3p393-2%E5%BC%80%E7%81%AF%E9%97%AE%E9%A2%98%E7%AE%97%E6%B3%95%E7%AB%9E%E8%B5%9B%E5%85%A5%E9%97%A8%E7%BB%8F%E5%85%B8%E7%AC%AC%E4%BA%8C%E7%89%88/</guid>
+      <description>有n盏灯，编号为1～n，第1个人把所有灯打开，第2个人按下所有编号为2的倍数的开关（这些灯将被关掉），第3个人按下所有编号为3的倍数的开关（其中关掉的灯被打开， 开着灯将被关闭），依此类推。一共有k个人，问最后有哪些灯开着？
+输入：n和k，输出开着的灯编号。k≤n≤1000。
+样例输入：7 3
+样例输出：1 5 6 7
+（题目描述拷贝自http://blog.csdn.net/oceaniwater/article/details/40709609）
+#include&amp;lt;stdio.h&amp;gt; int main() { int n,k,ni,ki,nii; //n=7;k=3; scanf(&amp;#34;%d%d&amp;#34;,&amp;amp;n,&amp;amp;k); for(ni=1;ni&amp;lt;=n;ni++)//灯数 { nii=ni; for(ki=1;ki&amp;lt;=k;ki++)//每灯人数 { //printf(&amp;#34;%%%d &amp;#34;,nii%ki); if(nii%ki==0)//当前灯是否为当前人的倍数 { ni*=(-1);//负数为开，正数为灭 } //printf(&amp;#34;!%d\n&amp;#34;,ni); } if(ni&amp;lt;0) { printf(&amp;#34;%d &amp;#34;,ni*=-1); } } return 0; } </description>
+    </item>
+    
+    <item>
+      <title>刘汝佳p39,3-3（蛇形填数）算法竞赛入门经典第二版</title>
+      <link>https://sucicada.github.io/blog/posts/soft/%E5%88%98%E6%B1%9D%E4%BD%B3p393-3%E8%9B%87%E5%BD%A2%E5%A1%AB%E6%95%B0%E7%AE%97%E6%B3%95%E7%AB%9E%E8%B5%9B%E5%85%A5%E9%97%A8%E7%BB%8F%E5%85%B8%E7%AC%AC%E4%BA%8C%E7%89%88/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://sucicada.github.io/blog/posts/soft/%E5%88%98%E6%B1%9D%E4%BD%B3p393-3%E8%9B%87%E5%BD%A2%E5%A1%AB%E6%95%B0%E7%AE%97%E6%B3%95%E7%AB%9E%E8%B5%9B%E5%85%A5%E9%97%A8%E7%BB%8F%E5%85%B8%E7%AC%AC%E4%BA%8C%E7%89%88/</guid>
+      <description>在nn方阵里填入1,2,„,nn，要求填成蛇形。例如n=4时方阵为
+10 11 12 1
+9 16 13 2
+8 15 14 3
+7 6 5 4
+上面的方阵中，多余的空格只是为了便于观察规律，不必严格输出。n≤8。
+#include&amp;lt;iostream&amp;gt; #include&amp;lt;iomanip&amp;gt; using namespace std; int const N=120; int main() { int n[N][N]={0}; int m,mm; cin&amp;gt;&amp;gt;m; mm=m; int s=1,i,j; //s=n[i=0][j=m-1]=1; while(m--) { //m--; i=mm-m-1; j=m; while(i&amp;lt;=m-1 &amp;amp;&amp;amp;n[i][j]==0) n[i++][j]=s++;//right while(j&amp;gt;=mm-m &amp;amp;&amp;amp;n[i][j]==0) n[i][j--]=s++;//down while(i&amp;gt;=mm-m &amp;amp;&amp;amp;n[i][j]==0) n[i--][j]=s++;//left while(j&amp;lt;=m-1 &amp;amp;&amp;amp;n[i][j]==0) n[i][j++]=s++;//up if(s==mm*mm)n[i+1][j-1]=s; } for(i=0;i&amp;lt;mm;i++) { for(j=0;j&amp;lt;mm;j++) cout&amp;lt;&amp;lt;setw(3)&amp;lt;&amp;lt;n[i][j]; cout&amp;lt;&amp;lt;endl; } return 0; } </description>
+    </item>
+    
+    <item>
+      <title>刘汝佳p41,3-4（竖式问题）算法竞赛入门经典第二版</title>
+      <link>https://sucicada.github.io/blog/posts/soft/%E5%88%98%E6%B1%9D%E4%BD%B3p413-4%E7%AB%96%E5%BC%8F%E9%97%AE%E9%A2%98%E7%AE%97%E6%B3%95%E7%AB%9E%E8%B5%9B%E5%85%A5%E9%97%A8%E7%BB%8F%E5%85%B8%E7%AC%AC%E4%BA%8C%E7%89%88/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://sucicada.github.io/blog/posts/soft/%E5%88%98%E6%B1%9D%E4%BD%B3p413-4%E7%AB%96%E5%BC%8F%E9%97%AE%E9%A2%98%E7%AE%97%E6%B3%95%E7%AB%9E%E8%B5%9B%E5%85%A5%E9%97%A8%E7%BB%8F%E5%85%B8%E7%AC%AC%E4%BA%8C%E7%89%88/</guid>
+      <description> 题目：
+找出所有形如abc*de（三位数乘以两位数）的算式，使得在完整的竖式中，所有数字都属于一个特定的数字集合。输入数字集合（相邻数字之间没有空格），输出所有竖式。每个竖式前应有编号，之后应有一个空行。最后输出解的总数。具体格式见样例输出（为了便于观察，竖式中的空格改用小数点显示，但你的程序应该输出空格，而非小数点）。
+样例输入：2357
+样例输出：
+&amp;lt;1&amp;gt;
+..775
+X..33
+.&amp;mdash;&amp;ndash;
+.2325
+.&amp;mdash;&amp;ndash;
+25575
+The number of solutions = 1
+分析：
+尝试所有的abc和de，判断是否满足条件。
+#include&amp;lt;iostream&amp;gt; #include&amp;lt;string.h&amp;gt; #include&amp;lt;cstdio&amp;gt; using namespace std; int main() { char s[15],f[25]; int n=1; cin&amp;gt;&amp;gt;s; for(int a=100;a&amp;lt;1000;a++) { for(int b=10;b&amp;lt;=99;b++) { int o=1; int x=a*(b%10),y=a*(b/10),z=a*b; sprintf(f,&amp;#34;%d%d%d%d%d&amp;#34;,a,b,x,y,z);//将abxyz输入到f中 for(int i=0;i&amp;lt;strlen(f);i++) if(strchr(s,f[i])==NULL) o=0; if(o) printf(&amp;#34;&amp;lt;%d&amp;gt;\n%5d\nX%4d\n-----\n%5d\n%4d \n-----\n%5d\n\n&amp;#34;,n++,a,b,x,y,z); } } cout&amp;lt;&amp;lt;&amp;#34;The number of solutions = &amp;#34;&amp;lt;&amp;lt;n-1&amp;lt;&amp;lt;endl; return 0; } </description>
     </item>
     
     <item>
@@ -2099,6 +2945,17 @@ C语言 判断字符的大小写 isalpha()函数
 二、积分 积分是微分的逆运算，即知道了函数的 导函数，反求原函数。在应用上，积分作用不仅如此，它被大量应用于求和，通俗的说是求 曲边三角形的面积，这巧妙的求解方法是积分特殊的性质决定的。
 更多推导公式点击这里
 定积分 不定积分 拓展 ● 微分的相关知识</description>
+    </item>
+    
+    <item>
+      <title>比赛中使用文件输入输出</title>
+      <link>https://sucicada.github.io/blog/posts/soft/%E6%AF%94%E8%B5%9B%E4%B8%AD%E4%BD%BF%E7%94%A8%E6%96%87%E4%BB%B6%E8%BE%93%E5%85%A5%E8%BE%93%E5%87%BA/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://sucicada.github.io/blog/posts/soft/%E6%AF%94%E8%B5%9B%E4%B8%AD%E4%BD%BF%E7%94%A8%E6%96%87%E4%BB%B6%E8%BE%93%E5%85%A5%E8%BE%93%E5%87%BA/</guid>
+      <description>使用文件最简单的方式就是使用输入输出重定向
+freopen(&amp;#34;input.txt&amp;#34;,&amp;#34;r&amp;#34;,stdin);//从文件读入 freopen(&amp;#34;outout.txt&amp;#34;,&amp;#34;w&amp;#34;,stdout);//写入文件 非重定向
+#include&amp;lt;stdio.h&amp;gt; int main() { FILE *fin,*fout; int x; fin = fopen(&amp;#34;input.txt&amp;#34;,&amp;#34;rb&amp;#34;);//从文件读入 fout = fopen(&amp;#34;outout.txt&amp;#34;,&amp;#34;wb&amp;#34;);//写入文件 fscanf(fin,&amp;#34;%d&amp;#34;,&amp;amp;x); fprintf(fout,&amp;#34;%d&amp;#34;,x); fclose(fin); fclose(fout); return 0; } </description>
     </item>
     
     <item>

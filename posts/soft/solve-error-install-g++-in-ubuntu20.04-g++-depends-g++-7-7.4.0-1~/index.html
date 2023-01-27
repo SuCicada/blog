@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto">
+
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>[Solve Error] Install g&#43;&#43; in Ubuntu20.04 :  g&#43;&#43; : Depends: g&#43;&#43;-7 (＞= 7.4.0-1~) | SuCicada</title>
+<meta name="keywords" content="soft">
+<meta name="description" content="这是在Windows10上的Ubuntu WSL环境中遇到的问题。
+目前的Ubuntu版本是Ubuntu 20.04.1 LTS。并且使用了阿里的apt镜像源。
+先说结论，Ubuntu版本之高使得本机使用apt源中没有所需的库版本。所以可以尝试将apt源换回官方源。然后apt update再安装g&#43;&#43;。
+以下是断案过程。
+在使用命令sudo apt install g&#43;&#43;遇到了依赖问题。整个依赖链排查结果如下：
+sucicada@20200702-143805:/etc/apt/sources.list.d$ sudo apt install g&#43;&#43; Reading package lists... Done Building dependency tree Reading state information... Done Some packages could not be installed. This may mean that you have requested an impossible situation or if you are using the unstable distribution that some required packages have not yet been created or been moved out of Incoming. The following information may help to resolve the situation: The following packages have unmet dependencies: g&#43;&#43; : Depends: g&#43;&#43;-7 (&gt;= 7.">
+<meta name="author" content="SuCicada">
+<link rel="canonical" href="https://sucicada.github.io/blog/posts/soft/solve-error-install-g&#43;&#43;-in-ubuntu20.04-g&#43;&#43;-depends-g&#43;&#43;-7-7.4.0-1~/">
+<link crossorigin="anonymous" href="/blog/assets/css/stylesheet.5b5501da54f21435c8f8010d1de02123ae8d1ada696b48c6530ec4eea283e7d6.css" integrity="sha256-W1UB2lTyFDXI&#43;AENHeAhI66NGtppa0jGUw7E7qKD59Y=" rel="preload stylesheet" as="style">
+<link rel="icon" href="https://sucicada.github.io/blog/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="https://sucicada.github.io/blog/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://sucicada.github.io/blog/favicon-32x32.png">
+<link rel="apple-touch-icon" href="https://sucicada.github.io/blog/apple-touch-icon.png">
+<link rel="mask-icon" href="https://sucicada.github.io/blog/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --hljs-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-track {
+                background: 0 0;
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-thumb {
+                border-color: var(--theme);
+            }
+        }
+
+    </style>
+</noscript><meta property="og:title" content="[Solve Error] Install g&#43;&#43; in Ubuntu20.04 :  g&#43;&#43; : Depends: g&#43;&#43;-7 (＞= 7.4.0-1~)" />
+<meta property="og:description" content="这是在Windows10上的Ubuntu WSL环境中遇到的问题。
+目前的Ubuntu版本是Ubuntu 20.04.1 LTS。并且使用了阿里的apt镜像源。
+先说结论，Ubuntu版本之高使得本机使用apt源中没有所需的库版本。所以可以尝试将apt源换回官方源。然后apt update再安装g&#43;&#43;。
+以下是断案过程。
+在使用命令sudo apt install g&#43;&#43;遇到了依赖问题。整个依赖链排查结果如下：
+sucicada@20200702-143805:/etc/apt/sources.list.d$ sudo apt install g&#43;&#43; Reading package lists... Done Building dependency tree Reading state information... Done Some packages could not be installed. This may mean that you have requested an impossible situation or if you are using the unstable distribution that some required packages have not yet been created or been moved out of Incoming. The following information may help to resolve the situation: The following packages have unmet dependencies: g&#43;&#43; : Depends: g&#43;&#43;-7 (&gt;= 7." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://sucicada.github.io/blog/posts/soft/solve-error-install-g&#43;&#43;-in-ubuntu20.04-g&#43;&#43;-depends-g&#43;&#43;-7-7.4.0-1~/" /><meta property="og:image" content="https://sucicada.github.io/blog/papermod-cover.png"/><meta property="article:section" content="posts" />
+
+
+
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="https://sucicada.github.io/blog/papermod-cover.png"/>
+
+<meta name="twitter:title" content="[Solve Error] Install g&#43;&#43; in Ubuntu20.04 :  g&#43;&#43; : Depends: g&#43;&#43;-7 (＞= 7.4.0-1~)"/>
+<meta name="twitter:description" content="这是在Windows10上的Ubuntu WSL环境中遇到的问题。
+目前的Ubuntu版本是Ubuntu 20.04.1 LTS。并且使用了阿里的apt镜像源。
+先说结论，Ubuntu版本之高使得本机使用apt源中没有所需的库版本。所以可以尝试将apt源换回官方源。然后apt update再安装g&#43;&#43;。
+以下是断案过程。
+在使用命令sudo apt install g&#43;&#43;遇到了依赖问题。整个依赖链排查结果如下：
+sucicada@20200702-143805:/etc/apt/sources.list.d$ sudo apt install g&#43;&#43; Reading package lists... Done Building dependency tree Reading state information... Done Some packages could not be installed. This may mean that you have requested an impossible situation or if you are using the unstable distribution that some required packages have not yet been created or been moved out of Incoming. The following information may help to resolve the situation: The following packages have unmet dependencies: g&#43;&#43; : Depends: g&#43;&#43;-7 (&gt;= 7."/>
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "Posts",
+      "item": "https://sucicada.github.io/blog/posts/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  3 ,
+      "name": "[Solve Error] Install g++ in Ubuntu20.04 :  g++ : Depends: g++-7 (＞= 7.4.0-1~)",
+      "item": "https://sucicada.github.io/blog/posts/soft/solve-error-install-g++-in-ubuntu20.04-g++-depends-g++-7-7.4.0-1~/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "[Solve Error] Install g++ in Ubuntu20.04 :  g++ : Depends: g++-7 (＞= 7.4.0-1~)",
+  "name": "[Solve Error] Install g\u002b\u002b in Ubuntu20.04 :  g\u002b\u002b : Depends: g\u002b\u002b-7 (＞= 7.4.0-1~)",
+  "description": "这是在Windows10上的Ubuntu WSL环境中遇到的问题。\n目前的Ubuntu版本是Ubuntu 20.04.1 LTS。并且使用了阿里的apt镜像源。\n先说结论，Ubuntu版本之高使得本机使用apt源中没有所需的库版本。所以可以尝试将apt源换回官方源。然后apt update再安装g++。\n以下是断案过程。\n在使用命令sudo apt install g++遇到了依赖问题。整个依赖链排查结果如下：\nsucicada@20200702-143805:/etc/apt/sources.list.d$ sudo apt install g++ Reading package lists... Done Building dependency tree Reading state information... Done Some packages could not be installed. This may mean that you have requested an impossible situation or if you are using the unstable distribution that some required packages have not yet been created or been moved out of Incoming. The following information may help to resolve the situation: The following packages have unmet dependencies: g++ : Depends: g++-7 (\u0026gt;= 7.",
+  "keywords": [
+    "soft"
+  ],
+  "articleBody": "这是在Windows10上的Ubuntu WSL环境中遇到的问题。\n目前的Ubuntu版本是Ubuntu 20.04.1 LTS。并且使用了阿里的apt镜像源。\n先说结论，Ubuntu版本之高使得本机使用apt源中没有所需的库版本。所以可以尝试将apt源换回官方源。然后apt update再安装g++。\n以下是断案过程。\n在使用命令sudo apt install g++遇到了依赖问题。整个依赖链排查结果如下：\nsucicada@20200702-143805:/etc/apt/sources.list.d$ sudo apt install g++ Reading package lists... Done Building dependency tree Reading state information... Done Some packages could not be installed. This may mean that you have requested an impossible situation or if you are using the unstable distribution that some required packages have not yet been created or been moved out of Incoming. The following information may help to resolve the situation: The following packages have unmet dependencies: g++ : Depends: g++-7 (\u003e= 7.4.0-1~) but it is not going to be installed E: Unable to correct problems, you have held broken packages. sucicada@20200702-143805:/etc/apt/sources.list.d$ sudo apt install g++-7 Reading package lists... Done Building dependency tree Reading state information... Done Some packages could not be installed. This may mean that you have requested an impossible situation or if you are using the unstable distribution that some required packages have not yet been created or been moved out of Incoming. The following information may help to resolve the situation: The following packages have unmet dependencies: g++-7 : Depends: libstdc++-7-dev (= 7.5.0-3ubuntu1~18.04) but it is not going to be installed E: Unable to correct problems, you have held broken packages. sucicada@20200702-143805:/etc/apt/sources.list.d$ sudo apt install libstdc++-7-dev Reading package lists... Done Building dependency tree Reading state information... Done Some packages could not be installed. This may mean that you have requested an impossible situation or if you are using the unstable distribution that some required packages have not yet been created or been moved out of Incoming. The following information may help to resolve the situation: The following packages have unmet dependencies: libstdc++-7-dev : Depends: libc6-dev (\u003e= 2.13-0ubuntu6) but it is not going to be installed E: Unable to correct problems, you have held broken packages. sucicada@20200702-143805:/etc/apt/sources.list.d$ sudo apt install libc6-dev Reading package lists... Done Building dependency tree Reading state information... Done Some packages could not be installed. This may mean that you have requested an impossible situation or if you are using the unstable distribution that some required packages have not yet been created or been moved out of Incoming. The following information may help to resolve the situation: The following packages have unmet dependencies: libc6-dev : Depends: libc6 (= 2.27-3ubuntu1.3) but 2.31-0ubuntu9.1 is to be installed Depends: libc-dev-bin (= 2.27-3ubuntu1.3) but it is not going to be installed E: Unable to correct problems, you have held broken packages. 反正层层找下来问题是这个：\nlibc6-dev : Depends: libc6 (= 2.27-3ubuntu1.3) but 2.31-0ubuntu9.1 is to be installed 库中的包版本和系统已安装的不符合。这个包是底层包不能删。\n接下来我们使用apt policy libc6-dev libc6来检查下依赖关系。如下\nsucicada@20200702-143805:/etc/apt/sources.list.d$ apt policy libc6-dev libc6 libc6-dev: Installed: (none) Candidate: 2.27-3ubuntu1.3 Version table: 2.27-3ubuntu1.3 500 500 http://mirrors.aliyun.com/ubuntu bionic-updates/main amd64 Packages 500 http://mirrors.aliyun.com/ubuntu bionic-proposed/main amd64 Packages 2.27-3ubuntu1.2 500 500 http://mirrors.aliyun.com/ubuntu bionic-security/main amd64 Packages 2.27-3ubuntu1 500 500 http://mirrors.aliyun.com/ubuntu bionic/main amd64 Packages libc6: Installed: 2.31-0ubuntu9.1 Candidate: 2.31-0ubuntu9.1 Version table: *** 2.31-0ubuntu9.1 100 100 /var/lib/dpkg/status 2.27-3ubuntu1.3 500 500 http://mirrors.aliyun.com/ubuntu bionic-updates/main amd64 Packages 500 http://mirrors.aliyun.com/ubuntu bionic-proposed/main amd64 Packages 2.27-3ubuntu1.2 500 500 http://mirrors.aliyun.com/ubuntu bionic-security/main amd64 Packages 2.27-3ubuntu1 500 500 http://mirrors.aliyun.com/ubuntu bionic/main amd64 Packages （小科普：***代表库已安装，100代表已安装的地方，500可安装的远端源。这里能看到100和500对应有的不同版本）\n通过以上信息我们能知道libc6-dev 这个库的安装在apt源中的候选是2.27版本，但是已经安装的libc6是2.31版本。而且因为我使用了阿里镜像源。所以由此可见阿里源中的版本知道2.27。冲突就是这么产生的。\n所以既然如此，那么我们就把apt源换回官方源（好在当时sourse.list文件只是rename），然后apt update。再安装就好了。\n如下，正确的依赖情况。\nsucicada@20200702-143805:~/PROGRAM/GitHub/ghelper-subscriber-cli$ apt policy libc6-dev libc6 libc6-dev: Installed: 2.31-0ubuntu9.1 Candidate: 2.31-0ubuntu9.1 Version table: *** 2.31-0ubuntu9.1 500 500 http://archive.ubuntu.com/ubuntu focal-updates/main amd64 Packages 100 /var/lib/dpkg/status 2.31-0ubuntu9 500 500 http://archive.ubuntu.com/ubuntu focal/main amd64 Packages libc6: Installed: 2.31-0ubuntu9.1 Candidate: 2.31-0ubuntu9.1 Version table: *** 2.31-0ubuntu9.1 500 500 http://archive.ubuntu.com/ubuntu focal-updates/main amd64 Packages 100 /var/lib/dpkg/status 2.31-0ubuntu9 500 500 http://archive.ubuntu.com/ubuntu focal/main amd64 Packages 这就是一个很舒服很正常的依赖信息了，令人赏心悦目。\n果然Linux奇妙无穷。\n",
+  "wordCount" : "553",
+  "inLanguage": "en",
+  "datePublished": "0001-01-01T00:00:00Z",
+  "dateModified": "0001-01-01T00:00:00Z",
+  "author":{
+    "@type": "Person",
+    "name": "SuCicada"
+  },
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://sucicada.github.io/blog/posts/soft/solve-error-install-g++-in-ubuntu20.04-g++-depends-g++-7-7.4.0-1~/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "SuCicada",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://sucicada.github.io/blog/favicon.ico"
+    }
+  }
+}
+</script>
+</head>
+
+<body class="" id="top">
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.body.classList.add('dark');
+    } else if (localStorage.getItem("pref-theme") === "light") {
+        document.body.classList.remove('dark')
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.body.classList.add('dark');
+    }
+
+</script>
+
+<header class="header">
+    <nav class="nav">
+        <div class="logo">
+            <a href="https://sucicada.github.io/blog" accesskey="h" title="SuCicada (Alt + H)">SuCicada</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" accesskey="t" title="(Alt + T)">
+                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu">
+            <li>
+                <a href="https://sucicada.github.io/blog/archives/" title="Archive">
+                    <span>Archive</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://sucicada.github.io/blog/search/" title="Search (Alt &#43; /)" accesskey=/>
+                    <span>Search</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://sucicada.github.io/blog/tags/" title="Tags">
+                    <span>Tags</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://sucicada.github.io/blog/about/" title="About">
+                    <span>About</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+
+    <h1 class="post-title">
+      [Solve Error] Install g&#43;&#43; in Ubuntu20.04 :  g&#43;&#43; : Depends: g&#43;&#43;-7 (＞= 7.4.0-1~)
+    </h1>
+    <div class="post-meta">SuCicada&nbsp;|&nbsp;<a href="https://github.com/SuCicada/mysite-hugo/blob/master/content/posts/soft/[Solve%20Error]%20Install%20g&#43;&#43;%20in%20Ubuntu20.04%20:%20%20g&#43;&#43;%20:%20Depends:%20g&#43;&#43;-7%20%28%ef%bc%9e=%207.4.0-1~%29.md" rel="noopener noreferrer" target="_blank">Suggest Changes</a>
+
+</div>
+    <ul class="post-tags">
+      <li><a href="https://sucicada.github.io/blog/tags/soft/">soft</a></li>
+    </ul>
+  </header> 
+
+  <div class="post-content"><p>这是在Windows10上的Ubuntu WSL环境中遇到的问题。<br>
+目前的Ubuntu版本是<code>Ubuntu 20.04.1 LTS</code>。并且使用了阿里的apt镜像源。</p>
+<p><strong>先说结论，Ubuntu版本之高使得本机使用apt源中没有所需的库版本。所以可以尝试将apt源换回官方源。然后<code>apt update</code>再安装g++。</strong></p>
+<p>以下是断案过程。</p>
+<hr>
+<p>在使用命令<code>sudo apt install g++</code>遇到了依赖问题。整个依赖链排查结果如下：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">sucicada@20200702-143805:/etc/apt/sources.list.d$ sudo apt install g++
+</span></span><span class="line"><span class="cl">Reading package lists... Done
+</span></span><span class="line"><span class="cl">Building dependency tree
+</span></span><span class="line"><span class="cl">Reading state information... Done
+</span></span><span class="line"><span class="cl">Some packages could not be installed. This may mean that you have
+</span></span><span class="line"><span class="cl">requested an impossible situation or <span class="k">if</span> you are using the unstable
+</span></span><span class="line"><span class="cl">distribution that some required packages have not yet been created
+</span></span><span class="line"><span class="cl">or been moved out of Incoming.
+</span></span><span class="line"><span class="cl">The following information may <span class="nb">help</span> to resolve the situation:
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">The following packages have unmet dependencies:
+</span></span><span class="line"><span class="cl"> g++ : Depends: g++-7 <span class="o">(</span>&gt;<span class="o">=</span> 7.4.0-1~<span class="o">)</span> but it is not going to be installed
+</span></span><span class="line"><span class="cl">E: Unable to correct problems, you have held broken packages.
+</span></span><span class="line"><span class="cl">sucicada@20200702-143805:/etc/apt/sources.list.d$ sudo apt install g++-7
+</span></span><span class="line"><span class="cl">Reading package lists... Done
+</span></span><span class="line"><span class="cl">Building dependency tree
+</span></span><span class="line"><span class="cl">Reading state information... Done
+</span></span><span class="line"><span class="cl">Some packages could not be installed. This may mean that you have
+</span></span><span class="line"><span class="cl">requested an impossible situation or <span class="k">if</span> you are using the unstable
+</span></span><span class="line"><span class="cl">distribution that some required packages have not yet been created
+</span></span><span class="line"><span class="cl">or been moved out of Incoming.
+</span></span><span class="line"><span class="cl">The following information may <span class="nb">help</span> to resolve the situation:
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">The following packages have unmet dependencies:
+</span></span><span class="line"><span class="cl"> g++-7 : Depends: libstdc++-7-dev <span class="o">(=</span> 7.5.0-3ubuntu1~18.04<span class="o">)</span> but it is not going to be installed
+</span></span><span class="line"><span class="cl">E: Unable to correct problems, you have held broken packages.
+</span></span><span class="line"><span class="cl">sucicada@20200702-143805:/etc/apt/sources.list.d$ sudo apt install libstdc++-7-dev
+</span></span><span class="line"><span class="cl">Reading package lists... Done
+</span></span><span class="line"><span class="cl">Building dependency tree
+</span></span><span class="line"><span class="cl">Reading state information... Done
+</span></span><span class="line"><span class="cl">Some packages could not be installed. This may mean that you have
+</span></span><span class="line"><span class="cl">requested an impossible situation or <span class="k">if</span> you are using the unstable
+</span></span><span class="line"><span class="cl">distribution that some required packages have not yet been created
+</span></span><span class="line"><span class="cl">or been moved out of Incoming.
+</span></span><span class="line"><span class="cl">The following information may <span class="nb">help</span> to resolve the situation:
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">The following packages have unmet dependencies:
+</span></span><span class="line"><span class="cl"> libstdc++-7-dev : Depends: libc6-dev <span class="o">(</span>&gt;<span class="o">=</span> 2.13-0ubuntu6<span class="o">)</span> but it is not going to be installed
+</span></span><span class="line"><span class="cl">E: Unable to correct problems, you have held broken packages.
+</span></span><span class="line"><span class="cl">sucicada@20200702-143805:/etc/apt/sources.list.d$ sudo apt install libc6-dev
+</span></span><span class="line"><span class="cl">Reading package lists... Done
+</span></span><span class="line"><span class="cl">Building dependency tree
+</span></span><span class="line"><span class="cl">Reading state information... Done
+</span></span><span class="line"><span class="cl">Some packages could not be installed. This may mean that you have
+</span></span><span class="line"><span class="cl">requested an impossible situation or <span class="k">if</span> you are using the unstable
+</span></span><span class="line"><span class="cl">distribution that some required packages have not yet been created
+</span></span><span class="line"><span class="cl">or been moved out of Incoming.
+</span></span><span class="line"><span class="cl">The following information may <span class="nb">help</span> to resolve the situation:
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">The following packages have unmet dependencies:
+</span></span><span class="line"><span class="cl"> libc6-dev : Depends: libc6 <span class="o">(=</span> 2.27-3ubuntu1.3<span class="o">)</span> but 2.31-0ubuntu9.1 is to be installed
+</span></span><span class="line"><span class="cl">             Depends: libc-dev-bin <span class="o">(=</span> 2.27-3ubuntu1.3<span class="o">)</span> but it is not going to be installed
+</span></span><span class="line"><span class="cl">E: Unable to correct problems, you have held broken packages.
+</span></span></code></pre></div><p>反正层层找下来问题是这个：</p>
+<pre tabindex="0"><code> libc6-dev : Depends: libc6 (= 2.27-3ubuntu1.3) but 2.31-0ubuntu9.1 is to be installed
+</code></pre><p>库中的包版本和系统已安装的不符合。这个包是底层包不能删。</p>
+<p>接下来我们使用<code>apt policy libc6-dev libc6</code>来检查下依赖关系。如下</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">sucicada@20200702-143805:/etc/apt/sources.list.d$ apt policy libc6-dev libc6
+</span></span><span class="line"><span class="cl">libc6-dev:
+</span></span><span class="line"><span class="cl">  Installed: <span class="o">(</span>none<span class="o">)</span>
+</span></span><span class="line"><span class="cl">  Candidate: 2.27-3ubuntu1.3
+</span></span><span class="line"><span class="cl">  Version table:
+</span></span><span class="line"><span class="cl">     2.27-3ubuntu1.3 <span class="m">500</span>
+</span></span><span class="line"><span class="cl">        <span class="m">500</span> http://mirrors.aliyun.com/ubuntu bionic-updates/main amd64 Packages
+</span></span><span class="line"><span class="cl">        <span class="m">500</span> http://mirrors.aliyun.com/ubuntu bionic-proposed/main amd64 Packages
+</span></span><span class="line"><span class="cl">     2.27-3ubuntu1.2 <span class="m">500</span>
+</span></span><span class="line"><span class="cl">        <span class="m">500</span> http://mirrors.aliyun.com/ubuntu bionic-security/main amd64 Packages
+</span></span><span class="line"><span class="cl">     2.27-3ubuntu1 <span class="m">500</span>
+</span></span><span class="line"><span class="cl">        <span class="m">500</span> http://mirrors.aliyun.com/ubuntu bionic/main amd64 Packages
+</span></span><span class="line"><span class="cl">libc6:
+</span></span><span class="line"><span class="cl">  Installed: 2.31-0ubuntu9.1
+</span></span><span class="line"><span class="cl">  Candidate: 2.31-0ubuntu9.1
+</span></span><span class="line"><span class="cl">  Version table:
+</span></span><span class="line"><span class="cl"> *** 2.31-0ubuntu9.1 <span class="m">100</span>
+</span></span><span class="line"><span class="cl">        <span class="m">100</span> /var/lib/dpkg/status
+</span></span><span class="line"><span class="cl">     2.27-3ubuntu1.3 <span class="m">500</span>
+</span></span><span class="line"><span class="cl">        <span class="m">500</span> http://mirrors.aliyun.com/ubuntu bionic-updates/main amd64 Packages
+</span></span><span class="line"><span class="cl">        <span class="m">500</span> http://mirrors.aliyun.com/ubuntu bionic-proposed/main amd64 Packages
+</span></span><span class="line"><span class="cl">     2.27-3ubuntu1.2 <span class="m">500</span>
+</span></span><span class="line"><span class="cl">        <span class="m">500</span> http://mirrors.aliyun.com/ubuntu bionic-security/main amd64 Packages
+</span></span><span class="line"><span class="cl">     2.27-3ubuntu1 <span class="m">500</span>
+</span></span><span class="line"><span class="cl">        <span class="m">500</span> http://mirrors.aliyun.com/ubuntu bionic/main amd64 Packages
+</span></span></code></pre></div><p>（小科普：***代表库已安装，100代表已安装的地方，500可安装的远端源。这里能看到100和500对应有的不同版本）</p>
+<p>通过以上信息我们能知道libc6-dev 这个库的安装在apt源中的候选是2.27版本，但是已经安装的libc6是2.31版本。而且因为我使用了阿里镜像源。所以由此可见阿里源中的版本知道2.27。冲突就是这么产生的。</p>
+<p>所以既然如此，那么我们就把apt源换回官方源（好在当时sourse.list文件只是rename），然后<code>apt update</code>。再安装就好了。</p>
+<p>如下，正确的依赖情况。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">sucicada@20200702-143805:~/PROGRAM/GitHub/ghelper-subscriber-cli$ apt policy libc6-dev libc6
+</span></span><span class="line"><span class="cl">libc6-dev:
+</span></span><span class="line"><span class="cl">  Installed: 2.31-0ubuntu9.1
+</span></span><span class="line"><span class="cl">  Candidate: 2.31-0ubuntu9.1
+</span></span><span class="line"><span class="cl">  Version table:
+</span></span><span class="line"><span class="cl"> *** 2.31-0ubuntu9.1 <span class="m">500</span>
+</span></span><span class="line"><span class="cl">        <span class="m">500</span> http://archive.ubuntu.com/ubuntu focal-updates/main amd64 Packages
+</span></span><span class="line"><span class="cl">        <span class="m">100</span> /var/lib/dpkg/status
+</span></span><span class="line"><span class="cl">     2.31-0ubuntu9 <span class="m">500</span>
+</span></span><span class="line"><span class="cl">        <span class="m">500</span> http://archive.ubuntu.com/ubuntu focal/main amd64 Packages
+</span></span><span class="line"><span class="cl">libc6:
+</span></span><span class="line"><span class="cl">  Installed: 2.31-0ubuntu9.1
+</span></span><span class="line"><span class="cl">  Candidate: 2.31-0ubuntu9.1
+</span></span><span class="line"><span class="cl">  Version table:
+</span></span><span class="line"><span class="cl"> *** 2.31-0ubuntu9.1 <span class="m">500</span>
+</span></span><span class="line"><span class="cl">        <span class="m">500</span> http://archive.ubuntu.com/ubuntu focal-updates/main amd64 Packages
+</span></span><span class="line"><span class="cl">        <span class="m">100</span> /var/lib/dpkg/status
+</span></span><span class="line"><span class="cl">     2.31-0ubuntu9 <span class="m">500</span>
+</span></span><span class="line"><span class="cl">        <span class="m">500</span> http://archive.ubuntu.com/ubuntu focal/main amd64 Packages
+</span></span><span class="line"><span class="cl">        
+</span></span></code></pre></div><p>这就是一个很舒服很正常的依赖信息了，令人赏心悦目。<br>
+果然Linux奇妙无穷。</p>
+
+
+  </div>
+
+  <footer class="post-footer">
+<nav class="paginav">
+  <a class="prev" href="https://sucicada.github.io/blog/posts/soft/leetcodedatabase-178.-rank-scores-with-mysql/">
+    <span class="title">« Prev</span>
+    <br>
+    <span>[leetcode][DataBase] - 178. Rank Scores with [MySQL]</span>
+  </a>
+  <a class="next" href="https://sucicada.github.io/blog/posts/soft/8086%E6%B1%87%E7%BC%96-%E5%9C%A8%E5%B1%8F%E5%B9%95%E4%B8%8A%E6%98%BE%E7%8E%B0%E5%8A%A8%E6%80%81%E8%8F%B1%E5%BD%A2%E5%9B%BE%E6%A1%88/">
+    <span class="title">Next »</span>
+    <br>
+    <span>8086汇编   在屏幕上显现动态菱形图案</span>
+  </a>
+</nav>
+
+
+<div class="share-buttons">
+    <a target="_blank" rel="noopener noreferrer" aria-label="share [Solve Error] Install g&#43;&#43; in Ubuntu20.04 :  g&#43;&#43; : Depends: g&#43;&#43;-7 (＞= 7.4.0-1~) on twitter"
+        href="https://twitter.com/intent/tweet/?text=%5bSolve%20Error%5d%20Install%20g%2b%2b%20in%20Ubuntu20.04%20%3a%20%20g%2b%2b%20%3a%20Depends%3a%20g%2b%2b-7%20%28%ef%bc%9e%3d%207.4.0-1~%29&amp;url=https%3a%2f%2fsucicada.github.io%2fblog%2fposts%2fsoft%2fsolve-error-install-g%2b%2b-in-ubuntu20.04-g%2b%2b-depends-g%2b%2b-7-7.4.0-1~%2f&amp;hashtags=soft">
+        <svg version="1.1" viewBox="0 0 512 512" xml:space="preserve" height="30px" width="30px" fill="currentColor">
+            <path
+                d="M449.446,0c34.525,0 62.554,28.03 62.554,62.554l0,386.892c0,34.524 -28.03,62.554 -62.554,62.554l-386.892,0c-34.524,0 -62.554,-28.03 -62.554,-62.554l0,-386.892c0,-34.524 28.029,-62.554 62.554,-62.554l386.892,0Zm-253.927,424.544c135.939,0 210.268,-112.643 210.268,-210.268c0,-3.218 0,-6.437 -0.153,-9.502c14.406,-10.421 26.973,-23.448 36.935,-38.314c-13.18,5.824 -27.433,9.809 -42.452,11.648c15.326,-9.196 26.973,-23.602 32.49,-40.92c-14.252,8.429 -30.038,14.56 -46.896,17.931c-13.487,-14.406 -32.644,-23.295 -53.946,-23.295c-40.767,0 -73.87,33.104 -73.87,73.87c0,5.824 0.613,11.494 1.992,16.858c-61.456,-3.065 -115.862,-32.49 -152.337,-77.241c-6.284,10.881 -9.962,23.601 -9.962,37.088c0,25.594 13.027,48.276 32.95,61.456c-12.107,-0.307 -23.448,-3.678 -33.41,-9.196l0,0.92c0,35.862 25.441,65.594 59.311,72.49c-6.13,1.686 -12.72,2.606 -19.464,2.606c-4.751,0 -9.348,-0.46 -13.946,-1.38c9.349,29.426 36.628,50.728 68.965,51.341c-25.287,19.771 -57.164,31.571 -91.8,31.571c-5.977,0 -11.801,-0.306 -17.625,-1.073c32.337,21.15 71.264,33.41 112.95,33.41Z" />
+        </svg>
+    </a>
+    <a target="_blank" rel="noopener noreferrer" aria-label="share [Solve Error] Install g&#43;&#43; in Ubuntu20.04 :  g&#43;&#43; : Depends: g&#43;&#43;-7 (＞= 7.4.0-1~) on telegram"
+        href="https://telegram.me/share/url?text=%5bSolve%20Error%5d%20Install%20g%2b%2b%20in%20Ubuntu20.04%20%3a%20%20g%2b%2b%20%3a%20Depends%3a%20g%2b%2b-7%20%28%ef%bc%9e%3d%207.4.0-1~%29&amp;url=https%3a%2f%2fsucicada.github.io%2fblog%2fposts%2fsoft%2fsolve-error-install-g%2b%2b-in-ubuntu20.04-g%2b%2b-depends-g%2b%2b-7-7.4.0-1~%2f">
+        <svg version="1.1" xml:space="preserve" viewBox="2 2 28 28" height="30px" width="30px" fill="currentColor">
+            <path
+                d="M26.49,29.86H5.5a3.37,3.37,0,0,1-2.47-1,3.35,3.35,0,0,1-1-2.47V5.48A3.36,3.36,0,0,1,3,3,3.37,3.37,0,0,1,5.5,2h21A3.38,3.38,0,0,1,29,3a3.36,3.36,0,0,1,1,2.46V26.37a3.35,3.35,0,0,1-1,2.47A3.38,3.38,0,0,1,26.49,29.86Zm-5.38-6.71a.79.79,0,0,0,.85-.66L24.73,9.24a.55.55,0,0,0-.18-.46.62.62,0,0,0-.41-.17q-.08,0-16.53,6.11a.59.59,0,0,0-.41.59.57.57,0,0,0,.43.52l4,1.24,1.61,4.83a.62.62,0,0,0,.63.43.56.56,0,0,0,.4-.17L16.54,20l4.09,3A.9.9,0,0,0,21.11,23.15ZM13.8,20.71l-1.21-4q8.72-5.55,8.78-5.55c.15,0,.23,0,.23.16a.18.18,0,0,1,0,.06s-2.51,2.3-7.52,6.8Z" />
+        </svg>
+    </a>
+</div>
+
+  </footer><div id="disqus_thread"></div>
+<script type="application/javascript">
+    window.disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "sucicada" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+</article>
+    </main>
+    
+<footer class="footer">
+    <span>&copy; 2023 <a href="https://sucicada.github.io/blog">SuCicada</a></span>
+    <span>
+        Powered by
+        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+        <path d="M12 6H0l6-6z" />
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu')
+    if (menu) {
+        menu.scrollLeft = localStorage.getItem("menu-scroll-position");
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var mybutton = document.getElementById("top-link");
+    window.onscroll = function () {
+        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
+            mybutton.style.visibility = "visible";
+            mybutton.style.opacity = "1";
+        } else {
+            mybutton.style.visibility = "hidden";
+            mybutton.style.opacity = "0";
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        if (document.body.className.includes("dark")) {
+            document.body.classList.remove('dark');
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            document.body.classList.add('dark');
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+<script>
+    document.querySelectorAll('pre > code').forEach((codeblock) => {
+        const container = codeblock.parentNode.parentNode;
+
+        const copybutton = document.createElement('button');
+        copybutton.classList.add('copy-code');
+        copybutton.innerHTML = 'copy';
+
+        function copyingDone() {
+            copybutton.innerHTML = 'copied!';
+            setTimeout(() => {
+                copybutton.innerHTML = 'copy';
+            }, 2000);
+        }
+
+        copybutton.addEventListener('click', (cb) => {
+            if ('clipboard' in navigator) {
+                navigator.clipboard.writeText(codeblock.textContent);
+                copyingDone();
+                return;
+            }
+
+            const range = document.createRange();
+            range.selectNodeContents(codeblock);
+            const selection = window.getSelection();
+            selection.removeAllRanges();
+            selection.addRange(range);
+            try {
+                document.execCommand('copy');
+                copyingDone();
+            } catch (e) { };
+            selection.removeRange(range);
+        });
+
+        if (container.classList.contains("highlight")) {
+            container.appendChild(copybutton);
+        } else if (container.parentNode.firstChild == container) {
+            
+        } else if (codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName == "TABLE") {
+            
+            codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(copybutton);
+        } else {
+            
+            codeblock.parentNode.appendChild(copybutton);
+        }
+    });
+</script>
+</body>
+
+</html>

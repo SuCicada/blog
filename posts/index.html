@@ -263,330 +263,238 @@
 
 <article class="post-entry"> 
   <header class="entry-header">
-    <h2>Flink 内存模型的分配策略 主公式推导
+    <h2>[leetcode][Algorithm] -13. Roman to Integer with [Java]
     </h2>
   </header>
   <div class="entry-content">
-    <p>结论: 启动flink设定的 ytm数值 与实际监控展示的JVM_Heap数值关系是 (ytm大于1920的简化公式)
-JVM_Heap = ytm * 0.45 - 256
-啓動參數: -ytm 设定的实际是 进程总内存,相当于yarn容器大小
-Total_Process_Memory: ytm JVM_Metaspace: 默認 256m JVM_Overhead: 默認 jtm * 0.1 (必須在 192m ~ 1g (默認)) Total_Flink_Memory: Total_Process_Memory - JVM_Overhead - JVM_Metaspace Framework_Heap: 默認 128m Managed_Memory: 默認 Total_Flink_Memory * 0.4 Framework_Off-Heap: 默認 128m Task_Off-Heap: 默認 0 Network: 默認 Total_Flink_Memory * 0.1 (必須在 64m ~ 1g (默認)) 所以 Task_Heap = Total_Flink_Memory - Framework_Heap - Managed_Memory - Framework_Off-Heap - Task_Off-Heap - Network 如果都用默认配置,那么代入化简就是...</p>
+    <p>problem
+class Solution { public int romanToInt(String s) { int N = s.length(); int sum = 0; char a = 0; int b = 0; int c = 0; for(int i=0;i&lt;N;i&#43;&#43;){ c = b; a = s.charAt(i); if(a == &#39;I&#39;){ b = 1; }else if(a == &#39;V&#39;){ b = 5; }else if(a == &#39;X&#39;){ b = 10; }else if(a == &#39;L&#39;){ b = 50; }else if(a == &#39;C&#39;){ b = 100; }else if(a == &#39;D&#39;){ b = 500; }else if(a == &#39;M&#39;){ b = 1000; } // System....</p>
   </div>
   <footer class="entry-footer">SuCicada</footer>
-  <a class="entry-link" aria-label="post link to Flink 内存模型的分配策略 主公式推导" href="https://sucicada.github.io/blog/posts/bigdata/flink-%E5%86%85%E5%AD%98%E6%A8%A1%E5%9E%8B%E7%9A%84%E5%88%86%E9%85%8D%E7%AD%96%E7%95%A5-%E4%B8%BB%E5%85%AC%E5%BC%8F%E6%8E%A8%E5%AF%BC/"></a>
+  <a class="entry-link" aria-label="post link to [leetcode][Algorithm] -13. Roman to Integer with [Java]" href="https://sucicada.github.io/blog/posts/soft/leetcodealgorithm-13.-roman-to-integer-with-java/"></a>
 </article>
 
 <article class="post-entry"> 
   <header class="entry-header">
-    <h2>Flink 算子Function实例化的坑
+    <h2>[leetcode][DataBase] - 175. Combine Two Tables with MySQL
     </h2>
   </header>
   <div class="entry-content">
-    <p>问题回顾 关于一段代码：
-object MySingleObj{ // 陷阱： // 单例对象中一个是可变引用，一个是可变数组 var str:String = _ val list = new ListBuffer[String] } ... dataStream .map(new RichMapFunction(){ // 问题1：obj1 和 obj2 的实例方式有什么区别。 // 问题2：考虑参数0的作用以及是否会得到预期效果。 val obj1:MyClass = new MyClass(参数0) var obj2:MyClass = _ override def open(paramation:Configuration): Unit = { obj2 = new MyClass(参数0) } override def map(value, ....) = { // 问题3：如果在这里使用 obj1 和 obj2 会有什么区别。 // 问题4：单个slot中对单例对象中的变量修改，造成的影响是。 MySingleObj.str = value MySingleObj.list &#43;= value } }) ....</p>
+    <p>题目
+select FirstName, LastName, City, State from Person left join Address using (PersonId); or
+select FirstName, LastName, City, State from Person left join Address on Person.PersonId=Address.PersonId; </p>
   </div>
   <footer class="entry-footer">SuCicada</footer>
-  <a class="entry-link" aria-label="post link to Flink 算子Function实例化的坑" href="https://sucicada.github.io/blog/posts/bigdata/flink-%E7%AE%97%E5%AD%90function%E5%AE%9E%E4%BE%8B%E5%8C%96%E7%9A%84%E5%9D%91/"></a>
+  <a class="entry-link" aria-label="post link to [leetcode][DataBase] - 175. Combine Two Tables with MySQL" href="https://sucicada.github.io/blog/posts/soft/leetcodedatabase-175.-combine-two-tables-with-mysql/"></a>
 </article>
 
 <article class="post-entry"> 
   <header class="entry-header">
-    <h2>Flume 数据流的处理过程 从源码看 Source Channel Sink
+    <h2>[leetcode][DataBase] - 176. Second Highest Salary with [MySQL]
     </h2>
   </header>
   <div class="entry-content">
-    <p>Event 构成 Source Flume的三个部分：Source，Channel，Sink
-数据是存储在Event对象中在这三部分之间传递
-Event 构成 Event 接口
-public interface Event { public Map&lt;String, String&gt; getHeaders(); public void setHeaders(Map&lt;String, String&gt; headers); public byte[] getBody(); public void setBody(byte[] body); } 以 最简单的实现类 SimpleEvent 为例子
-public class SimpleEvent implements Event { private Map&lt;String, String&gt; headers; private byte[] body; ... } 可见
-header 以 Map&lt;String, String&gt; 的形式存储键值对信息
-body 二进制形式存储，从Source接收到的数据会存储在这里
-Source 带着问题 header 里有什么 一些实现类 ExecSource ExecRunnable 主要处理 通过 EventBuilder.withBody 基础创建 Event ， 一行一个 Event header 为空 flushEventBatch 中 ChannelProcessor :: processEventBatch...</p>
+    <p>problem
+select ifnull((select distinct Salary from Employee order by Salary desc limit 1,1), null) as SecondHighestSalary; or other
+select max(Salary) as SecondHighestSalary from employee where Salary &lt; (select max(Salary) from employee); </p>
   </div>
   <footer class="entry-footer">SuCicada</footer>
-  <a class="entry-link" aria-label="post link to Flume 数据流的处理过程 从源码看 Source Channel Sink" href="https://sucicada.github.io/blog/posts/bigdata/flume-%E6%95%B0%E6%8D%AE%E6%B5%81%E7%9A%84%E5%A4%84%E7%90%86%E8%BF%87%E7%A8%8B-%E4%BB%8E%E6%BA%90%E7%A0%81%E7%9C%8B-source-channel-sink/"></a>
+  <a class="entry-link" aria-label="post link to [leetcode][DataBase] - 176. Second Highest Salary with [MySQL]" href="https://sucicada.github.io/blog/posts/soft/leetcodedatabase-176.-second-highest-salary-with-mysql/"></a>
 </article>
 
 <article class="post-entry"> 
   <header class="entry-header">
-    <h2>fuck
+    <h2>[leetcode][DataBase] - 177. Nth Highest Salary with [MySQL]
     </h2>
   </header>
   <div class="entry-content">
-    <p>“火山般的怒火燃烧着我的心，我的思绪如暴风般激荡，不断地翻涌着。我的身体紧张得像弦张到极限的琴弦，随时都可能爆裂。我的心跳如鼓舞，我的呼吸急促不安。我的脑海中充满了迷雾，我无法让自己冷静下来。我的身体像一个沸腾的锅，压抑不住的爆发。我的怒气如烈焰般燃烧，烧焦了我内心深处的一切。我是烦躁，焦虑和
-暴躁的火山，永远不知道什么时候会喷发。我像一阵狂风，吹得人们无法立足。我是一道闪电，瞬间点燃所有的希望。我是一颗炸弹，随时都可能爆炸。我是一段痛苦的乐章，让人难受的和声。我是不安定的海洋，无尽的汹涌。我是烦躁，焦虑和暴躁的火山，永远不知道什么时候会喷发。”</p>
+    <p>problem
+# 184ms select min(aa.Salary) from (select distinct Salary from employee order by Salary desc limit N) as aa where (select count(distinct Salary) from employee) &gt;= N or
+# 188ms select aa.Salary as ass from (select distinct Salary from employee order by Salary desc limit N) as aa where (select count(distinct Salary) from employee) &gt;= N order by ass limit 1 </p>
   </div>
   <footer class="entry-footer">SuCicada</footer>
-  <a class="entry-link" aria-label="post link to fuck" href="https://sucicada.github.io/blog/posts/%E6%97%A5%E8%A8%98/fuck/"></a>
+  <a class="entry-link" aria-label="post link to [leetcode][DataBase] - 177. Nth Highest Salary with [MySQL]" href="https://sucicada.github.io/blog/posts/soft/leetcodedatabase-177.-nth-highest-salary-with-mysql/"></a>
 </article>
 
 <article class="post-entry"> 
   <header class="entry-header">
-    <h2>hdu 1022 栈
+    <h2>[leetcode][DataBase] - 178. Rank Scores with [MySQL]
     </h2>
   </header>
   <div class="entry-content">
-    <p>久违的ac，真是艰难。第一次提交的竟然是直接判断b字符串是否为a的倒序。
-#include&lt;iostream&gt; #include&lt;stack&gt; #include&lt;string&gt; using namespace std; int main() { int t; string a,b; while(cin&gt;&gt;t&gt;&gt;a&gt;&gt;b) { stack&lt;char&gt;s; string p; int i=0; t=a.size(); while(t--) { s.push(a[a.size()-t-1]); p&#43;=&#34;in\n&#34;;//cout&lt;&lt;s.top()&lt;&lt;&#34; &#34;&lt;&lt;b[i]; while(!s.empty()&amp;&amp;s.top()==b[i]) { //cout&lt;&lt;&#34;i&#34;&lt;&lt;i&lt;&lt;endl; s.pop(); p&#43;=&#34;out\n&#34;; i&#43;&#43;; //cout&lt;&lt;s.size()&lt;&lt;&#34;!!&#34;&lt;&lt;endl; } } if(s.size()==0) cout&lt;&lt;&#34;Yes.&#34;&lt;&lt;endl&lt;&lt;p; else cout&lt;&lt;&#34;No.&#34;&lt;&lt;endl; cout&lt;&lt;&#34;FINISH&#34;&lt;&lt;endl; } return 0; } </p>
+    <p>problem
+select inn.Score,inn.Rank from ( select ss.Score,@row:=@row&#43;1 as Rank from (select @row:=0) a, (select Score from Scores group by Score) as ss order by ss.Score desc ) as inn right join Scores as sss on inn.Score = sss.Score order by inn.Score desc ; </p>
   </div>
   <footer class="entry-footer">SuCicada</footer>
-  <a class="entry-link" aria-label="post link to hdu 1022 栈" href="https://sucicada.github.io/blog/posts/soft/hdu-1022-%E6%A0%88/"></a>
+  <a class="entry-link" aria-label="post link to [leetcode][DataBase] - 178. Rank Scores with [MySQL]" href="https://sucicada.github.io/blog/posts/soft/leetcodedatabase-178.-rank-scores-with-mysql/"></a>
 </article>
 
 <article class="post-entry"> 
   <header class="entry-header">
-    <h2>hdu 1062（倒置句中单词）&lt;未戳破的玄学&gt;
+    <h2>[Solve Error] Install g&#43;&#43; in Ubuntu20.04 :  g&#43;&#43; : Depends: g&#43;&#43;-7 (＞= 7.4.0-1~)
     </h2>
   </header>
   <div class="entry-content">
-    <p>pe诅咒，多人见证的玄学，终有一天能破解
-初回进阶版
-#include&lt;stdio.h&gt; #include&lt;string.h&gt; int main() { int T,i,j,t; char a[1000];//=&#34;123 4567&#34;; while(scanf(&#34;%d&#34;,&amp;T)==1) { while(T--) { getchar(); //setbuf(stdin,NULL);//失败了，暂不知为什么 scanf(&#34;%[^\n]&#34;,a); i=0;////j是大移动位，i是执行位 //xprintf(&#34;origin %s\n&#34;); for(j=0;j&lt;strlen(a);j&#43;&#43;) { //printf(&#34;!!%s\n&#34;,a); if(a[j&#43;1]==&#39; &#39;||a[j&#43;1]==&#39;\0&#39;) { //printf(&#34;a[] %c\n&#34;,a[j]); t=i; for(;i&lt;(j&#43;t&#43;1)/2;i&#43;&#43;) { a[i]&#43;=a[j-i&#43;t]; a[j-i&#43;t]=a[i]-a[j-i&#43;t]; a[i]=a[i]-a[j-i&#43;t]; //printf(&#34;!%s\n&#34;,a); } i=j&#43;2; } } printf(&#34;%s\n&#34;,a); } //printf(&#34;end\n&#34;); } } 临终版
-#include&lt;stdio.h&gt; #include&lt;string.h&gt; int main() { int T,i,j,t; char a[1003]; scanf(&#34;%d&#34;,&amp;T); while(T--) { getchar(); scanf(&#34;%[^\n]&#34;,a); i=0; for(j=0;j&lt;strlen(a);j&#43;&#43;) { if(a[j&#43;1]==&#39; &#39;||(j&#43;1)==strlen(a))) { t=j; while(t&gt;=i) printf(&#34;%c&#34;,a[t--]); if(a[j&#43;1]==&#39; &#39;) printf(&#34; &#34;); i=j&#43;2; } } printf(&#34;\n&#34;); } return 0; } </p>
+    <p>这是在Windows10上的Ubuntu WSL环境中遇到的问题。
+目前的Ubuntu版本是Ubuntu 20.04.1 LTS。并且使用了阿里的apt镜像源。
+先说结论，Ubuntu版本之高使得本机使用apt源中没有所需的库版本。所以可以尝试将apt源换回官方源。然后apt update再安装g&#43;&#43;。
+以下是断案过程。
+在使用命令sudo apt install g&#43;&#43;遇到了依赖问题。整个依赖链排查结果如下：
+sucicada@20200702-143805:/etc/apt/sources.list.d$ sudo apt install g&#43;&#43; Reading package lists... Done Building dependency tree Reading state information... Done Some packages could not be installed. This may mean that you have requested an impossible situation or if you are using the unstable distribution that some required packages have not yet been created or been moved out of Incoming. The following information may help to resolve the situation: The following packages have unmet dependencies: g&#43;&#43; : Depends: g&#43;&#43;-7 (&gt;= 7....</p>
   </div>
   <footer class="entry-footer">SuCicada</footer>
-  <a class="entry-link" aria-label="post link to hdu 1062（倒置句中单词）&lt;未戳破的玄学&gt;" href="https://sucicada.github.io/blog/posts/soft/hdu-1062%E5%80%92%E7%BD%AE%E5%8F%A5%E4%B8%AD%E5%8D%95%E8%AF%8D%E6%9C%AA%E6%88%B3%E7%A0%B4%E7%9A%84%E7%8E%84%E5%AD%A6/"></a>
+  <a class="entry-link" aria-label="post link to [Solve Error] Install g&#43;&#43; in Ubuntu20.04 :  g&#43;&#43; : Depends: g&#43;&#43;-7 (＞= 7.4.0-1~)" href="https://sucicada.github.io/blog/posts/soft/solve-error-install-g&#43;&#43;-in-ubuntu20.04-g&#43;&#43;-depends-g&#43;&#43;-7-7.4.0-1~/"></a>
 </article>
 
 <article class="post-entry"> 
   <header class="entry-header">
-    <h2>hdu1002（超超长数字相加）
+    <h2>8086汇编   在屏幕上显现动态菱形图案
     </h2>
   </header>
   <div class="entry-content">
-    <p>差点gg，用的是字符串数组来存数，加数，下面是原题
-*保留了所有的注释
-*没有进行代码缩减
-Input
-The first line of the input contains an integer T(1&lt;=T&lt;=20) which means the number of test cases. Then T lines follow, each line consists of two positive integers, A and B. Notice that the integers are very large, that means you should not process them by using 32-bit integer. You may assume the length of each integer will not exceed 1000.
-Output
-For each test case, you should output two lines....</p>
+    <p> 在屏幕上显现动态菱形图案。
+* * * * * * * * * * *	* * * * * * * * * * * * * * * * * * * * * * * * &lt;图一&gt; &lt;图二&gt; &lt;图三&gt; &lt;图四&gt; &lt;图五&gt; 思路示例：
+&lt;1&gt;编写程序p1:
+显示一个字符
+&lt;2&gt;把程序p1做成子程序，调用子程序编写程序p2:
+显示一个菱形&lt;图三&gt;
+&lt;3&gt;把p2做成一个子程序，调用子程序编写程序p3:
+循环显示出如图五种图形
+&lt;4&gt;修改程序p2,实现动态效果:
+添加清屏子程序和延时子程序,完成完整程序。
+注意点：
+要求以统一逻辑实现全部的五个图形。
+第三层的公式见代码
+assume cs:code code segment start: ; [ input: al: row ] ; [ ah: column ] mov cx,10 start_s: mov di,0 mov si,1 call p3 mov di,4 mov si,-1 call p3 loop start_s mov ax,4c00h int 21h p3: ; -- input: di (index of p2) si (1 or -1) push ax push bx push cx push dx push di ; mov cx,5 ; times ; cmp di,3 ; jne p3_di_not_4 ; p3_di_not_4: mov cx,4 ; times ; mov di,0 p3_s: push cx mov cx,di mov dl,&#39;*&#39; call p2 pop cx ; bx ax lay time mov ax,0 mov bx,1 push cx p3_layout: sub ax,1 sbb bx,0 mov cx,ax or cx,bx cmp cx,0 jne p3_layout pop cx push cx mov cx,di mov dl,&#39; &#39; call p2 pop cx add di,si loop p3_s pop di pop dx pop cx pop bx pop ax ret p2: push ax push bx push cx ; ----- [1] ----------- mov al,10 mov ah,10 mov bl,al mov bh,ah call p1 add bl,1 ; ----- [2] ----------- push cx cmp cx,0 je p2_2_cx_is_0 sub cx,1 p2_2_cx_is_0: mov al,bl mov ah,bh sub ah,cl call p1 mov ah,bh add ah,cl call p1 pop cx add bl,1 ; ----- [3] ----------- ; left:ah = bh-1-(1&#43;1&#43;(cl-2))*(cl-1)/2 ; = bh-1-cl*(cl-1)/2 = bh-segdis ; right: bh&#43;1&#43;cl*(cl-1)/2 = bh&#43;segdis ; segdis = 1&#43;cl*(cl-1)/2 push cx cmp cx,0 je p2_3_cx_is_0 mov al,cl ; cl sub cl,1 ; cl-1 mul cl ; cl*(cl-1) -&gt; ax mov cl,2 ; 2 div cl ; cl*(cl-1)/2 -&gt; al add al,1 ; cl*(cl-1)/2&#43;1 mov cl,al ; segdis p2_3_cx_is_0: mov al,bl mov ah,bh sub ah,cl ; bh - segdis call p1 mov ah,bh add ah,cl ; bh &#43; segdis call p1 pop cx add bl,1 ; ----- [4] ----------- push cx cmp cx,0 je p2_4_cx_is_0 sub cx,1 p2_4_cx_is_0: mov al,bl mov ah,bh sub ah,cl call p1 mov ah,bh add ah,cl call p1 pop cx add bl,1 ; ----- [5] ----------- mov al,bl mov ah,bh call p1 pop cx pop bx pop ax ret p1: ; ----- input: al: row ah: column dl:char push ax push bx push es mov bx,0b800h mov es,bx mov bl,ah mov bh,al mov al,160 mul bh add bl,bl mov bh,0 add ax,bx mov bx,ax mov byte ptr es:[bx],dl mov byte ptr es:[bx&#43;1],2 pop es pop bx pop ax ret code ends end start ; -------*------- 7 ; -------*------- 7 7 ; -------*------- 7 7 ; -------*------- ; -------*------- ; -------*------- 7 ; -------*------- 7 7 ; ------*-*------ 6 8 ; -------*------- ; -------*------- ; 7-1-(1&#43;1&#43;(n-2))*(n-1)/2 ; 2 ; -------*------- 7 ; ------*-*------ 6 8 ; -----*---*----- 5 9 ; ------*-*------ ; -------*------- ; 3 ; -------*------- 7 ; -----*---*----- 5 9 ; ---*-------*--- 3 11 ; -----*---*----- ; -------*------- ; -------*------- 7 ; ----*-----*---- 4 10 ; *-------------* 0 14 ; ----*-----*---- ; -------*------- </p>
   </div>
   <footer class="entry-footer">SuCicada</footer>
-  <a class="entry-link" aria-label="post link to hdu1002（超超长数字相加）" href="https://sucicada.github.io/blog/posts/soft/hdu1002%E8%B6%85%E8%B6%85%E9%95%BF%E6%95%B0%E5%AD%97%E7%9B%B8%E5%8A%A0/"></a>
+  <a class="entry-link" aria-label="post link to 8086汇编   在屏幕上显现动态菱形图案" href="https://sucicada.github.io/blog/posts/soft/8086%E6%B1%87%E7%BC%96-%E5%9C%A8%E5%B1%8F%E5%B9%95%E4%B8%8A%E6%98%BE%E7%8E%B0%E5%8A%A8%E6%80%81%E8%8F%B1%E5%BD%A2%E5%9B%BE%E6%A1%88/"></a>
 </article>
 
 <article class="post-entry"> 
   <header class="entry-header">
-    <h2>UUA 506 - System Dependencies(系统依赖) By SuCicada
+    <h2>8086汇编：在安全空间画金字塔
     </h2>
   </header>
   <div class="entry-content">
-    <p>例题6-21 系统依赖（System Dependencies, ACM/ICPC World Finals 1997, UVa506）
-软件组件之间可能会有依赖关系，例如，TELNET和FTP都依赖于TCP/IP。你的任务是
-模拟安装和卸载软件组件的过程。首先是一些DEPEND指令，说明软件之间的依赖关系（保
-证不存在循环依赖），然后是一些INSTALL、REMOVE和LIST指令，如表6-1所示。
-表6-1 指令说明
-指令 说明 DEPEND item1 item2 [item3 …] item1依赖组件item2, item3, … INSTALL item1 安装item1和它的依赖（已安装过的不用重新安装） REMOVE item1 卸载item1和它的依赖（如果某组件还被其他显式安装的组件所依赖，则不能卸载这个组件） LIST 输出所有已安装组件 在INSTALL指令中提到的组件称为显式安装，这些组件必须用REMOVE指令显式删除。
-同样地，被这些显式安装组件所直接或间接依赖的其他组件也不能在REMOVE指令中删除。
-每行指令包含不超过80个字符，所有组件名称都是大小写敏感的。指令名称均为大写字母。
-Sample Input
-DEPEND TELNET TCPIP NETCARD
-DEPEND TCPIP NETCARD
-DEPEND DNS TCPIP NETCARD
-DEPEND BROWSER TCPIP HTML
-INSTALL NETCARD
-INSTALL TELNET
-INSTALL foo
-REMOVE NETCARD
-INSTALL BROWSER
-INSTALL DNS
-LIST
-REMOVE TELNET
-REMOVE NETCARD
-REMOVE DNS...</p>
+    <p>assume cs:code code segment mov ax,20h mov ds,ax mov cx,8 s: mov dx,cx mov bx,cx sub bx,1 ; -------------------- mov cx,9 sub cx,dx ; mov cx,bx add cx,cx sub cx,1 j: mov al,&#39;a&#39; mov [bx],al inc bx loop j ; mov cx,dx ; add bx,10h mov ax,ds add ax,1 mov ds,ax ; mov bx,cx loop s mov ax,4c00h int 21h code ends end 。。。。</p>
   </div>
   <footer class="entry-footer">SuCicada</footer>
-  <a class="entry-link" aria-label="post link to UUA 506 - System Dependencies(系统依赖) By SuCicada" href="https://sucicada.github.io/blog/posts/uvaoj/uua-506-system-dependencies%E7%B3%BB%E7%BB%9F%E4%BE%9D%E8%B5%96-by-sucicada/"></a>
+  <a class="entry-link" aria-label="post link to 8086汇编：在安全空间画金字塔" href="https://sucicada.github.io/blog/posts/soft/8086%E6%B1%87%E7%BC%96%E5%9C%A8%E5%AE%89%E5%85%A8%E7%A9%BA%E9%97%B4%E7%94%BB%E9%87%91%E5%AD%97%E5%A1%94/"></a>
 </article>
 
 <article class="post-entry"> 
   <header class="entry-header">
-    <h2>uva 10082 WERTYU（错位键）
+    <h2>8086汇编：清空0020:0 到0020:0ff空间
     </h2>
   </header>
   <div class="entry-content">
-    <p>https://uva.onlinejudge.org/index.php?option=com_onlinejudge&amp;Itemid=8&amp;page=show_problem&amp;category=829&amp;problem=1023&amp;mosmsg=Submission&#43;received&#43;with&#43;ID&#43;20388214
-A common typing error is to place the
-hands on the keyboard one row to the
-right of the correct position. So ‘Q’ is
-typed as ‘W’ and ‘J’ is typed as ‘K’ and
-so on. You are to decode a message typed in this manner.
-Input
-Input consists of several lines of text. Each line may contain digits, spaces, upper case letters (except
-Q, A, Z), or punctuation shown above [except back-quote (‘)]....</p>
+    <p>assume cs:code code segment ; This code is used to clear the memory ; of the safe area from 0020:0 to 0020:ff mov ax,20 mov ds,ax mov cx,0ffh mov bx,0 s: mov ax,0 mov ds:[bx],ax inc bx loop s mov ax,4c00h int 21h code ends end </p>
   </div>
   <footer class="entry-footer">SuCicada</footer>
-  <a class="entry-link" aria-label="post link to uva 10082 WERTYU（错位键）" href="https://sucicada.github.io/blog/posts/uvaoj/uva-10082-wertyu%E9%94%99%E4%BD%8D%E9%94%AE/"></a>
+  <a class="entry-link" aria-label="post link to 8086汇编：清空0020:0 到0020:0ff空间" href="https://sucicada.github.io/blog/posts/soft/8086%E6%B1%87%E7%BC%96%E6%B8%85%E7%A9%BA00200-%E5%88%B000200ff%E7%A9%BA%E9%97%B4/"></a>
 </article>
 
 <article class="post-entry"> 
   <header class="entry-header">
-    <h2>UVA 10129 - Play on Words (单词) By SuCicada
+    <h2>8086汇编：自动编译链接脚本
     </h2>
   </header>
   <div class="entry-content">
-    <p>例题6-16 单词（Play On Words, UVa 10129）
-输入n（n≤100000）个单词，是否可以把所有这些单词排成一个序列，使得每个单词的
-第一个字母和上一个单词的最后一个字母相同（例如acm、malform、mouse）。每个单词最多包含1000个小写字母。输入中可以有重复单词。
-Sample Input
-3
-2
-acm
-ibm
-3
-acm
-malform
-mouse
-2
-ok
-ok
-Sample Output
-The door cannot be opened.
-Ordering is possible.
-The door cannot be opened.
-本家链接
-将一个单词看做是首字母到尾字母的一条路，所以这条路我们只关心头尾，即首尾两个字母，不关心中间字母。
-所以我们可以构造一个图，26*26的图，有向的。其中的边即是一个单词。由此我们便无需关心重复以及首尾字母相同的具体单词了，只关心具有同样首尾的单词的数量。
-所以这道题就成为了：构造了一个图，是否存在欧拉回路。
-存在欧拉回路条件：
-图连通 除了起点和终点，其余每个点的出入度都必须一样。 起点和终点的出入度之差为0或各为1。 用dfs判断连通，用数组记录各个点的出入度。
-#include&lt;iostream&gt; #include&lt;string&gt; #include&lt;cstring&gt; using namespace std; /* x --&gt; y */ int dict[33][33]; int inDegree[33]; int outDegree[33]; int N; int SUM = 26; int dfs(int w){ /* start at w */ int road = 0; for(int i=0;i&lt;SUM;i&#43;&#43;){ /* 找到了对应的尾字母，即存在一个单词，一条路 */ if(dict[w][i]==1){ dict[w][i] = 2; /* 走过了 */ road = 1; /* 路标记 */ dfs(i); /* 找下一个 */ } return road; } int main(){ int T; cin&gt;&gt;T; while(T--){ cin&gt;&gt;N; int n=N; memset(dict,0,sizeof(dict)); memset(inDegree,0,sizeof(inDegree)); memset(outDegree,0,sizeof(outDegree)); string s; while(n--){ cin&gt;&gt;s; int x = s[0]-&#39;a&#39;; int y = s[s....</p>
+    <p>@echo off echo code: %1 echo masm..... masm %1; echo link....... link %1; del %1.obj echo delete %1.obj echo finish 起个名 比如 run.bat 放到环境变量下，很方便</p>
   </div>
   <footer class="entry-footer">SuCicada</footer>
-  <a class="entry-link" aria-label="post link to UVA 10129 - Play on Words (单词) By SuCicada" href="https://sucicada.github.io/blog/posts/uvaoj/uva-10129-play-on-words-%E5%8D%95%E8%AF%8D-by-sucicada/"></a>
+  <a class="entry-link" aria-label="post link to 8086汇编：自动编译链接脚本" href="https://sucicada.github.io/blog/posts/soft/8086%E6%B1%87%E7%BC%96%E8%87%AA%E5%8A%A8%E7%BC%96%E8%AF%91%E9%93%BE%E6%8E%A5%E8%84%9A%E6%9C%AC/"></a>
 </article>
 
 <article class="post-entry"> 
   <header class="entry-header">
-    <h2>UVA 1030  Delta-wave
+    <h2>8086汇编语言王爽  17.3 字符串的输入 (含输入溢出问题分析)
     </h2>
   </header>
   <div class="entry-content">
-    <p>两格子之间的距离
-http://acm.hdu.edu.cn/showproblem.php?pid=1030
-走一步判断一下 下一步走哪里
-是走下面呢（前提要能走）
-还是走左边
-还是走右边
-设定一个格子，代表当前走到的地方
-如果能直接向下走，就向下走
-不能的话：
-如果终点在当前格子的哪一边（只看左右方向，不看上下），就走哪一边
-#include&lt;iostream&gt; #include&lt;cmath&gt; using namespace std; // 同一行 相邻的能通过 // 上下行 上行的第奇数个能和下行中第偶数个过 //1 3 5 7 //1 2*1-1 2*n-1 //(1&#43; 2*n-1)*n/2 = int(a) //第 sqrt(a) &#43;1 行 //第 a - sqrt(a)^2 个 // 向左走，向右走？ int which(int a){ int n = sqrt(a-1); int ge = a-n*n; n &#43;&#43;; return n; } int getmid(int a){ int n = which(a); return pow(n-1,2) &#43; n; } int main(){ int a,b; while(cin&gt;&gt;a&gt;&gt;b){ if(a&gt;b) a^=b^=a^=b; int go = a; int b_n = which(b);// 行 int b_mid = getmid(b); int go_mid; int go_n; int sum = 0; while(go !...</p>
+    <p>如果直接使用书上的代码, 会发现输入一定字符就会卡死
+先上代码, 或者跳到问题 assume cs:code ; dsstack segment ; db 16 dup(0) ; dsstack ends code segment start: ; mov ax,dsstack ; mov ds,ax ; mov si,13 ; mov sp,160 call getstr mov ax,4c00h int 21h getstr: push ax getstrs: mov ah,0 int 16h cmp al,20h jb nochar mov ah,0 call charstack mov ah,2 call charstack jmp getstrs nochar: cmp ah,0eh je backspace cmp ah,1ch je enter jmp getstrs backspace: mov ah,1 call charstack mov ah,2 call charstack jmp getstrs enter: mov al,0 mov ah,0 call charstack mov ah,2 call charstack pop ax ret ; ================================== charstack: jmp short charstart table dw charpush,charpop,charshow top dw 0 ; top of stack charstart: push bx push dx push di push es cmp ah,2 ja charret mov bl,ah mov bh,0 add bx,bx jmp word ptr table[bx] charpush: mov bx,top mov ds:[si][bx],al add top,1 jmp charret charpop: cmp top,0 je charret dec top mov bx,top mov al,[si][bx] jmp charret charshow: mov bx,0b800h mov es,bx mov al,160 mov ah,0 mul dh mov di,ax add dl,dl mov dh,0 add di,dx mov bx,0 charshows: cmp bx,top jne noempty mov byte ptr es:[di],&#39;&#43;&#39; ; 结束符 jmp charret noempty: mov al,[si][bx] mov es:[di],al mov byte ptr es:[di&#43;2],&#39;&#43;&#39; ; 结束符 inc bx add di,2 jmp charshows charret: pop es pop di pop dx pop bx ret code ends end start 问题 问题现象:...</p>
   </div>
   <footer class="entry-footer">SuCicada</footer>
-  <a class="entry-link" aria-label="post link to UVA 1030  Delta-wave" href="https://sucicada.github.io/blog/posts/uvaoj/uva-1030-delta-wave/"></a>
+  <a class="entry-link" aria-label="post link to 8086汇编语言王爽  17.3 字符串的输入 (含输入溢出问题分析)" href="https://sucicada.github.io/blog/posts/soft/8086%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80%E7%8E%8B%E7%88%BD-17.3-%E5%AD%97%E7%AC%A6%E4%B8%B2%E7%9A%84%E8%BE%93%E5%85%A5-%E5%90%AB%E8%BE%93%E5%85%A5%E6%BA%A2%E5%87%BA%E9%97%AE%E9%A2%98%E5%88%86%E6%9E%90/"></a>
 </article>
 
 <article class="post-entry"> 
   <header class="entry-header">
-    <h2>UVA 10305 - Ordering Tasks (给任务排序) By SuCicada
+    <h2>APG -- Algorithm PlayGround 基于Phaser 的算法游戏（类rpg）框架
     </h2>
   </header>
   <div class="entry-content">
-    <p>例题6-15 给任务排序（Ordering Tasks, UVa 10305）
-假设有n个变量，还有m个二元组(u, v)，分别表示变量u小于v。那么，所有变量从小到
-大排列起来应该是什么样子的呢？例如，有4个变量a, b, c, d，若已知a &lt; b，c &lt; b，d &lt; c，则
-这4个变量的排序可能是a &lt; d &lt; c &lt; b。尽管还有其他可能（如d &lt; a &lt; c &lt; b），你只需找出其
-中一个即可。
-Sample Input
-5 4
-1 2
-2 3
-1 3
-1 5
-0 0
-Sample Output
-1 4 2 5 3
-本家连接
-dfs(n) 从n开始找上级
-循环找上级
-如果没有上级，break
-如果有上级，
-if 上级 is execute: continue
-else if 上级 not execute. then dfs(上级),...</p>
+    <p>APG——Algorithm PlayGround 项目地址 一个有趣，智能和简单的HTML5游戏框架
+简单的开发方式，将你的算法变成游戏
+对PhaserCE库的封装开发
+70&#43;个函数接口可供使用，通过配置文件智能优化游戏
+提供可视化的地图编辑方案
+官网 官网(备用)
+Demo 演示 git page(可能会慢) 国内使用
+使用在线地图编辑器 APG MapEditor 下载 APG.js
+MapEditor
+使用在线库 github直连 https://sucicada.github.io/Algorithm-PlayGround/dist/APG.js 国内使用（更快） http://sucicada.tk:39/APG/dist/APG.js 最后 十分感谢 @llwwdbd, @lesen-bee 在开发期间所提供的帮助 </p>
   </div>
   <footer class="entry-footer">SuCicada</footer>
-  <a class="entry-link" aria-label="post link to UVA 10305 - Ordering Tasks (给任务排序) By SuCicada" href="https://sucicada.github.io/blog/posts/uvaoj/uva-10305-ordering-tasks-%E7%BB%99%E4%BB%BB%E5%8A%A1%E6%8E%92%E5%BA%8F-by-sucicada/"></a>
+  <a class="entry-link" aria-label="post link to APG -- Algorithm PlayGround 基于Phaser 的算法游戏（类rpg）框架" href="https://sucicada.github.io/blog/posts/soft/apg--algorithm-playground-%E5%9F%BA%E4%BA%8Ephaser-%E7%9A%84%E7%AE%97%E6%B3%95%E6%B8%B8%E6%88%8F%E7%B1%BBrpg%E6%A1%86%E6%9E%B6/"></a>
 </article>
 
 <article class="post-entry"> 
   <header class="entry-header">
-    <h2>uva 10340 - All in All（子序列）
+    <h2>assmbly 8086汇编：判断奇数偶数
     </h2>
   </header>
   <div class="entry-content">
-    <p>习题3-9 子序列（All in All, UVa 10340）
-输入两个字符串s和t，判断是否可以从t中删除0个或多个字符（其他字符顺序不变），
-得到字符串s。例如，abcde可以得到bce，但无法得到dc。
-Sample Input
-sequence subsequence
-person compression
-VERDI vivaVittorioEmanueleReDiItalia
-caseDoesMatter CaseDoesMatter
-Sample Output
-Yes
-No
-Yes
-No
-https://uva.onlinejudge.org/index.php?option=com_onlinejudge&amp;Itemid=8&amp;page=show_problem&amp;category=830&amp;problem=1281&amp;mosmsg=Submission&#43;received&#43;with&#43;ID&#43;20551262
-循环大的 从第一位小的开始 判断是否匹配，若是小的下标&#43;1，若非大的&#43;1，继续循环。
-#include&lt;iostream&gt; #include&lt;string&gt; using namespace std; int main() { string s,a; while(cin&gt;&gt;s&gt;&gt;a) { int sn=0; for(int i=0;i&lt;a.size()&amp;&amp;sn&lt;s.size();i&#43;&#43;) { if(a[i]==s[sn]) { sn&#43;&#43;; //cout&lt;&lt;sn&lt;&lt;&#34;!!&#34;&lt;&lt;endl; } } if(sn==s.size()) cout&lt;&lt;&#34;Yes&#34;&lt;&lt;endl; else cout&lt;&lt;&#34;No&#34;&lt;&lt;endl; } return 0; } //AC at 2017/12/30 （没想到居然一下就过了，总共十分钟？这还是在同一天的）</p>
+    <p>如果ax中的数是奇数：bx为0
+否则bx为1
+; judge which the number in ax is odd or even assume cs:code code segment mov ax,[bx] mov cx,ax mov bx,0 s: loop i ; if can&#39;t loop , cx is 1 ; every loop, cx -= 2 ; odd mov bx,0 loop k i: ; sub cx,1 loop s ; even mov bx,1 ; loop k k: ;over mov ax,4c00h int 21h code ends end </p>
   </div>
   <footer class="entry-footer">SuCicada</footer>
-  <a class="entry-link" aria-label="post link to uva 10340 - All in All（子序列）" href="https://sucicada.github.io/blog/posts/uvaoj/uva-10340-all-in-all%E5%AD%90%E5%BA%8F%E5%88%97/"></a>
+  <a class="entry-link" aria-label="post link to assmbly 8086汇编：判断奇数偶数" href="https://sucicada.github.io/blog/posts/soft/assmbly-8086%E6%B1%87%E7%BC%96%E5%88%A4%E6%96%AD%E5%A5%87%E6%95%B0%E5%81%B6%E6%95%B0/"></a>
 </article>
 
 <article class="post-entry"> 
   <header class="entry-header">
-    <h2>UVA 10562 - Undraw the Trees(看图写树) By SuCicada
+    <h2>atom删除文件: The following file couldn&#39;t be moved to trash (is gvfs-trash installed?)
     </h2>
   </header>
   <div class="entry-content">
-    <p>例题6-17 看图写树（Undraw the Trees, UVa 10562）
-你的任务是将多叉树转化为括号表示法。如图6-16所示，每个结点用除了“-”、“|”和空格
-的其他字符表示，每个非叶结点的正下方总会有一个“|”字符，然后下方是一排“-”字符，恰
-好覆盖所有子结点的上方。单独的一行“#”为数据结束标记。
-Sample Input
-2 A | -------- B C D | | ----- - E F G # e | ---- f g # Sample Output
-(A(B()C(E()F())D(G())))
-(e(f()g()))
-本家地址
-先记录树，然后从头开始递归遍历树，并且构造先序遍历字串。
-非叶子结点字母下方必有竖线。竖线下方必有若干横线，横线下方必有若干字母，即子节点。
-#include&lt;iostream&gt; #include&lt;string&gt; #include&lt;cstdio&gt; #include&lt;cstring&gt; using namespace std; char tree[222][222]; int isRightChar(char c){ return c &amp;&amp; c!=&#39;-&#39; &amp;&amp; c!=&#39;|&#39; &amp;&amp; c!=&#39; &#39; &amp;&amp; c!=&#39;#&#39;; } int loop(int x,int y){ cout&lt;&lt;tree[x][y]; cout&lt;&lt;&#34;(&#34;; if(tree[x&#43;1][y]!...</p>
+    <p>参考这个
+在使用加环境变量无果
+环境
+ubuntu 16
+atom 1.4
+执行以下命令
+sudo mkdir -p /.Trash-1000/{expunged,files,info} sudo chown -R $USER /.Trash-1000 </p>
   </div>
   <footer class="entry-footer">SuCicada</footer>
-  <a class="entry-link" aria-label="post link to UVA 10562 - Undraw the Trees(看图写树) By SuCicada" href="https://sucicada.github.io/blog/posts/uvaoj/uva-10562-undraw-the-trees%E7%9C%8B%E5%9B%BE%E5%86%99%E6%A0%91-by-sucicada/"></a>
+  <a class="entry-link" aria-label="post link to atom删除文件: The following file couldn&#39;t be moved to trash (is gvfs-trash installed?)" href="https://sucicada.github.io/blog/posts/soft/atom%E5%88%A0%E9%99%A4%E6%96%87%E4%BB%B6-the-following-file-couldnt-be-moved-to-trash-is-gvfs-trash-installed/"></a>
 </article>
 
 <article class="post-entry"> 
   <header class="entry-header">
-    <h2>uva 11809 - Floating-Point Numbers（浮点数）
+    <h2>cin、cin.get()、cin.getline()、getline()、gets()等函数的用法
     </h2>
   </header>
   <div class="entry-content">
-    <p>习题3-12 浮点数（Floating-Point Numbers, UVa11809）
-计算机常用阶码-尾数的方法保存浮点数。如图3-9所示，如果阶码有6位，尾数有8位，可以表达的最大浮点数为0.1111111112×2
-1111112。注意小数点后第一位必须为1，所以一共有9位小数。
-图3-9 阶码-尾数保存浮点数
-这个数换算成十进制之后就是0.9980468752^63=9.20535763834529410^18。你的任务是根据这个最大浮点数，求出阶码的位数E和尾数的位数M。输入格式为AeB，表示最大浮点数为A*10B。0&lt; A&lt;10，并且恰好包含15位有效数字。输 入结束标志为0e0。对于每组数据，输
-出M和E。输入保证有唯一解，且0≤M≤9，1≤E≤30。在本题中，M&#43;E&#43;2不必为8的整数倍。
-Sample Input
-5.699141892149156e76
-9.205357638345294e18
-0e0
-Sample Output
-5 8
-8 6
-https://uva.onlinejudge.org/index.php?option=com_onlinejudge&amp;Itemid=8&amp;page=show_problem&amp;category=830&amp;problem=2909&amp;mosmsg=Submission&#43;received&#43;with&#43;ID&#43;20702100
-我们只要算：m*2^(2^n-1)=f *10^t (m是浮点数位，n是阶码位数，求f和t；) 而f=10^log10(f)：即左边=10^t1=10^(t&#43;log10(f)); t1=log10(m*2^(2^n-1))=log10(m)&#43;(2^n-1) *log10(2) t=(int)t1; f=10^(t1-t);
-感谢参考来自http://blog.csdn.net/crazysillynerd/article/details/43339157 #include&lt;iostream&gt; #include&lt;cstdio&gt; #include&lt;cmath&gt; using namespace std; double flo[10][30]; int expstr[10][30]; int main() { int twoe; double twom; double temp; for(int i=0;i&lt;10;i&#43;&#43;) { twom=1-pow(2,-i-1); for(int j=0;j&lt;30;j&#43;&#43;) { twoe = pow(2,j&#43;1)-1; temp = log10(twom)&#43;twoe*log10(2); expstr[i][j]=temp; flo[i][j]=pow(10,(temp-expstr[i][j])); } } while(1) { double flo1; int exp1; char str[25]={0};//存输入的浮点数字符串 int iff=0; //输入浮点数 char c; for(int i=0;(c=getchar())!...</p>
+    <p>参考于cin、cin.get()、cin.getline()、getline()、gets()等函数的用法
+cin»
+(1) » 是会过滤掉不可见字符（如 空格 回车，TAB 等） cin.get()
+(1) cin.get(char);//接受一个字符
+(2) cin.get(char*,接收字符数目);//可以接收空格，接收数目=实际接收字符&#43;1个’\0&#39; cin.getline()
+(1) cin.getline(char*,接收数目);
+//可以接收空格，接收数目=实际接收字符&#43;1个’\0&#39;
+(2) cin.getline(char*,接收数目,结束字符)
+//当第三个参数省略时，系统默认为’\0’
+//cin.getline(str,5,‘a’);当输入abcdef时输出abcd，输入jkaljkljkl时，输出jk #include&lt;string&gt;
+1.getline(cin,string str);//可以接收空格
+2.gets(char *str);//可以接收空格
+3.getchar()//getchar()是C语言的函数，C&#43;&#43;也可以兼容，但是尽量不用或少用；</p>
   </div>
   <footer class="entry-footer">SuCicada</footer>
-  <a class="entry-link" aria-label="post link to uva 11809 - Floating-Point Numbers（浮点数）" href="https://sucicada.github.io/blog/posts/uvaoj/uva-11809-floating-point-numbers%E6%B5%AE%E7%82%B9%E6%95%B0/"></a>
+  <a class="entry-link" aria-label="post link to cin、cin.get()、cin.getline()、getline()、gets()等函数的用法" href="https://sucicada.github.io/blog/posts/soft/cincin.getcin.getlinegetlinegets%E7%AD%89%E5%87%BD%E6%95%B0%E7%9A%84%E7%94%A8%E6%B3%95/"></a>
 </article>
 <footer class="page-footer">
   <nav class="pagination">

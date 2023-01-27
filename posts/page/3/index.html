@@ -163,775 +163,325 @@
 
 <article class="post-entry"> 
   <header class="entry-header">
-    <h2>UVA 1599 - Ideal Path(理想路径) By SuCicada
+    <h2>leetcode - 3. Longest Substring Without Repeating Characters with Java
     </h2>
   </header>
   <div class="entry-content">
-    <p>例题6-20 理想路径（Ideal Path, NEERC 2010, UVa1599）
-给一个n个点m条边（2≤n≤100000，1≤m≤200000）的无向图，每条边上都涂有一种颜
-色。求从结点1到结点n的一条路径，使得经过的边数尽量少，在此前提下，经过边的颜色序
-列的字典序最小。一对结点间可能有多条边，一条边可能连接两个相同结点。输入保证结点
-1可以达到结点n。颜色为1～10
-9的整数。
-Sample Input
-4 6
-1 2 1
-1 3 2
-3 4 3
-2 3 1
-2 4 4
-3 1 1
-Sample Output
-2
-1 3
-本家链接
-先找最短路：倒序从终点bfs找。
-- 在此认为倒序和正序效果一样。只是某些处理逻辑相反。
-bfs之后，可能存在多条最短路，所以再需要一次bfs，来选出颜色最小的路。
-降低时间的注意点：
-选择合适的数据结构存储图。 一开始使用了map作为存储图的结构，后来在遍历过程中实在比vector慢了太多。 使用标记记录走过的结点，减少bfs重复计算。 对了2:00 - 2:30 期间uva oj 判题特别慢特别慢。尽量避开。
-#include&lt;iostream&gt; #include&lt;vector&gt; #include&lt;map&gt; #include&lt;queue&gt; #include&lt;cmath&gt; #include&lt;cstring&gt; #include&lt;set&gt; using namespace std; #define mapiter map&lt;int,int&gt;::iterator const int MAX_N = 100005; /* 先找最短路：倒序从终点bfs找。 - 在此认为倒序和正序效果一样。只是某些处理逻辑相反。 bfs之后，可能存在多条最短路，所以再需要一次bfs，来选出颜色最小的路。 一开始使用了map作为存储图的结构，后来在遍历过程中实在比vector慢了太多。 */ /* a-&gt;b map[a][b] == color */ class Node{ public: int next; int color; }; // map&lt;int,int&gt; door[MAX_N]; vector&lt;Node&gt; door[MAX_N]; /* 存储无向图，因为结点太多了 */ int book[MAX_N]; /* 记录每个点距离终点`的最小距离 */ int visit[MAX_N]; /* 记录走过的点 */ int big = (1L&lt;&lt;31)-1; int res[MAX_N]; int N,M; /* n下各点 到n 的距离取最短&#43;1 door[a][b] a -&gt; b log[b] = min(log[b], log[a]&#43;1) */ void bfs(){ queue&lt;int&gt; tmp; tmp....</p>
+    <p>题目链接
+import java.lang.reflect.Method; class Solution { /*两个方法都是：end无所谓的在一个一个移动，begin则是追寻之前的循环体留下的信标 关键在于信标是怎么设置下的，第一种方法是每一次都从序列中寻找信标。 第二种直接记录了下来。 一个用时间换空间，一个用空间换时间。 */ public int lengthOfLongestSubstring1(String s) { int sum = 0; int begin = 0; int end = 0; for(end = begin;end&lt;s.length();end&#43;&#43;){ /*每次都移动尾指针*/ for(int i = begin;i&lt;end;i&#43;&#43;){ /*验证重复，和end处比较，如果没有重复，说明这个子串可以加入end处的字符 而无论是否重复，都不影响移动尾指针end，影响的只是begin的位置。 */ if(s.charAt(i) == s.charAt(end)){ sum = Math.max(sum,end-begin); begin = i&#43;1; break; } } } /*最后的end会指向最后一个的下一个，所以需要再判断一下夹住的是不是大的， eg: ab or aab */ return Math.max(sum,end-begin); } public int lengthOfLongestSubstring2(String s) { int ascii[] = new int[128]; int sum = 0; int begin = 0; for(int i=0;i&lt;s....</p>
   </div>
   <footer class="entry-footer">SuCicada</footer>
-  <a class="entry-link" aria-label="post link to UVA 1599 - Ideal Path(理想路径) By SuCicada" href="https://sucicada.github.io/blog/posts/uvaoj/uva-1599-ideal-path%E7%90%86%E6%83%B3%E8%B7%AF%E5%BE%84-by-sucicada/"></a>
+  <a class="entry-link" aria-label="post link to leetcode - 3. Longest Substring Without Repeating Characters with Java" href="https://sucicada.github.io/blog/posts/soft/leetcode-3.-longest-substring-without-repeating-characters-with-java/"></a>
 </article>
 
 <article class="post-entry"> 
   <header class="entry-header">
-    <h2>uva 201 - Squares（数正方形）
+    <h2>leetcode - 4. Median of Two Sorted Arrays with Java
     </h2>
   </header>
   <div class="entry-content">
-    <p>习题4-2 正方形（Squares, ACM/ICPC World Finals 1990, UVa201）
-有n行n列（2≤n≤9）的小黑点，还有m条线段连接其中的一些黑点。统计这些线段连成
-了多少个正方形（每种边长分别统计）。
-行从上到下编号为1～n，列从左到右编号为1～n。边用H i j和V i j表示，分别代表边
-(i,j)-(i,j&#43;1)和(i,j)-(i&#43;1,j)。如图4-5所示最左边的线段用V 1 1表示。图中包含两个边长为1的正
-方形和一个边长为2的正方形。
-Sample Input
-4
-16
-H 1 1
-H 1 3
-H 2 1
-H 2 2
-H 2 3
-H 3 2
-H 4 2
-H 4 3
-V 1 1
-V 2 1
-V 2 2
-V 2 3
-V 3 2
-V 4 1
-V 4 2
-V 4 3...</p>
+    <p>简单做法, 左边哪一些, 右边拿一下, 看谁小拿谁.
+但是时间复杂度达不到要求, 虽然在leetcode上也是很快
+public double findMedianSortedArrays1(int[] A,int[] B){ /* time complexity: O((m&#43;n)/2&#43;1) */ int m = A.length; int n = B.length; int index1 = 0; int index2 = 0; int num1=0; int num2=0; for(int i=0;i&lt;(m&#43;n)/2&#43;1;i&#43;&#43;){ num2 = num1; if(index1 == m){ num1 = B[index2]; index2 &#43;&#43;; }else if(index2 == n){ num1 = A[index1]; index1&#43;&#43;; }else if(A[index1] &lt; B[index2]){ num1 = A[index1]; index1&#43;&#43;; }else{ num1 = B[index2]; index2&#43;&#43;; } } System....</p>
   </div>
   <footer class="entry-footer">SuCicada</footer>
-  <a class="entry-link" aria-label="post link to uva 201 - Squares（数正方形）" href="https://sucicada.github.io/blog/posts/uvaoj/uva-201-squares%E6%95%B0%E6%AD%A3%E6%96%B9%E5%BD%A2/"></a>
+  <a class="entry-link" aria-label="post link to leetcode - 4. Median of Two Sorted Arrays with Java" href="https://sucicada.github.io/blog/posts/soft/leetcode-4.-median-of-two-sorted-arrays-with-java/"></a>
 </article>
 
 <article class="post-entry"> 
   <header class="entry-header">
-    <h2>uva 202 - Repeating Decimals（循环小数）
+    <h2>leetcode - 5. Longest Palindromic Substring with Java
     </h2>
   </header>
   <div class="entry-content">
-    <p>习题3-8 循环小数（Repeating Decimals, ACM/ICPC World Finals 1990, UVa202）
-输入整数a和b（0≤a≤3000，1≤b≤3000），输出a/b的循环小数表示以及循环节长度。例
-如a=5，b=43，小数表示为0.(116279069767441860465)，循环节长度为21。
-注意：有些即便是原题也可能没用看清的要求
-（如果小数位大于50括号里显示到50个小数位即可，后面加…）
-（但是输出的小数位要是确实的位数，即便几百几千）
-https://uva.onlinejudge.org/index.php?option=com_onlinejudge&amp;Itemid=8&amp;page=show_problem&amp;category=830&amp;problem=138&amp;mosmsg=Submission&#43;received&#43;with&#43;ID&#43;20551105
-Sample Input
-76 25
-5 43
-1 397
-Sample Output
-76/25 = 3.04(0)
-1 = number of digits in repeating cycle
-5/43 = 0.(116279069767441860465)
-21 = number of digits in repeating cycle
-1/397 = 0.(00251889168765743073047858942065491183879093198992…)
-99 = number of digits in repeating cycle
-（ps：这个案例的99就很是误导人）
-思路：从手算的除法公式下手，每一次的被除数都是 上一个被除数 – 上一位商*除数，而我们只要找到从哪里开始的被除数和之前的某一个被除数一样，那么从这一位便开始循环；如果不懂，看下面的例子：2/3
-0.6 6 // 3|2.0 //一开始不够除，补零 1.8 //28 = 4（商）* 7（除数） 2 0 //20 = (30（被除数）- 4（商）* 7（除数）)*10 //开始循环 //同时我们发现 这里的被除数20 和第二行的被除数20 一样， 如果还不懂，亲自写一下除法运算，真的可以秒懂。...</p>
+    <p>题目在我这里
+方法一，大暴力
+public String longestPalindrome1(String s) { /* very force: O(s.length()^2) 空间复杂度 O(1) */ int i=0; int j=0; boolean flag = false; int maxi = i; int maxj = j; for(i=0;i&lt;s.length();i&#43;&#43;){ for(j=s.length()-1;j&gt;i;j--){ if(s.charAt(i)==s.charAt(j)){ int ii = i; int jj = j; for(jj=j;jj&gt;ii;jj--,ii&#43;&#43;){ if(s.charAt(ii)!=s.charAt(jj)){ // flag = true; break; } } System.out.println(ii&#43;&#34; - &#34;&#43;jj); if(ii&gt;=jj){ flag = true; break; } } } if(flag){ if(j-i &gt; maxj-maxi){ maxj = j; maxi = i; } } } if(s....</p>
   </div>
   <footer class="entry-footer">SuCicada</footer>
-  <a class="entry-link" aria-label="post link to uva 202 - Repeating Decimals（循环小数）" href="https://sucicada.github.io/blog/posts/uvaoj/uva-202-repeating-decimals%E5%BE%AA%E7%8E%AF%E5%B0%8F%E6%95%B0/"></a>
+  <a class="entry-link" aria-label="post link to leetcode - 5. Longest Palindromic Substring with Java" href="https://sucicada.github.io/blog/posts/soft/leetcode-5.-longest-palindromic-substring-with-java/"></a>
 </article>
 
 <article class="post-entry"> 
   <header class="entry-header">
-    <h2>uva 210 - Concurrency Simulator (并行程序模拟)
+    <h2>leetcode - 6. ZigZag Conversion with Java
     </h2>
   </header>
   <div class="entry-content">
-    <p>例题6-1 并行程序模拟（ Concurrency Simulator, ACM/ICPC World Finals 1991,
-UVa210）
-你的任务是模拟n个程序（ 按输入顺序编号为1～ n） 的并行执行。 每个程序包含不超过
-25条语句， 格式一共有5种： var = constant（ 赋值） ； print var（ 打印） ； lock； unlock； end。
-变量用单个小写字母表示， 初始为0， 为所有程序公有（ 因此在一个程序里对某个变量
-赋值可能会影响另一个程序） 。 常数是小于100的非负整数。
-每个时刻只能有一个程序处于运行态， 其他程序均处于等待态。 上述5种语句分别需
-要t1、 t2、 t3、 t4、 t5单位时间。 运行态的程序每次最多运行Q个单位时间（ 称为配额） 。 当
-一个程序的配额用完之后， 把当前语句（ 如果存在） 执行完之后该程序会被插入一个等待队
-列中， 然后处理器从队首取出一个程序继续执行。 初始等待队列包含按输入顺序排列的各个
-程序， 但由于lock/unlock语句的出现， 这个顺序可能会改变。
-lock的作用是申请对所有变量的独占访问。 lock和unlock总是成对出现， 并且不会嵌套。
-lock总是在unlock的前面。 当一个程序成功执行完lock指令之后， 其他程序一旦试图执行lock
-指令， 就会马上被放到一个所谓的阻止队列的尾部（ 没有用完的配额就浪费了） 。 当unlock
-执行完毕后， 阻止队列的第一个程序进入等待队列的首部。...</p>
+    <p>题目地址
+这道题涉及到String, StringBuffer, StringBuilder的知识点
+String在拼接时需要new新的String对象, 而它除了hash之外都是final属性, 分配空间会造成时间损耗.
+所以String不适合大量拼接. 使用String可是耗时18ms呢
+StringBuffer解决了这个问题, 它提升了速度, 是线程安全.
+而StringBuilder 和StringBuffer类似, 但它是线程不安全, 这也使得它比StringBuffer拼接更快. 本题只需3ms
+有没有更快的呢, 当然有, 还就是它了 char[], 只需2ms(笑)
+import java.lang.reflect.Method; import java.util.*; class Solution { public String convert(String s, int numRows) { int N = s.length(); // StringBuilder res = new StringBuilder(); char res[] = new char[N]; int cycle = (numRows-1)*2; int index = 0; if(numRows==1){ return s; } for(int row=0;row&lt;numRows;row&#43;&#43;){ /* row 0 6 1 4 2 2 2 4 3 0 */ for(int i=row;i&lt;N;i&#43;=cycle){ /* 一个锯齿*/ // res....</p>
   </div>
   <footer class="entry-footer">SuCicada</footer>
-  <a class="entry-link" aria-label="post link to uva 210 - Concurrency Simulator (并行程序模拟)" href="https://sucicada.github.io/blog/posts/uvaoj/uva-210-concurrency-simulator-%E5%B9%B6%E8%A1%8C%E7%A8%8B%E5%BA%8F%E6%A8%A1%E6%8B%9F/"></a>
+  <a class="entry-link" aria-label="post link to leetcode - 6. ZigZag Conversion with Java" href="https://sucicada.github.io/blog/posts/soft/leetcode-6.-zigzag-conversion-with-java/"></a>
 </article>
 
 <article class="post-entry"> 
   <header class="entry-header">
-    <h2>uva 213 - Message Decoding（二进制编码）
+    <h2>leetcode - 7. Reverse Integer with Java
     </h2>
   </header>
   <div class="entry-content">
-    <p>例题4-4 信息解码（Message Decoding, ACM/ICPC World Finals 1991, UVa 213）
-考虑下面的01串序列：
-0, 00, 01, 10, 000, 001, 010, 011, 100, 101, 110, 0000, 0001, …, 1101, 1110, 00000, …
-首先是长度为1的串，然后是长度为2的串，依此类推。如果看成二进制，相同长度的后
-一个串等于前一个串加1。注意上述序列中不存在全为1的串。
-你的任务是编写一个解码程序。首先输入一个编码头（例如AB#TANCnrtXc），则上述
-序列的每个串依次对应编码头的每个字符。例如，0对应A，00对应B，01对应#，…，110对
-应X，0000对应c。接下来是编码文本（可能由多行组成，你应当把它们拼成一个长长的01
-串）。编码文本由多个小节组成，每个小节的前3个数字代表小节中每个编码的长度（用二
-进制表示，例如010代表长度为2），然后是各个字符的编码，以全1结束（例如，编码长度
-为2的小节以11结束）。编码文本以编码长度为000的小节结束。
-例如，编码头为$#\，编码文本为0100000101101100011100101000，应这样解码：
-010(编码长度为2)00(#)00(#)10(*)11(小节结束)011(编码长度为3)000()111(小节结束)001(编码
-长度为1)0($)1(小节结束)000(编码结束)。
-Sample input
-TNM AEIOU
-0010101100011
-1010001001110110011
-11000
-$#
-0100000101101100011100101000
-Sample output
-TAN ME
-##*$
-https://uva.onlinejudge.org/index.php?option=com_onlinejudge&amp;Itemid=8&amp;page=show_problem&amp;category=832&amp;problem=149&amp;mosmsg=Submission&#43;received&#43;with&#43;ID&#43;20759428
-/* 1、先接收字符串，因为有空格，所以我用了getline，因为我用string 2、然后我们将输入的字符串存入code这个二维数组里，code[i][j]中i代表二进制码的位数，j代表当前01码的十进制数。以此我们每次循环的j小于2^i-i即可。 3、然后我们用循环，先将三位的二进制数传入bin_dec()函数，来得出接下来代表一个字符的二进制码的位数。 4、contra()函数是用来进行每一组相同码长的字符的输出。 （1）其思路是用一个变量记录当前bcode（01码字符串）读到哪个位了。 （2）然后循环将之后的len位二进制变成一个整数，传入bin_dec()函数得出其代表的十进制数，而这个十进制数也是code数组的第二维的下标。 5、还有一点，因为二进制码在输入的过程中并不一定是在同一行,所以我用了：当前下标&#43;要接受的码长 和 当前的01码字符串长度来进行比较，若大则接收新的一行字符串，再加到原先01码字符串后面。（！注意这里用的是while循环而不是单一次的if判断，是因为可能接收一次字串后也依然不够码长，所以要一直接收到足够长为止。）*/ #include&lt;iostream&gt; #include&lt;cmath&gt; #include&lt;string&gt; #include&lt;cstring&gt; using namespace std; char code[7][1&lt;&lt;7];//长度，值，来存字符 int bin_dec(int b)//二进制转十进制 { int dec=0; for(int i=0;b!...</p>
+    <p>where is problem 搞笑的空间复杂度
+使用long，最后进行比较会更小，不知道为什么
+class Solution { public int reverse(int x) { boolean minus = x&lt;0; x *= minus?-1:1; int res = 0; while(x&gt;0){ if(res*10/10 != res){ return 0; } res = res*10 &#43; x%10; x = x/10; } return res * (minus?-1:1); } } </p>
   </div>
   <footer class="entry-footer">SuCicada</footer>
-  <a class="entry-link" aria-label="post link to uva 213 - Message Decoding（二进制编码）" href="https://sucicada.github.io/blog/posts/uvaoj/uva-213-message-decoding%E4%BA%8C%E8%BF%9B%E5%88%B6%E7%BC%96%E7%A0%81/"></a>
+  <a class="entry-link" aria-label="post link to leetcode - 7. Reverse Integer with Java" href="https://sucicada.github.io/blog/posts/soft/leetcode-7.-reverse-integer-with-java/"></a>
 </article>
 
 <article class="post-entry"> 
   <header class="entry-header">
-    <h2>uva 220 - Othello（黑白翻转棋）
+    <h2>leetcode - 8. String to Integer (atoi) with Java
     </h2>
   </header>
   <div class="entry-content">
-    <p>习题4-3 黑白棋（Othello, ACM/ICPC World Finals 1992, UVa220）
-你的任务是模拟黑白棋游戏的进程。黑白棋的规则为：黑白双方轮流放棋子，每次必须
-让新放的棋子“夹住”至少一枚对方棋子，然后把所有被新放棋子“夹住”的对方棋子替换成己
-方棋子。一段连续（横、竖或者斜向）的同色棋子被“夹住”的条件是两端都是对方棋子（不
-能是空位）。如图4-6（a）所示，白棋有6个合法操作，分别为(2,3),(3,3),(3,5), (6,2),(7,3),
-(7,4)。选择在(7,3)放白棋后变成如图4-6（b）所示效果（注意有竖向和斜向的共两枚黑棋变
-白）。注意(4,6)的黑色棋子虽然被夹住，但不是被新放的棋子夹住，因此不变白。
-（a） （b）
-图4-6 黑白棋
-输入一个8*8的棋盘以及当前下一次操作的游戏者，处理3种指令：
-L指令打印所有合法操作，按照从上到下，从左到右的顺序排列（没有合法操作时输出No legal move）。
-Mrc指令放一枚棋子在(r,c)。如果当前游戏者没有合法操作，则是先切换游戏者再操作。输入保证这个操作是合法的。输出操作完毕后黑白方的棋子总数。
-Q指令退出游戏，并打印当前棋盘（格式同输入）。
-Sample Input
-2
--——-
--——-
--——-
-—WB—
--–BW—
--——-
--——-
--——-
-W
-L
-M35
-L
-Q
-WWWWB—
-WWWB—-
-WWB—–
-WB——
--——-
--——-
--——-
--——-
-B
-L
-M25
-L
-Q
-Sample Output
-(3,5) (4,6) (5,3) (6,4)
-Black - 1 White - 4
-(3,4) (3,6) (5,6)
--——-...</p>
+    <p>题目
+class Solution { public int myAtoi(String str) { int N = str.length(); int minus = 0; long res = 0; for(int i=0;i&lt;N;i&#43;&#43;){ char ch = str.charAt(i); System.out.println(ch&#43;&#34; &#34;&#43;minus); if((ch == &#39;-&#39; || ch == &#39;&#43;&#39;) &amp;&amp; minus == 0){ minus = ch==&#39;&#43;&#39;?1:-1; }else if(ch ==&#39; &#39; &amp;&amp; minus==0){ }else if(ch &lt;=&#39;9&#39; &amp;&amp; ch&gt;=&#39;0&#39;){ if(minus == 0){ minus = 1; } res = res*10 &#43; ch-&#39;0&#39;; if(res != (int)res){ return minus==1?...</p>
   </div>
   <footer class="entry-footer">SuCicada</footer>
-  <a class="entry-link" aria-label="post link to uva 220 - Othello（黑白翻转棋）" href="https://sucicada.github.io/blog/posts/uvaoj/uva-220-othello%E9%BB%91%E7%99%BD%E7%BF%BB%E8%BD%AC%E6%A3%8B/"></a>
+  <a class="entry-link" aria-label="post link to leetcode - 8. String to Integer (atoi) with Java" href="https://sucicada.github.io/blog/posts/soft/leetcode-8.-string-to-integer-atoi-with-java/"></a>
 </article>
 
 <article class="post-entry"> 
   <header class="entry-header">
-    <h2>UVA 221 - Urban Elevations(城市正视图) By SuCicada
+    <h2>leetcode - 9. Palindrome Number with Java
     </h2>
   </header>
   <div class="entry-content">
-    <p>例题5-12 城市正视图（Urban Elevations, ACM/ICPC World Finals 1992, UVa221）
-如图5-4所示，有n（n≤100）个建筑物。左侧是俯视图（左上角为建筑物编号，右下角
-为高度），右侧是从南向北看的正视图。
-图5-4 建筑俯视图与正视图
-输入每个建筑物左下角坐标（即x、y坐标的最小值）、宽度（即x方向的长度）、深度
-（即y方向的长度）和高度（以上数据均为实数），输出正视图中能看到的所有建筑物，按
-照左下角x坐标从小到大进行排序。左下角x坐标相同时，按y坐标从小到大排序。
-输入保证不同的x坐标不会很接近（即任意两个x坐标要么完全相同，要么差别足够大，
-不会引起精度问题）。
-Sample Input
-14
-160 0 30 60 30
-125 0 32 28 60
-95 0 27 28 40
-70 35 19 55 90
-0 0 60 35 80
-0 40 29 20 60
-35 40 25 45 80
-0 67 25 20 50
-0 92 90 20 80
-95 38 55 12 50...</p>
+    <p>题目
+class Solution { public boolean isPalindrome(int x) { if(x&lt;0){ return false; } int a = 0; int b = x; while(x&gt;0){ a = a * 10 &#43; x%10; x = x/10; } return a==b; } } </p>
   </div>
   <footer class="entry-footer">SuCicada</footer>
-  <a class="entry-link" aria-label="post link to UVA 221 - Urban Elevations(城市正视图) By SuCicada" href="https://sucicada.github.io/blog/posts/uvaoj/uva-221-urban-elevations%E5%9F%8E%E5%B8%82%E6%AD%A3%E8%A7%86%E5%9B%BE-by-sucicada/"></a>
+  <a class="entry-link" aria-label="post link to leetcode - 9. Palindrome Number with Java" href="https://sucicada.github.io/blog/posts/soft/leetcode-9.-palindrome-number-with-java/"></a>
 </article>
 
 <article class="post-entry"> 
   <header class="entry-header">
-    <h2>uva 227 - Puzzle （迷宫中的空格）
+    <h2>linux  通过  openconnect  来连接学校内网
     </h2>
   </header>
   <div class="entry-content">
-    <p>习题3-5 谜题（Puzzle, ACM/ICPC World Finals 1993, UVa227）
-有一个5*5的网格，其中恰好有一个格子是空的，其他格子各有一个字母。一共有4种指
-令：A, B, L, R，分别表示把空格上、下、左、右的相邻字母移到空格中。输入初始网格和指
-令序列（以数字0结束），输出指令执行完毕后的网格。如果有非法指令，应输出“This
-puzzle has no final configuration.
-还有：输入的迷宫以大写 Z 结束。输出的行与行间要有一行空行
-Sample Input
-TRGSJ
-XDOKI
-M VLN
-WPABE
-UQHCF
-ARRBBL0
-ABCDE
-FGHIJ
-KLMNO
-PQRS
-TUVWX
-AAA
-LLLL0
-ABCDE
-FGHIJ
-KLMNO
-PQRS
-TUVWX
-AAAAABBRRRLL0
-Z
-Sample Output
-Puzzle #1:
-T R G S J
-X O K L I
-M D V B N
-W P A E
-U Q H C F...</p>
+    <p>参考
+http://xingda1989.iteye.com/blog/1969908
+https://blog.csdn.net/edin_blackpoint/article/details/70860101
+sudo apt install openconnect
+在/etc/vpc/目录下新建vpnc-script 文件
+文件内容可以到此处拷贝
+http://git.infradead.org/users/dwmw2/vpnc-scripts.git/blob_plain/HEAD:/vpnc-script
+sudo openconnect --juniper -u [你的学号] --script /etc/vpnc/vpnc-script [你学校的提供的vpn的url]</p>
   </div>
   <footer class="entry-footer">SuCicada</footer>
-  <a class="entry-link" aria-label="post link to uva 227 - Puzzle （迷宫中的空格）" href="https://sucicada.github.io/blog/posts/uvaoj/uva-227-puzzle-%E8%BF%B7%E5%AE%AB%E4%B8%AD%E7%9A%84%E7%A9%BA%E6%A0%BC/"></a>
+  <a class="entry-link" aria-label="post link to linux  通过  openconnect  来连接学校内网" href="https://sucicada.github.io/blog/posts/soft/linux-%E9%80%9A%E8%BF%87-openconnect-%E6%9D%A5%E8%BF%9E%E6%8E%A5%E5%AD%A6%E6%A0%A1%E5%86%85%E7%BD%91/"></a>
 </article>
 
 <article class="post-entry"> 
   <header class="entry-header">
-    <h2>uva 232 - Crossword Answers（纵横迷宫）
+    <h2>Linux Mint 使用 VNC Server (x11vnc) 进行远程屏幕
     </h2>
   </header>
   <div class="entry-content">
-    <p>习题3-6 纵横字谜的答案（Crossword Answers, ACM/ICPC World Finals 1994,
-UVa232）
-输入一个r行c列（1≤r，c≤10）的网格，黑格用“*”表示，每个白格都填有一个字母。如
-果一个白格的左边相邻位置或者上边相邻位置没有白格（可能是黑格，也可能出了网格边
-界），则称这个白格是一个起始格。
-首先把所有起始格按照从上到下、从左到右的顺序编号为1, 2, 3,…，如图所示。
-接下来要找出所有横向单词（Across）。这些单词必须从一个起始格开始，向右延伸到
-一个黑格的左边或者整个网格的最右列。最后找出所有竖向单词（Down）。这些单词必须
-从一个起始格开始，向下延伸到一个黑格的上边或者整个网格的最下行。
-输出时每两行之间有空行
-Sample Input
-2 2
-AT
-O
-6 7
-AIMDEN
-MEONE
-UPONTO
-SOERIN
-SAOR*
-IES*DEA
-0
-Sample Output
-puzzle #1:
-Across
-1.AT
-3.O
-Down
-1.A
-2.TO
-puzzle #2:
-Across
-1.AIM
-4.DEN
-7.ME
-8.ONE
-9.UPON
-11.TO
-12.SO
-13.ERIN
-15.SA
-17.OR
-18.IES
-19.DEA
-Down
-1.A
-2.IMPOSE
-3.MEO
-4.DO
-5.ENTIRE
-6.NEON
-9.US
-10.NE
-14.ROD
-16.AS...</p>
+    <p>https://community.linuxmint.com/tutorial/view/2334
+This tutorial was adapted from here.
+Remove the default Vino server: sudo apt-get -y remove vino
+Install x11vnc: sudo apt-get -y install x11vnc
+Create the directory for the password file: sudo mkdir /etc/x11vnc
+Create the encrypted password file: sudo x11vnc --storepasswd /etc/x11vnc/vncpwd
+You will be asked to enter and verify the password. Then press Y to
+save the password file.
+Create the systemd service file for the x11vnc service: sudo xed /lib/systemd/system/x11vnc....</p>
   </div>
   <footer class="entry-footer">SuCicada</footer>
-  <a class="entry-link" aria-label="post link to uva 232 - Crossword Answers（纵横迷宫）" href="https://sucicada.github.io/blog/posts/uvaoj/uva-232-crossword-answers%E7%BA%B5%E6%A8%AA%E8%BF%B7%E5%AE%AB/"></a>
+  <a class="entry-link" aria-label="post link to Linux Mint 使用 VNC Server (x11vnc) 进行远程屏幕" href="https://sucicada.github.io/blog/posts/soft/linux-mint-%E4%BD%BF%E7%94%A8-vnc-server-x11vnc-%E8%BF%9B%E8%A1%8C%E8%BF%9C%E7%A8%8B%E5%B1%8F%E5%B9%95/"></a>
 </article>
 
 <article class="post-entry"> 
   <header class="entry-header">
-    <h2>uva 253 - Cube painting（相同骰子）
+    <h2>linux mint系统 cinnamon桌面 发大镜功能
     </h2>
   </header>
   <div class="entry-content">
-    <p>习题4-4 骰子涂色（Cube painting, UVa 253）
-输入两个骰子，判断二者是否等价。每个骰子用6个字母表示，如图4-7所示。
-图4-7 骰子涂色
-例如rbgggr和rggbgr分别表示如图4-8所示的两个骰子。二者是等价的，因为图4-8（a）
-所示的骰子沿着竖直轴旋转90°之后就可以得到图4-8（b）所示的骰子。
-（a） （b）
-图4-8 旋转前后的两个骰子
-.
-Sample Input
-rbgggrrggbgr
-rrrbbbrrbbbr
-rbgrbgrrrrrg
-Sample Output
-TRUE
-FALSE
-FALSE
-思路：暴力枚举，将一个骰子的所有姿态都列出来，
-1、注意第一个图上的数字，那个是记录骰子面的顺序
-2、先找最上面的，也就是1的位置，能排列6种（1，2，3，4，5，6）
-3、然后找到了上面也就找到了与其相对的面，就是下面，就是字串中第六个元素。这个不会额外记录，因为有上就有下了。
-4、然后就是中间四个的排列了，很显然，4种。
-5、然后我们变换第二个骰子，看看它在这24种情况中，有没有一种的情况和第一个骰子的记录是相同的。（比较字串即可）
-6、请注意骰子面的转换是否正确，虽然这个逻辑简单，但是容易写错，要好好检查，我就因为写错下标错了两次。
-#include&lt;iostream&gt; #include&lt;string&gt; using namespace std; /* 1 3 2 4 5 1在顶上 6 2 3 6 4 1 2在顶上 5 3 5 6 2 1	3在顶上 4 4 2 6 5 1	4在顶上 3 5 4 6 3 1	5在顶上 2 6 3 5 4 2	6在顶上 1 */ string s1,s2;//记录两个骰子的字符串 int str_equal(string a,char s1,char s2,char s3,char s4,char s5,char s6)//比较两个字串相等吗 { string b=&#34;0000000&#34;; b[1]=s1; b[2]=s2; b[3]=s3; b[4]=s4; b[5]=s5; b[6]=s6; //cout&lt;&lt;b....</p>
+    <p>让我来告诉迷途中的你cinnamon桌面一个好用的功能.
+选择设置
+选择窗口 -&gt; 选择行为
+看那个窗口移动和调整大小的特殊键 Alt
+好了按住alt在滑动滑轮 世界不一样了
+对于小屏幕高分辨率电脑极为友好</p>
   </div>
   <footer class="entry-footer">SuCicada</footer>
-  <a class="entry-link" aria-label="post link to uva 253 - Cube painting（相同骰子）" href="https://sucicada.github.io/blog/posts/uvaoj/uva-253-cube-painting%E7%9B%B8%E5%90%8C%E9%AA%B0%E5%AD%90/"></a>
+  <a class="entry-link" aria-label="post link to linux mint系统 cinnamon桌面 发大镜功能" href="https://sucicada.github.io/blog/posts/soft/linux-mint%E7%B3%BB%E7%BB%9F-cinnamon%E6%A1%8C%E9%9D%A2-%E5%8F%91%E5%A4%A7%E9%95%9C%E5%8A%9F%E8%83%BD/"></a>
 </article>
 
 <article class="post-entry"> 
   <header class="entry-header">
-    <h2>UVA 297 - Quadtrees （四分数） By SuCicada
+    <h2>linux remmina 使用rdp协议连接windows显示Failed to startup SSH session:connection refused解决
     </h2>
   </header>
   <div class="entry-content">
-    <p>例题6-11 四分树（Quadtrees, UVa 297）
-如图6-8所示，可以用四分树来表示一个黑白图像，方法是用根结点表示整幅图像，然
-后把行列各分成两等分，按照图中的方式编号，从左到右对应4个子结点。如果某子结点对
-应的区域全黑或者全白，则直接用一个黑结点或者白结点表示；如果既有黑又有白，则用一
-个灰结点表示，并且为这个区域递归建树。
-图6-8 四分树
-给出两棵四分树的先序遍历，求二者合并之后（黑色部分合并）黑色像素的个数。p表
-示中间结点，f表示黑色（full），e表示白色（empty）。
-样例输入：
-3
-ppeeefpffeefe
-pefepeefe
-peeef
-peefe
-peeef
-peepefefe
-样例输出：
-There are 640 black pixels.
-There are 512 black pixels.
-There are 384 black pixels.
-本家
-构造32*32的矩阵，构建树木的时候同时给矩阵染色，由于黑色会覆盖，所以也不怕树木之间的冲突。然后最后刷一下矩阵，看看有多少个黑块块就行（即数字为1）
-#include&lt;iostream&gt; #include&lt;string&gt; #include&lt;cmath&gt; using namespace std; /* 共5&#43;1层 32*32=4^5 */ int SIDE_LENGTH = 32; int quad[100][100]; int sum = 0; /* f &gt; p &gt; e */ void build(int side,int x,int y){ char c; cin&gt;&gt;c; if(c==&#39;p&#39;){ for(int xi=0;xi&lt;=1;xi&#43;&#43;){ for(int yi=0;yi&lt;=1;yi&#43;&#43;){ int nextSide = side / 2; int xx = x&#43;nextSide*xi; int yy = y&#43;nextSide*yi; build(nextSide,xx,yy); } } }else if(c==&#39;f&#39;){ /* fill $quad from $begin to $end */ for(int xi=x;xi&lt;x&#43;side;xi&#43;&#43;){ for(int yi=y;yi&lt;y&#43;side;yi&#43;&#43;){ if(quad[xi][yi]==0){ sum&#43;&#43;; quad[xi][yi] = 1; } } } } } int main(){ int T; cin&gt;&gt;T; while(T--){ // memset(quad,0,SIDE_LENGTH*SIDE_LENGTH*sizeof(int)); for(int i=0;i&lt;SIDE_LENGTH;i&#43;&#43;){ for(int j=0;j&lt;SIDE_LENGTH;j&#43;&#43;){ quad[i][j]=0; } } sum = 0; for(int i=0;i&lt;2;i&#43;&#43;){ build(SIDE_LENGTH,0,0); } cout&lt;&lt;&#34;There are &#34;&lt;&lt;sum&lt;&lt;&#34; black pixels....</p>
+    <p>https://cn.aliyun.com/jiaocheng/165641.html
+删除~/.freerdp/known_hosts
+但是我找不见这个文件
+尝试删除~/.remmina/remmina.pref 文件 成功</p>
   </div>
   <footer class="entry-footer">SuCicada</footer>
-  <a class="entry-link" aria-label="post link to UVA 297 - Quadtrees （四分数） By SuCicada" href="https://sucicada.github.io/blog/posts/uvaoj/uva-297-quadtrees-%E5%9B%9B%E5%88%86%E6%95%B0-by-sucicada/"></a>
+  <a class="entry-link" aria-label="post link to linux remmina 使用rdp协议连接windows显示Failed to startup SSH session:connection refused解决" href="https://sucicada.github.io/blog/posts/soft/linux-remmina-%E4%BD%BF%E7%94%A8rdp%E5%8D%8F%E8%AE%AE%E8%BF%9E%E6%8E%A5windows%E6%98%BE%E7%A4%BAfailed-to-startup-ssh-sessionconnection-refused%E8%A7%A3%E5%86%B3/"></a>
 </article>
 
 <article class="post-entry"> 
   <header class="entry-header">
-    <h2>uva 340 	Master-Mind Hints（猜数串）
+    <h2>linux 下安装 Cisco Packet Tracer 7.11以及一些注意(辛酸史)
     </h2>
   </header>
   <div class="entry-content">
-    <p>实现一个经典&#34;猜数字&#34;游戏。给定答案序列和用户猜的序列，统计有多少数字位置正确
-（A），有多少数字在两个序列都出现过但位置不对（B）。
-输入包含多组数据。每组输入第一行为序列长度n，第二行是答案序列，接下来是若干
-猜测序列。猜测序列全0时该组数据结束。n=0时输入结束。
-样例输入：
-4
-1 3 5 5
-1 1 2 3
-4 3 3 5
-6 5 5 1
-6 1 3 5
-1 3 5 5
-0 0 0 0
-10
-1 2 2 2 4 5 6 6 6 9
-1 2 3 4 5 6 7 8 9 1
-1 1 2 2 3 3 4 4 5 5
-1 2 1 3 1 5 1 6 1 9...</p>
+    <p>https://blog.csdn.net/qq_35882901/article/details/77652571
+https://linux.cn/article-5576-1.html
+开启登录问题
+https://blog.csdn.net/u012321131/article/details/78587383
+到软件的根目录下 执行以下脚本
+sudo ./set_ptenv.sh sudo ./set_qtenv.sh
+**一定按步骤走 **
+安装在默认的/opt/pt 如果因为安装在家目录而导致闪退 就重新安装在默认路径下
+一些依赖库
+sudo apt install libqt5scripttools5
+sudo apt-get install libqt5multimedia5-plugins
+2018/9/18
+因为3560的三层交换机的端口信息不显示,忍不了linux的bug,下了6版本的linux版本.
+安装失败,
+换回7版本,(核心已转储)…..made?
+一个晚上的尝试,发现只是在当前的这个用户下运行不了,…..放弃了,
+那么用wine吧
+满心欢喜的安装好了,然后打算慢慢的把7版本的实验在6版本上重打一遍,
+但是,cpu占用28,温度81…….耗不起
+那么赞颂我们伟大的虚拟机吧
+virtualbox的无缝模式太强大了,wine什么的掰掰吧,</p>
   </div>
   <footer class="entry-footer">SuCicada</footer>
-  <a class="entry-link" aria-label="post link to uva 340 	Master-Mind Hints（猜数串）" href="https://sucicada.github.io/blog/posts/uvaoj/uva-340-master-mind-hints%E7%8C%9C%E6%95%B0%E4%B8%B2/"></a>
+  <a class="entry-link" aria-label="post link to linux 下安装 Cisco Packet Tracer 7.11以及一些注意(辛酸史)" href="https://sucicada.github.io/blog/posts/soft/linux-%E4%B8%8B%E5%AE%89%E8%A3%85-cisco-packet-tracer-7.11%E4%BB%A5%E5%8F%8A%E4%B8%80%E4%BA%9B%E6%B3%A8%E6%84%8F%E8%BE%9B%E9%85%B8%E5%8F%B2/"></a>
 </article>
 
 <article class="post-entry"> 
   <header class="entry-header">
-    <h2>UVA 400 - Unix ls (Unixls命令)
+    <h2>linux 下的torrent下载器qBitTorrent
     </h2>
   </header>
   <div class="entry-content">
-    <p>例题5-8 Unixls命令（Unix ls，UVa400） 输入正整数n以及n个文件名，按照字典序排序后按列优先的方式左对齐输出。 假设最长文件名有M字符，则最右列有M字符，其他列都是M＋2字符。
-Sample Input
-10
-tiny
-2short4me
-very_long_file_name
-shorter
-size-1
-size2
-size3
-much_longer_name
-12345678.123
-mid_size_name
-12
-Weaser
-Alfalfa
-Stimey
-Buckwheat
-Porky
-Joe
-Darla
-Cotton
-Butch
-Froggy
-Mrs_Crabapple
-P.D.
-19
-Mr._French
-Jody
-Buffy
-Sissy
-Keith
-Danny
-Lori
-Chris
-Shirley
-Marsha
-Jan
-Cindy
-Carol
-Mike
-Greg
-Peter
-Bobby
-Alice
-Ruben
-Sample Output
------------------------------------------------------------- 12345678.123 size-1 2short4me size2 mid_size_name size3 much_longer_name tiny shorter very_long_file_name ------------------------------------------------------------ Alfalfa Cotton Joe Porky Buckwheat Darla Mrs_Crabapple Stimey Butch Froggy P....</p>
+    <p>BT下载利器–Qbittorrent完全攻
+Ubuntu使用命令安装qBittorrent的方法
+源码下载</p>
   </div>
   <footer class="entry-footer">SuCicada</footer>
-  <a class="entry-link" aria-label="post link to UVA 400 - Unix ls (Unixls命令)" href="https://sucicada.github.io/blog/posts/uvaoj/uva-400-unix-ls-unixls%E5%91%BD%E4%BB%A4/"></a>
+  <a class="entry-link" aria-label="post link to linux 下的torrent下载器qBitTorrent" href="https://sucicada.github.io/blog/posts/soft/linux-%E4%B8%8B%E7%9A%84torrent%E4%B8%8B%E8%BD%BD%E5%99%A8qbittorrent/"></a>
 </article>
 
 <article class="post-entry"> 
   <header class="entry-header">
-    <h2>uva 401（回文词）
+    <h2>mysql workbench闪退解决办法
     </h2>
   </header>
   <div class="entry-content">
-    <p>https://uva.onlinejudge.org/index.php?option=com_onlinejudge&amp;Itemid=8&amp;page=show_problem&amp;category=829&amp;problem=342&amp;mosmsg=Submission&#43;received&#43;with&#43;ID&#43;20398535
-#include&lt;iostream&gt; #include&lt;string&gt; #include&lt;string.h&gt; using namespace std; string r=&#34;A 3 HIL JM O 2TUVWXY501SE Z 8 &#34;; char *m_c=&#34;AHIMOTUVWXY018&#34;; char mir_c(char c) { if(c&gt;=&#39;A&#39;&amp;&amp;c&lt;=&#39;Z&#39;) { c=r[c-&#39;A&#39;]; } else if(c&gt;=&#39;0&#39;&amp;&amp;c&lt;=&#39;9&#39;)//如果不是else if 那么变成2的S又会变回S c=r[c-&#39;0&#39;&#43;26]; return c; } int main() { string s; while(cin&gt;&gt;s) { int n=s.size(); int m1=2,m2=3,i;//先判断对称，再判断镜像 for(i=0;i&lt;n/2;i&#43;&#43;) { if(s[i]!=s[n-i-1]) m1=1; if(mir_c(s[i])!=s[n-i-1]) { //cout&lt;&lt;mir_c(s[i])&lt;&lt;&#34; &#34;&lt;&lt;s[n-i-1]; m2=1; } } if((n%2==1)&amp;&amp;strchr(m_c,s[n/2])==NULL) m2=1;//判断中间一位是不是镜像的 //cout&lt;&lt;m1&lt;&lt;&#34; &#34;&lt;&lt;m2&lt;&lt;&#34; &#34;; cout&lt;&lt;s; switch(m1*=m2) { case 1:cout&lt;&lt;&#34; -- is not a palindrome....</p>
+    <p>感谢google，感谢csdn
+linux下：
+rm -rf .mysql/workbench/
+windows下：
+删除C:\Users\Administrator\AppData\Roaming\MySQL\Workbench
+这个问题没有社区的帮助，我就真的没辙了</p>
   </div>
   <footer class="entry-footer">SuCicada</footer>
-  <a class="entry-link" aria-label="post link to uva 401（回文词）" href="https://sucicada.github.io/blog/posts/uvaoj/uva-401%E5%9B%9E%E6%96%87%E8%AF%8D/"></a>
+  <a class="entry-link" aria-label="post link to mysql workbench闪退解决办法" href="https://sucicada.github.io/blog/posts/soft/mysql-workbench%E9%97%AA%E9%80%80%E8%A7%A3%E5%86%B3%E5%8A%9E%E6%B3%95/"></a>
 </article>
 
 <article class="post-entry"> 
   <header class="entry-header">
-    <h2>uva 455 - Periodic Strings （找字符串周期）
+    <h2>mysql数据库连接以及执行的java类
     </h2>
   </header>
   <div class="entry-content">
-    <p>习题3-4 周期串（Periodic Strings, UVa455）
-如果一个字符串可以由某个长度为k的字符串重复多次得到，则称该串以k为周期。例
-如，abcabcabcabc以3为周期（注意，它也以6和12为周期）。
-输入一个长度不超过80的字符串，输出其最小周期。
-https://uva.onlinejudge.org/index.php?option=com_onlinejudge&amp;Itemid=8&amp;page=show_problem&amp;category=830&amp;problem=396&amp;mosmsg=Submission&#43;received&#43;with&#43;ID&#43;20473859
-//先找到和第一个元素相等的下一个元素，然后第一个元素位和找到的元素位依次往后过， //一直到结束，若一直一样则周期为找到的元素位。 //比如ababcababc， //1.s[0]先找到了和s[1]相等,然后分析， //2.s[0&#43;1]和s[1&#43;1]比，相等。 //3.s[0&#43;1&#43;1]再和s[1&#43;1&#43;1],不等，跳出 //4.s[0]再和s[2],s[3],s[4]比。。。 #include&lt;iostream&gt; #include&lt;cstdio&gt; #include&lt;string.h&gt; using namespace std; const int N = 80; char s[N&#43;5]; int cir(int i) { int n=strlen(s); if(n%i!=0)//防止aba或abca输出2或3而不是3或4的情况 return 0; for(int j=i;j&lt;strlen(s);j&#43;&#43;)//顺次比较前后字串相等否 { if(s[j-i]!=s[j]) { return 0; } } return i; } int main () { int tt; scanf(&#34;%d&#34;,&amp;tt); while(tt--) { scanf(&#34;\n%s&#34;,s); int T=0;//周期 int i,n=strlen(s); for(i=1;i&lt;n;i&#43;&#43;) { if(s[0]==s[i]) { if((T=cir(i))==i) { break; } } } cout&lt;&lt;i&lt;&lt;endl; if(tt!...</p>
+    <p>应该使用json等配置文件来保存要连接的数据库信息,密码等.
+先存一下,以后再说
+DB_connection.java
+/* * To change this license header, choose License Headers in Project Properties. * To change this template file, choose Tools | Templates * and open the template in the editor. */ package com; import java.sql.Connection; import java.sql.DriverManager; import java.sql.ResultSet; import java.sql.SQLException; import java.sql.Statement; /** * * @author peng */ public class DB_connection { // JDBC 驱动名及数据库 URL String JDBC_DRIVER = &#34;com.mysql.jdbc.Driver&#34;; String DB_URL = &#34;jdbc:mysql://localhost:3306/javabbs?useUnicode=true&amp;characterEncoding=UTF-8&#34;; // 数据库的用户名与密码，需要根据自己的设置 String USER = &#34;root&#34;; String PASS = &#34;mysql&#34;; Connection conn = null; // private static DB_connection dB_connection =null; // public static DB_connection getInstance(){ // if(DB_connection == null){ // DB_connection = new DB_connection; // } // return DB_connection; // } public Connection connect(){ try{ Class....</p>
   </div>
   <footer class="entry-footer">SuCicada</footer>
-  <a class="entry-link" aria-label="post link to uva 455 - Periodic Strings （找字符串周期）" href="https://sucicada.github.io/blog/posts/uvaoj/uva-455-periodic-strings-%E6%89%BE%E5%AD%97%E7%AC%A6%E4%B8%B2%E5%91%A8%E6%9C%9F/"></a>
+  <a class="entry-link" aria-label="post link to mysql数据库连接以及执行的java类" href="https://sucicada.github.io/blog/posts/soft/mysql%E6%95%B0%E6%8D%AE%E5%BA%93%E8%BF%9E%E6%8E%A5%E4%BB%A5%E5%8F%8A%E6%89%A7%E8%A1%8C%E7%9A%84java%E7%B1%BB/"></a>
 </article>
 
 <article class="post-entry"> 
   <header class="entry-header">
-    <h2>uva 489 - Hangman Judge（吊人游戏）
+    <h2>NYOJ-1204 魔法少女
     </h2>
   </header>
   <div class="entry-content">
-    <p>例题4-2 刽子手游戏（Hangman Judge, UVa 489）
-刽子手游戏其实是一款猜单词游戏，如图4-
-1所示。游戏规则是这样的：计算机想一个单词
-让你猜，你每次可以猜一个字母。如果单词里有
-那个字母，所有该字母会显示出来；如果没有那
-个字母，则计算机会在一幅“刽子手”画上填一
-笔。这幅画一共需要7笔就能完成，因此你最多
-只能错6次。注意，猜一个已经猜过的字母不！算
-错。
-在本题中，你的任务是编写一个“裁判”程
-序，输入单词和玩家的猜测，判断玩家赢了
-（You win.）、输了（You lose.）还是放弃了
-（You chickened out.）。每组数据包含3行，第1
-行是游戏编号（-1为输入结束标记），第2行是
-计算机想的单词，第3行是玩家的猜测。后两行
-保证只含小写字母。
-注意，猜一个已经猜过的字母不算
-错。！
-Sample Input
-1
-cheese
-chese
-2
-cheese
-abcdefg
-3
-cheese
-abcdefgij
--1
-Sample Output
-Round 1
-You win.
-Round 2
-You chickened out.
-Round 3
-You lose.
-https://uva.onlinejudge.org/index.php?option=com_onlinejudge&amp;Itemid=8&amp;category=832&amp;page=show_problem&amp;problem=430
-用两个整型来记录当前还允许错的次数，和原始字符串的总字符数
-1，因为重复猜测不算错，所以我们先将guess字符串中的重复字符消去，用循环和string::erase()
-2，外循环猜测字符串，内循环原始字符串，如果相同，就将原始字符串的此元素变成‘ * ’。
-3，没猜中一次就记录，内循环结束后来更新记录。若果win或lose就return函数，否则循环都结束之后就说明是‘弃权’。
-#include&lt;iostream&gt; #include&lt;string&gt; using namespace std; string orig,guess; int hang(int num,int right) { for(int i=0;i&lt;guess....</p>
+    <p>http://nyoj.top/problem/1204
+#include&lt;iostream&gt; using namespace std; int h[10006]; int d[10006][2]; // 每一 //int fun(int a,int b){ // if(a&lt;0) // return 0; // if(b==0){ // if(d[a-1][0]&lt;d[a-1][1]){ // cout&lt;&lt;d[a-1][0]&lt;&lt;&#34; &#34;&lt;&lt;a-1&lt;&lt;&#34; &#34;&lt;&lt;0&lt;&lt;endl; // fun(a-1,0); // }else{ // cout&lt;&lt;d[a-1][1]&lt;&lt;&#34; &#34;&lt;&lt;a-1&lt;&lt;&#34; &#34;&lt;&lt;1&lt;&lt;endl; // fun(a-1,1); // } // }else{ // if(d[a-1][0] &lt; d[a-2][0]){ // cout&lt;&lt;d[a-1][0]&lt;&lt;&#34; &#34;&lt;&lt;a-1&lt;&lt;&#34; &#34;&lt;&lt;0&lt;&lt;endl; // fun(a-1,0); // }else{ // cout&lt;&lt;d[a-2][0]&lt;&lt;&#34; &#34;&lt;&lt;a-2&lt;&lt;&#34; &#34;&lt;&lt;0&lt;&lt;endl; // fun(a-2,0); // } // } //} int main(){ int n; while(cin&gt;&gt;n){ for(int i=0;i&lt;n;i&#43;&#43;){ cin&gt;&gt;h[i]; } // 0 not // 1 do d[0][0] = h[0]; d[0][1] = 0; d[1][0] = h[1]; d[1][1] = 0; for(int i=2;i&lt;n;i&#43;&#43;){ d[i][0] = min(d[i-1][1], d[i-1][0]) &#43; h[i]; d[i][1] = min(d[i-1][0], d[i-2][0]); // 这一层飞了的时间数，和上一层没有飞，以及上上一层没有飞花费的时间数是一样的 } // for(int j=0;j&lt;2;j&#43;&#43;){ // for(int i=0;i&lt;n;i&#43;&#43;){ // cout&lt;&lt; d[i][j]&lt;&lt;&#34; &#34;; // } // cout&lt;&lt;endl; // } // // if((d[n-1][0]&lt;d[n-1][1])){ // cout&lt;&lt;d[n-1][0]&lt;&lt;&#34; &#34;&lt;&lt;n-1&lt;&lt;&#34; &#34;&lt;&lt;0&lt;&lt;endl; // fun(n-1,0); // }else{ // cout&lt;&lt;d[n-1][1]&lt;&lt;&#34; &#34;&lt;&lt;n-1&lt;&lt;&#34; &#34;&lt;&lt;1&lt;&lt;endl; // fun(n-1,1); // } cout&lt;&lt; min(d[n-1][0],d[n-1][1]) &lt;&lt;endl; } } 伟大的动态规划，我真是愚蠢</p>
   </div>
   <footer class="entry-footer">SuCicada</footer>
-  <a class="entry-link" aria-label="post link to uva 489 - Hangman Judge（吊人游戏）" href="https://sucicada.github.io/blog/posts/uvaoj/uva-489-hangman-judge%E5%90%8A%E4%BA%BA%E6%B8%B8%E6%88%8F/"></a>
+  <a class="entry-link" aria-label="post link to NYOJ-1204 魔法少女" href="https://sucicada.github.io/blog/posts/soft/nyoj-1204-%E9%AD%94%E6%B3%95%E5%B0%91%E5%A5%B3/"></a>
 </article>
 
 <article class="post-entry"> 
   <header class="entry-header">
-    <h2>uva 508 - Morse Mismatches（摩斯码）
+    <h2>Phaser 引擎 中TiledMap 的 json地图配置文件的格式
     </h2>
   </header>
   <div class="entry-content">
-    <p>习题4-6 莫尔斯电码（Morse Mismatches, ACM/ICPC World Finals 1997, UVa508）
-输入每个字母的Morse编码，一个词典以及若干个编码。对于每个编码，判断它可能是
-哪个单词。如果有多个单词精确匹配，选取字典序第一个再加上“!”；如果无法精确匹
-配，可以在编码尾部增加或删除一些字符以后匹配某个单词（增加或删除的字符应尽量少）。如果有多个单词可以这样匹配上，选取字典序第一个输出并且在后面加上“?”。
-。
-提供一个样例
-Sample Input
-A .-
-B -…
-C -.-.
-D -..
-E .
-F ..-.
-G –.
-H ….
-I ..
-J .—
-K -.-
-L .-..
-M –
-N -.
-O —
-P .–.
-Q –.-
-R .-.
-S …
-T -
-U ..-
-V …-
-W .–
-X -..-
-Y -.–
-Z –..
-0 ——...</p>
+    <p>官方推荐Tiled 地图编辑器,
+https://www.mapeditor.org/
+所以查看地图格式直接看Tiled 的官方帮助文档
+http://doc.mapeditor.org/en/stable/reference/json-map-format/</p>
   </div>
   <footer class="entry-footer">SuCicada</footer>
-  <a class="entry-link" aria-label="post link to uva 508 - Morse Mismatches（摩斯码）" href="https://sucicada.github.io/blog/posts/uvaoj/uva-508-morse-mismatches%E6%91%A9%E6%96%AF%E7%A0%81/"></a>
+  <a class="entry-link" aria-label="post link to Phaser 引擎 中TiledMap 的 json地图配置文件的格式" href="https://sucicada.github.io/blog/posts/soft/phaser-%E5%BC%95%E6%93%8E-%E4%B8%ADtiledmap-%E7%9A%84-json%E5%9C%B0%E5%9B%BE%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6%E7%9A%84%E6%A0%BC%E5%BC%8F/"></a>
 </article>
 
 <article class="post-entry"> 
   <header class="entry-header">
-    <h2>uva 509 RAID!（磁盘数据）
+    <h2>phaser 按键表 keyboard keycode
     </h2>
   </header>
   <div class="entry-content">
-    <p>习题4-7 RAID技术（RAID!, ACM/ICPC World Finals 1997, UVa509）
-RAID技术用多个磁盘保存数据。每份数据在不止一个磁盘上保存，因此在某个磁盘损
-坏时能通过其他磁盘恢复数据。本题讨论其中一种RAID技术。数据被划分成大小
-为s（1≤s≤64）比特的数据块保存在d（2≤d≤6）个磁盘上，如图4-9所示，每d-1个数据块都
-有一个校验块，使得每d个数据块的异或结果为全0（偶校验）或者全1（奇校验）。
-图4-9 数据保存情况
-例如，d=5，s=2，偶校验，数据6C7A79EDFC（二进制01101100 01111010 01111001
-11101101 11111100）的保存方式如图4-10所示。
-图4-10 数据6C7A79EDPC的保存方式
-其中加粗块是校验块。输入d、s、b、校验的种类（E表示偶校验，O表示奇校验）以
-及b（1≤b≤100）个数据块（其中“x”表示损坏的数据），你的任务是恢复并输出完整的数
-据。如果校验错或者由于损坏数据过多无法恢复，应报告磁盘非法。
-Sample Input
-5 2 5
-E
-0001011111
-0110111011
-1011011111
-1110101100
-0010010111
-3 2 5
-E
-0001111111
-0111111011
-xx11011111
-3 5 1
-O
-11111
-11xxx
-x1111
-0
-Sample Output
-Disk set 1 is valid, contents are: 6C7A79EDFC
-Disk set 2 is invalid.
-Disk set 3 is valid, contents are: FFC...</p>
+    <p>https://photonstorm.github.io/phaser-ce/Phaser.KeyCode.html
+帮助文档里都有,但就是没人说</p>
   </div>
   <footer class="entry-footer">SuCicada</footer>
-  <a class="entry-link" aria-label="post link to uva 509 RAID!（磁盘数据）" href="https://sucicada.github.io/blog/posts/uvaoj/uva-509-raid%E7%A3%81%E7%9B%98%E6%95%B0%E6%8D%AE/"></a>
+  <a class="entry-link" aria-label="post link to phaser 按键表 keyboard keycode" href="https://sucicada.github.io/blog/posts/soft/phaser-%E6%8C%89%E9%94%AE%E8%A1%A8-keyboard-keycode/"></a>
 </article>
 
 <article class="post-entry"> 
   <header class="entry-header">
-    <h2>uva 512 - Spreadsheet Tracking（Excel表格）
+    <h2>PhaserCE 使用 create.texture 出错  Phaser.Cache.addImage: Image &#34;xx&#34; is not complete 并且图形没有显示
     </h2>
   </header>
   <div class="entry-content">
-    <p>例题4-5 踪电子表格中的单元格（Spreadsheet Tracking, ACM/ICPC World Finals
-1997, UVa512）
-有一个r行c列（1≤r，c≤50）的电子表格，行从上到下编号为1～r，列从左到右编号为1
-～c。如图4-2（a）所示，如果先删除第1、5行，然后删除第3, 6, 7, 9列，结果如图4-2（b）
-所示。
-（a） （b）
-图4-2 删除行、列
-接下来在第2、3、5行前各插入一个空行，然后在第3列前插入一个空列，会得到如图4-
-3所示结果。
-图4-3 插入行、列
-你的任务是模拟这样的n个操作。具体来说一共有5种操作：
-EX r1 c1 r2 c2交换单元格(r1,c1),(r2,c2)。
-A x1 x2 … xA 插入或删除A行或列（DC-删除列，DR-删除行，IC-插入
-列，IR-插入行，1≤A≤10）。
-在插入／删除指令后，各个x值不同，且顺序任意。接下来是q个查询，每个查询格式
-为“r c”，表示查询原始表格的单元格(r,c)。对于每个查询，输出操作执行完后该单元格的新
-位置。输入保证在任意时刻行列数均不超过50。
-Sample Input
-7 9
-5
-DR 2 1 5
-DC 4 3 6 7 9
-IC 1 3
-IR 2 2 4
-EX 1 2 6 5
-4
-4 8...</p>
+    <p>首先参看官网文档的写法 https://photonstorm.github.io/phaser-ce/Phaser.Create.html#texture
+var game = new Phaser.Game(800, 600, Phaser.CANVAS, &#39;game&#39;, { preload: preload, create: create, }); function preload(){ var data = [ &#39; 333 &#39;, &#39; 777 &#39;, &#39;E333E&#39;, &#39; 333 &#39;, &#39; 3 3 &#39;]; game.create.texture(&#39;bob&#39;, data); } function create() { game.add.sprite(0, 0, &#39;bob&#39;); } 控制台警告
+Phaser.Cache.addImage: Image &#34;xx&#34; is not complete 改为
+...... game.create.texture(&#39;bob&#39;, data,100,10,0,true,function(f){}); ...... 警告
+Phaser.Cache.getImage: Key &#34;xx&#34; not found in Cache. 查找资料无果，实验之后发现
+使用
+game.load.imageFromTexture(&#39;bob&#39;,data,100,1); 替换...</p>
   </div>
   <footer class="entry-footer">SuCicada</footer>
-  <a class="entry-link" aria-label="post link to uva 512 - Spreadsheet Tracking（Excel表格）" href="https://sucicada.github.io/blog/posts/uvaoj/uva-512-spreadsheet-trackingexcel%E8%A1%A8%E6%A0%BC/"></a>
+  <a class="entry-link" aria-label="post link to PhaserCE 使用 create.texture 出错  Phaser.Cache.addImage: Image &#34;xx&#34; is not complete 并且图形没有显示" href="https://sucicada.github.io/blog/posts/soft/phaserce-%E4%BD%BF%E7%94%A8-create.texture-%E5%87%BA%E9%94%99-phaser.cache.addimage-image-xx-is-not-complete-%E5%B9%B6%E4%B8%94%E5%9B%BE%E5%BD%A2%E6%B2%A1%E6%9C%89%E6%98%BE%E7%A4%BA/"></a>
 </article>
 
 <article class="post-entry"> 
   <header class="entry-header">
-    <h2>UVA 514 - Rails ( 铁轨)
+    <h2>pyhton 下 使用getch(), 输入字符无需回车
     </h2>
   </header>
   <div class="entry-content">
-    <p>例题6-2 铁轨（Rails, ACM/ICPC CERC 1997, UVa 514）
-某城市有一个火车站，铁轨铺设如图6-1所示。 有n节车厢从A方向驶入车站，按进站顺
-序编号为1～n。 你的任务是判断是否能让它们按照某种特定的顺序进入B方向的铁轨并驶出
-车站。 例如，出栈顺序(5 4 1 2 3)是不可能的，但(5 4 3 2 1)是可能的。
-为了重组车厢，你可以借助中转站C。 这是一个可以停放任意多节车厢的车站，但由于
-末端封顶，驶入C的车厢必须按照相反的顺序驶出C。 对于每个车厢，一旦从A移入C，就不
-能再回到A了；一旦从C移入B，就不能回到C了。 换句话说，在任意时刻，只有两种选择：
-A→C和C→B。
-Sample Input
-5
-1 2 3 4 5
-5 4 1 2 3
-0
-6
-6 5 4 3 2 1
-0
-0
-Sample Output
-Yes
-No
-Yes
-https://uva.onlinejudge.org/index.php?option=com_onlinejudge&amp;Itemid=8&amp;category=838&amp;page=show_problem&amp;problem=455
-和书上的思路一样
-车进入是先从1到n
-我们每进入一辆,就判断一下是不是要出去的那一辆, 如果是,这辆车就走了,然后判断一下下一辆
-如果不是就进入中转轨道中等的
-#include&lt;iostream&gt; #include&lt;stack&gt; using namespace std; // [注意] 最后一组输出之后要有一个空行 int fun(int N){ stack&lt;int&gt; wait; // 等待通过的火车 stack&lt;int&gt; temp; // 中转轨道 for(int i=N;i&gt;=1;i--){ wait....</p>
+    <p>#原代码来自
+https://code.activestate.com/recipes/134892-getch-like-unbuffered-character-reading-from-stdin/
+同时支持windows和unix平台
+class _Getch: &#34;&#34;&#34;Gets a single character from standard input. Does not echo to the screen.&#34;&#34;&#34; def __init__(self): try: self.impl = _GetchWindows() except ImportError: self.impl = _GetchUnix() def __call__(self): return self.impl() class _GetchUnix: def __init__(self): import tty, sys def __call__(self): import sys, tty, termios fd = sys.stdin.fileno() old_settings = termios.tcgetattr(fd) try: tty.setraw(sys.stdin.fileno()) ch = sys.stdin.read(1) finally: termios.tcsetattr(fd, termios.TCSADRAIN, old_settings) return ch class _GetchWindows: def __init__(self): import msvcrt def __call__(self): import msvcrt return msvcrt....</p>
   </div>
   <footer class="entry-footer">SuCicada</footer>
-  <a class="entry-link" aria-label="post link to UVA 514 - Rails ( 铁轨)" href="https://sucicada.github.io/blog/posts/uvaoj/uva-514-rails-%E9%93%81%E8%BD%A8/"></a>
+  <a class="entry-link" aria-label="post link to pyhton 下 使用getch(), 输入字符无需回车" href="https://sucicada.github.io/blog/posts/soft/pyhton-%E4%B8%8B-%E4%BD%BF%E7%94%A8getch-%E8%BE%93%E5%85%A5%E5%AD%97%E7%AC%A6%E6%97%A0%E9%9C%80%E5%9B%9E%E8%BD%A6/"></a>
 </article>
 <footer class="page-footer">
   <nav class="pagination">
