@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto">
+
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>关于Flink 本地测试，自定义WebUI 端口的方法 | SuCicada</title>
+<meta name="keywords" content="BigData">
+<meta name="description" content="以1.11.1版本举例，相差不大的版本之间大同小异。
+先给成品：以Scala代码举例，Java大同小异。
+通过反射将配置加入env的配置对象中。之后使用修改过的env来创建flink的任务流即可。
+val env = StreamExecutionEnvironment.getExecutionEnvironment val javaEnv: environment.StreamExecutionEnvironment = env.getJavaEnv val field = classOf[org.apache.flink.streaming.api.environment.StreamExecutionEnvironment].getDeclaredField(&#34;configuration&#34;) field.setAccessible(true) import org.apache.flink.configuration.Configuration val configuration: Configuration = field.get(javaEnv).asInstanceOf[Configuration] configuration.setString(&#34;rest.bind-port&#34;, &#34;8081&#34;) 下面是探索过程，没兴趣的可以过了。
+当我们加入了pom依赖后.发现能够看到本地IDE中的flink的webUI了.
+&lt;dependency&gt; &lt;groupId&gt;org.apache.flink&lt;/groupId&gt; &lt;artifactId&gt;flink-runtime-web_2.11&lt;/artifactId&gt; &lt;version&gt;${flink.version}&lt;/version&gt; &lt;scope&gt;compile&lt;/scope&gt; &lt;/dependency&gt; 根据日志中显示可知我们的本地web端口为16434. 这不是一个我们想要看到的. 而且每一次运行都会产生一个随机的端口.这实在很痛苦.
+17:15:28,577 INFO org.apache.flink.runtime.dispatcher.DispatcherRestEndpoint - Rest endpoint listening at localhost:16434 17:15:28,578 INFO org.apache.flink.runtime.highavailability.nonha.embedded.EmbeddedLeaderService - Proposing leadership to contender http://localhost:16434 17:15:28,581 INFO org.apache.flink.runtime.dispatcher.DispatcherRestEndpoint - Web frontend listening at http://localhost:16434 17:15:28,581 INFO org.apache.flink.runtime.dispatcher.DispatcherRestEndpoint - http://localhost:16434 was granted leadership with leaderSessionID=eb84fead-f735-4350-aff4-a7f883013432 所以我们要想办法来固定端口.">
+<meta name="author" content="SuCicada">
+<link rel="canonical" href="https://sucicada.github.io/blog/posts/bigdata/%E5%85%B3%E4%BA%8Eflink-%E6%9C%AC%E5%9C%B0%E6%B5%8B%E8%AF%95%E8%87%AA%E5%AE%9A%E4%B9%89webui-%E7%AB%AF%E5%8F%A3%E7%9A%84%E6%96%B9%E6%B3%95/">
+<link crossorigin="anonymous" href="/blog/assets/css/stylesheet.5b5501da54f21435c8f8010d1de02123ae8d1ada696b48c6530ec4eea283e7d6.css" integrity="sha256-W1UB2lTyFDXI&#43;AENHeAhI66NGtppa0jGUw7E7qKD59Y=" rel="preload stylesheet" as="style">
+<link rel="icon" href="https://sucicada.github.io/blog/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="https://sucicada.github.io/blog/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://sucicada.github.io/blog/favicon-32x32.png">
+<link rel="apple-touch-icon" href="https://sucicada.github.io/blog/apple-touch-icon.png">
+<link rel="mask-icon" href="https://sucicada.github.io/blog/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --hljs-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-track {
+                background: 0 0;
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-thumb {
+                border-color: var(--theme);
+            }
+        }
+
+    </style>
+</noscript><meta property="og:title" content="关于Flink 本地测试，自定义WebUI 端口的方法" />
+<meta property="og:description" content="以1.11.1版本举例，相差不大的版本之间大同小异。
+先给成品：以Scala代码举例，Java大同小异。
+通过反射将配置加入env的配置对象中。之后使用修改过的env来创建flink的任务流即可。
+val env = StreamExecutionEnvironment.getExecutionEnvironment val javaEnv: environment.StreamExecutionEnvironment = env.getJavaEnv val field = classOf[org.apache.flink.streaming.api.environment.StreamExecutionEnvironment].getDeclaredField(&#34;configuration&#34;) field.setAccessible(true) import org.apache.flink.configuration.Configuration val configuration: Configuration = field.get(javaEnv).asInstanceOf[Configuration] configuration.setString(&#34;rest.bind-port&#34;, &#34;8081&#34;) 下面是探索过程，没兴趣的可以过了。
+当我们加入了pom依赖后.发现能够看到本地IDE中的flink的webUI了.
+&lt;dependency&gt; &lt;groupId&gt;org.apache.flink&lt;/groupId&gt; &lt;artifactId&gt;flink-runtime-web_2.11&lt;/artifactId&gt; &lt;version&gt;${flink.version}&lt;/version&gt; &lt;scope&gt;compile&lt;/scope&gt; &lt;/dependency&gt; 根据日志中显示可知我们的本地web端口为16434. 这不是一个我们想要看到的. 而且每一次运行都会产生一个随机的端口.这实在很痛苦.
+17:15:28,577 INFO org.apache.flink.runtime.dispatcher.DispatcherRestEndpoint - Rest endpoint listening at localhost:16434 17:15:28,578 INFO org.apache.flink.runtime.highavailability.nonha.embedded.EmbeddedLeaderService - Proposing leadership to contender http://localhost:16434 17:15:28,581 INFO org.apache.flink.runtime.dispatcher.DispatcherRestEndpoint - Web frontend listening at http://localhost:16434 17:15:28,581 INFO org.apache.flink.runtime.dispatcher.DispatcherRestEndpoint - http://localhost:16434 was granted leadership with leaderSessionID=eb84fead-f735-4350-aff4-a7f883013432 所以我们要想办法来固定端口." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://sucicada.github.io/blog/posts/bigdata/%E5%85%B3%E4%BA%8Eflink-%E6%9C%AC%E5%9C%B0%E6%B5%8B%E8%AF%95%E8%87%AA%E5%AE%9A%E4%B9%89webui-%E7%AB%AF%E5%8F%A3%E7%9A%84%E6%96%B9%E6%B3%95/" /><meta property="og:image" content="https://sucicada.github.io/blog/papermod-cover.png"/><meta property="article:section" content="posts" />
+
+
+
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="https://sucicada.github.io/blog/papermod-cover.png"/>
+
+<meta name="twitter:title" content="关于Flink 本地测试，自定义WebUI 端口的方法"/>
+<meta name="twitter:description" content="以1.11.1版本举例，相差不大的版本之间大同小异。
+先给成品：以Scala代码举例，Java大同小异。
+通过反射将配置加入env的配置对象中。之后使用修改过的env来创建flink的任务流即可。
+val env = StreamExecutionEnvironment.getExecutionEnvironment val javaEnv: environment.StreamExecutionEnvironment = env.getJavaEnv val field = classOf[org.apache.flink.streaming.api.environment.StreamExecutionEnvironment].getDeclaredField(&#34;configuration&#34;) field.setAccessible(true) import org.apache.flink.configuration.Configuration val configuration: Configuration = field.get(javaEnv).asInstanceOf[Configuration] configuration.setString(&#34;rest.bind-port&#34;, &#34;8081&#34;) 下面是探索过程，没兴趣的可以过了。
+当我们加入了pom依赖后.发现能够看到本地IDE中的flink的webUI了.
+&lt;dependency&gt; &lt;groupId&gt;org.apache.flink&lt;/groupId&gt; &lt;artifactId&gt;flink-runtime-web_2.11&lt;/artifactId&gt; &lt;version&gt;${flink.version}&lt;/version&gt; &lt;scope&gt;compile&lt;/scope&gt; &lt;/dependency&gt; 根据日志中显示可知我们的本地web端口为16434. 这不是一个我们想要看到的. 而且每一次运行都会产生一个随机的端口.这实在很痛苦.
+17:15:28,577 INFO org.apache.flink.runtime.dispatcher.DispatcherRestEndpoint - Rest endpoint listening at localhost:16434 17:15:28,578 INFO org.apache.flink.runtime.highavailability.nonha.embedded.EmbeddedLeaderService - Proposing leadership to contender http://localhost:16434 17:15:28,581 INFO org.apache.flink.runtime.dispatcher.DispatcherRestEndpoint - Web frontend listening at http://localhost:16434 17:15:28,581 INFO org.apache.flink.runtime.dispatcher.DispatcherRestEndpoint - http://localhost:16434 was granted leadership with leaderSessionID=eb84fead-f735-4350-aff4-a7f883013432 所以我们要想办法来固定端口."/>
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "Posts",
+      "item": "https://sucicada.github.io/blog/posts/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  3 ,
+      "name": "关于Flink 本地测试，自定义WebUI 端口的方法",
+      "item": "https://sucicada.github.io/blog/posts/bigdata/%E5%85%B3%E4%BA%8Eflink-%E6%9C%AC%E5%9C%B0%E6%B5%8B%E8%AF%95%E8%87%AA%E5%AE%9A%E4%B9%89webui-%E7%AB%AF%E5%8F%A3%E7%9A%84%E6%96%B9%E6%B3%95/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "关于Flink 本地测试，自定义WebUI 端口的方法",
+  "name": "关于Flink 本地测试，自定义WebUI 端口的方法",
+  "description": "以1.11.1版本举例，相差不大的版本之间大同小异。\n先给成品：以Scala代码举例，Java大同小异。\n通过反射将配置加入env的配置对象中。之后使用修改过的env来创建flink的任务流即可。\nval env = StreamExecutionEnvironment.getExecutionEnvironment val javaEnv: environment.StreamExecutionEnvironment = env.getJavaEnv val field = classOf[org.apache.flink.streaming.api.environment.StreamExecutionEnvironment].getDeclaredField(\u0026#34;configuration\u0026#34;) field.setAccessible(true) import org.apache.flink.configuration.Configuration val configuration: Configuration = field.get(javaEnv).asInstanceOf[Configuration] configuration.setString(\u0026#34;rest.bind-port\u0026#34;, \u0026#34;8081\u0026#34;) 下面是探索过程，没兴趣的可以过了。\n当我们加入了pom依赖后.发现能够看到本地IDE中的flink的webUI了.\n\u0026lt;dependency\u0026gt; \u0026lt;groupId\u0026gt;org.apache.flink\u0026lt;/groupId\u0026gt; \u0026lt;artifactId\u0026gt;flink-runtime-web_2.11\u0026lt;/artifactId\u0026gt; \u0026lt;version\u0026gt;${flink.version}\u0026lt;/version\u0026gt; \u0026lt;scope\u0026gt;compile\u0026lt;/scope\u0026gt; \u0026lt;/dependency\u0026gt; 根据日志中显示可知我们的本地web端口为16434. 这不是一个我们想要看到的. 而且每一次运行都会产生一个随机的端口.这实在很痛苦.\n17:15:28,577 INFO org.apache.flink.runtime.dispatcher.DispatcherRestEndpoint - Rest endpoint listening at localhost:16434 17:15:28,578 INFO org.apache.flink.runtime.highavailability.nonha.embedded.EmbeddedLeaderService - Proposing leadership to contender http://localhost:16434 17:15:28,581 INFO org.apache.flink.runtime.dispatcher.DispatcherRestEndpoint - Web frontend listening at http://localhost:16434 17:15:28,581 INFO org.apache.flink.runtime.dispatcher.DispatcherRestEndpoint - http://localhost:16434 was granted leadership with leaderSessionID=eb84fead-f735-4350-aff4-a7f883013432 所以我们要想办法来固定端口.",
+  "keywords": [
+    "BigData"
+  ],
+  "articleBody": "以1.11.1版本举例，相差不大的版本之间大同小异。\n先给成品：以Scala代码举例，Java大同小异。\n通过反射将配置加入env的配置对象中。之后使用修改过的env来创建flink的任务流即可。\nval env = StreamExecutionEnvironment.getExecutionEnvironment val javaEnv: environment.StreamExecutionEnvironment = env.getJavaEnv val field = classOf[org.apache.flink.streaming.api.environment.StreamExecutionEnvironment].getDeclaredField(\"configuration\") field.setAccessible(true) import org.apache.flink.configuration.Configuration val configuration: Configuration = field.get(javaEnv).asInstanceOf[Configuration] configuration.setString(\"rest.bind-port\", \"8081\") 下面是探索过程，没兴趣的可以过了。\n当我们加入了pom依赖后.发现能够看到本地IDE中的flink的webUI了.\norg.apache.flink flink-runtime-web_2.11 ${flink.version} compile 根据日志中显示可知我们的本地web端口为16434. 这不是一个我们想要看到的. 而且每一次运行都会产生一个随机的端口.这实在很痛苦.\n17:15:28,577 INFO org.apache.flink.runtime.dispatcher.DispatcherRestEndpoint - Rest endpoint listening at localhost:16434 17:15:28,578 INFO org.apache.flink.runtime.highavailability.nonha.embedded.EmbeddedLeaderService - Proposing leadership to contender http://localhost:16434 17:15:28,581 INFO org.apache.flink.runtime.dispatcher.DispatcherRestEndpoint - Web frontend listening at http://localhost:16434 17:15:28,581 INFO org.apache.flink.runtime.dispatcher.DispatcherRestEndpoint - http://localhost:16434 was granted leadership with leaderSessionID=eb84fead-f735-4350-aff4-a7f883013432 所以我们要想办法来固定端口.最好可以自定义.\n来看源码\n根据日志定位到org.apache.flink.runtime.dispatcher.DispatcherRestEndpoint这个类，但是进去之后你会发现里面并没有期望中的日志内容。很坑，这是一个异步调用的中转站。\n那么我们就需要知道这样一条日志出现在哪里了\nRest endpoint listening at\n首先我们目前所在的地方是org.apache.flink:flink-runtime-web。根据(1)关联模块的命名相近原则以及 (2)DispatcherRestEndpoint中大量的 flink-runtime模块类调用。我们可以认为我们想要找的东西在org.apache.flink:flink-runtime中。\n那么前往flink-runtime_2.11-1.11.1.jar源码下进行全目录检索。发现了这条日志的藏身之所：org.apache.flink.runtime.rest.RestServerEndpoint\n然后就是一步一步往回探了。线索图如下，我们发现源自restBindPortRange全局变量。\n是这里\nthis.restBindPortRange = configuration.getRestBindPortRange();\n是从configuration对象中拿键为org.apache.flink.configuration.RestOptions.BIND_PORT的值的值。\n而这个变量来自于本类的构造函数通过参数传入的。这个参数的类型是RestServerEndpointConfiguration\n然后就是一步一步的对这个config对象寻根溯源。\n得利于IDE的美妙。我们终于找到了他的发源地，因为接口继承的关系，有两种来源。一个是ClusterEntrypoint一个是MiniCluster，由于我们是本地调试，所以只要看后者即可。即org.apache.flink.runtime.minicluster.MiniCluster中的\nfinal Configuration configuration = miniClusterConfiguration.getConfiguration();\n所以我们只要把配置想办法加进去即可。\n是的，我们找到了，这个配置对象最初始最初始的状态就是在我们的老朋友StreamExecutionEnvironment中装载的。甚至new都是在这里。但是这个对象很遗憾。\nprivate final Configuration configuration; 私有，且没有public方法能get到。没办法了，我们只能祭出大杀器，反射。\n按照开头给出的代码，实现configuration动态修改，再使用修改之后的env来创建Flink的任务流。\n然后我们就能发现我们能在本地固定的8081端口打开Flink的WebUI了。\n",
+  "wordCount" : "109",
+  "inLanguage": "en",
+  "datePublished": "0001-01-01T00:00:00Z",
+  "dateModified": "0001-01-01T00:00:00Z",
+  "author":{
+    "@type": "Person",
+    "name": "SuCicada"
+  },
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://sucicada.github.io/blog/posts/bigdata/%E5%85%B3%E4%BA%8Eflink-%E6%9C%AC%E5%9C%B0%E6%B5%8B%E8%AF%95%E8%87%AA%E5%AE%9A%E4%B9%89webui-%E7%AB%AF%E5%8F%A3%E7%9A%84%E6%96%B9%E6%B3%95/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "SuCicada",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://sucicada.github.io/blog/favicon.ico"
+    }
+  }
+}
+</script>
+</head>
+
+<body class="" id="top">
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.body.classList.add('dark');
+    } else if (localStorage.getItem("pref-theme") === "light") {
+        document.body.classList.remove('dark')
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.body.classList.add('dark');
+    }
+
+</script>
+
+<header class="header">
+    <nav class="nav">
+        <div class="logo">
+            <a href="https://sucicada.github.io/blog" accesskey="h" title="SuCicada (Alt + H)">SuCicada</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" accesskey="t" title="(Alt + T)">
+                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu">
+            <li>
+                <a href="https://sucicada.github.io/blog/archives/" title="Archive">
+                    <span>Archive</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://sucicada.github.io/blog/search/" title="Search (Alt &#43; /)" accesskey=/>
+                    <span>Search</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://sucicada.github.io/blog/tags/" title="Tags">
+                    <span>Tags</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://sucicada.github.io/blog/about/" title="About">
+                    <span>About</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+
+    <h1 class="post-title">
+      关于Flink 本地测试，自定义WebUI 端口的方法
+    </h1>
+    <div class="post-meta">SuCicada&nbsp;|&nbsp;<a href="https://github.com/SuCicada/mysite-hugo/blob/master/content/posts/BigData/%e5%85%b3%e4%ba%8eFlink%20%e6%9c%ac%e5%9c%b0%e6%b5%8b%e8%af%95%ef%bc%8c%e8%87%aa%e5%ae%9a%e4%b9%89WebUI%20%e7%ab%af%e5%8f%a3%e7%9a%84%e6%96%b9%e6%b3%95.md" rel="noopener noreferrer" target="_blank">Suggest Changes</a>
+
+</div>
+    <ul class="post-tags">
+      <li><a href="https://sucicada.github.io/blog/tags/bigdata/">BigData</a></li>
+    </ul>
+  </header> 
+
+  <div class="post-content"><p>以1.11.1版本举例，相差不大的版本之间大同小异。<br>
+先给成品：以Scala代码举例，Java大同小异。<br>
+通过反射将配置加入env的配置对象中。之后使用修改过的env来创建flink的任务流即可。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-scala" data-lang="scala"><span class="line"><span class="cl"><span class="k">val</span> <span class="n">env</span> <span class="k">=</span> <span class="nc">StreamExecutionEnvironment</span><span class="o">.</span><span class="n">getExecutionEnvironment</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">val</span> <span class="n">javaEnv</span><span class="k">:</span> <span class="kt">environment.StreamExecutionEnvironment</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">getJavaEnv</span>
+</span></span><span class="line"><span class="cl"><span class="k">val</span> <span class="n">field</span> <span class="k">=</span> <span class="n">classOf</span><span class="o">[</span><span class="kt">org.apache.flink.streaming.api.environment.StreamExecutionEnvironment</span><span class="o">].</span><span class="n">getDeclaredField</span><span class="o">(</span><span class="s">&#34;configuration&#34;</span><span class="o">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">field</span><span class="o">.</span><span class="n">setAccessible</span><span class="o">(</span><span class="kc">true</span><span class="o">)</span>
+</span></span><span class="line"><span class="cl"><span class="k">import</span> <span class="nn">org.apache.flink.configuration.Configuration</span>
+</span></span><span class="line"><span class="cl"><span class="k">val</span> <span class="n">configuration</span><span class="k">:</span> <span class="kt">Configuration</span> <span class="o">=</span> <span class="n">field</span><span class="o">.</span><span class="n">get</span><span class="o">(</span><span class="n">javaEnv</span><span class="o">).</span><span class="n">asInstanceOf</span><span class="o">[</span><span class="kt">Configuration</span><span class="o">]</span>
+</span></span><span class="line"><span class="cl"><span class="n">configuration</span><span class="o">.</span><span class="n">setString</span><span class="o">(</span><span class="s">&#34;rest.bind-port&#34;</span><span class="o">,</span> <span class="s">&#34;8081&#34;</span><span class="o">)</span>
+</span></span></code></pre></div><p><br><br><br>
+下面是探索过程，没兴趣的可以过了。</p>
+<hr>
+<p>当我们加入了pom依赖后.发现能够看到本地IDE中的flink的webUI了.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-xml" data-lang="xml"><span class="line"><span class="cl">   	<span class="nt">&lt;dependency&gt;</span>
+</span></span><span class="line"><span class="cl">		<span class="nt">&lt;groupId&gt;</span>org.apache.flink<span class="nt">&lt;/groupId&gt;</span>
+</span></span><span class="line"><span class="cl">       	<span class="nt">&lt;artifactId&gt;</span>flink-runtime-web_2.11<span class="nt">&lt;/artifactId&gt;</span>
+</span></span><span class="line"><span class="cl">       	<span class="nt">&lt;version&gt;</span>${flink.version}<span class="nt">&lt;/version&gt;</span>
+</span></span><span class="line"><span class="cl">       	<span class="nt">&lt;scope&gt;</span>compile<span class="nt">&lt;/scope&gt;</span>
+</span></span><span class="line"><span class="cl">	<span class="nt">&lt;/dependency&gt;</span>
+</span></span></code></pre></div><p>根据日志中显示可知我们的本地web端口为16434. 这不是一个我们想要看到的. 而且每一次运行都会产生一个随机的端口.这实在很痛苦.</p>
+<pre tabindex="0"><code class="language-log" data-lang="log">17:15:28,577 INFO  org.apache.flink.runtime.dispatcher.DispatcherRestEndpoint    - Rest endpoint listening at localhost:16434
+17:15:28,578 INFO  org.apache.flink.runtime.highavailability.nonha.embedded.EmbeddedLeaderService  - Proposing leadership to contender http://localhost:16434
+17:15:28,581 INFO  org.apache.flink.runtime.dispatcher.DispatcherRestEndpoint    - Web frontend listening at http://localhost:16434
+17:15:28,581 INFO  org.apache.flink.runtime.dispatcher.DispatcherRestEndpoint    - http://localhost:16434 was granted leadership with leaderSessionID=eb84fead-f735-4350-aff4-a7f883013432
+</code></pre><p>所以我们要想办法来固定端口.最好可以自定义.<br>
+来看源码<br>
+根据日志定位到<code>org.apache.flink.runtime.dispatcher.DispatcherRestEndpoint</code>这个类，但是进去之后你会发现里面并没有期望中的日志内容。很坑，这是一个异步调用的中转站。<br>
+那么我们就需要知道这样一条日志出现在哪里了</p>
+<blockquote>
+<p>Rest endpoint listening at</p>
+</blockquote>
+<p>首先我们目前所在的地方是<code>org.apache.flink:flink-runtime-web</code>。根据(1)关联模块的命名相近原则以及 (2)<code>DispatcherRestEndpoint</code>中大量的 <code>flink-runtime</code>模块类调用。我们可以认为我们想要找的东西在<code>org.apache.flink:flink-runtime</code>中。</p>
+<p>那么前往<code>flink-runtime_2.11-1.11.1.jar</code>源码下进行全目录检索。发现了这条日志的藏身之所：<code>org.apache.flink.runtime.rest.RestServerEndpoint</code></p>
+<p>然后就是一步一步往回探了。线索图如下，我们发现源自<code>restBindPortRange</code>全局变量。</p>
+<p>
+
+
+
+<img loading="lazy" src="https://img-blog.csdnimg.cn/20200909185140165.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3N1X2NpY2FkYQ==,size_16,color_FFFFFF,t_70#pic_center" alt="在这里插入图片描述"  />
+<br>
+是这里<br>
+<code>this.restBindPortRange = configuration.getRestBindPortRange();</code><br>
+是从configuration对象中拿键为<code>org.apache.flink.configuration.RestOptions.BIND_PORT</code>的值的值。</p>
+<p>而这个变量来自于本类的构造函数通过参数传入的。这个参数的类型是<code>RestServerEndpointConfiguration</code></p>
+<p>然后就是一步一步的对这个config对象寻根溯源。<br>
+得利于IDE的美妙。我们终于找到了他的发源地，因为接口继承的关系，有两种来源。一个是<code>ClusterEntrypoint</code>一个是<code>MiniCluster</code>，由于我们是本地调试，所以只要看后者即可。即<code>org.apache.flink.runtime.minicluster.MiniCluster</code>中的<br>
+<code>final Configuration configuration = miniClusterConfiguration.getConfiguration();</code></p>
+<p>所以我们只要把配置想办法加进去即可。<br>
+是的，我们找到了，这个配置对象最初始最初始的状态就是在我们的老朋友<code>StreamExecutionEnvironment</code>中装载的。甚至new都是在这里。但是这个对象很遗憾。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl">	<span class="kd">private</span> <span class="kd">final</span> <span class="n">Configuration</span> <span class="n">configuration</span><span class="o">;</span>
+</span></span></code></pre></div><p>私有，且没有public方法能get到。没办法了，我们只能祭出大杀器，反射。</p>
+<p>按照开头给出的代码，实现configuration动态修改，再使用修改之后的env来创建Flink的任务流。<br>
+然后我们就能发现我们能在本地固定的8081端口打开Flink的WebUI了。</p>
+
+
+  </div>
+
+  <footer class="post-footer">
+<nav class="paginav">
+  <a class="prev" href="https://sucicada.github.io/blog/posts/bigdata/%E5%85%B3%E4%BA%8E-flink1.11.1-%E6%89%BE%E4%B8%8D%E5%88%B0-hadoop-native%E5%BA%93%E8%A7%A3%E5%86%B3%E6%96%B9%E6%B3%95/">
+    <span class="title">« Prev</span>
+    <br>
+    <span>关于 Flink1.11.1 找不到 Hadoop Native库解决方法</span>
+  </a>
+  <a class="next" href="https://sucicada.github.io/blog/posts/bigdata/%E5%85%B3%E4%BA%8Eflink%E5%86%99%E5%85%A5redis%E6%B2%A1%E6%9C%89incrbyfloat%E7%AD%89%E6%96%B9%E6%B3%95%E7%9A%84%E8%A7%A3%E5%86%B3%E6%8E%AA%E6%96%BD/">
+    <span class="title">Next »</span>
+    <br>
+    <span>关于Flink写入Redis没有incrByFloat等方法的解决措施</span>
+  </a>
+</nav>
+
+
+<div class="share-buttons">
+    <a target="_blank" rel="noopener noreferrer" aria-label="share 关于Flink 本地测试，自定义WebUI 端口的方法 on twitter"
+        href="https://twitter.com/intent/tweet/?text=%e5%85%b3%e4%ba%8eFlink%20%e6%9c%ac%e5%9c%b0%e6%b5%8b%e8%af%95%ef%bc%8c%e8%87%aa%e5%ae%9a%e4%b9%89WebUI%20%e7%ab%af%e5%8f%a3%e7%9a%84%e6%96%b9%e6%b3%95&amp;url=https%3a%2f%2fsucicada.github.io%2fblog%2fposts%2fbigdata%2f%25E5%2585%25B3%25E4%25BA%258Eflink-%25E6%259C%25AC%25E5%259C%25B0%25E6%25B5%258B%25E8%25AF%2595%25E8%2587%25AA%25E5%25AE%259A%25E4%25B9%2589webui-%25E7%25AB%25AF%25E5%258F%25A3%25E7%259A%2584%25E6%2596%25B9%25E6%25B3%2595%2f&amp;hashtags=BigData">
+        <svg version="1.1" viewBox="0 0 512 512" xml:space="preserve" height="30px" width="30px" fill="currentColor">
+            <path
+                d="M449.446,0c34.525,0 62.554,28.03 62.554,62.554l0,386.892c0,34.524 -28.03,62.554 -62.554,62.554l-386.892,0c-34.524,0 -62.554,-28.03 -62.554,-62.554l0,-386.892c0,-34.524 28.029,-62.554 62.554,-62.554l386.892,0Zm-253.927,424.544c135.939,0 210.268,-112.643 210.268,-210.268c0,-3.218 0,-6.437 -0.153,-9.502c14.406,-10.421 26.973,-23.448 36.935,-38.314c-13.18,5.824 -27.433,9.809 -42.452,11.648c15.326,-9.196 26.973,-23.602 32.49,-40.92c-14.252,8.429 -30.038,14.56 -46.896,17.931c-13.487,-14.406 -32.644,-23.295 -53.946,-23.295c-40.767,0 -73.87,33.104 -73.87,73.87c0,5.824 0.613,11.494 1.992,16.858c-61.456,-3.065 -115.862,-32.49 -152.337,-77.241c-6.284,10.881 -9.962,23.601 -9.962,37.088c0,25.594 13.027,48.276 32.95,61.456c-12.107,-0.307 -23.448,-3.678 -33.41,-9.196l0,0.92c0,35.862 25.441,65.594 59.311,72.49c-6.13,1.686 -12.72,2.606 -19.464,2.606c-4.751,0 -9.348,-0.46 -13.946,-1.38c9.349,29.426 36.628,50.728 68.965,51.341c-25.287,19.771 -57.164,31.571 -91.8,31.571c-5.977,0 -11.801,-0.306 -17.625,-1.073c32.337,21.15 71.264,33.41 112.95,33.41Z" />
+        </svg>
+    </a>
+    <a target="_blank" rel="noopener noreferrer" aria-label="share 关于Flink 本地测试，自定义WebUI 端口的方法 on telegram"
+        href="https://telegram.me/share/url?text=%e5%85%b3%e4%ba%8eFlink%20%e6%9c%ac%e5%9c%b0%e6%b5%8b%e8%af%95%ef%bc%8c%e8%87%aa%e5%ae%9a%e4%b9%89WebUI%20%e7%ab%af%e5%8f%a3%e7%9a%84%e6%96%b9%e6%b3%95&amp;url=https%3a%2f%2fsucicada.github.io%2fblog%2fposts%2fbigdata%2f%25E5%2585%25B3%25E4%25BA%258Eflink-%25E6%259C%25AC%25E5%259C%25B0%25E6%25B5%258B%25E8%25AF%2595%25E8%2587%25AA%25E5%25AE%259A%25E4%25B9%2589webui-%25E7%25AB%25AF%25E5%258F%25A3%25E7%259A%2584%25E6%2596%25B9%25E6%25B3%2595%2f">
+        <svg version="1.1" xml:space="preserve" viewBox="2 2 28 28" height="30px" width="30px" fill="currentColor">
+            <path
+                d="M26.49,29.86H5.5a3.37,3.37,0,0,1-2.47-1,3.35,3.35,0,0,1-1-2.47V5.48A3.36,3.36,0,0,1,3,3,3.37,3.37,0,0,1,5.5,2h21A3.38,3.38,0,0,1,29,3a3.36,3.36,0,0,1,1,2.46V26.37a3.35,3.35,0,0,1-1,2.47A3.38,3.38,0,0,1,26.49,29.86Zm-5.38-6.71a.79.79,0,0,0,.85-.66L24.73,9.24a.55.55,0,0,0-.18-.46.62.62,0,0,0-.41-.17q-.08,0-16.53,6.11a.59.59,0,0,0-.41.59.57.57,0,0,0,.43.52l4,1.24,1.61,4.83a.62.62,0,0,0,.63.43.56.56,0,0,0,.4-.17L16.54,20l4.09,3A.9.9,0,0,0,21.11,23.15ZM13.8,20.71l-1.21-4q8.72-5.55,8.78-5.55c.15,0,.23,0,.23.16a.18.18,0,0,1,0,.06s-2.51,2.3-7.52,6.8Z" />
+        </svg>
+    </a>
+</div>
+
+  </footer><div id="disqus_thread"></div>
+<script type="application/javascript">
+    window.disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "sucicada" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+</article>
+    </main>
+    
+<footer class="footer">
+    <span>&copy; 2023 <a href="https://sucicada.github.io/blog">SuCicada</a></span>
+    <span>
+        Powered by
+        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+        <path d="M12 6H0l6-6z" />
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu')
+    if (menu) {
+        menu.scrollLeft = localStorage.getItem("menu-scroll-position");
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var mybutton = document.getElementById("top-link");
+    window.onscroll = function () {
+        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
+            mybutton.style.visibility = "visible";
+            mybutton.style.opacity = "1";
+        } else {
+            mybutton.style.visibility = "hidden";
+            mybutton.style.opacity = "0";
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        if (document.body.className.includes("dark")) {
+            document.body.classList.remove('dark');
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            document.body.classList.add('dark');
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+<script>
+    document.querySelectorAll('pre > code').forEach((codeblock) => {
+        const container = codeblock.parentNode.parentNode;
+
+        const copybutton = document.createElement('button');
+        copybutton.classList.add('copy-code');
+        copybutton.innerHTML = 'copy';
+
+        function copyingDone() {
+            copybutton.innerHTML = 'copied!';
+            setTimeout(() => {
+                copybutton.innerHTML = 'copy';
+            }, 2000);
+        }
+
+        copybutton.addEventListener('click', (cb) => {
+            if ('clipboard' in navigator) {
+                navigator.clipboard.writeText(codeblock.textContent);
+                copyingDone();
+                return;
+            }
+
+            const range = document.createRange();
+            range.selectNodeContents(codeblock);
+            const selection = window.getSelection();
+            selection.removeAllRanges();
+            selection.addRange(range);
+            try {
+                document.execCommand('copy');
+                copyingDone();
+            } catch (e) { };
+            selection.removeRange(range);
+        });
+
+        if (container.classList.contains("highlight")) {
+            container.appendChild(copybutton);
+        } else if (container.parentNode.firstChild == container) {
+            
+        } else if (codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName == "TABLE") {
+            
+            codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(copybutton);
+        } else {
+            
+            codeblock.parentNode.appendChild(copybutton);
+        }
+    });
+</script>
+</body>
+
+</html>

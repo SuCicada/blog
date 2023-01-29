@@ -150,59 +150,6 @@
 
 <article class="post-entry"> 
   <header class="entry-header">
-    <h2>python matplotlibmat 包mplot3d工具   三维视图透视取消
-    </h2>
-  </header>
-  <div class="entry-content">
-    <p>https://stackoverflow.com/questions/23840756/how-to-disable-perspective-in-mplot3d
-简单的解决方法是
-ax = fig.add_subplot(111, projection=&#39;3d&#39;, proj_type=&#39;ortho&#39;) 注意111 和 proj_type=‘ortho’
-辛亏在打算转用Mayavi 前找到了解决方法</p>
-  </div>
-  <footer class="entry-footer">SuCicada</footer>
-  <a class="entry-link" aria-label="post link to python matplotlibmat 包mplot3d工具   三维视图透视取消" href="https://sucicada.github.io/blog/posts/soft/python-matplotlibmat-%E5%8C%85mplot3d%E5%B7%A5%E5%85%B7-%E4%B8%89%E7%BB%B4%E8%A7%86%E5%9B%BE%E9%80%8F%E8%A7%86%E5%8F%96%E6%B6%88/"></a>
-</article>
-
-<article class="post-entry"> 
-  <header class="entry-header">
-    <h2>python pip安装不成功 在windows下
-    </h2>
-  </header>
-  <div class="entry-content">
-    <p>我用的是windows。你可以试试以管理员模式运行终端。
-我在用python安装第三方库时，使用如下方式
-pip install xxxx.whl 但是无论如何都只显示到
-Installing collected packages: xxxx
-然后就没了，和网上说的出来什么success提示完全不，然后我通过import来验证，也是没有安装上的。
-一定要出现
-Successful installed xxxx
-才算成功。
-如果你的问题不是这样的，请查查看别的家的博客。
-花了一个晚上都没有安上pygame。
-于是第二天在整整一个下午琢磨了两个小时为什么。重启电脑，将python卸载再安装，卸载再安装，卸载再安装。删除easy_install 重装ez。删除pip，重装pip。重装wheel，但是如上面那样也失败了。然后我终于发现问题所在了。
-我把powershell当成了是默认的管理员模式，于是我就一直处于安装不成功的地步。
-所以说，如果你也安装不上，试试管理员模式运行终端。
-真的是气，那些三步安装库的人根本不说。</p>
-  </div>
-  <footer class="entry-footer">SuCicada</footer>
-  <a class="entry-link" aria-label="post link to python pip安装不成功 在windows下" href="https://sucicada.github.io/blog/posts/soft/python-pip%E5%AE%89%E8%A3%85%E4%B8%8D%E6%88%90%E5%8A%9F-%E5%9C%A8windows%E4%B8%8B/"></a>
-</article>
-
-<article class="post-entry"> 
-  <header class="entry-header">
-    <h2>python Tkinter 的 Text 保持焦点在行尾
-    </h2>
-  </header>
-  <div class="entry-content">
-    <p>https://bbs.csdn.net/topics/390712532
-text.see(END)</p>
-  </div>
-  <footer class="entry-footer">SuCicada</footer>
-  <a class="entry-link" aria-label="post link to python Tkinter 的 Text 保持焦点在行尾" href="https://sucicada.github.io/blog/posts/soft/python-tkinter-%E7%9A%84-text-%E4%BF%9D%E6%8C%81%E7%84%A6%E7%82%B9%E5%9C%A8%E8%A1%8C%E5%B0%BE/"></a>
-</article>
-
-<article class="post-entry"> 
-  <header class="entry-header">
     <h2>Python3 urllib 爬取 花瓣网图片
     </h2>
   </header>
@@ -263,7 +210,7 @@ sudo pip3 install twisted</p>
 &lt;properties&gt; &lt;maven.compiler.source&gt;8&lt;/maven.compiler.source&gt; &lt;maven.compiler.target&gt;8&lt;/maven.compiler.target&gt; &lt;spark.version&gt;2.4.0-cdh6.3.2&lt;/spark.version&gt; &lt;hive.version&gt;2.1.1-cdh6.3.2&lt;/hive.version&gt; &lt;/properties&gt; &lt;dependencies&gt; &lt;dependency&gt; &lt;groupId&gt;org.apache.spark&lt;/groupId&gt; &lt;artifactId&gt;spark-sql_2.11&lt;/artifactId&gt; &lt;version&gt;${spark.version}&lt;/version&gt; &lt;/dependency&gt; &lt;dependency&gt; &lt;groupId&gt;org.apache.spark&lt;/groupId&gt; &lt;artifactId&gt;spark-core_2.11&lt;/artifactId&gt; &lt;version&gt;${spark.version}&lt;/version&gt; &lt;/dependency&gt; &lt;dependency&gt; &lt;groupId&gt;org.apache.spark&lt;/groupId&gt; &lt;artifactId&gt;spark-hive_2.11&lt;/artifactId&gt; &lt;version&gt;${spark.version}&lt;/version&gt; &lt;exclusions&gt; &lt;exclusion&gt; &lt;artifactId&gt;hive-metastore&lt;/artifactId&gt; &lt;groupId&gt;org.spark-project.hive&lt;/groupId&gt; &lt;/exclusion&gt; &lt;exclusion&gt; &lt;artifactId&gt;hive-exec&lt;/artifactId&gt; &lt;groupId&gt;org.spark-project.hive&lt;/groupId&gt; &lt;/exclusion&gt; &lt;/exclusions&gt; &lt;/dependency&gt; &lt;!-- &lt;dependency&gt;--&gt; &lt;!-- &lt;groupId&gt;org.apache.hive&lt;/groupId&gt;--&gt; &lt;!-- &lt;artifactId&gt;hive-metastore&lt;/artifactId&gt;--&gt; &lt;!-- &lt;version&gt;${hive.version}&lt;/version&gt;--&gt; &lt;!-- &lt;/dependency&gt;--&gt; &lt;dependency&gt; &lt;groupId&gt;org.apache.hive&lt;/groupId&gt; &lt;artifactId&gt;hive-exec&lt;/artifactId&gt; &lt;version&gt;${hive.version}&lt;/version&gt; &lt;exclusions&gt; &lt;exclusion&gt; &lt;groupId&gt;*&lt;/groupId&gt; &lt;artifactId&gt;*&lt;/artifactId&gt; &lt;/exclusion&gt; &lt;/exclusions&gt; &lt;/dependency&gt; &lt;/dependencies&gt; </p>
   </div>
   <footer class="entry-footer">SuCicada</footer>
-  <a class="entry-link" aria-label="post link to Spark 2.4.0 cdh6.3.2连接 Hive 2.1.1 cdh6.3.2" href="https://sucicada.github.io/blog/posts/soft/spark-2.4.0-cdh6.3.2%E8%BF%9E%E6%8E%A5-hive-2.1.1-cdh6.3.2/"></a>
+  <a class="entry-link" aria-label="post link to Spark 2.4.0 cdh6.3.2连接 Hive 2.1.1 cdh6.3.2" href="https://sucicada.github.io/blog/posts/bigdata/spark-2.4.0-cdh6.3.2%E8%BF%9E%E6%8E%A5-hive-2.1.1-cdh6.3.2/"></a>
 </article>
 
 <article class="post-entry"> 
@@ -284,7 +231,7 @@ Hive：2.1.0
 掰掰</p>
   </div>
   <footer class="entry-footer">SuCicada</footer>
-  <a class="entry-link" aria-label="post link to Spark2 Sql 遇到 Caused by: java.lang.NoSuchFieldError: HIVE_STATS_JDBC_TIMEOUT" href="https://sucicada.github.io/blog/posts/soft/spark2-sql-%E9%81%87%E5%88%B0-caused-by-java.lang.nosuchfielderror-hive_stats_jdbc_timeout/"></a>
+  <a class="entry-link" aria-label="post link to Spark2 Sql 遇到 Caused by: java.lang.NoSuchFieldError: HIVE_STATS_JDBC_TIMEOUT" href="https://sucicada.github.io/blog/posts/bigdata/spark2-sql-%E9%81%87%E5%88%B0-caused-by-java.lang.nosuchfielderror-hive_stats_jdbc_timeout/"></a>
 </article>
 
 <article class="post-entry"> 
@@ -654,6 +601,88 @@ https://uva.onlinejudge.org/index.php?option=com_onlinejudge&amp;Itemid=8&amp;pa
   </div>
   <footer class="entry-footer">SuCicada</footer>
   <a class="entry-link" aria-label="post link to uva 12096 - The SetStack Computer（集合栈）" href="https://sucicada.github.io/blog/posts/uvaoj/uva-12096-the-setstack-computer%E9%9B%86%E5%90%88%E6%A0%88/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2>UVA 12171 - Sculpture(雕塑) By SuCicada
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>例题6-18 雕塑（Sculpture, ACM/ICPC NWERC 2008, UVa12171）
+某雕塑由n（n≤50）个边平行于坐标轴的长方体组成。每个长方体用6个整
+数x0，y0，z0，x，y，z表示（均为1～500的整数），其中x0为长方体的顶点中x坐标的最小
+值，x表示长方体在x方向的总长度。其他4个值类似定义。你的任务是统计这个雕像的体积
+和表面积。注意，雕塑内部可能会有密闭的空间，其体积应计算在总体积中，但从“外部”看
+不见的面不应计入表面积。雕塑可能会由多个连通块组成。
+Sample Input
+2
+2
+1 2 3 3 4 5
+6 2 3 3 4 5
+7
+1 1 1 5 5 1
+1 1 10 5 5 1
+1 1 2 1 4 8
+2 1 2 4 1 8
+5 2 2 1 4 8
+1 5 2 4 1 8
+3 3 4 1 1 1...</p>
+  </div>
+  <footer class="entry-footer">SuCicada</footer>
+  <a class="entry-link" aria-label="post link to UVA 12171 - Sculpture(雕塑) By SuCicada" href="https://sucicada.github.io/blog/posts/uvaoj/uva-12171-sculpture%E9%9B%95%E5%A1%91-by-sucicada/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2>UVA 122 - Trees on the level, Duke 1993 (树的层次遍历)
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>例题6-7 树的层次遍历（Trees on the level, Duke 1993, UVa 122）
+输入一棵二叉树，你的任务是按从上到下、从左到右的顺序输出各个结点的值。每个结
+点都按照从根结点到它的移动序列给出（L表示左，R表示右）。在输入中，每个结点的左
+括号和右括号之间没有空格，相邻结点之间用一个空格隔开。每棵树的输入用一对空括
+号“()”结束（这对括号本身不代表一个结点），如图6-3所示。
+图6-3 一棵二叉树
+注意，如果从根到某个叶结点的路径上有的结点没有在输入中给出，或者给出超过一
+次，应当输出-1。结点个数不超过256。
+样例输入：
+(11,LL) (7,LLL) (8,R)
+(5,) (4,L) (13,RL) (2,LLR) (1,RRR) (4,RR) ()
+(3,L) (4,R) ()
+样例输出：
+5 4 8 11 13 4 7 2 1
+not complete
+本家地址
+祭出对象大法
+#include&lt;iostream&gt; #include&lt;sstream&gt; #include&lt;string&gt; #include&lt;cstring&gt; #include&lt;cstdio&gt; #include&lt;cstdlib&gt; using namespace std; class Node{ public: int value; Node* left; Node* right; }; Node* queue[256]; void show(Node* root){ memset(queue,0,sizeof(queue)); int qbegin=0; int qend=0; int qlen = sizeof(queue)/sizeof(Node*); stringstream out; queue[qend] = root; qend = (qend&#43;1) % qlen; while(qbegin!...</p>
+  </div>
+  <footer class="entry-footer">SuCicada</footer>
+  <a class="entry-link" aria-label="post link to UVA 122 - Trees on the level, Duke 1993 (树的层次遍历)" href="https://sucicada.github.io/blog/posts/uvaoj/uva-122-trees-on-the-level-duke-1993-%E6%A0%91%E7%9A%84%E5%B1%82%E6%AC%A1%E9%81%8D%E5%8E%86/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2>uva 1225 - Digit Counting（数数）
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p> 把前n（n≤10000）个整数顺次写在一起：123456789101112…数一数0～9各出现多少次
+（输出10个整数，分别是0，1，…，9出现的次数）。
+Sample Input
+2
+3
+13
+Sample Output
+0 1 1 1 0 0 0 0 0 0
+1 6 2 2 1 1 1 1 1 1
+（注：输出的最后一个数后面没有空格）
+https://uva.onlinejudge.org/index.php?option=com_onlinejudge&amp;Itemid=8&amp;page=show_problem&amp;category=830&amp;problem=3666&amp;mosmsg=Submission&#43;received&#43;with&#43;ID&#43;20469369
+//判断一个数各个位的数字，存于一个数组中，倒的来循环也无妨 #include&lt;iostream&gt; #include&lt;cstdio&gt; using namespace std; int main() { int T; cin&gt;&gt;T; getchar(); while(T--) { int num[10]={0}; int N; cin&gt;&gt;N; getchar(); while(N--) { int ni=N&#43;1; while(ni) { num[ni%10]&#43;&#43;; ni/=10; } } for(int i=0;i&lt;9;i&#43;&#43;) cout&lt;&lt;num[i]&lt;&lt;&#34; &#34;; cout&lt;&lt;num[9]&lt;&lt;endl; } return 0; } //AC at 2017/12/10 </p>
+  </div>
+  <footer class="entry-footer">SuCicada</footer>
+  <a class="entry-link" aria-label="post link to uva 1225 - Digit Counting（数数）" href="https://sucicada.github.io/blog/posts/uvaoj/uva-1225-digit-counting%E6%95%B0%E6%95%B0/"></a>
 </article>
 <footer class="page-footer">
   <nav class="pagination">

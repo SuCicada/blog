@@ -271,7 +271,7 @@
 class Solution { public int romanToInt(String s) { int N = s.length(); int sum = 0; char a = 0; int b = 0; int c = 0; for(int i=0;i&lt;N;i&#43;&#43;){ c = b; a = s.charAt(i); if(a == &#39;I&#39;){ b = 1; }else if(a == &#39;V&#39;){ b = 5; }else if(a == &#39;X&#39;){ b = 10; }else if(a == &#39;L&#39;){ b = 50; }else if(a == &#39;C&#39;){ b = 100; }else if(a == &#39;D&#39;){ b = 500; }else if(a == &#39;M&#39;){ b = 1000; } // System....</p>
   </div>
   <footer class="entry-footer">SuCicada</footer>
-  <a class="entry-link" aria-label="post link to [leetcode][Algorithm] -13. Roman to Integer with [Java]" href="https://sucicada.github.io/blog/posts/soft/leetcodealgorithm-13.-roman-to-integer-with-java/"></a>
+  <a class="entry-link" aria-label="post link to [leetcode][Algorithm] -13. Roman to Integer with [Java]" href="https://sucicada.github.io/blog/posts/leetcode/leetcodealgorithm-13.-roman-to-integer-with-java/"></a>
 </article>
 
 <article class="post-entry"> 
@@ -285,7 +285,7 @@ select FirstName, LastName, City, State from Person left join Address using (Per
 select FirstName, LastName, City, State from Person left join Address on Person.PersonId=Address.PersonId; </p>
   </div>
   <footer class="entry-footer">SuCicada</footer>
-  <a class="entry-link" aria-label="post link to [leetcode][DataBase] - 175. Combine Two Tables with MySQL" href="https://sucicada.github.io/blog/posts/soft/leetcodedatabase-175.-combine-two-tables-with-mysql/"></a>
+  <a class="entry-link" aria-label="post link to [leetcode][DataBase] - 175. Combine Two Tables with MySQL" href="https://sucicada.github.io/blog/posts/leetcode/leetcodedatabase-175.-combine-two-tables-with-mysql/"></a>
 </article>
 
 <article class="post-entry"> 
@@ -299,7 +299,7 @@ select ifnull((select distinct Salary from Employee order by Salary desc limit 1
 select max(Salary) as SecondHighestSalary from employee where Salary &lt; (select max(Salary) from employee); </p>
   </div>
   <footer class="entry-footer">SuCicada</footer>
-  <a class="entry-link" aria-label="post link to [leetcode][DataBase] - 176. Second Highest Salary with [MySQL]" href="https://sucicada.github.io/blog/posts/soft/leetcodedatabase-176.-second-highest-salary-with-mysql/"></a>
+  <a class="entry-link" aria-label="post link to [leetcode][DataBase] - 176. Second Highest Salary with [MySQL]" href="https://sucicada.github.io/blog/posts/leetcode/leetcodedatabase-176.-second-highest-salary-with-mysql/"></a>
 </article>
 
 <article class="post-entry"> 
@@ -313,7 +313,7 @@ select max(Salary) as SecondHighestSalary from employee where Salary &lt; (selec
 # 188ms select aa.Salary as ass from (select distinct Salary from employee order by Salary desc limit N) as aa where (select count(distinct Salary) from employee) &gt;= N order by ass limit 1 </p>
   </div>
   <footer class="entry-footer">SuCicada</footer>
-  <a class="entry-link" aria-label="post link to [leetcode][DataBase] - 177. Nth Highest Salary with [MySQL]" href="https://sucicada.github.io/blog/posts/soft/leetcodedatabase-177.-nth-highest-salary-with-mysql/"></a>
+  <a class="entry-link" aria-label="post link to [leetcode][DataBase] - 177. Nth Highest Salary with [MySQL]" href="https://sucicada.github.io/blog/posts/leetcode/leetcodedatabase-177.-nth-highest-salary-with-mysql/"></a>
 </article>
 
 <article class="post-entry"> 
@@ -326,7 +326,7 @@ select max(Salary) as SecondHighestSalary from employee where Salary &lt; (selec
 select inn.Score,inn.Rank from ( select ss.Score,@row:=@row&#43;1 as Rank from (select @row:=0) a, (select Score from Scores group by Score) as ss order by ss.Score desc ) as inn right join Scores as sss on inn.Score = sss.Score order by inn.Score desc ; </p>
   </div>
   <footer class="entry-footer">SuCicada</footer>
-  <a class="entry-link" aria-label="post link to [leetcode][DataBase] - 178. Rank Scores with [MySQL]" href="https://sucicada.github.io/blog/posts/soft/leetcodedatabase-178.-rank-scores-with-mysql/"></a>
+  <a class="entry-link" aria-label="post link to [leetcode][DataBase] - 178. Rank Scores with [MySQL]" href="https://sucicada.github.io/blog/posts/leetcode/leetcodedatabase-178.-rank-scores-with-mysql/"></a>
 </article>
 
 <article class="post-entry"> 
@@ -368,7 +368,7 @@ sucicada@20200702-143805:/etc/apt/sources.list.d$ sudo apt install g&#43;&#43; R
 assume cs:code code segment start: ; [ input: al: row ] ; [ ah: column ] mov cx,10 start_s: mov di,0 mov si,1 call p3 mov di,4 mov si,-1 call p3 loop start_s mov ax,4c00h int 21h p3: ; -- input: di (index of p2) si (1 or -1) push ax push bx push cx push dx push di ; mov cx,5 ; times ; cmp di,3 ; jne p3_di_not_4 ; p3_di_not_4: mov cx,4 ; times ; mov di,0 p3_s: push cx mov cx,di mov dl,&#39;*&#39; call p2 pop cx ; bx ax lay time mov ax,0 mov bx,1 push cx p3_layout: sub ax,1 sbb bx,0 mov cx,ax or cx,bx cmp cx,0 jne p3_layout pop cx push cx mov cx,di mov dl,&#39; &#39; call p2 pop cx add di,si loop p3_s pop di pop dx pop cx pop bx pop ax ret p2: push ax push bx push cx ; ----- [1] ----------- mov al,10 mov ah,10 mov bl,al mov bh,ah call p1 add bl,1 ; ----- [2] ----------- push cx cmp cx,0 je p2_2_cx_is_0 sub cx,1 p2_2_cx_is_0: mov al,bl mov ah,bh sub ah,cl call p1 mov ah,bh add ah,cl call p1 pop cx add bl,1 ; ----- [3] ----------- ; left:ah = bh-1-(1&#43;1&#43;(cl-2))*(cl-1)/2 ; = bh-1-cl*(cl-1)/2 = bh-segdis ; right: bh&#43;1&#43;cl*(cl-1)/2 = bh&#43;segdis ; segdis = 1&#43;cl*(cl-1)/2 push cx cmp cx,0 je p2_3_cx_is_0 mov al,cl ; cl sub cl,1 ; cl-1 mul cl ; cl*(cl-1) -&gt; ax mov cl,2 ; 2 div cl ; cl*(cl-1)/2 -&gt; al add al,1 ; cl*(cl-1)/2&#43;1 mov cl,al ; segdis p2_3_cx_is_0: mov al,bl mov ah,bh sub ah,cl ; bh - segdis call p1 mov ah,bh add ah,cl ; bh &#43; segdis call p1 pop cx add bl,1 ; ----- [4] ----------- push cx cmp cx,0 je p2_4_cx_is_0 sub cx,1 p2_4_cx_is_0: mov al,bl mov ah,bh sub ah,cl call p1 mov ah,bh add ah,cl call p1 pop cx add bl,1 ; ----- [5] ----------- mov al,bl mov ah,bh call p1 pop cx pop bx pop ax ret p1: ; ----- input: al: row ah: column dl:char push ax push bx push es mov bx,0b800h mov es,bx mov bl,ah mov bh,al mov al,160 mul bh add bl,bl mov bh,0 add ax,bx mov bx,ax mov byte ptr es:[bx],dl mov byte ptr es:[bx&#43;1],2 pop es pop bx pop ax ret code ends end start ; -------*------- 7 ; -------*------- 7 7 ; -------*------- 7 7 ; -------*------- ; -------*------- ; -------*------- 7 ; -------*------- 7 7 ; ------*-*------ 6 8 ; -------*------- ; -------*------- ; 7-1-(1&#43;1&#43;(n-2))*(n-1)/2 ; 2 ; -------*------- 7 ; ------*-*------ 6 8 ; -----*---*----- 5 9 ; ------*-*------ ; -------*------- ; 3 ; -------*------- 7 ; -----*---*----- 5 9 ; ---*-------*--- 3 11 ; -----*---*----- ; -------*------- ; -------*------- 7 ; ----*-----*---- 4 10 ; *-------------* 0 14 ; ----*-----*---- ; -------*------- </p>
   </div>
   <footer class="entry-footer">SuCicada</footer>
-  <a class="entry-link" aria-label="post link to 8086汇编   在屏幕上显现动态菱形图案" href="https://sucicada.github.io/blog/posts/soft/8086%E6%B1%87%E7%BC%96-%E5%9C%A8%E5%B1%8F%E5%B9%95%E4%B8%8A%E6%98%BE%E7%8E%B0%E5%8A%A8%E6%80%81%E8%8F%B1%E5%BD%A2%E5%9B%BE%E6%A1%88/"></a>
+  <a class="entry-link" aria-label="post link to 8086汇编   在屏幕上显现动态菱形图案" href="https://sucicada.github.io/blog/posts/assmbly/8086%E6%B1%87%E7%BC%96-%E5%9C%A8%E5%B1%8F%E5%B9%95%E4%B8%8A%E6%98%BE%E7%8E%B0%E5%8A%A8%E6%80%81%E8%8F%B1%E5%BD%A2%E5%9B%BE%E6%A1%88/"></a>
 </article>
 
 <article class="post-entry"> 
@@ -380,7 +380,7 @@ assume cs:code code segment start: ; [ input: al: row ] ; [ ah: column ] mov cx,
     <p>assume cs:code code segment mov ax,20h mov ds,ax mov cx,8 s: mov dx,cx mov bx,cx sub bx,1 ; -------------------- mov cx,9 sub cx,dx ; mov cx,bx add cx,cx sub cx,1 j: mov al,&#39;a&#39; mov [bx],al inc bx loop j ; mov cx,dx ; add bx,10h mov ax,ds add ax,1 mov ds,ax ; mov bx,cx loop s mov ax,4c00h int 21h code ends end 。。。。</p>
   </div>
   <footer class="entry-footer">SuCicada</footer>
-  <a class="entry-link" aria-label="post link to 8086汇编：在安全空间画金字塔" href="https://sucicada.github.io/blog/posts/soft/8086%E6%B1%87%E7%BC%96%E5%9C%A8%E5%AE%89%E5%85%A8%E7%A9%BA%E9%97%B4%E7%94%BB%E9%87%91%E5%AD%97%E5%A1%94/"></a>
+  <a class="entry-link" aria-label="post link to 8086汇编：在安全空间画金字塔" href="https://sucicada.github.io/blog/posts/assmbly/8086%E6%B1%87%E7%BC%96%E5%9C%A8%E5%AE%89%E5%85%A8%E7%A9%BA%E9%97%B4%E7%94%BB%E9%87%91%E5%AD%97%E5%A1%94/"></a>
 </article>
 
 <article class="post-entry"> 
@@ -392,7 +392,7 @@ assume cs:code code segment start: ; [ input: al: row ] ; [ ah: column ] mov cx,
     <p>assume cs:code code segment ; This code is used to clear the memory ; of the safe area from 0020:0 to 0020:ff mov ax,20 mov ds,ax mov cx,0ffh mov bx,0 s: mov ax,0 mov ds:[bx],ax inc bx loop s mov ax,4c00h int 21h code ends end </p>
   </div>
   <footer class="entry-footer">SuCicada</footer>
-  <a class="entry-link" aria-label="post link to 8086汇编：清空0020:0 到0020:0ff空间" href="https://sucicada.github.io/blog/posts/soft/8086%E6%B1%87%E7%BC%96%E6%B8%85%E7%A9%BA00200-%E5%88%B000200ff%E7%A9%BA%E9%97%B4/"></a>
+  <a class="entry-link" aria-label="post link to 8086汇编：清空0020:0 到0020:0ff空间" href="https://sucicada.github.io/blog/posts/assmbly/8086%E6%B1%87%E7%BC%96%E6%B8%85%E7%A9%BA00200-%E5%88%B000200ff%E7%A9%BA%E9%97%B4/"></a>
 </article>
 
 <article class="post-entry"> 
@@ -404,7 +404,7 @@ assume cs:code code segment start: ; [ input: al: row ] ; [ ah: column ] mov cx,
     <p>@echo off echo code: %1 echo masm..... masm %1; echo link....... link %1; del %1.obj echo delete %1.obj echo finish 起个名 比如 run.bat 放到环境变量下，很方便</p>
   </div>
   <footer class="entry-footer">SuCicada</footer>
-  <a class="entry-link" aria-label="post link to 8086汇编：自动编译链接脚本" href="https://sucicada.github.io/blog/posts/soft/8086%E6%B1%87%E7%BC%96%E8%87%AA%E5%8A%A8%E7%BC%96%E8%AF%91%E9%93%BE%E6%8E%A5%E8%84%9A%E6%9C%AC/"></a>
+  <a class="entry-link" aria-label="post link to 8086汇编：自动编译链接脚本" href="https://sucicada.github.io/blog/posts/assmbly/8086%E6%B1%87%E7%BC%96%E8%87%AA%E5%8A%A8%E7%BC%96%E8%AF%91%E9%93%BE%E6%8E%A5%E8%84%9A%E6%9C%AC/"></a>
 </article>
 
 <article class="post-entry"> 
@@ -417,7 +417,7 @@ assume cs:code code segment start: ; [ input: al: row ] ; [ ah: column ] mov cx,
 先上代码, 或者跳到问题 assume cs:code ; dsstack segment ; db 16 dup(0) ; dsstack ends code segment start: ; mov ax,dsstack ; mov ds,ax ; mov si,13 ; mov sp,160 call getstr mov ax,4c00h int 21h getstr: push ax getstrs: mov ah,0 int 16h cmp al,20h jb nochar mov ah,0 call charstack mov ah,2 call charstack jmp getstrs nochar: cmp ah,0eh je backspace cmp ah,1ch je enter jmp getstrs backspace: mov ah,1 call charstack mov ah,2 call charstack jmp getstrs enter: mov al,0 mov ah,0 call charstack mov ah,2 call charstack pop ax ret ; ================================== charstack: jmp short charstart table dw charpush,charpop,charshow top dw 0 ; top of stack charstart: push bx push dx push di push es cmp ah,2 ja charret mov bl,ah mov bh,0 add bx,bx jmp word ptr table[bx] charpush: mov bx,top mov ds:[si][bx],al add top,1 jmp charret charpop: cmp top,0 je charret dec top mov bx,top mov al,[si][bx] jmp charret charshow: mov bx,0b800h mov es,bx mov al,160 mov ah,0 mul dh mov di,ax add dl,dl mov dh,0 add di,dx mov bx,0 charshows: cmp bx,top jne noempty mov byte ptr es:[di],&#39;&#43;&#39; ; 结束符 jmp charret noempty: mov al,[si][bx] mov es:[di],al mov byte ptr es:[di&#43;2],&#39;&#43;&#39; ; 结束符 inc bx add di,2 jmp charshows charret: pop es pop di pop dx pop bx ret code ends end start 问题 问题现象:...</p>
   </div>
   <footer class="entry-footer">SuCicada</footer>
-  <a class="entry-link" aria-label="post link to 8086汇编语言王爽  17.3 字符串的输入 (含输入溢出问题分析)" href="https://sucicada.github.io/blog/posts/soft/8086%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80%E7%8E%8B%E7%88%BD-17.3-%E5%AD%97%E7%AC%A6%E4%B8%B2%E7%9A%84%E8%BE%93%E5%85%A5-%E5%90%AB%E8%BE%93%E5%85%A5%E6%BA%A2%E5%87%BA%E9%97%AE%E9%A2%98%E5%88%86%E6%9E%90/"></a>
+  <a class="entry-link" aria-label="post link to 8086汇编语言王爽  17.3 字符串的输入 (含输入溢出问题分析)" href="https://sucicada.github.io/blog/posts/assmbly/8086%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80%E7%8E%8B%E7%88%BD-17.3-%E5%AD%97%E7%AC%A6%E4%B8%B2%E7%9A%84%E8%BE%93%E5%85%A5-%E5%90%AB%E8%BE%93%E5%85%A5%E6%BA%A2%E5%87%BA%E9%97%AE%E9%A2%98%E5%88%86%E6%9E%90/"></a>
 </article>
 
 <article class="post-entry"> 

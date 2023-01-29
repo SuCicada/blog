@@ -210,21 +210,6 @@ Total_Process_Memory: ytm JVM_Metaspace: 默認 256m JVM_Overhead: 默認 jtm * 
 
 <article class="post-entry"> 
   <header class="entry-header">
-    <h2>Flink 内存模型的分配策略 主公式推导
-    </h2>
-  </header>
-  <div class="entry-content">
-    <p>结论: 启动flink设定的 ytm数值 与实际监控展示的JVM_Heap数值关系是 (ytm大于1920的简化公式)
-JVM_Heap = ytm * 0.45 - 256
-啓動參數: -ytm 设定的实际是 进程总内存,相当于yarn容器大小
-Total_Process_Memory: ytm JVM_Metaspace: 默認 256m JVM_Overhead: 默認 jtm * 0.1 (必須在 192m ~ 1g (默認)) Total_Flink_Memory: Total_Process_Memory - JVM_Overhead - JVM_Metaspace Framework_Heap: 默認 128m Managed_Memory: 默認 Total_Flink_Memory * 0.4 Framework_Off-Heap: 默認 128m Task_Off-Heap: 默認 0 Network: 默認 Total_Flink_Memory * 0.1 (必須在 64m ~ 1g (默認)) 所以 Task_Heap = Total_Flink_Memory - Framework_Heap - Managed_Memory - Framework_Off-Heap - Task_Off-Heap - Network 如果都用默认配置,那么代入化简就是...</p>
-  </div>
-  <footer class="entry-footer">SuCicada</footer>
-  <a class="entry-link" aria-label="post link to Flink 内存模型的分配策略 主公式推导" href="https://sucicada.github.io/blog/posts/soft/flink-%E5%86%85%E5%AD%98%E6%A8%A1%E5%9E%8B%E7%9A%84%E5%88%86%E9%85%8D%E7%AD%96%E7%95%A5-%E4%B8%BB%E5%85%AC%E5%BC%8F%E6%8E%A8%E5%AF%BC/"></a>
-</article>
-
-<article class="post-entry"> 
-  <header class="entry-header">
     <h2>Flink 算子Function实例化的坑
     </h2>
   </header>
@@ -234,19 +219,6 @@ object MySingleObj{ // 陷阱： // 单例对象中一个是可变引用，一�
   </div>
   <footer class="entry-footer">SuCicada</footer>
   <a class="entry-link" aria-label="post link to Flink 算子Function实例化的坑" href="https://sucicada.github.io/blog/posts/bigdata/flink-%E7%AE%97%E5%AD%90function%E5%AE%9E%E4%BE%8B%E5%8C%96%E7%9A%84%E5%9D%91/"></a>
-</article>
-
-<article class="post-entry"> 
-  <header class="entry-header">
-    <h2>Flink 算子Function实例化的坑
-    </h2>
-  </header>
-  <div class="entry-content">
-    <p>问题回顾 关于一段代码：
-object MySingleObj{ // 陷阱： // 单例对象中一个是可变引用，一个是可变数组 var str:String = _ val list = new ListBuffer[String] } ... dataStream .map(new RichMapFunction(){ // 问题1：obj1 和 obj2 的实例方式有什么区别。 // 问题2：考虑参数0的作用以及是否会得到预期效果。 val obj1:MyClass = new MyClass(参数0) var obj2:MyClass = _ override def open(paramation:Configuration): Unit = { obj2 = new MyClass(参数0) } override def map(value, ....) = { // 问题3：如果在这里使用 obj1 和 obj2 会有什么区别。 // 问题4：单个slot中对单例对象中的变量修改，造成的影响是。 MySingleObj.str = value MySingleObj.list &#43;= value } }) ....</p>
-  </div>
-  <footer class="entry-footer">SuCicada</footer>
-  <a class="entry-link" aria-label="post link to Flink 算子Function实例化的坑" href="https://sucicada.github.io/blog/posts/soft/flink-%E7%AE%97%E5%AD%90function%E5%AE%9E%E4%BE%8B%E5%8C%96%E7%9A%84%E5%9D%91/"></a>
 </article>
 
 <article class="post-entry"> 
@@ -266,25 +238,6 @@ Source 带着问题 header 里有什么 一些实现类 ExecSource ExecRunnable 
   </div>
   <footer class="entry-footer">SuCicada</footer>
   <a class="entry-link" aria-label="post link to Flume 数据流的处理过程 从源码看 Source Channel Sink" href="https://sucicada.github.io/blog/posts/bigdata/flume-%E6%95%B0%E6%8D%AE%E6%B5%81%E7%9A%84%E5%A4%84%E7%90%86%E8%BF%87%E7%A8%8B-%E4%BB%8E%E6%BA%90%E7%A0%81%E7%9C%8B-source-channel-sink/"></a>
-</article>
-
-<article class="post-entry"> 
-  <header class="entry-header">
-    <h2>Flume 数据流的处理过程 从源码看 Source Channel Sink
-    </h2>
-  </header>
-  <div class="entry-content">
-    <p>Event 构成 Source Flume的三个部分：Source，Channel，Sink
-数据是存储在Event对象中在这三部分之间传递
-Event 构成 Event 接口
-public interface Event { public Map&lt;String, String&gt; getHeaders(); public void setHeaders(Map&lt;String, String&gt; headers); public byte[] getBody(); public void setBody(byte[] body); } 以 最简单的实现类 SimpleEvent 为例子
-public class SimpleEvent implements Event { private Map&lt;String, String&gt; headers; private byte[] body; ... } 可见
-header 以 Map&lt;String, String&gt; 的形式存储键值对信息
-body 二进制形式存储，从Source接收到的数据会存储在这里
-Source 带着问题 header 里有什么 一些实现类 ExecSource ExecRunnable 主要处理 通过 EventBuilder.withBody 基础创建 Event ， 一行一个 Event header 为空 flushEventBatch 中 ChannelProcessor :: processEventBatch...</p>
-  </div>
-  <footer class="entry-footer">SuCicada</footer>
-  <a class="entry-link" aria-label="post link to Flume 数据流的处理过程 从源码看 Source Channel Sink" href="https://sucicada.github.io/blog/posts/soft/flume-%E6%95%B0%E6%8D%AE%E6%B5%81%E7%9A%84%E5%A4%84%E7%90%86%E8%BF%87%E7%A8%8B-%E4%BB%8E%E6%BA%90%E7%A0%81%E7%9C%8B-source-channel-sink/"></a>
 </article>
 
 <article class="post-entry"> 
@@ -310,7 +263,7 @@ Source 带着问题 header 里有什么 一些实现类 ExecSource ExecRunnable 
 &lt;dependency&gt; &lt;groupId&gt;org.apache.hbase&lt;/groupId&gt; &lt;artifactId&gt;hbase-mapreduce&lt;/artifactId&gt; &lt;version&gt;${hbase.version}&lt;/version&gt; &lt;/dependency&gt; 参考链接：https://juejin.cn/post/6844903959585374221</p>
   </div>
   <footer class="entry-footer">SuCicada</footer>
-  <a class="entry-link" aria-label="post link to Hbase2 没有org.apache.hadoop.hbase.mapreduce.TableInputFormat" href="https://sucicada.github.io/blog/posts/soft/hbase2-%E6%B2%A1%E6%9C%89org.apache.hadoop.hbase.mapreduce.tableinputformat/"></a>
+  <a class="entry-link" aria-label="post link to Hbase2 没有org.apache.hadoop.hbase.mapreduce.TableInputFormat" href="https://sucicada.github.io/blog/posts/bigdata/hbase2-%E6%B2%A1%E6%9C%89org.apache.hadoop.hbase.mapreduce.tableinputformat/"></a>
 </article>
 
 <article class="post-entry"> 
@@ -323,7 +276,7 @@ Source 带着问题 header 里有什么 一些实现类 ExecSource ExecRunnable 
 #include&lt;iostream&gt; #include&lt;stack&gt; #include&lt;string&gt; using namespace std; int main() { int t; string a,b; while(cin&gt;&gt;t&gt;&gt;a&gt;&gt;b) { stack&lt;char&gt;s; string p; int i=0; t=a.size(); while(t--) { s.push(a[a.size()-t-1]); p&#43;=&#34;in\n&#34;;//cout&lt;&lt;s.top()&lt;&lt;&#34; &#34;&lt;&lt;b[i]; while(!s.empty()&amp;&amp;s.top()==b[i]) { //cout&lt;&lt;&#34;i&#34;&lt;&lt;i&lt;&lt;endl; s.pop(); p&#43;=&#34;out\n&#34;; i&#43;&#43;; //cout&lt;&lt;s.size()&lt;&lt;&#34;!!&#34;&lt;&lt;endl; } } if(s.size()==0) cout&lt;&lt;&#34;Yes.&#34;&lt;&lt;endl&lt;&lt;p; else cout&lt;&lt;&#34;No.&#34;&lt;&lt;endl; cout&lt;&lt;&#34;FINISH&#34;&lt;&lt;endl; } return 0; } </p>
   </div>
   <footer class="entry-footer">SuCicada</footer>
-  <a class="entry-link" aria-label="post link to hdu 1022 栈" href="https://sucicada.github.io/blog/posts/soft/hdu-1022-%E6%A0%88/"></a>
+  <a class="entry-link" aria-label="post link to hdu 1022 栈" href="https://sucicada.github.io/blog/posts/hduoj/hdu-1022-%E6%A0%88/"></a>
 </article>
 
 <article class="post-entry"> 
@@ -338,7 +291,7 @@ Source 带着问题 header 里有什么 一些实现类 ExecSource ExecRunnable 
 #include&lt;stdio.h&gt; #include&lt;string.h&gt; int main() { int T,i,j,t; char a[1003]; scanf(&#34;%d&#34;,&amp;T); while(T--) { getchar(); scanf(&#34;%[^\n]&#34;,a); i=0; for(j=0;j&lt;strlen(a);j&#43;&#43;) { if(a[j&#43;1]==&#39; &#39;||(j&#43;1)==strlen(a))) { t=j; while(t&gt;=i) printf(&#34;%c&#34;,a[t--]); if(a[j&#43;1]==&#39; &#39;) printf(&#34; &#34;); i=j&#43;2; } } printf(&#34;\n&#34;); } return 0; } </p>
   </div>
   <footer class="entry-footer">SuCicada</footer>
-  <a class="entry-link" aria-label="post link to hdu 1062（倒置句中单词）&lt;未戳破的玄学&gt;" href="https://sucicada.github.io/blog/posts/soft/hdu-1062%E5%80%92%E7%BD%AE%E5%8F%A5%E4%B8%AD%E5%8D%95%E8%AF%8D%E6%9C%AA%E6%88%B3%E7%A0%B4%E7%9A%84%E7%8E%84%E5%AD%A6/"></a>
+  <a class="entry-link" aria-label="post link to hdu 1062（倒置句中单词）&lt;未戳破的玄学&gt;" href="https://sucicada.github.io/blog/posts/hduoj/hdu-1062%E5%80%92%E7%BD%AE%E5%8F%A5%E4%B8%AD%E5%8D%95%E8%AF%8D%E6%9C%AA%E6%88%B3%E7%A0%B4%E7%9A%84%E7%8E%84%E5%AD%A6/"></a>
 </article>
 
 <article class="post-entry"> 
@@ -356,7 +309,7 @@ Output
 For each test case, you should output two lines....</p>
   </div>
   <footer class="entry-footer">SuCicada</footer>
-  <a class="entry-link" aria-label="post link to hdu1002（超超长数字相加）" href="https://sucicada.github.io/blog/posts/soft/hdu1002%E8%B6%85%E8%B6%85%E9%95%BF%E6%95%B0%E5%AD%97%E7%9B%B8%E5%8A%A0/"></a>
+  <a class="entry-link" aria-label="post link to hdu1002（超超长数字相加）" href="https://sucicada.github.io/blog/posts/hduoj/hdu1002%E8%B6%85%E8%B6%85%E9%95%BF%E6%95%B0%E5%AD%97%E7%9B%B8%E5%8A%A0/"></a>
 </article>
 
 <article class="post-entry"> 
@@ -393,7 +346,7 @@ jetty插件版本: 9.2.6.v20141205
 来自这里的启发</p>
   </div>
   <footer class="entry-footer">SuCicada</footer>
-  <a class="entry-link" aria-label="post link to Jetty 报错 Tomcat不报错 maven jetty插件不报错, 可能是jetty版本不统一造成" href="https://sucicada.github.io/blog/posts/soft/jetty-%E6%8A%A5%E9%94%99-tomcat%E4%B8%8D%E6%8A%A5%E9%94%99-maven-jetty%E6%8F%92%E4%BB%B6%E4%B8%8D%E6%8A%A5%E9%94%99-%E5%8F%AF%E8%83%BD%E6%98%AFjetty%E7%89%88%E6%9C%AC%E4%B8%8D%E7%BB%9F%E4%B8%80%E9%80%A0%E6%88%90/"></a>
+  <a class="entry-link" aria-label="post link to Jetty 报错 Tomcat不报错 maven jetty插件不报错, 可能是jetty版本不统一造成" href="https://sucicada.github.io/blog/posts/bigdata/jetty-%E6%8A%A5%E9%94%99-tomcat%E4%B8%8D%E6%8A%A5%E9%94%99-maven-jetty%E6%8F%92%E4%BB%B6%E4%B8%8D%E6%8A%A5%E9%94%99-%E5%8F%AF%E8%83%BD%E6%98%AFjetty%E7%89%88%E6%9C%AC%E4%B8%8D%E7%BB%9F%E4%B8%80%E9%80%A0%E6%88%90/"></a>
 </article>
 
 <article class="post-entry"> 
@@ -422,7 +375,7 @@ class Solution { public String intToRoman1(int num) { StringBuilder sb = new Str
 public String intToRoman(int num) { String s1[] = new String[]{&#34;&#34;,&#34;I&#34;,&#34;II&#34;,&#34;III&#34;,&#34;IV&#34;,&#34;V&#34;,&#34;VI&#34;,&#34;VII&#34;,&#34;VIII&#34;,&#34;IX&#34;}; String s2[] = new String[]{&#34;&#34;,&#34;X&#34;,&#34;XX&#34;,&#34;XXX&#34;,&#34;XL&#34;,&#34;L&#34;,&#34;LX&#34;,&#34;LXX&#34;,&#34;LXXX&#34;,&#34;XC&#34;}; String s3[] = new String[]{&#34;&#34;,&#34;C&#34;,&#34;CC&#34;,&#34;CCC&#34;,&#34;CD&#34;,&#34;D&#34;,&#34;DC&#34;,&#34;DCC&#34;,&#34;DCCC&#34;,&#34;CM&#34;}; String s4[] = new String[]{&#34;&#34;,&#34;M&#34;,&#34;MM&#34;,&#34;MMM&#34;}; // return s4[(num/1000)%10]&#43;s3[(num/100)%10]&#43;s2[(num/10)%10]&#43;s1[num%10]; return new StringBuilder()....</p>
   </div>
   <footer class="entry-footer">SuCicada</footer>
-  <a class="entry-link" aria-label="post link to leetcode  - 12. Integer to Roman with Java" href="https://sucicada.github.io/blog/posts/soft/leetcode-12.-integer-to-roman-with-java/"></a>
+  <a class="entry-link" aria-label="post link to leetcode  - 12. Integer to Roman with Java" href="https://sucicada.github.io/blog/posts/leetcode/leetcode-12.-integer-to-roman-with-java/"></a>
 </article>
 
 <article class="post-entry"> 
@@ -435,7 +388,7 @@ public String intToRoman(int num) { String s1[] = new String[]{&#34;&#34;,&#34;I
 import java.util.*; class Main { public int[] fun(int []nums,int target) { Map&lt;Integer,Integer&gt; map = new HashMap&lt;&gt;(); for(int i=0;i&lt;nums.length;i&#43;&#43;){ int f = target - nums[i]; if(map.get(f)!=null){ return new int[]{map.get(f),i}; }else{ map.put(nums[i],i); } } return null; } public static void main(String[] args) { int []nums = {12,3,3,53,45,7,7,3}; int []res = new Main().fun(nums,10); System.out.println(Arrays.toString(nums)); System.out.println(Arrays.toString(res)); } } </p>
   </div>
   <footer class="entry-footer">SuCicada</footer>
-  <a class="entry-link" aria-label="post link to leetcode - 1. Two Sum with Java" href="https://sucicada.github.io/blog/posts/soft/leetcode-1.-two-sum-with-java/"></a>
+  <a class="entry-link" aria-label="post link to leetcode - 1. Two Sum with Java" href="https://sucicada.github.io/blog/posts/leetcode/leetcode-1.-two-sum-with-java/"></a>
 </article>
 
 <article class="post-entry"> 
@@ -448,7 +401,7 @@ import java.util.*; class Main { public int[] fun(int []nums,int target) { Map&l
 import java.lang.reflect.Method; import java.util.*; class Solution { public int maxArea(int[] height) { int max = 0; int left = 0; int right = height.length-1; int a,b; while(left&lt;right){ a = height[left]; b = height[right]; max = Math.max(max, Math.min(a,b)*(right-left)); if(a &gt; b){ right -- ; }else{ left &#43;&#43;; } System.out.println(left&#43;&#34; &#34;&#43;right&#43;&#34; &#34;); } return max; } } class Main { public static void main(String[] args) throws Exception{ Solution solution = new Solution(); int i = solution....</p>
   </div>
   <footer class="entry-footer">SuCicada</footer>
-  <a class="entry-link" aria-label="post link to leetcode - 11. Container With Most Water with Java" href="https://sucicada.github.io/blog/posts/soft/leetcode-11.-container-with-most-water-with-java/"></a>
+  <a class="entry-link" aria-label="post link to leetcode - 11. Container With Most Water with Java" href="https://sucicada.github.io/blog/posts/leetcode/leetcode-11.-container-with-most-water-with-java/"></a>
 </article>
 
 <article class="post-entry"> 
@@ -461,7 +414,48 @@ import java.lang.reflect.Method; import java.util.*; class Solution { public int
 /** * Definition for singly-linked list. * public class ListNode { * int val; * ListNode next; * ListNode(int x) { val = x; } * } */ class Solution { public ListNode addTwoNumbers(ListNode l1, ListNode l2) { ListNode res = new ListNode(0); ListNode head = res; int flag = 0; while(l1!=null || l2!=null || flag!=0){ int num = (l1==null?0:l1.val) &#43; (l2==null? 0: l2.val) &#43; flag; res.next = new ListNode(num%10); flag = num/10; res = res....</p>
   </div>
   <footer class="entry-footer">SuCicada</footer>
-  <a class="entry-link" aria-label="post link to leetcode - 2. Add Two Numbers with Java" href="https://sucicada.github.io/blog/posts/soft/leetcode-2.-add-two-numbers-with-java/"></a>
+  <a class="entry-link" aria-label="post link to leetcode - 2. Add Two Numbers with Java" href="https://sucicada.github.io/blog/posts/leetcode/leetcode-2.-add-two-numbers-with-java/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2>leetcode - 3. Longest Substring Without Repeating Characters with Java
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>题目链接
+import java.lang.reflect.Method; class Solution { /*两个方法都是：end无所谓的在一个一个移动，begin则是追寻之前的循环体留下的信标 关键在于信标是怎么设置下的，第一种方法是每一次都从序列中寻找信标。 第二种直接记录了下来。 一个用时间换空间，一个用空间换时间。 */ public int lengthOfLongestSubstring1(String s) { int sum = 0; int begin = 0; int end = 0; for(end = begin;end&lt;s.length();end&#43;&#43;){ /*每次都移动尾指针*/ for(int i = begin;i&lt;end;i&#43;&#43;){ /*验证重复，和end处比较，如果没有重复，说明这个子串可以加入end处的字符 而无论是否重复，都不影响移动尾指针end，影响的只是begin的位置。 */ if(s.charAt(i) == s.charAt(end)){ sum = Math.max(sum,end-begin); begin = i&#43;1; break; } } } /*最后的end会指向最后一个的下一个，所以需要再判断一下夹住的是不是大的， eg: ab or aab */ return Math.max(sum,end-begin); } public int lengthOfLongestSubstring2(String s) { int ascii[] = new int[128]; int sum = 0; int begin = 0; for(int i=0;i&lt;s....</p>
+  </div>
+  <footer class="entry-footer">SuCicada</footer>
+  <a class="entry-link" aria-label="post link to leetcode - 3. Longest Substring Without Repeating Characters with Java" href="https://sucicada.github.io/blog/posts/leetcode/leetcode-3.-longest-substring-without-repeating-characters-with-java/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2>leetcode - 4. Median of Two Sorted Arrays with Java
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>简单做法, 左边哪一些, 右边拿一下, 看谁小拿谁.
+但是时间复杂度达不到要求, 虽然在leetcode上也是很快
+public double findMedianSortedArrays1(int[] A,int[] B){ /* time complexity: O((m&#43;n)/2&#43;1) */ int m = A.length; int n = B.length; int index1 = 0; int index2 = 0; int num1=0; int num2=0; for(int i=0;i&lt;(m&#43;n)/2&#43;1;i&#43;&#43;){ num2 = num1; if(index1 == m){ num1 = B[index2]; index2 &#43;&#43;; }else if(index2 == n){ num1 = A[index1]; index1&#43;&#43;; }else if(A[index1] &lt; B[index2]){ num1 = A[index1]; index1&#43;&#43;; }else{ num1 = B[index2]; index2&#43;&#43;; } } System....</p>
+  </div>
+  <footer class="entry-footer">SuCicada</footer>
+  <a class="entry-link" aria-label="post link to leetcode - 4. Median of Two Sorted Arrays with Java" href="https://sucicada.github.io/blog/posts/leetcode/leetcode-4.-median-of-two-sorted-arrays-with-java/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2>leetcode - 5. Longest Palindromic Substring with Java
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>题目在我这里
+方法一，大暴力
+public String longestPalindrome1(String s) { /* very force: O(s.length()^2) 空间复杂度 O(1) */ int i=0; int j=0; boolean flag = false; int maxi = i; int maxj = j; for(i=0;i&lt;s.length();i&#43;&#43;){ for(j=s.length()-1;j&gt;i;j--){ if(s.charAt(i)==s.charAt(j)){ int ii = i; int jj = j; for(jj=j;jj&gt;ii;jj--,ii&#43;&#43;){ if(s.charAt(ii)!=s.charAt(jj)){ // flag = true; break; } } System.out.println(ii&#43;&#34; - &#34;&#43;jj); if(ii&gt;=jj){ flag = true; break; } } } if(flag){ if(j-i &gt; maxj-maxi){ maxj = j; maxi = i; } } } if(s....</p>
+  </div>
+  <footer class="entry-footer">SuCicada</footer>
+  <a class="entry-link" aria-label="post link to leetcode - 5. Longest Palindromic Substring with Java" href="https://sucicada.github.io/blog/posts/leetcode/leetcode-5.-longest-palindromic-substring-with-java/"></a>
 </article>
 <footer class="page-footer">
   <nav class="pagination">

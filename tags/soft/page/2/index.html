@@ -148,304 +148,331 @@
 
 <article class="post-entry tag-entry"> 
   <header class="entry-header">
-    <h2>Flume 数据流的处理过程 从源码看 Source Channel Sink
+    <h2>phaser 按键表 keyboard keycode
     </h2>
   </header>
   <div class="entry-content">
-    <p>Event 构成 Source Flume的三个部分：Source，Channel，Sink
-数据是存储在Event对象中在这三部分之间传递
-Event 构成 Event 接口
-public interface Event { public Map&lt;String, String&gt; getHeaders(); public void setHeaders(Map&lt;String, String&gt; headers); public byte[] getBody(); public void setBody(byte[] body); } 以 最简单的实现类 SimpleEvent 为例子
-public class SimpleEvent implements Event { private Map&lt;String, String&gt; headers; private byte[] body; ... } 可见
-header 以 Map&lt;String, String&gt; 的形式存储键值对信息
-body 二进制形式存储，从Source接收到的数据会存储在这里
-Source 带着问题 header 里有什么 一些实现类 ExecSource ExecRunnable 主要处理 通过 EventBuilder.withBody 基础创建 Event ， 一行一个 Event header 为空 flushEventBatch 中 ChannelProcessor :: processEventBatch...</p>
+    <p>https://photonstorm.github.io/phaser-ce/Phaser.KeyCode.html
+帮助文档里都有,但就是没人说</p>
   </div>
   <footer class="entry-footer">SuCicada</footer>
-  <a class="entry-link" aria-label="post link to Flume 数据流的处理过程 从源码看 Source Channel Sink" href="https://sucicada.github.io/blog/posts/soft/flume-%E6%95%B0%E6%8D%AE%E6%B5%81%E7%9A%84%E5%A4%84%E7%90%86%E8%BF%87%E7%A8%8B-%E4%BB%8E%E6%BA%90%E7%A0%81%E7%9C%8B-source-channel-sink/"></a>
+  <a class="entry-link" aria-label="post link to phaser 按键表 keyboard keycode" href="https://sucicada.github.io/blog/posts/soft/phaser-%E6%8C%89%E9%94%AE%E8%A1%A8-keyboard-keycode/"></a>
 </article>
 
 <article class="post-entry tag-entry"> 
   <header class="entry-header">
-    <h2>Hbase2 没有org.apache.hadoop.hbase.mapreduce.TableInputFormat
+    <h2>PhaserCE 使用 create.texture 出错  Phaser.Cache.addImage: Image &#34;xx&#34; is not complete 并且图形没有显示
     </h2>
   </header>
   <div class="entry-content">
-    <p>导入
-&lt;dependency&gt; &lt;groupId&gt;org.apache.hbase&lt;/groupId&gt; &lt;artifactId&gt;hbase-mapreduce&lt;/artifactId&gt; &lt;version&gt;${hbase.version}&lt;/version&gt; &lt;/dependency&gt; 参考链接：https://juejin.cn/post/6844903959585374221</p>
+    <p>首先参看官网文档的写法 https://photonstorm.github.io/phaser-ce/Phaser.Create.html#texture
+var game = new Phaser.Game(800, 600, Phaser.CANVAS, &#39;game&#39;, { preload: preload, create: create, }); function preload(){ var data = [ &#39; 333 &#39;, &#39; 777 &#39;, &#39;E333E&#39;, &#39; 333 &#39;, &#39; 3 3 &#39;]; game.create.texture(&#39;bob&#39;, data); } function create() { game.add.sprite(0, 0, &#39;bob&#39;); } 控制台警告
+Phaser.Cache.addImage: Image &#34;xx&#34; is not complete 改为
+...... game.create.texture(&#39;bob&#39;, data,100,10,0,true,function(f){}); ...... 警告
+Phaser.Cache.getImage: Key &#34;xx&#34; not found in Cache. 查找资料无果，实验之后发现
+使用
+game.load.imageFromTexture(&#39;bob&#39;,data,100,1); 替换...</p>
   </div>
   <footer class="entry-footer">SuCicada</footer>
-  <a class="entry-link" aria-label="post link to Hbase2 没有org.apache.hadoop.hbase.mapreduce.TableInputFormat" href="https://sucicada.github.io/blog/posts/soft/hbase2-%E6%B2%A1%E6%9C%89org.apache.hadoop.hbase.mapreduce.tableinputformat/"></a>
+  <a class="entry-link" aria-label="post link to PhaserCE 使用 create.texture 出错  Phaser.Cache.addImage: Image &#34;xx&#34; is not complete 并且图形没有显示" href="https://sucicada.github.io/blog/posts/soft/phaserce-%E4%BD%BF%E7%94%A8-create.texture-%E5%87%BA%E9%94%99-phaser.cache.addimage-image-xx-is-not-complete-%E5%B9%B6%E4%B8%94%E5%9B%BE%E5%BD%A2%E6%B2%A1%E6%9C%89%E6%98%BE%E7%A4%BA/"></a>
 </article>
 
 <article class="post-entry tag-entry"> 
   <header class="entry-header">
-    <h2>hdu 1022 栈
+    <h2>pyhton 下 使用getch(), 输入字符无需回车
     </h2>
   </header>
   <div class="entry-content">
-    <p>久违的ac，真是艰难。第一次提交的竟然是直接判断b字符串是否为a的倒序。
-#include&lt;iostream&gt; #include&lt;stack&gt; #include&lt;string&gt; using namespace std; int main() { int t; string a,b; while(cin&gt;&gt;t&gt;&gt;a&gt;&gt;b) { stack&lt;char&gt;s; string p; int i=0; t=a.size(); while(t--) { s.push(a[a.size()-t-1]); p&#43;=&#34;in\n&#34;;//cout&lt;&lt;s.top()&lt;&lt;&#34; &#34;&lt;&lt;b[i]; while(!s.empty()&amp;&amp;s.top()==b[i]) { //cout&lt;&lt;&#34;i&#34;&lt;&lt;i&lt;&lt;endl; s.pop(); p&#43;=&#34;out\n&#34;; i&#43;&#43;; //cout&lt;&lt;s.size()&lt;&lt;&#34;!!&#34;&lt;&lt;endl; } } if(s.size()==0) cout&lt;&lt;&#34;Yes.&#34;&lt;&lt;endl&lt;&lt;p; else cout&lt;&lt;&#34;No.&#34;&lt;&lt;endl; cout&lt;&lt;&#34;FINISH&#34;&lt;&lt;endl; } return 0; } </p>
+    <p>#原代码来自
+https://code.activestate.com/recipes/134892-getch-like-unbuffered-character-reading-from-stdin/
+同时支持windows和unix平台
+class _Getch: &#34;&#34;&#34;Gets a single character from standard input. Does not echo to the screen.&#34;&#34;&#34; def __init__(self): try: self.impl = _GetchWindows() except ImportError: self.impl = _GetchUnix() def __call__(self): return self.impl() class _GetchUnix: def __init__(self): import tty, sys def __call__(self): import sys, tty, termios fd = sys.stdin.fileno() old_settings = termios.tcgetattr(fd) try: tty.setraw(sys.stdin.fileno()) ch = sys.stdin.read(1) finally: termios.tcsetattr(fd, termios.TCSADRAIN, old_settings) return ch class _GetchWindows: def __init__(self): import msvcrt def __call__(self): import msvcrt return msvcrt....</p>
   </div>
   <footer class="entry-footer">SuCicada</footer>
-  <a class="entry-link" aria-label="post link to hdu 1022 栈" href="https://sucicada.github.io/blog/posts/soft/hdu-1022-%E6%A0%88/"></a>
+  <a class="entry-link" aria-label="post link to pyhton 下 使用getch(), 输入字符无需回车" href="https://sucicada.github.io/blog/posts/soft/pyhton-%E4%B8%8B-%E4%BD%BF%E7%94%A8getch-%E8%BE%93%E5%85%A5%E5%AD%97%E7%AC%A6%E6%97%A0%E9%9C%80%E5%9B%9E%E8%BD%A6/"></a>
 </article>
 
 <article class="post-entry tag-entry"> 
   <header class="entry-header">
-    <h2>hdu 1062（倒置句中单词）&lt;未戳破的玄学&gt;
+    <h2>python matplotlibmat 包mplot3d工具   三维视图透视取消
     </h2>
   </header>
   <div class="entry-content">
-    <p>pe诅咒，多人见证的玄学，终有一天能破解
-初回进阶版
-#include&lt;stdio.h&gt; #include&lt;string.h&gt; int main() { int T,i,j,t; char a[1000];//=&#34;123 4567&#34;; while(scanf(&#34;%d&#34;,&amp;T)==1) { while(T--) { getchar(); //setbuf(stdin,NULL);//失败了，暂不知为什么 scanf(&#34;%[^\n]&#34;,a); i=0;////j是大移动位，i是执行位 //xprintf(&#34;origin %s\n&#34;); for(j=0;j&lt;strlen(a);j&#43;&#43;) { //printf(&#34;!!%s\n&#34;,a); if(a[j&#43;1]==&#39; &#39;||a[j&#43;1]==&#39;\0&#39;) { //printf(&#34;a[] %c\n&#34;,a[j]); t=i; for(;i&lt;(j&#43;t&#43;1)/2;i&#43;&#43;) { a[i]&#43;=a[j-i&#43;t]; a[j-i&#43;t]=a[i]-a[j-i&#43;t]; a[i]=a[i]-a[j-i&#43;t]; //printf(&#34;!%s\n&#34;,a); } i=j&#43;2; } } printf(&#34;%s\n&#34;,a); } //printf(&#34;end\n&#34;); } } 临终版
-#include&lt;stdio.h&gt; #include&lt;string.h&gt; int main() { int T,i,j,t; char a[1003]; scanf(&#34;%d&#34;,&amp;T); while(T--) { getchar(); scanf(&#34;%[^\n]&#34;,a); i=0; for(j=0;j&lt;strlen(a);j&#43;&#43;) { if(a[j&#43;1]==&#39; &#39;||(j&#43;1)==strlen(a))) { t=j; while(t&gt;=i) printf(&#34;%c&#34;,a[t--]); if(a[j&#43;1]==&#39; &#39;) printf(&#34; &#34;); i=j&#43;2; } } printf(&#34;\n&#34;); } return 0; } </p>
+    <p>https://stackoverflow.com/questions/23840756/how-to-disable-perspective-in-mplot3d
+简单的解决方法是
+ax = fig.add_subplot(111, projection=&#39;3d&#39;, proj_type=&#39;ortho&#39;) 注意111 和 proj_type=‘ortho’
+辛亏在打算转用Mayavi 前找到了解决方法</p>
   </div>
   <footer class="entry-footer">SuCicada</footer>
-  <a class="entry-link" aria-label="post link to hdu 1062（倒置句中单词）&lt;未戳破的玄学&gt;" href="https://sucicada.github.io/blog/posts/soft/hdu-1062%E5%80%92%E7%BD%AE%E5%8F%A5%E4%B8%AD%E5%8D%95%E8%AF%8D%E6%9C%AA%E6%88%B3%E7%A0%B4%E7%9A%84%E7%8E%84%E5%AD%A6/"></a>
+  <a class="entry-link" aria-label="post link to python matplotlibmat 包mplot3d工具   三维视图透视取消" href="https://sucicada.github.io/blog/posts/soft/python-matplotlibmat-%E5%8C%85mplot3d%E5%B7%A5%E5%85%B7-%E4%B8%89%E7%BB%B4%E8%A7%86%E5%9B%BE%E9%80%8F%E8%A7%86%E5%8F%96%E6%B6%88/"></a>
 </article>
 
 <article class="post-entry tag-entry"> 
   <header class="entry-header">
-    <h2>hdu1002（超超长数字相加）
+    <h2>python pip安装不成功 在windows下
     </h2>
   </header>
   <div class="entry-content">
-    <p>差点gg，用的是字符串数组来存数，加数，下面是原题
-*保留了所有的注释
-*没有进行代码缩减
-Input
-The first line of the input contains an integer T(1&lt;=T&lt;=20) which means the number of test cases. Then T lines follow, each line consists of two positive integers, A and B. Notice that the integers are very large, that means you should not process them by using 32-bit integer. You may assume the length of each integer will not exceed 1000.
-Output
-For each test case, you should output two lines....</p>
+    <p>我用的是windows。你可以试试以管理员模式运行终端。
+我在用python安装第三方库时，使用如下方式
+pip install xxxx.whl 但是无论如何都只显示到
+Installing collected packages: xxxx
+然后就没了，和网上说的出来什么success提示完全不，然后我通过import来验证，也是没有安装上的。
+一定要出现
+Successful installed xxxx
+才算成功。
+如果你的问题不是这样的，请查查看别的家的博客。
+花了一个晚上都没有安上pygame。
+于是第二天在整整一个下午琢磨了两个小时为什么。重启电脑，将python卸载再安装，卸载再安装，卸载再安装。删除easy_install 重装ez。删除pip，重装pip。重装wheel，但是如上面那样也失败了。然后我终于发现问题所在了。
+我把powershell当成了是默认的管理员模式，于是我就一直处于安装不成功的地步。
+所以说，如果你也安装不上，试试管理员模式运行终端。
+真的是气，那些三步安装库的人根本不说。</p>
   </div>
   <footer class="entry-footer">SuCicada</footer>
-  <a class="entry-link" aria-label="post link to hdu1002（超超长数字相加）" href="https://sucicada.github.io/blog/posts/soft/hdu1002%E8%B6%85%E8%B6%85%E9%95%BF%E6%95%B0%E5%AD%97%E7%9B%B8%E5%8A%A0/"></a>
+  <a class="entry-link" aria-label="post link to python pip安装不成功 在windows下" href="https://sucicada.github.io/blog/posts/soft/python-pip%E5%AE%89%E8%A3%85%E4%B8%8D%E6%88%90%E5%8A%9F-%E5%9C%A8windows%E4%B8%8B/"></a>
 </article>
 
 <article class="post-entry tag-entry"> 
   <header class="entry-header">
-    <h2>istringstream、ostringstream、stringstream 类介绍 .
+    <h2>python Tkinter 的 Text 保持焦点在行尾
     </h2>
   </header>
   <div class="entry-content">
-    <p>见以下链接
-istringstream、ostringstream、stringstream 类介绍 .
-0、C&#43;&#43;的输入输出分为三种：
-(1)基于控制台的I/O
-#include&lt;iostream&gt; (2)基于文件的I/O
-#include&lt;fstream&gt; (3)基于字符串的I/O
-#include&lt;sstream&gt; str()：使istringstream对象返回一个string字符串
-stringstream::clear()//多次使用，先清空此对象的流，不能使用stream.str(&#34;&#34;); //实际上，它并不清空任何内容，它只是重置了流的状态标志而已 ps:但如果你要在程序中用同一个流，反复读写大量的数据，将会造成大量的内存消耗， 这时候，需要适时地清除一下缓冲 (用 stream.str(&#34;&#34;) )。</p>
+    <p>https://bbs.csdn.net/topics/390712532
+text.see(END)</p>
   </div>
   <footer class="entry-footer">SuCicada</footer>
-  <a class="entry-link" aria-label="post link to istringstream、ostringstream、stringstream 类介绍 ." href="https://sucicada.github.io/blog/posts/soft/istringstreamostringstreamstringstream-%E7%B1%BB%E4%BB%8B%E7%BB%8D-./"></a>
+  <a class="entry-link" aria-label="post link to python Tkinter 的 Text 保持焦点在行尾" href="https://sucicada.github.io/blog/posts/soft/python-tkinter-%E7%9A%84-text-%E4%BF%9D%E6%8C%81%E7%84%A6%E7%82%B9%E5%9C%A8%E8%A1%8C%E5%B0%BE/"></a>
 </article>
 
 <article class="post-entry tag-entry"> 
   <header class="entry-header">
-    <h2>Jetty 报错 Tomcat不报错 maven jetty插件不报错, 可能是jetty版本不统一造成
+    <h2>Python3 urllib 爬取 花瓣网图片
     </h2>
   </header>
   <div class="entry-content">
-    <p>要在服务器上部署, jetty报错找不见hibernate某个函数, 然而此函数存在.
-开发环境为 Intellij
-jetty插件版本: 9.2.6.v20141205
-外置jetty版本: 9.4.21.v20190926
-如果你也有类似问题, 不妨试试将jetty版本统一
-我将外置jetty降版本后成功
-来自这里的启发</p>
+    <p>点我去我的github上看源码
+**花瓣网是动态的,所以要抓包分析,,但我真的累的不行,不想写教程了,我源码里有注释</p>
   </div>
   <footer class="entry-footer">SuCicada</footer>
-  <a class="entry-link" aria-label="post link to Jetty 报错 Tomcat不报错 maven jetty插件不报错, 可能是jetty版本不统一造成" href="https://sucicada.github.io/blog/posts/soft/jetty-%E6%8A%A5%E9%94%99-tomcat%E4%B8%8D%E6%8A%A5%E9%94%99-maven-jetty%E6%8F%92%E4%BB%B6%E4%B8%8D%E6%8A%A5%E9%94%99-%E5%8F%AF%E8%83%BD%E6%98%AFjetty%E7%89%88%E6%9C%AC%E4%B8%8D%E7%BB%9F%E4%B8%80%E9%80%A0%E6%88%90/"></a>
+  <a class="entry-link" aria-label="post link to Python3 urllib 爬取 花瓣网图片" href="https://sucicada.github.io/blog/posts/soft/python3-urllib-%E7%88%AC%E5%8F%96-%E8%8A%B1%E7%93%A3%E7%BD%91%E5%9B%BE%E7%89%87/"></a>
 </article>
 
 <article class="post-entry tag-entry"> 
   <header class="entry-header">
-    <h2>js 生成当前日期时间
+    <h2>python3 urllib爬取wallhalla网站图片
     </h2>
   </header>
   <div class="entry-content">
-    <p>精简版
-var date = new Date(); datetime = date.toLocaleDateString().split(&#39;/&#39;).slice(2,3).concat( date.toLocaleDateString().split(&#39;/&#39;).splice(0,2)).join(&#39;-&#39;) &#43; &#34; &#34; &#43; ( date.toLocaleTimeString().split(&#39; &#39;)[1]==&#39;AM&#39; ? date.toLocaleTimeString().split(&#39; &#39;)[0] : [parseInt(date.toLocaleTimeString().split(&#39; &#39;)[0].split(&#39;:&#39;)[0]) &#43; 12].concat( date.toLocaleTimeString().split(&#39; &#39;)[0].split(&#39;:&#39;).splice(1,3)).join(&#39;:&#39;) ); 人看的版
-var date = new Date(); var dd = date.toLocaleDateString().split(&#39;/&#39;); var dd = dd.slice(2,3).concat( dd.splice(0,2)).join(&#39;-&#39;); var time = date.toLocaleTimeString().split(&#39; &#39;); var time = time[1]==&#39;AM&#39; ? time[0] : [parseInt(time[0].split(&#39;:&#39;)[0]) &#43; 12].concat(time[0].split(&#39;:&#39;).splice(1,3)).join(&#39;:&#39;); var datetime = dd &#43; &#34; &#34; &#43; time; </p>
+    <p>点我去我的github上看源码
+简单使用静态方法爬取https://wallhalla.com/网站的图片
+参考:
+https://blog.csdn.net/cquptcmj/article/details/53526137
+https://www.cnblogs.com/zhouxuchen/p/4341034.html</p>
   </div>
   <footer class="entry-footer">SuCicada</footer>
-  <a class="entry-link" aria-label="post link to js 生成当前日期时间" href="https://sucicada.github.io/blog/posts/soft/js-%E7%94%9F%E6%88%90%E5%BD%93%E5%89%8D%E6%97%A5%E6%9C%9F%E6%97%B6%E9%97%B4/"></a>
+  <a class="entry-link" aria-label="post link to python3 urllib爬取wallhalla网站图片" href="https://sucicada.github.io/blog/posts/soft/python3-urllib%E7%88%AC%E5%8F%96wallhalla%E7%BD%91%E7%AB%99%E5%9B%BE%E7%89%87/"></a>
 </article>
 
 <article class="post-entry tag-entry"> 
   <header class="entry-header">
-    <h2>leetcode  - 12. Integer to Roman with Java
+    <h2>python3.5  安装twisted
     </h2>
   </header>
   <div class="entry-content">
-    <p>problem
-方法一，一位一位判断。
-class Solution { public String intToRoman1(int num) { StringBuilder sb = new StringBuilder(); char ooo[] = new char[]{&#39;I&#39;,&#39;V&#39;,&#39;X&#39;,&#39;L&#39;,&#39;C&#39;,&#39;D&#39;,&#39;M&#39;}; int wei = 0; while(num&gt;0){ int n = num %10; if(n&lt;4){ for(int i=0;i&lt;n;i&#43;&#43;){ sb.append(ooo[wei*2]); } }else if(n==4){ sb.append(ooo[wei*2&#43;1]); sb.append(ooo[wei*2]); }else if(n==5){ sb.append(ooo[wei*2&#43;1]); }else if(n&gt;5 &amp;&amp; n&lt;9){ for(int i=0;i&lt;n-5;i&#43;&#43;){ sb.append(ooo[wei*2]); } sb.append(ooo[wei*2&#43;1]); }else if(n==9){ sb.append(ooo[wei*2&#43;1&#43;1]); sb.append(ooo[wei*2]); } wei&#43;&#43;; num = num/10; } return sb.reverse().toString(); } 方法二，因为知道最多4位数，所以打表暴力。
-public String intToRoman(int num) { String s1[] = new String[]{&#34;&#34;,&#34;I&#34;,&#34;II&#34;,&#34;III&#34;,&#34;IV&#34;,&#34;V&#34;,&#34;VI&#34;,&#34;VII&#34;,&#34;VIII&#34;,&#34;IX&#34;}; String s2[] = new String[]{&#34;&#34;,&#34;X&#34;,&#34;XX&#34;,&#34;XXX&#34;,&#34;XL&#34;,&#34;L&#34;,&#34;LX&#34;,&#34;LXX&#34;,&#34;LXXX&#34;,&#34;XC&#34;}; String s3[] = new String[]{&#34;&#34;,&#34;C&#34;,&#34;CC&#34;,&#34;CCC&#34;,&#34;CD&#34;,&#34;D&#34;,&#34;DC&#34;,&#34;DCC&#34;,&#34;DCCC&#34;,&#34;CM&#34;}; String s4[] = new String[]{&#34;&#34;,&#34;M&#34;,&#34;MM&#34;,&#34;MMM&#34;}; // return s4[(num/1000)%10]&#43;s3[(num/100)%10]&#43;s2[(num/10)%10]&#43;s1[num%10]; return new StringBuilder()....</p>
+    <p>https://blog.csdn.net/caimouse/article/details/77647952
+下载地址：http://www.lfd.uci.edu/~gohlke/pythonlibs/
+下载到文件：Twisted-18.7.0-cp35-cp35m-win_amd64.whl
+然后安装：pip install Twisted-18.7.0-cp35-cp35m-win_amd64.whl
+如果不行 下载win32版本试试
+如果不行
+提示Python.h: No such file or directory compilation terminated.
+那么就 sudo apt-get install python-dev
+然后试试 上面步骤
+如果还不行
+sudo pip3 install twisted</p>
   </div>
   <footer class="entry-footer">SuCicada</footer>
-  <a class="entry-link" aria-label="post link to leetcode  - 12. Integer to Roman with Java" href="https://sucicada.github.io/blog/posts/soft/leetcode-12.-integer-to-roman-with-java/"></a>
+  <a class="entry-link" aria-label="post link to python3.5  安装twisted" href="https://sucicada.github.io/blog/posts/soft/python3.5-%E5%AE%89%E8%A3%85twisted/"></a>
 </article>
 
 <article class="post-entry tag-entry"> 
   <header class="entry-header">
-    <h2>leetcode - 1. Two Sum with Java
+    <h2>sublime 自定义主题(linux版)
     </h2>
   </header>
   <div class="entry-content">
-    <p>https://leetcode.com/problems/two-sum/submissions/
-import java.util.*; class Main { public int[] fun(int []nums,int target) { Map&lt;Integer,Integer&gt; map = new HashMap&lt;&gt;(); for(int i=0;i&lt;nums.length;i&#43;&#43;){ int f = target - nums[i]; if(map.get(f)!=null){ return new int[]{map.get(f),i}; }else{ map.put(nums[i],i); } } return null; } public static void main(String[] args) { int []nums = {12,3,3,53,45,7,7,3}; int []res = new Main().fun(nums,10); System.out.println(Arrays.toString(nums)); System.out.println(Arrays.toString(res)); } } </p>
+    <p>先ctrl&#43;`安装packa：
+import urllib.request,os; pf = ‘Package Control.sublime-package’; ipp = sublime.installed_packages_path(); urllib.request.install_opener( urllib.request.build_opener( urllib.request.ProxyHandler()) ); open(os.path.join(ipp, pf), ‘wb’).write(urllib.request.urlopen( ‘http://sublime.wbond.net/&#39; &#43; pf.replace(’ ‘,’%20’)).read())
+使用快捷键ctrl&#43;shift&#43;p，输入packet control install package
+这个网站上可以自制主题
+http://tmtheme-editor.herokuapp.com/#!/editor/local/undefined
+之后将文件放到home/peng/.config/sublime-text-3/Packages
+从preferences里的theme选项可以换了</p>
   </div>
   <footer class="entry-footer">SuCicada</footer>
-  <a class="entry-link" aria-label="post link to leetcode - 1. Two Sum with Java" href="https://sucicada.github.io/blog/posts/soft/leetcode-1.-two-sum-with-java/"></a>
+  <a class="entry-link" aria-label="post link to sublime 自定义主题(linux版)" href="https://sucicada.github.io/blog/posts/soft/sublime-%E8%87%AA%E5%AE%9A%E4%B9%89%E4%B8%BB%E9%A2%98linux%E7%89%88/"></a>
 </article>
 
 <article class="post-entry tag-entry"> 
   <header class="entry-header">
-    <h2>leetcode - 11. Container With Most Water with Java
+    <h2>ubuntu 18.04 使用 Docker 安装 kiwenlau版Hadoop
     </h2>
   </header>
   <div class="entry-content">
-    <p>problem
-import java.lang.reflect.Method; import java.util.*; class Solution { public int maxArea(int[] height) { int max = 0; int left = 0; int right = height.length-1; int a,b; while(left&lt;right){ a = height[left]; b = height[right]; max = Math.max(max, Math.min(a,b)*(right-left)); if(a &gt; b){ right -- ; }else{ left &#43;&#43;; } System.out.println(left&#43;&#34; &#34;&#43;right&#43;&#34; &#34;); } return max; } } class Main { public static void main(String[] args) throws Exception{ Solution solution = new Solution(); int i = solution....</p>
+    <p>1. docker 安装 参考
+sudo apt-get update sudo dpkg --configure -a sudo apt-get install apt-transport-https ca-certificates curl software-properties-common curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add - sudo add-apt-repository &#34;deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable&#34; sudo apt-get update sudo apt-get install docker-ce 1.5 docker换源（可选） 参考
+2. docker验证 docker --version sudo docker run hello-world 3. docker非root使用 参考
+sudo usermod -aG docker $USER sudo service docker restart newgrp docker 4. hadoop的docker image 参考：基于Docker搭建Hadoop集群之升级版...</p>
   </div>
   <footer class="entry-footer">SuCicada</footer>
-  <a class="entry-link" aria-label="post link to leetcode - 11. Container With Most Water with Java" href="https://sucicada.github.io/blog/posts/soft/leetcode-11.-container-with-most-water-with-java/"></a>
+  <a class="entry-link" aria-label="post link to ubuntu 18.04 使用 Docker 安装 kiwenlau版Hadoop" href="https://sucicada.github.io/blog/posts/soft/ubuntu-18.04-%E4%BD%BF%E7%94%A8-docker-%E5%AE%89%E8%A3%85-kiwenlau%E7%89%88hadoop/"></a>
 </article>
 
 <article class="post-entry tag-entry"> 
   <header class="entry-header">
-    <h2>leetcode - 2. Add Two Numbers with Java
+    <h2>virtualbox 发送 ctrl alt fn组合键的方法：使用热键（默认右ctrl）&#43;fn即可
     </h2>
   </header>
   <div class="entry-content">
-    <p>https://leetcode.com/problems/add-two-numbers/submissions/
-/** * Definition for singly-linked list. * public class ListNode { * int val; * ListNode next; * ListNode(int x) { val = x; } * } */ class Solution { public ListNode addTwoNumbers(ListNode l1, ListNode l2) { ListNode res = new ListNode(0); ListNode head = res; int flag = 0; while(l1!=null || l2!=null || flag!=0){ int num = (l1==null?0:l1.val) &#43; (l2==null? 0: l2.val) &#43; flag; res.next = new ListNode(num%10); flag = num/10; res = res....</p>
+    <p>一般是用来在虚拟机中切换文字模式和图像化窗口模式的。
+如果直接使用ctrl&#43;alt&#43;fn可能会触发主机的组合键。
+所以使用热键&#43;fn</p>
   </div>
   <footer class="entry-footer">SuCicada</footer>
-  <a class="entry-link" aria-label="post link to leetcode - 2. Add Two Numbers with Java" href="https://sucicada.github.io/blog/posts/soft/leetcode-2.-add-two-numbers-with-java/"></a>
+  <a class="entry-link" aria-label="post link to virtualbox 发送 ctrl alt fn组合键的方法：使用热键（默认右ctrl）&#43;fn即可" href="https://sucicada.github.io/blog/posts/soft/virtualbox-%E5%8F%91%E9%80%81-ctrl-alt-fn%E7%BB%84%E5%90%88%E9%94%AE%E7%9A%84%E6%96%B9%E6%B3%95%E4%BD%BF%E7%94%A8%E7%83%AD%E9%94%AE%E9%BB%98%E8%AE%A4%E5%8F%B3ctrl&#43;fn%E5%8D%B3%E5%8F%AF/"></a>
 </article>
 
 <article class="post-entry tag-entry"> 
   <header class="entry-header">
-    <h2>leetcode - 3. Longest Substring Without Repeating Characters with Java
+    <h2>Visual Stdio Code 运行生成任务  输出不了
     </h2>
   </header>
   <div class="entry-content">
-    <p>题目链接
-import java.lang.reflect.Method; class Solution { /*两个方法都是：end无所谓的在一个一个移动，begin则是追寻之前的循环体留下的信标 关键在于信标是怎么设置下的，第一种方法是每一次都从序列中寻找信标。 第二种直接记录了下来。 一个用时间换空间，一个用空间换时间。 */ public int lengthOfLongestSubstring1(String s) { int sum = 0; int begin = 0; int end = 0; for(end = begin;end&lt;s.length();end&#43;&#43;){ /*每次都移动尾指针*/ for(int i = begin;i&lt;end;i&#43;&#43;){ /*验证重复，和end处比较，如果没有重复，说明这个子串可以加入end处的字符 而无论是否重复，都不影响移动尾指针end，影响的只是begin的位置。 */ if(s.charAt(i) == s.charAt(end)){ sum = Math.max(sum,end-begin); begin = i&#43;1; break; } } } /*最后的end会指向最后一个的下一个，所以需要再判断一下夹住的是不是大的， eg: ab or aab */ return Math.max(sum,end-begin); } public int lengthOfLongestSubstring2(String s) { int ascii[] = new int[128]; int sum = 0; int begin = 0; for(int i=0;i&lt;s....</p>
+    <p>刚刚解决了pip安装的问题，现在打开vscode又出现了问题。
+我像平常一样按下ctrl&#43;shift&#43;B 运行我的python文件
+但是结果就像我用vc写C语言一样，闪过一个黑窗口的终端界面，然后就没了。没有输出，控制台界面也没有停下来让我好好看看。
+我查了查，没有结果。
+然后灵机一动，我知道怎么回事了。都怪我手贱，将python.exe这个文件设置成了默认管理员模式运行。
+我不知道为什么，反正我取消了管理员模式运行就好了。</p>
   </div>
   <footer class="entry-footer">SuCicada</footer>
-  <a class="entry-link" aria-label="post link to leetcode - 3. Longest Substring Without Repeating Characters with Java" href="https://sucicada.github.io/blog/posts/soft/leetcode-3.-longest-substring-without-repeating-characters-with-java/"></a>
+  <a class="entry-link" aria-label="post link to Visual Stdio Code 运行生成任务  输出不了" href="https://sucicada.github.io/blog/posts/soft/visual-stdio-code-%E8%BF%90%E8%A1%8C%E7%94%9F%E6%88%90%E4%BB%BB%E5%8A%A1-%E8%BE%93%E5%87%BA%E4%B8%8D%E4%BA%86/"></a>
 </article>
 
 <article class="post-entry tag-entry"> 
   <header class="entry-header">
-    <h2>leetcode - 4. Median of Two Sorted Arrays with Java
+    <h2>windows 一键切换ip dns脚本
     </h2>
   </header>
   <div class="entry-content">
-    <p>简单做法, 左边哪一些, 右边拿一下, 看谁小拿谁.
-但是时间复杂度达不到要求, 虽然在leetcode上也是很快
-public double findMedianSortedArrays1(int[] A,int[] B){ /* time complexity: O((m&#43;n)/2&#43;1) */ int m = A.length; int n = B.length; int index1 = 0; int index2 = 0; int num1=0; int num2=0; for(int i=0;i&lt;(m&#43;n)/2&#43;1;i&#43;&#43;){ num2 = num1; if(index1 == m){ num1 = B[index2]; index2 &#43;&#43;; }else if(index2 == n){ num1 = A[index1]; index1&#43;&#43;; }else if(A[index1] &lt; B[index2]){ num1 = A[index1]; index1&#43;&#43;; }else{ num1 = B[index2]; index2&#43;&#43;; } } System....</p>
+    <p>下载bat脚本
+https://github.com/SuCicada/ipswitch
+然后运行,按照提示输入即可
+@echo off&amp;color 1E&amp;title IP地址快速切换器 echo ┌────────────────────────────┐ echo ｜ ｜ echo ｜ 切换网络环境，请输入当前所在位置 │ echo ｜ ｜ echo └────────────────────────────┘ &gt;nul 2&gt;&amp;1 &#34;%SYSTEMROOT%\system32\cacls.exe&#34; &#34;%SYSTEMROOT%\system32\config\system&#34; :choice set choice= set /p choice=【外网】请选择1，【内网】请选择2 :[1,2]? if %choice%==2 goto school_lan if %choice%==1 (goto lab_lan) else (echo 输入错误，请重新输入&amp;goto choice) :lab_lan set eth=&#34;本地连接&#34; set ip=10.0.0. set netmask=255.255.255.0 set gw=10.0.0.1 set dns1=8.8.8.8 set dns2= echo. echo 切换到外网有线环境 echo. goto switch :school_lan set eth=&#34;本地连接&#34; set ip=10.90.6. set netmask=255.255.255.0 set gw=10....</p>
   </div>
   <footer class="entry-footer">SuCicada</footer>
-  <a class="entry-link" aria-label="post link to leetcode - 4. Median of Two Sorted Arrays with Java" href="https://sucicada.github.io/blog/posts/soft/leetcode-4.-median-of-two-sorted-arrays-with-java/"></a>
+  <a class="entry-link" aria-label="post link to windows 一键切换ip dns脚本" href="https://sucicada.github.io/blog/posts/soft/windows-%E4%B8%80%E9%94%AE%E5%88%87%E6%8D%A2ip-dns%E8%84%9A%E6%9C%AC/"></a>
 </article>
 
 <article class="post-entry tag-entry"> 
   <header class="entry-header">
-    <h2>leetcode - 5. Longest Palindromic Substring with Java
+    <h2>WSL2 -- Windows10 环境中运行 Linux （无缝衔接，开发利器）
     </h2>
   </header>
   <div class="entry-content">
-    <p>题目在我这里
-方法一，大暴力
-public String longestPalindrome1(String s) { /* very force: O(s.length()^2) 空间复杂度 O(1) */ int i=0; int j=0; boolean flag = false; int maxi = i; int maxj = j; for(i=0;i&lt;s.length();i&#43;&#43;){ for(j=s.length()-1;j&gt;i;j--){ if(s.charAt(i)==s.charAt(j)){ int ii = i; int jj = j; for(jj=j;jj&gt;ii;jj--,ii&#43;&#43;){ if(s.charAt(ii)!=s.charAt(jj)){ // flag = true; break; } } System.out.println(ii&#43;&#34; - &#34;&#43;jj); if(ii&gt;=jj){ flag = true; break; } } } if(flag){ if(j-i &gt; maxj-maxi){ maxj = j; maxi = i; } } } if(s....</p>
+    <p>WSL2 是什么 全称为 Windows Subsystem for Linux2。是一个能在Windows上运行Linux运行环境的工具。是WSL的第二代。
+简单来说就是Windows下的Linux虚拟机。
+比虚拟机好在哪里 启动速度超快。文件访问跨系统访问无限制（因为两个系统之间的目录是通过网络映射挂载的） Windows、Linux 命令混合使用。无论在哪个系统的终端，都可以使用另一个系统的命令。（比如在Linux中使用explorer.exe . 看看会发生什么） 比WSL1好在哪 最主要体现在网络隔离、以及进程管理（比如ps）。
+WSL2使用类似NAT的虚拟机网络模式。这样的好处就是Linux和Windows的网段是隔离的。
+而WSL1更像是运行在Windows上的一个程序，所以网络IP、端口、进程状态等都是用的Windows宿主机。
+所以这么来看WSL2更像是纯粹的一个虚拟机了。
+安装&amp;配置 在 Windows 中运行 Linux：WSL 2 使用入门
+適用於Linux的Windows子系統(Windows Subsystem for Linux；WSL)
+进阶提升效率 Windows Terminal
+比PowerShell 更好用、更美观的Windows终端。支持窗口多开，WSL直开。
+玩转WSL(2)之安装并配置Windows Terminal
+Ctrl&#43;Alt&#43;T 开启终端。
+下载WinHotKey，设置Windows Terminal默认窗口为WSL。
+体验原生Linux终端的快感。
+肯定有用的脚本 todo 衍生资源 WSL 和 WSL2 简单对比</p>
   </div>
   <footer class="entry-footer">SuCicada</footer>
-  <a class="entry-link" aria-label="post link to leetcode - 5. Longest Palindromic Substring with Java" href="https://sucicada.github.io/blog/posts/soft/leetcode-5.-longest-palindromic-substring-with-java/"></a>
+  <a class="entry-link" aria-label="post link to WSL2 -- Windows10 环境中运行 Linux （无缝衔接，开发利器）" href="https://sucicada.github.io/blog/posts/soft/wsl2--windows10-%E7%8E%AF%E5%A2%83%E4%B8%AD%E8%BF%90%E8%A1%8C-linux-%E6%97%A0%E7%BC%9D%E8%A1%94%E6%8E%A5%E5%BC%80%E5%8F%91%E5%88%A9%E5%99%A8/"></a>
 </article>
 
 <article class="post-entry tag-entry"> 
   <header class="entry-header">
-    <h2>leetcode - 6. ZigZag Conversion with Java
+    <h2>三柱体hanoi问题（C_C&#43;&#43;语言版）
     </h2>
   </header>
   <div class="entry-content">
-    <p>题目地址
-这道题涉及到String, StringBuffer, StringBuilder的知识点
-String在拼接时需要new新的String对象, 而它除了hash之外都是final属性, 分配空间会造成时间损耗.
-所以String不适合大量拼接. 使用String可是耗时18ms呢
-StringBuffer解决了这个问题, 它提升了速度, 是线程安全.
-而StringBuilder 和StringBuffer类似, 但它是线程不安全, 这也使得它比StringBuffer拼接更快. 本题只需3ms
-有没有更快的呢, 当然有, 还就是它了 char[], 只需2ms(笑)
-import java.lang.reflect.Method; import java.util.*; class Solution { public String convert(String s, int numRows) { int N = s.length(); // StringBuilder res = new StringBuilder(); char res[] = new char[N]; int cycle = (numRows-1)*2; int index = 0; if(numRows==1){ return s; } for(int row=0;row&lt;numRows;row&#43;&#43;){ /* row 0 6 1 4 2 2 2 4 3 0 */ for(int i=row;i&lt;N;i&#43;=cycle){ /* 一个锯齿*/ // res....</p>
+    <p>控制台运行输入数据格式 ： xxx（程序名） 3（汉诺塔层数）
+会显示出每一步的移动步骤，以及每一柱上留有的盘数
+#include&lt;iostream&gt; #include&lt;sstream&gt; using namespace std; int a=0,b=0,c=0; void hno(int n,char from,char mid,char to) { if(n&gt;1) { hno(n-1,from,to,mid); hno(1,from,mid,to); hno(n-1,mid,from,to); } else { switch(from) { case &#39;A&#39;:a--;break; case &#39;B&#39;:b--;break; case &#39;C&#39;:c--;break; } switch(to) { case &#39;A&#39;:a&#43;&#43;;break; case &#39;B&#39;:b&#43;&#43;;break; case &#39;C&#39;:c&#43;&#43;;break; } cout&lt;&lt;from&lt;&lt;&#34;--&gt;&#34;&lt;&lt;to&lt;&lt;&#34; A:&#34;&lt;&lt;a&lt;&lt;&#34; B:&#34;&lt;&lt;b&lt;&lt;&#34; C:&#34;&lt;&lt;c&lt;&lt;endl; } } int main(int argc,char *argv[]) { // cout&lt;&lt;argc&lt;&lt;endl; // cout&lt;&lt;&#34;_&#34;&lt;&lt;argv[1]&lt;&lt;&#34;_&#34;&lt;&lt;endl; // return 0; stringstream s; int n;//=*argv[1]; s&lt;&lt;argv[1]; s&gt;&gt;n; //cin&gt;&gt;n; a=n; //hno(n,) hno(n,&#39;A&#39;,&#39;B&#39;,&#39;C&#39;); return 0; } </p>
   </div>
   <footer class="entry-footer">SuCicada</footer>
-  <a class="entry-link" aria-label="post link to leetcode - 6. ZigZag Conversion with Java" href="https://sucicada.github.io/blog/posts/soft/leetcode-6.-zigzag-conversion-with-java/"></a>
+  <a class="entry-link" aria-label="post link to 三柱体hanoi问题（C_C&#43;&#43;语言版）" href="https://sucicada.github.io/blog/posts/soft/%E4%B8%89%E6%9F%B1%E4%BD%93hanoi%E9%97%AE%E9%A2%98c_c&#43;&#43;%E8%AF%AD%E8%A8%80%E7%89%88/"></a>
 </article>
 
 <article class="post-entry tag-entry"> 
   <header class="entry-header">
-    <h2>leetcode - 7. Reverse Integer with Java
+    <h2>三柱汉诺塔问题（Python版）
     </h2>
   </header>
   <div class="entry-content">
-    <p>where is problem 搞笑的空间复杂度
-使用long，最后进行比较会更小，不知道为什么
-class Solution { public int reverse(int x) { boolean minus = x&lt;0; x *= minus?-1:1; int res = 0; while(x&gt;0){ if(res*10/10 != res){ return 0; } res = res*10 &#43; x%10; x = x/10; } return res * (minus?-1:1); } } </p>
+    <p>思路一样
+def move(n, a, b, c): if(n&gt;1): move(n-1,a,c,b) move(1,a,b,c) move(n-1,b,a,c) else: print a,&#39;--&gt;&#39;,c n = input(&#39;input a number&#39;) #int(raw_input()) move(n, &#39;A&#39;, &#39;B&#39;, &#39;C&#39;) </p>
   </div>
   <footer class="entry-footer">SuCicada</footer>
-  <a class="entry-link" aria-label="post link to leetcode - 7. Reverse Integer with Java" href="https://sucicada.github.io/blog/posts/soft/leetcode-7.-reverse-integer-with-java/"></a>
+  <a class="entry-link" aria-label="post link to 三柱汉诺塔问题（Python版）" href="https://sucicada.github.io/blog/posts/soft/%E4%B8%89%E6%9F%B1%E6%B1%89%E8%AF%BA%E5%A1%94%E9%97%AE%E9%A2%98python%E7%89%88/"></a>
 </article>
 
 <article class="post-entry tag-entry"> 
   <header class="entry-header">
-    <h2>leetcode - 8. String to Integer (atoi) with Java
+    <h2>修改 linux、ubuntu 默认终端，外加terminator颜色方案
     </h2>
   </header>
   <div class="entry-content">
-    <p>题目
-class Solution { public int myAtoi(String str) { int N = str.length(); int minus = 0; long res = 0; for(int i=0;i&lt;N;i&#43;&#43;){ char ch = str.charAt(i); System.out.println(ch&#43;&#34; &#34;&#43;minus); if((ch == &#39;-&#39; || ch == &#39;&#43;&#39;) &amp;&amp; minus == 0){ minus = ch==&#39;&#43;&#39;?1:-1; }else if(ch ==&#39; &#39; &amp;&amp; minus==0){ }else if(ch &lt;=&#39;9&#39; &amp;&amp; ch&gt;=&#39;0&#39;){ if(minus == 0){ minus = 1; } res = res*10 &#43; ch-&#39;0&#39;; if(res != (int)res){ return minus==1?...</p>
+    <p>需求：使用 cinnamon 桌面，想要修改右键打开的终端为terminator
+先安装 dconf-tools
+sudo apt-get install dconf-tools 依次进入
+org -&gt; cinnamon -&gt; desktop -&gt; default-applications -&gt; terminal
+然后将键值改成你想要的
+比如terminator为
+key value exec: x-terminal-emulator exec-arg: -e 最后来一个一键脚本
+gsettings set org.gnome.desktop.default-applications.terminal exec /usr/bin/x-terminal-emulator gsettings set org.gnome.desktop.default-applications.terminal exec-arg &#34;-e&#34; terminator颜色方案
+配置文件 ~/.config/terminator/config
+[global_config] always_split_with_profile = True enabled_plugins = LaunchpadCodeURLHandler, APTURLHandler, LaunchpadBugURLHandler focus = system geometry_hinting = False handle_size = 2 inactive_color_offset = 1.0 title_font = mry_KacstQurn Bold 11 title_hide_sizetext = True title_receive_bg_color = &#34;#729fcf&#34; [keybindings] paste = &lt;Primary&gt;v [layouts] [[default]] [[[child1]]] parent = window0 profile = default type = Terminal [[[window0]]] parent = &#34;&#34; type = Window [plugins] [profiles] [[default]] background_color = &#34;#3e3535&#34; background_darkness = 0....</p>
   </div>
   <footer class="entry-footer">SuCicada</footer>
-  <a class="entry-link" aria-label="post link to leetcode - 8. String to Integer (atoi) with Java" href="https://sucicada.github.io/blog/posts/soft/leetcode-8.-string-to-integer-atoi-with-java/"></a>
+  <a class="entry-link" aria-label="post link to 修改 linux、ubuntu 默认终端，外加terminator颜色方案" href="https://sucicada.github.io/blog/posts/soft/%E4%BF%AE%E6%94%B9-linuxubuntu-%E9%BB%98%E8%AE%A4%E7%BB%88%E7%AB%AF%E5%A4%96%E5%8A%A0terminator%E9%A2%9C%E8%89%B2%E6%96%B9%E6%A1%88/"></a>
 </article>
 
 <article class="post-entry tag-entry"> 
   <header class="entry-header">
-    <h2>leetcode - 9. Palindrome Number with Java
+    <h2>关于 1.0_0.0 以及 0.0_0.0 的值
     </h2>
   </header>
   <div class="entry-content">
-    <p>题目
-class Solution { public boolean isPalindrome(int x) { if(x&lt;0){ return false; } int a = 0; int b = x; while(x&gt;0){ a = a * 10 &#43; x%10; x = x/10; } return a==b; } } </p>
+    <p>#include&lt;cstdio&gt; #include&lt;iostream&gt; using namespace std; int main() { printf(&#34;%d\n&#34;,1.0/0.0);//0 printf(&#34;%d\n&#34;,0.0/0.0);//0 printf(&#34;%lld\n&#34;,1.0/0.0);//9218868437227405312 printf(&#34;%lld\n&#34;,0.0/0.0);//-2251799813685248 printf(&#34;%lf\n&#34;,1.0/0.0);//1.#INF00 printf(&#34;%lf\n&#34;,0.0/0.0);//-1.#INF00 cout&lt;&lt;1.0/0.0&lt;&lt;endl;//inf cout&lt;&lt;0.0/0.0&lt;&lt;endl;//nan return 0; } </p>
   </div>
   <footer class="entry-footer">SuCicada</footer>
-  <a class="entry-link" aria-label="post link to leetcode - 9. Palindrome Number with Java" href="https://sucicada.github.io/blog/posts/soft/leetcode-9.-palindrome-number-with-java/"></a>
+  <a class="entry-link" aria-label="post link to 关于 1.0_0.0 以及 0.0_0.0 的值" href="https://sucicada.github.io/blog/posts/soft/%E5%85%B3%E4%BA%8E-1.0_0.0-%E4%BB%A5%E5%8F%8A-0.0_0.0-%E7%9A%84%E5%80%BC/"></a>
 </article>
 
 <article class="post-entry tag-entry"> 
   <header class="entry-header">
-    <h2>linux  通过  openconnect  来连接学校内网
+    <h2>关于linux 下pycharm 输入法不跟随的问题(未解决)
     </h2>
   </header>
   <div class="entry-content">
-    <p>参考
-http://xingda1989.iteye.com/blog/1969908
-https://blog.csdn.net/edin_blackpoint/article/details/70860101
-sudo apt install openconnect
-在/etc/vpc/目录下新建vpnc-script 文件
-文件内容可以到此处拷贝
-http://git.infradead.org/users/dwmw2/vpnc-scripts.git/blob_plain/HEAD:/vpnc-script
-sudo openconnect --juniper -u [你的学号] --script /etc/vpnc/vpnc-script [你学校的提供的vpn的url]</p>
+    <p>http://tieba.baidu.com/p/3858968877#70635782254l
+https://neue.v2ex.com/t/306947
+貌似linux无解</p>
   </div>
   <footer class="entry-footer">SuCicada</footer>
-  <a class="entry-link" aria-label="post link to linux  通过  openconnect  来连接学校内网" href="https://sucicada.github.io/blog/posts/soft/linux-%E9%80%9A%E8%BF%87-openconnect-%E6%9D%A5%E8%BF%9E%E6%8E%A5%E5%AD%A6%E6%A0%A1%E5%86%85%E7%BD%91/"></a>
+  <a class="entry-link" aria-label="post link to 关于linux 下pycharm 输入法不跟随的问题(未解决)" href="https://sucicada.github.io/blog/posts/soft/%E5%85%B3%E4%BA%8Elinux-%E4%B8%8Bpycharm-%E8%BE%93%E5%85%A5%E6%B3%95%E4%B8%8D%E8%B7%9F%E9%9A%8F%E7%9A%84%E9%97%AE%E9%A2%98%E6%9C%AA%E8%A7%A3%E5%86%B3/"></a>
 </article>
 <footer class="page-footer">
   <nav class="pagination">

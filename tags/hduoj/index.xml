@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>hduoj on SuCicada</title>
+    <link>https://sucicada.github.io/blog/tags/hduoj/</link>
+    <description>Recent content in hduoj on SuCicada</description>
+    <image>
+      <url>https://sucicada.github.io/blog/papermod-cover.png</url>
+      <link>https://sucicada.github.io/blog/papermod-cover.png</link>
+    </image>
+    <generator>Hugo -- gohugo.io</generator><atom:link href="https://sucicada.github.io/blog/tags/hduoj/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>hdu 1022 栈</title>
+      <link>https://sucicada.github.io/blog/posts/hduoj/hdu-1022-%E6%A0%88/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://sucicada.github.io/blog/posts/hduoj/hdu-1022-%E6%A0%88/</guid>
+      <description>久违的ac，真是艰难。第一次提交的竟然是直接判断b字符串是否为a的倒序。
+#include&amp;lt;iostream&amp;gt; #include&amp;lt;stack&amp;gt; #include&amp;lt;string&amp;gt; using namespace std; int main() { int t; string a,b; while(cin&amp;gt;&amp;gt;t&amp;gt;&amp;gt;a&amp;gt;&amp;gt;b) { stack&amp;lt;char&amp;gt;s; string p; int i=0; t=a.size(); while(t--) { s.push(a[a.size()-t-1]); p+=&amp;#34;in\n&amp;#34;;//cout&amp;lt;&amp;lt;s.top()&amp;lt;&amp;lt;&amp;#34; &amp;#34;&amp;lt;&amp;lt;b[i]; while(!s.empty()&amp;amp;&amp;amp;s.top()==b[i]) { //cout&amp;lt;&amp;lt;&amp;#34;i&amp;#34;&amp;lt;&amp;lt;i&amp;lt;&amp;lt;endl; s.pop(); p+=&amp;#34;out\n&amp;#34;; i++; //cout&amp;lt;&amp;lt;s.size()&amp;lt;&amp;lt;&amp;#34;!!&amp;#34;&amp;lt;&amp;lt;endl; } } if(s.size()==0) cout&amp;lt;&amp;lt;&amp;#34;Yes.&amp;#34;&amp;lt;&amp;lt;endl&amp;lt;&amp;lt;p; else cout&amp;lt;&amp;lt;&amp;#34;No.&amp;#34;&amp;lt;&amp;lt;endl; cout&amp;lt;&amp;lt;&amp;#34;FINISH&amp;#34;&amp;lt;&amp;lt;endl; } return 0; } </description>
+    </item>
+    
+    <item>
+      <title>hdu 1062（倒置句中单词）&lt;未戳破的玄学&gt;</title>
+      <link>https://sucicada.github.io/blog/posts/hduoj/hdu-1062%E5%80%92%E7%BD%AE%E5%8F%A5%E4%B8%AD%E5%8D%95%E8%AF%8D%E6%9C%AA%E6%88%B3%E7%A0%B4%E7%9A%84%E7%8E%84%E5%AD%A6/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://sucicada.github.io/blog/posts/hduoj/hdu-1062%E5%80%92%E7%BD%AE%E5%8F%A5%E4%B8%AD%E5%8D%95%E8%AF%8D%E6%9C%AA%E6%88%B3%E7%A0%B4%E7%9A%84%E7%8E%84%E5%AD%A6/</guid>
+      <description>pe诅咒，多人见证的玄学，终有一天能破解
+初回进阶版
+#include&amp;lt;stdio.h&amp;gt; #include&amp;lt;string.h&amp;gt; int main() { int T,i,j,t; char a[1000];//=&amp;#34;123 4567&amp;#34;; while(scanf(&amp;#34;%d&amp;#34;,&amp;amp;T)==1) { while(T--) { getchar(); //setbuf(stdin,NULL);//失败了，暂不知为什么 scanf(&amp;#34;%[^\n]&amp;#34;,a); i=0;////j是大移动位，i是执行位 //xprintf(&amp;#34;origin %s\n&amp;#34;); for(j=0;j&amp;lt;strlen(a);j++) { //printf(&amp;#34;!!%s\n&amp;#34;,a); if(a[j+1]==&amp;#39; &amp;#39;||a[j+1]==&amp;#39;\0&amp;#39;) { //printf(&amp;#34;a[] %c\n&amp;#34;,a[j]); t=i; for(;i&amp;lt;(j+t+1)/2;i++) { a[i]+=a[j-i+t]; a[j-i+t]=a[i]-a[j-i+t]; a[i]=a[i]-a[j-i+t]; //printf(&amp;#34;!%s\n&amp;#34;,a); } i=j+2; } } printf(&amp;#34;%s\n&amp;#34;,a); } //printf(&amp;#34;end\n&amp;#34;); } } 临终版
+#include&amp;lt;stdio.h&amp;gt; #include&amp;lt;string.h&amp;gt; int main() { int T,i,j,t; char a[1003]; scanf(&amp;#34;%d&amp;#34;,&amp;amp;T); while(T--) { getchar(); scanf(&amp;#34;%[^\n]&amp;#34;,a); i=0; for(j=0;j&amp;lt;strlen(a);j++) { if(a[j+1]==&amp;#39; &amp;#39;||(j+1)==strlen(a))) { t=j; while(t&amp;gt;=i) printf(&amp;#34;%c&amp;#34;,a[t--]); if(a[j+1]==&amp;#39; &amp;#39;) printf(&amp;#34; &amp;#34;); i=j+2; } } printf(&amp;#34;\n&amp;#34;); } return 0; } </description>
+    </item>
+    
+    <item>
+      <title>hdu1002（超超长数字相加）</title>
+      <link>https://sucicada.github.io/blog/posts/hduoj/hdu1002%E8%B6%85%E8%B6%85%E9%95%BF%E6%95%B0%E5%AD%97%E7%9B%B8%E5%8A%A0/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://sucicada.github.io/blog/posts/hduoj/hdu1002%E8%B6%85%E8%B6%85%E9%95%BF%E6%95%B0%E5%AD%97%E7%9B%B8%E5%8A%A0/</guid>
+      <description>差点gg，用的是字符串数组来存数，加数，下面是原题
+*保留了所有的注释
+*没有进行代码缩减
+Input
+The first line of the input contains an integer T(1&amp;lt;=T&amp;lt;=20) which means the number of test cases. Then T lines follow, each line consists of two positive integers, A and B. Notice that the integers are very large, that means you should not process them by using 32-bit integer. You may assume the length of each integer will not exceed 1000.
+Output
+For each test case, you should output two lines.</description>
+    </item>
+    
+  </channel>
+</rss>

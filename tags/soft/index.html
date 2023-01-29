@@ -160,74 +160,6 @@
 
 <article class="post-entry tag-entry"> 
   <header class="entry-header">
-    <h2>[leetcode][Algorithm] -13. Roman to Integer with [Java]
-    </h2>
-  </header>
-  <div class="entry-content">
-    <p>problem
-class Solution { public int romanToInt(String s) { int N = s.length(); int sum = 0; char a = 0; int b = 0; int c = 0; for(int i=0;i&lt;N;i&#43;&#43;){ c = b; a = s.charAt(i); if(a == &#39;I&#39;){ b = 1; }else if(a == &#39;V&#39;){ b = 5; }else if(a == &#39;X&#39;){ b = 10; }else if(a == &#39;L&#39;){ b = 50; }else if(a == &#39;C&#39;){ b = 100; }else if(a == &#39;D&#39;){ b = 500; }else if(a == &#39;M&#39;){ b = 1000; } // System....</p>
-  </div>
-  <footer class="entry-footer">SuCicada</footer>
-  <a class="entry-link" aria-label="post link to [leetcode][Algorithm] -13. Roman to Integer with [Java]" href="https://sucicada.github.io/blog/posts/soft/leetcodealgorithm-13.-roman-to-integer-with-java/"></a>
-</article>
-
-<article class="post-entry tag-entry"> 
-  <header class="entry-header">
-    <h2>[leetcode][DataBase] - 175. Combine Two Tables with MySQL
-    </h2>
-  </header>
-  <div class="entry-content">
-    <p>题目
-select FirstName, LastName, City, State from Person left join Address using (PersonId); or
-select FirstName, LastName, City, State from Person left join Address on Person.PersonId=Address.PersonId; </p>
-  </div>
-  <footer class="entry-footer">SuCicada</footer>
-  <a class="entry-link" aria-label="post link to [leetcode][DataBase] - 175. Combine Two Tables with MySQL" href="https://sucicada.github.io/blog/posts/soft/leetcodedatabase-175.-combine-two-tables-with-mysql/"></a>
-</article>
-
-<article class="post-entry tag-entry"> 
-  <header class="entry-header">
-    <h2>[leetcode][DataBase] - 176. Second Highest Salary with [MySQL]
-    </h2>
-  </header>
-  <div class="entry-content">
-    <p>problem
-select ifnull((select distinct Salary from Employee order by Salary desc limit 1,1), null) as SecondHighestSalary; or other
-select max(Salary) as SecondHighestSalary from employee where Salary &lt; (select max(Salary) from employee); </p>
-  </div>
-  <footer class="entry-footer">SuCicada</footer>
-  <a class="entry-link" aria-label="post link to [leetcode][DataBase] - 176. Second Highest Salary with [MySQL]" href="https://sucicada.github.io/blog/posts/soft/leetcodedatabase-176.-second-highest-salary-with-mysql/"></a>
-</article>
-
-<article class="post-entry tag-entry"> 
-  <header class="entry-header">
-    <h2>[leetcode][DataBase] - 177. Nth Highest Salary with [MySQL]
-    </h2>
-  </header>
-  <div class="entry-content">
-    <p>problem
-# 184ms select min(aa.Salary) from (select distinct Salary from employee order by Salary desc limit N) as aa where (select count(distinct Salary) from employee) &gt;= N or
-# 188ms select aa.Salary as ass from (select distinct Salary from employee order by Salary desc limit N) as aa where (select count(distinct Salary) from employee) &gt;= N order by ass limit 1 </p>
-  </div>
-  <footer class="entry-footer">SuCicada</footer>
-  <a class="entry-link" aria-label="post link to [leetcode][DataBase] - 177. Nth Highest Salary with [MySQL]" href="https://sucicada.github.io/blog/posts/soft/leetcodedatabase-177.-nth-highest-salary-with-mysql/"></a>
-</article>
-
-<article class="post-entry tag-entry"> 
-  <header class="entry-header">
-    <h2>[leetcode][DataBase] - 178. Rank Scores with [MySQL]
-    </h2>
-  </header>
-  <div class="entry-content">
-    <p>problem
-select inn.Score,inn.Rank from ( select ss.Score,@row:=@row&#43;1 as Rank from (select @row:=0) a, (select Score from Scores group by Score) as ss order by ss.Score desc ) as inn right join Scores as sss on inn.Score = sss.Score order by inn.Score desc ; </p>
-  </div>
-  <footer class="entry-footer">SuCicada</footer>
-  <a class="entry-link" aria-label="post link to [leetcode][DataBase] - 178. Rank Scores with [MySQL]" href="https://sucicada.github.io/blog/posts/soft/leetcodedatabase-178.-rank-scores-with-mysql/"></a>
-</article>
-
-<article class="post-entry tag-entry"> 
-  <header class="entry-header">
     <h2>[Solve Error] Install g&#43;&#43; in Ubuntu20.04 :  g&#43;&#43; : Depends: g&#43;&#43;-7 (＞= 7.4.0-1~)
     </h2>
   </header>
@@ -241,80 +173,6 @@ sucicada@20200702-143805:/etc/apt/sources.list.d$ sudo apt install g&#43;&#43; R
   </div>
   <footer class="entry-footer">SuCicada</footer>
   <a class="entry-link" aria-label="post link to [Solve Error] Install g&#43;&#43; in Ubuntu20.04 :  g&#43;&#43; : Depends: g&#43;&#43;-7 (＞= 7.4.0-1~)" href="https://sucicada.github.io/blog/posts/soft/solve-error-install-g&#43;&#43;-in-ubuntu20.04-g&#43;&#43;-depends-g&#43;&#43;-7-7.4.0-1~/"></a>
-</article>
-
-<article class="post-entry tag-entry"> 
-  <header class="entry-header">
-    <h2>8086汇编   在屏幕上显现动态菱形图案
-    </h2>
-  </header>
-  <div class="entry-content">
-    <p> 在屏幕上显现动态菱形图案。
-* * * * * * * * * * *	* * * * * * * * * * * * * * * * * * * * * * * * &lt;图一&gt; &lt;图二&gt; &lt;图三&gt; &lt;图四&gt; &lt;图五&gt; 思路示例：
-&lt;1&gt;编写程序p1:
-显示一个字符
-&lt;2&gt;把程序p1做成子程序，调用子程序编写程序p2:
-显示一个菱形&lt;图三&gt;
-&lt;3&gt;把p2做成一个子程序，调用子程序编写程序p3:
-循环显示出如图五种图形
-&lt;4&gt;修改程序p2,实现动态效果:
-添加清屏子程序和延时子程序,完成完整程序。
-注意点：
-要求以统一逻辑实现全部的五个图形。
-第三层的公式见代码
-assume cs:code code segment start: ; [ input: al: row ] ; [ ah: column ] mov cx,10 start_s: mov di,0 mov si,1 call p3 mov di,4 mov si,-1 call p3 loop start_s mov ax,4c00h int 21h p3: ; -- input: di (index of p2) si (1 or -1) push ax push bx push cx push dx push di ; mov cx,5 ; times ; cmp di,3 ; jne p3_di_not_4 ; p3_di_not_4: mov cx,4 ; times ; mov di,0 p3_s: push cx mov cx,di mov dl,&#39;*&#39; call p2 pop cx ; bx ax lay time mov ax,0 mov bx,1 push cx p3_layout: sub ax,1 sbb bx,0 mov cx,ax or cx,bx cmp cx,0 jne p3_layout pop cx push cx mov cx,di mov dl,&#39; &#39; call p2 pop cx add di,si loop p3_s pop di pop dx pop cx pop bx pop ax ret p2: push ax push bx push cx ; ----- [1] ----------- mov al,10 mov ah,10 mov bl,al mov bh,ah call p1 add bl,1 ; ----- [2] ----------- push cx cmp cx,0 je p2_2_cx_is_0 sub cx,1 p2_2_cx_is_0: mov al,bl mov ah,bh sub ah,cl call p1 mov ah,bh add ah,cl call p1 pop cx add bl,1 ; ----- [3] ----------- ; left:ah = bh-1-(1&#43;1&#43;(cl-2))*(cl-1)/2 ; = bh-1-cl*(cl-1)/2 = bh-segdis ; right: bh&#43;1&#43;cl*(cl-1)/2 = bh&#43;segdis ; segdis = 1&#43;cl*(cl-1)/2 push cx cmp cx,0 je p2_3_cx_is_0 mov al,cl ; cl sub cl,1 ; cl-1 mul cl ; cl*(cl-1) -&gt; ax mov cl,2 ; 2 div cl ; cl*(cl-1)/2 -&gt; al add al,1 ; cl*(cl-1)/2&#43;1 mov cl,al ; segdis p2_3_cx_is_0: mov al,bl mov ah,bh sub ah,cl ; bh - segdis call p1 mov ah,bh add ah,cl ; bh &#43; segdis call p1 pop cx add bl,1 ; ----- [4] ----------- push cx cmp cx,0 je p2_4_cx_is_0 sub cx,1 p2_4_cx_is_0: mov al,bl mov ah,bh sub ah,cl call p1 mov ah,bh add ah,cl call p1 pop cx add bl,1 ; ----- [5] ----------- mov al,bl mov ah,bh call p1 pop cx pop bx pop ax ret p1: ; ----- input: al: row ah: column dl:char push ax push bx push es mov bx,0b800h mov es,bx mov bl,ah mov bh,al mov al,160 mul bh add bl,bl mov bh,0 add ax,bx mov bx,ax mov byte ptr es:[bx],dl mov byte ptr es:[bx&#43;1],2 pop es pop bx pop ax ret code ends end start ; -------*------- 7 ; -------*------- 7 7 ; -------*------- 7 7 ; -------*------- ; -------*------- ; -------*------- 7 ; -------*------- 7 7 ; ------*-*------ 6 8 ; -------*------- ; -------*------- ; 7-1-(1&#43;1&#43;(n-2))*(n-1)/2 ; 2 ; -------*------- 7 ; ------*-*------ 6 8 ; -----*---*----- 5 9 ; ------*-*------ ; -------*------- ; 3 ; -------*------- 7 ; -----*---*----- 5 9 ; ---*-------*--- 3 11 ; -----*---*----- ; -------*------- ; -------*------- 7 ; ----*-----*---- 4 10 ; *-------------* 0 14 ; ----*-----*---- ; -------*------- </p>
-  </div>
-  <footer class="entry-footer">SuCicada</footer>
-  <a class="entry-link" aria-label="post link to 8086汇编   在屏幕上显现动态菱形图案" href="https://sucicada.github.io/blog/posts/soft/8086%E6%B1%87%E7%BC%96-%E5%9C%A8%E5%B1%8F%E5%B9%95%E4%B8%8A%E6%98%BE%E7%8E%B0%E5%8A%A8%E6%80%81%E8%8F%B1%E5%BD%A2%E5%9B%BE%E6%A1%88/"></a>
-</article>
-
-<article class="post-entry tag-entry"> 
-  <header class="entry-header">
-    <h2>8086汇编：在安全空间画金字塔
-    </h2>
-  </header>
-  <div class="entry-content">
-    <p>assume cs:code code segment mov ax,20h mov ds,ax mov cx,8 s: mov dx,cx mov bx,cx sub bx,1 ; -------------------- mov cx,9 sub cx,dx ; mov cx,bx add cx,cx sub cx,1 j: mov al,&#39;a&#39; mov [bx],al inc bx loop j ; mov cx,dx ; add bx,10h mov ax,ds add ax,1 mov ds,ax ; mov bx,cx loop s mov ax,4c00h int 21h code ends end 。。。。</p>
-  </div>
-  <footer class="entry-footer">SuCicada</footer>
-  <a class="entry-link" aria-label="post link to 8086汇编：在安全空间画金字塔" href="https://sucicada.github.io/blog/posts/soft/8086%E6%B1%87%E7%BC%96%E5%9C%A8%E5%AE%89%E5%85%A8%E7%A9%BA%E9%97%B4%E7%94%BB%E9%87%91%E5%AD%97%E5%A1%94/"></a>
-</article>
-
-<article class="post-entry tag-entry"> 
-  <header class="entry-header">
-    <h2>8086汇编：清空0020:0 到0020:0ff空间
-    </h2>
-  </header>
-  <div class="entry-content">
-    <p>assume cs:code code segment ; This code is used to clear the memory ; of the safe area from 0020:0 to 0020:ff mov ax,20 mov ds,ax mov cx,0ffh mov bx,0 s: mov ax,0 mov ds:[bx],ax inc bx loop s mov ax,4c00h int 21h code ends end </p>
-  </div>
-  <footer class="entry-footer">SuCicada</footer>
-  <a class="entry-link" aria-label="post link to 8086汇编：清空0020:0 到0020:0ff空间" href="https://sucicada.github.io/blog/posts/soft/8086%E6%B1%87%E7%BC%96%E6%B8%85%E7%A9%BA00200-%E5%88%B000200ff%E7%A9%BA%E9%97%B4/"></a>
-</article>
-
-<article class="post-entry tag-entry"> 
-  <header class="entry-header">
-    <h2>8086汇编：自动编译链接脚本
-    </h2>
-  </header>
-  <div class="entry-content">
-    <p>@echo off echo code: %1 echo masm..... masm %1; echo link....... link %1; del %1.obj echo delete %1.obj echo finish 起个名 比如 run.bat 放到环境变量下，很方便</p>
-  </div>
-  <footer class="entry-footer">SuCicada</footer>
-  <a class="entry-link" aria-label="post link to 8086汇编：自动编译链接脚本" href="https://sucicada.github.io/blog/posts/soft/8086%E6%B1%87%E7%BC%96%E8%87%AA%E5%8A%A8%E7%BC%96%E8%AF%91%E9%93%BE%E6%8E%A5%E8%84%9A%E6%9C%AC/"></a>
-</article>
-
-<article class="post-entry tag-entry"> 
-  <header class="entry-header">
-    <h2>8086汇编语言王爽  17.3 字符串的输入 (含输入溢出问题分析)
-    </h2>
-  </header>
-  <div class="entry-content">
-    <p>如果直接使用书上的代码, 会发现输入一定字符就会卡死
-先上代码, 或者跳到问题 assume cs:code ; dsstack segment ; db 16 dup(0) ; dsstack ends code segment start: ; mov ax,dsstack ; mov ds,ax ; mov si,13 ; mov sp,160 call getstr mov ax,4c00h int 21h getstr: push ax getstrs: mov ah,0 int 16h cmp al,20h jb nochar mov ah,0 call charstack mov ah,2 call charstack jmp getstrs nochar: cmp ah,0eh je backspace cmp ah,1ch je enter jmp getstrs backspace: mov ah,1 call charstack mov ah,2 call charstack jmp getstrs enter: mov al,0 mov ah,0 call charstack mov ah,2 call charstack pop ax ret ; ================================== charstack: jmp short charstart table dw charpush,charpop,charshow top dw 0 ; top of stack charstart: push bx push dx push di push es cmp ah,2 ja charret mov bl,ah mov bh,0 add bx,bx jmp word ptr table[bx] charpush: mov bx,top mov ds:[si][bx],al add top,1 jmp charret charpop: cmp top,0 je charret dec top mov bx,top mov al,[si][bx] jmp charret charshow: mov bx,0b800h mov es,bx mov al,160 mov ah,0 mul dh mov di,ax add dl,dl mov dh,0 add di,dx mov bx,0 charshows: cmp bx,top jne noempty mov byte ptr es:[di],&#39;&#43;&#39; ; 结束符 jmp charret noempty: mov al,[si][bx] mov es:[di],al mov byte ptr es:[di&#43;2],&#39;&#43;&#39; ; 结束符 inc bx add di,2 jmp charshows charret: pop es pop di pop dx pop bx ret code ends end start 问题 问题现象:...</p>
-  </div>
-  <footer class="entry-footer">SuCicada</footer>
-  <a class="entry-link" aria-label="post link to 8086汇编语言王爽  17.3 字符串的输入 (含输入溢出问题分析)" href="https://sucicada.github.io/blog/posts/soft/8086%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80%E7%8E%8B%E7%88%BD-17.3-%E5%AD%97%E7%AC%A6%E4%B8%B2%E7%9A%84%E8%BE%93%E5%85%A5-%E5%90%AB%E8%BE%93%E5%85%A5%E6%BA%A2%E5%87%BA%E9%97%AE%E9%A2%98%E5%88%86%E6%9E%90/"></a>
 </article>
 
 <article class="post-entry tag-entry"> 
@@ -428,30 +286,212 @@ CLion | Preferences | Languages and Frameworks | C/C&#43;&#43; | Clangd for macO
 
 <article class="post-entry tag-entry"> 
   <header class="entry-header">
-    <h2>Flink 内存模型的分配策略 主公式推导
+    <h2>istringstream、ostringstream、stringstream 类介绍 .
     </h2>
   </header>
   <div class="entry-content">
-    <p>结论: 启动flink设定的 ytm数值 与实际监控展示的JVM_Heap数值关系是 (ytm大于1920的简化公式)
-JVM_Heap = ytm * 0.45 - 256
-啓動參數: -ytm 设定的实际是 进程总内存,相当于yarn容器大小
-Total_Process_Memory: ytm JVM_Metaspace: 默認 256m JVM_Overhead: 默認 jtm * 0.1 (必須在 192m ~ 1g (默認)) Total_Flink_Memory: Total_Process_Memory - JVM_Overhead - JVM_Metaspace Framework_Heap: 默認 128m Managed_Memory: 默認 Total_Flink_Memory * 0.4 Framework_Off-Heap: 默認 128m Task_Off-Heap: 默認 0 Network: 默認 Total_Flink_Memory * 0.1 (必須在 64m ~ 1g (默認)) 所以 Task_Heap = Total_Flink_Memory - Framework_Heap - Managed_Memory - Framework_Off-Heap - Task_Off-Heap - Network 如果都用默认配置,那么代入化简就是...</p>
+    <p>见以下链接
+istringstream、ostringstream、stringstream 类介绍 .
+0、C&#43;&#43;的输入输出分为三种：
+(1)基于控制台的I/O
+#include&lt;iostream&gt; (2)基于文件的I/O
+#include&lt;fstream&gt; (3)基于字符串的I/O
+#include&lt;sstream&gt; str()：使istringstream对象返回一个string字符串
+stringstream::clear()//多次使用，先清空此对象的流，不能使用stream.str(&#34;&#34;); //实际上，它并不清空任何内容，它只是重置了流的状态标志而已 ps:但如果你要在程序中用同一个流，反复读写大量的数据，将会造成大量的内存消耗， 这时候，需要适时地清除一下缓冲 (用 stream.str(&#34;&#34;) )。</p>
   </div>
   <footer class="entry-footer">SuCicada</footer>
-  <a class="entry-link" aria-label="post link to Flink 内存模型的分配策略 主公式推导" href="https://sucicada.github.io/blog/posts/soft/flink-%E5%86%85%E5%AD%98%E6%A8%A1%E5%9E%8B%E7%9A%84%E5%88%86%E9%85%8D%E7%AD%96%E7%95%A5-%E4%B8%BB%E5%85%AC%E5%BC%8F%E6%8E%A8%E5%AF%BC/"></a>
+  <a class="entry-link" aria-label="post link to istringstream、ostringstream、stringstream 类介绍 ." href="https://sucicada.github.io/blog/posts/soft/istringstreamostringstreamstringstream-%E7%B1%BB%E4%BB%8B%E7%BB%8D-./"></a>
 </article>
 
 <article class="post-entry tag-entry"> 
   <header class="entry-header">
-    <h2>Flink 算子Function实例化的坑
+    <h2>js 生成当前日期时间
     </h2>
   </header>
   <div class="entry-content">
-    <p>问题回顾 关于一段代码：
-object MySingleObj{ // 陷阱： // 单例对象中一个是可变引用，一个是可变数组 var str:String = _ val list = new ListBuffer[String] } ... dataStream .map(new RichMapFunction(){ // 问题1：obj1 和 obj2 的实例方式有什么区别。 // 问题2：考虑参数0的作用以及是否会得到预期效果。 val obj1:MyClass = new MyClass(参数0) var obj2:MyClass = _ override def open(paramation:Configuration): Unit = { obj2 = new MyClass(参数0) } override def map(value, ....) = { // 问题3：如果在这里使用 obj1 和 obj2 会有什么区别。 // 问题4：单个slot中对单例对象中的变量修改，造成的影响是。 MySingleObj.str = value MySingleObj.list &#43;= value } }) ....</p>
+    <p>精简版
+var date = new Date(); datetime = date.toLocaleDateString().split(&#39;/&#39;).slice(2,3).concat( date.toLocaleDateString().split(&#39;/&#39;).splice(0,2)).join(&#39;-&#39;) &#43; &#34; &#34; &#43; ( date.toLocaleTimeString().split(&#39; &#39;)[1]==&#39;AM&#39; ? date.toLocaleTimeString().split(&#39; &#39;)[0] : [parseInt(date.toLocaleTimeString().split(&#39; &#39;)[0].split(&#39;:&#39;)[0]) &#43; 12].concat( date.toLocaleTimeString().split(&#39; &#39;)[0].split(&#39;:&#39;).splice(1,3)).join(&#39;:&#39;) ); 人看的版
+var date = new Date(); var dd = date.toLocaleDateString().split(&#39;/&#39;); var dd = dd.slice(2,3).concat( dd.splice(0,2)).join(&#39;-&#39;); var time = date.toLocaleTimeString().split(&#39; &#39;); var time = time[1]==&#39;AM&#39; ? time[0] : [parseInt(time[0].split(&#39;:&#39;)[0]) &#43; 12].concat(time[0].split(&#39;:&#39;).splice(1,3)).join(&#39;:&#39;); var datetime = dd &#43; &#34; &#34; &#43; time; </p>
   </div>
   <footer class="entry-footer">SuCicada</footer>
-  <a class="entry-link" aria-label="post link to Flink 算子Function实例化的坑" href="https://sucicada.github.io/blog/posts/soft/flink-%E7%AE%97%E5%AD%90function%E5%AE%9E%E4%BE%8B%E5%8C%96%E7%9A%84%E5%9D%91/"></a>
+  <a class="entry-link" aria-label="post link to js 生成当前日期时间" href="https://sucicada.github.io/blog/posts/soft/js-%E7%94%9F%E6%88%90%E5%BD%93%E5%89%8D%E6%97%A5%E6%9C%9F%E6%97%B6%E9%97%B4/"></a>
+</article>
+
+<article class="post-entry tag-entry"> 
+  <header class="entry-header">
+    <h2>linux  通过  openconnect  来连接学校内网
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>参考
+http://xingda1989.iteye.com/blog/1969908
+https://blog.csdn.net/edin_blackpoint/article/details/70860101
+sudo apt install openconnect
+在/etc/vpc/目录下新建vpnc-script 文件
+文件内容可以到此处拷贝
+http://git.infradead.org/users/dwmw2/vpnc-scripts.git/blob_plain/HEAD:/vpnc-script
+sudo openconnect --juniper -u [你的学号] --script /etc/vpnc/vpnc-script [你学校的提供的vpn的url]</p>
+  </div>
+  <footer class="entry-footer">SuCicada</footer>
+  <a class="entry-link" aria-label="post link to linux  通过  openconnect  来连接学校内网" href="https://sucicada.github.io/blog/posts/soft/linux-%E9%80%9A%E8%BF%87-openconnect-%E6%9D%A5%E8%BF%9E%E6%8E%A5%E5%AD%A6%E6%A0%A1%E5%86%85%E7%BD%91/"></a>
+</article>
+
+<article class="post-entry tag-entry"> 
+  <header class="entry-header">
+    <h2>Linux Mint 使用 VNC Server (x11vnc) 进行远程屏幕
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>https://community.linuxmint.com/tutorial/view/2334
+This tutorial was adapted from here.
+Remove the default Vino server: sudo apt-get -y remove vino
+Install x11vnc: sudo apt-get -y install x11vnc
+Create the directory for the password file: sudo mkdir /etc/x11vnc
+Create the encrypted password file: sudo x11vnc --storepasswd /etc/x11vnc/vncpwd
+You will be asked to enter and verify the password. Then press Y to
+save the password file.
+Create the systemd service file for the x11vnc service: sudo xed /lib/systemd/system/x11vnc....</p>
+  </div>
+  <footer class="entry-footer">SuCicada</footer>
+  <a class="entry-link" aria-label="post link to Linux Mint 使用 VNC Server (x11vnc) 进行远程屏幕" href="https://sucicada.github.io/blog/posts/soft/linux-mint-%E4%BD%BF%E7%94%A8-vnc-server-x11vnc-%E8%BF%9B%E8%A1%8C%E8%BF%9C%E7%A8%8B%E5%B1%8F%E5%B9%95/"></a>
+</article>
+
+<article class="post-entry tag-entry"> 
+  <header class="entry-header">
+    <h2>linux mint系统 cinnamon桌面 发大镜功能
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>让我来告诉迷途中的你cinnamon桌面一个好用的功能.
+选择设置
+选择窗口 -&gt; 选择行为
+看那个窗口移动和调整大小的特殊键 Alt
+好了按住alt在滑动滑轮 世界不一样了
+对于小屏幕高分辨率电脑极为友好</p>
+  </div>
+  <footer class="entry-footer">SuCicada</footer>
+  <a class="entry-link" aria-label="post link to linux mint系统 cinnamon桌面 发大镜功能" href="https://sucicada.github.io/blog/posts/soft/linux-mint%E7%B3%BB%E7%BB%9F-cinnamon%E6%A1%8C%E9%9D%A2-%E5%8F%91%E5%A4%A7%E9%95%9C%E5%8A%9F%E8%83%BD/"></a>
+</article>
+
+<article class="post-entry tag-entry"> 
+  <header class="entry-header">
+    <h2>linux remmina 使用rdp协议连接windows显示Failed to startup SSH session:connection refused解决
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>https://cn.aliyun.com/jiaocheng/165641.html
+删除~/.freerdp/known_hosts
+但是我找不见这个文件
+尝试删除~/.remmina/remmina.pref 文件 成功</p>
+  </div>
+  <footer class="entry-footer">SuCicada</footer>
+  <a class="entry-link" aria-label="post link to linux remmina 使用rdp协议连接windows显示Failed to startup SSH session:connection refused解决" href="https://sucicada.github.io/blog/posts/soft/linux-remmina-%E4%BD%BF%E7%94%A8rdp%E5%8D%8F%E8%AE%AE%E8%BF%9E%E6%8E%A5windows%E6%98%BE%E7%A4%BAfailed-to-startup-ssh-sessionconnection-refused%E8%A7%A3%E5%86%B3/"></a>
+</article>
+
+<article class="post-entry tag-entry"> 
+  <header class="entry-header">
+    <h2>linux 下安装 Cisco Packet Tracer 7.11以及一些注意(辛酸史)
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>https://blog.csdn.net/qq_35882901/article/details/77652571
+https://linux.cn/article-5576-1.html
+开启登录问题
+https://blog.csdn.net/u012321131/article/details/78587383
+到软件的根目录下 执行以下脚本
+sudo ./set_ptenv.sh sudo ./set_qtenv.sh
+**一定按步骤走 **
+安装在默认的/opt/pt 如果因为安装在家目录而导致闪退 就重新安装在默认路径下
+一些依赖库
+sudo apt install libqt5scripttools5
+sudo apt-get install libqt5multimedia5-plugins
+2018/9/18
+因为3560的三层交换机的端口信息不显示,忍不了linux的bug,下了6版本的linux版本.
+安装失败,
+换回7版本,(核心已转储)…..made?
+一个晚上的尝试,发现只是在当前的这个用户下运行不了,…..放弃了,
+那么用wine吧
+满心欢喜的安装好了,然后打算慢慢的把7版本的实验在6版本上重打一遍,
+但是,cpu占用28,温度81…….耗不起
+那么赞颂我们伟大的虚拟机吧
+virtualbox的无缝模式太强大了,wine什么的掰掰吧,</p>
+  </div>
+  <footer class="entry-footer">SuCicada</footer>
+  <a class="entry-link" aria-label="post link to linux 下安装 Cisco Packet Tracer 7.11以及一些注意(辛酸史)" href="https://sucicada.github.io/blog/posts/soft/linux-%E4%B8%8B%E5%AE%89%E8%A3%85-cisco-packet-tracer-7.11%E4%BB%A5%E5%8F%8A%E4%B8%80%E4%BA%9B%E6%B3%A8%E6%84%8F%E8%BE%9B%E9%85%B8%E5%8F%B2/"></a>
+</article>
+
+<article class="post-entry tag-entry"> 
+  <header class="entry-header">
+    <h2>linux 下的torrent下载器qBitTorrent
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>BT下载利器–Qbittorrent完全攻
+Ubuntu使用命令安装qBittorrent的方法
+源码下载</p>
+  </div>
+  <footer class="entry-footer">SuCicada</footer>
+  <a class="entry-link" aria-label="post link to linux 下的torrent下载器qBitTorrent" href="https://sucicada.github.io/blog/posts/soft/linux-%E4%B8%8B%E7%9A%84torrent%E4%B8%8B%E8%BD%BD%E5%99%A8qbittorrent/"></a>
+</article>
+
+<article class="post-entry tag-entry"> 
+  <header class="entry-header">
+    <h2>mysql workbench闪退解决办法
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>感谢google，感谢csdn
+linux下：
+rm -rf .mysql/workbench/
+windows下：
+删除C:\Users\Administrator\AppData\Roaming\MySQL\Workbench
+这个问题没有社区的帮助，我就真的没辙了</p>
+  </div>
+  <footer class="entry-footer">SuCicada</footer>
+  <a class="entry-link" aria-label="post link to mysql workbench闪退解决办法" href="https://sucicada.github.io/blog/posts/soft/mysql-workbench%E9%97%AA%E9%80%80%E8%A7%A3%E5%86%B3%E5%8A%9E%E6%B3%95/"></a>
+</article>
+
+<article class="post-entry tag-entry"> 
+  <header class="entry-header">
+    <h2>mysql数据库连接以及执行的java类
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>应该使用json等配置文件来保存要连接的数据库信息,密码等.
+先存一下,以后再说
+DB_connection.java
+/* * To change this license header, choose License Headers in Project Properties. * To change this template file, choose Tools | Templates * and open the template in the editor. */ package com; import java.sql.Connection; import java.sql.DriverManager; import java.sql.ResultSet; import java.sql.SQLException; import java.sql.Statement; /** * * @author peng */ public class DB_connection { // JDBC 驱动名及数据库 URL String JDBC_DRIVER = &#34;com.mysql.jdbc.Driver&#34;; String DB_URL = &#34;jdbc:mysql://localhost:3306/javabbs?useUnicode=true&amp;characterEncoding=UTF-8&#34;; // 数据库的用户名与密码，需要根据自己的设置 String USER = &#34;root&#34;; String PASS = &#34;mysql&#34;; Connection conn = null; // private static DB_connection dB_connection =null; // public static DB_connection getInstance(){ // if(DB_connection == null){ // DB_connection = new DB_connection; // } // return DB_connection; // } public Connection connect(){ try{ Class....</p>
+  </div>
+  <footer class="entry-footer">SuCicada</footer>
+  <a class="entry-link" aria-label="post link to mysql数据库连接以及执行的java类" href="https://sucicada.github.io/blog/posts/soft/mysql%E6%95%B0%E6%8D%AE%E5%BA%93%E8%BF%9E%E6%8E%A5%E4%BB%A5%E5%8F%8A%E6%89%A7%E8%A1%8C%E7%9A%84java%E7%B1%BB/"></a>
+</article>
+
+<article class="post-entry tag-entry"> 
+  <header class="entry-header">
+    <h2>NYOJ-1204 魔法少女
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>http://nyoj.top/problem/1204
+#include&lt;iostream&gt; using namespace std; int h[10006]; int d[10006][2]; // 每一 //int fun(int a,int b){ // if(a&lt;0) // return 0; // if(b==0){ // if(d[a-1][0]&lt;d[a-1][1]){ // cout&lt;&lt;d[a-1][0]&lt;&lt;&#34; &#34;&lt;&lt;a-1&lt;&lt;&#34; &#34;&lt;&lt;0&lt;&lt;endl; // fun(a-1,0); // }else{ // cout&lt;&lt;d[a-1][1]&lt;&lt;&#34; &#34;&lt;&lt;a-1&lt;&lt;&#34; &#34;&lt;&lt;1&lt;&lt;endl; // fun(a-1,1); // } // }else{ // if(d[a-1][0] &lt; d[a-2][0]){ // cout&lt;&lt;d[a-1][0]&lt;&lt;&#34; &#34;&lt;&lt;a-1&lt;&lt;&#34; &#34;&lt;&lt;0&lt;&lt;endl; // fun(a-1,0); // }else{ // cout&lt;&lt;d[a-2][0]&lt;&lt;&#34; &#34;&lt;&lt;a-2&lt;&lt;&#34; &#34;&lt;&lt;0&lt;&lt;endl; // fun(a-2,0); // } // } //} int main(){ int n; while(cin&gt;&gt;n){ for(int i=0;i&lt;n;i&#43;&#43;){ cin&gt;&gt;h[i]; } // 0 not // 1 do d[0][0] = h[0]; d[0][1] = 0; d[1][0] = h[1]; d[1][1] = 0; for(int i=2;i&lt;n;i&#43;&#43;){ d[i][0] = min(d[i-1][1], d[i-1][0]) &#43; h[i]; d[i][1] = min(d[i-1][0], d[i-2][0]); // 这一层飞了的时间数，和上一层没有飞，以及上上一层没有飞花费的时间数是一样的 } // for(int j=0;j&lt;2;j&#43;&#43;){ // for(int i=0;i&lt;n;i&#43;&#43;){ // cout&lt;&lt; d[i][j]&lt;&lt;&#34; &#34;; // } // cout&lt;&lt;endl; // } // // if((d[n-1][0]&lt;d[n-1][1])){ // cout&lt;&lt;d[n-1][0]&lt;&lt;&#34; &#34;&lt;&lt;n-1&lt;&lt;&#34; &#34;&lt;&lt;0&lt;&lt;endl; // fun(n-1,0); // }else{ // cout&lt;&lt;d[n-1][1]&lt;&lt;&#34; &#34;&lt;&lt;n-1&lt;&lt;&#34; &#34;&lt;&lt;1&lt;&lt;endl; // fun(n-1,1); // } cout&lt;&lt; min(d[n-1][0],d[n-1][1]) &lt;&lt;endl; } } 伟大的动态规划，我真是愚蠢</p>
+  </div>
+  <footer class="entry-footer">SuCicada</footer>
+  <a class="entry-link" aria-label="post link to NYOJ-1204 魔法少女" href="https://sucicada.github.io/blog/posts/soft/nyoj-1204-%E9%AD%94%E6%B3%95%E5%B0%91%E5%A5%B3/"></a>
+</article>
+
+<article class="post-entry tag-entry"> 
+  <header class="entry-header">
+    <h2>Phaser 引擎 中TiledMap 的 json地图配置文件的格式
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>官方推荐Tiled 地图编辑器,
+https://www.mapeditor.org/
+所以查看地图格式直接看Tiled 的官方帮助文档
+http://doc.mapeditor.org/en/stable/reference/json-map-format/</p>
+  </div>
+  <footer class="entry-footer">SuCicada</footer>
+  <a class="entry-link" aria-label="post link to Phaser 引擎 中TiledMap 的 json地图配置文件的格式" href="https://sucicada.github.io/blog/posts/soft/phaser-%E5%BC%95%E6%93%8E-%E4%B8%ADtiledmap-%E7%9A%84-json%E5%9C%B0%E5%9B%BE%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6%E7%9A%84%E6%A0%BC%E5%BC%8F/"></a>
 </article>
 <footer class="page-footer">
   <nav class="pagination">

@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto">
+
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>关于Scala 的尾递归，使用JITWatch从字节码观察其原理 | SuCicada</title>
+<meta name="keywords" content="BigData">
+<meta name="description" content="先说概念：
+Scala的尾递归会被编译器自动优化成循环
+主题直通车
+先来简单看下一个简单验证方法 对比普通的递归： def fun2(x: Int): Int = { if (x == 1) throw new Exception(&#34;nooo&#34;) else fun2(x - 1) &#43; 0 } 结果： Exception in thread &#34;main&#34; java.lang.Exception: nooo at Main$.fun2(Main.scala:17) at Main$.fun2(Main.scala:19) at Main$.fun2(Main.scala:19) at Main$.fun2(Main.scala:19) at Main$.fun2(Main.scala:19) 。。。。 at Main$.fun2(Main.scala:19) at Main$.main(Main.scala:25) at Main.main(Main.scala) 现象： 我们能看到在递归结束前，这个方法已经进入自己很多次了。
+尾递归 def fun(x: Int): Int = { if (x == 0) throw new Exception(&#34;nooo&#34;) else fun(x - 1) } 结果：">
+<meta name="author" content="SuCicada">
+<link rel="canonical" href="https://sucicada.github.io/blog/posts/bigdata/%E5%85%B3%E4%BA%8Escala-%E7%9A%84%E5%B0%BE%E9%80%92%E5%BD%92%E4%BD%BF%E7%94%A8jitwatch%E4%BB%8E%E5%AD%97%E8%8A%82%E7%A0%81%E8%A7%82%E5%AF%9F%E5%85%B6%E5%8E%9F%E7%90%86/">
+<link crossorigin="anonymous" href="/blog/assets/css/stylesheet.5b5501da54f21435c8f8010d1de02123ae8d1ada696b48c6530ec4eea283e7d6.css" integrity="sha256-W1UB2lTyFDXI&#43;AENHeAhI66NGtppa0jGUw7E7qKD59Y=" rel="preload stylesheet" as="style">
+<link rel="icon" href="https://sucicada.github.io/blog/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="https://sucicada.github.io/blog/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://sucicada.github.io/blog/favicon-32x32.png">
+<link rel="apple-touch-icon" href="https://sucicada.github.io/blog/apple-touch-icon.png">
+<link rel="mask-icon" href="https://sucicada.github.io/blog/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --hljs-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-track {
+                background: 0 0;
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-thumb {
+                border-color: var(--theme);
+            }
+        }
+
+    </style>
+</noscript><meta property="og:title" content="关于Scala 的尾递归，使用JITWatch从字节码观察其原理" />
+<meta property="og:description" content="先说概念：
+Scala的尾递归会被编译器自动优化成循环
+主题直通车
+先来简单看下一个简单验证方法 对比普通的递归： def fun2(x: Int): Int = { if (x == 1) throw new Exception(&#34;nooo&#34;) else fun2(x - 1) &#43; 0 } 结果： Exception in thread &#34;main&#34; java.lang.Exception: nooo at Main$.fun2(Main.scala:17) at Main$.fun2(Main.scala:19) at Main$.fun2(Main.scala:19) at Main$.fun2(Main.scala:19) at Main$.fun2(Main.scala:19) 。。。。 at Main$.fun2(Main.scala:19) at Main$.main(Main.scala:25) at Main.main(Main.scala) 现象： 我们能看到在递归结束前，这个方法已经进入自己很多次了。
+尾递归 def fun(x: Int): Int = { if (x == 0) throw new Exception(&#34;nooo&#34;) else fun(x - 1) } 结果：" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://sucicada.github.io/blog/posts/bigdata/%E5%85%B3%E4%BA%8Escala-%E7%9A%84%E5%B0%BE%E9%80%92%E5%BD%92%E4%BD%BF%E7%94%A8jitwatch%E4%BB%8E%E5%AD%97%E8%8A%82%E7%A0%81%E8%A7%82%E5%AF%9F%E5%85%B6%E5%8E%9F%E7%90%86/" /><meta property="og:image" content="https://sucicada.github.io/blog/papermod-cover.png"/><meta property="article:section" content="posts" />
+
+
+
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="https://sucicada.github.io/blog/papermod-cover.png"/>
+
+<meta name="twitter:title" content="关于Scala 的尾递归，使用JITWatch从字节码观察其原理"/>
+<meta name="twitter:description" content="先说概念：
+Scala的尾递归会被编译器自动优化成循环
+主题直通车
+先来简单看下一个简单验证方法 对比普通的递归： def fun2(x: Int): Int = { if (x == 1) throw new Exception(&#34;nooo&#34;) else fun2(x - 1) &#43; 0 } 结果： Exception in thread &#34;main&#34; java.lang.Exception: nooo at Main$.fun2(Main.scala:17) at Main$.fun2(Main.scala:19) at Main$.fun2(Main.scala:19) at Main$.fun2(Main.scala:19) at Main$.fun2(Main.scala:19) 。。。。 at Main$.fun2(Main.scala:19) at Main$.main(Main.scala:25) at Main.main(Main.scala) 现象： 我们能看到在递归结束前，这个方法已经进入自己很多次了。
+尾递归 def fun(x: Int): Int = { if (x == 0) throw new Exception(&#34;nooo&#34;) else fun(x - 1) } 结果："/>
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "Posts",
+      "item": "https://sucicada.github.io/blog/posts/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  3 ,
+      "name": "关于Scala 的尾递归，使用JITWatch从字节码观察其原理",
+      "item": "https://sucicada.github.io/blog/posts/bigdata/%E5%85%B3%E4%BA%8Escala-%E7%9A%84%E5%B0%BE%E9%80%92%E5%BD%92%E4%BD%BF%E7%94%A8jitwatch%E4%BB%8E%E5%AD%97%E8%8A%82%E7%A0%81%E8%A7%82%E5%AF%9F%E5%85%B6%E5%8E%9F%E7%90%86/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "关于Scala 的尾递归，使用JITWatch从字节码观察其原理",
+  "name": "关于Scala 的尾递归，使用JITWatch从字节码观察其原理",
+  "description": "先说概念：\nScala的尾递归会被编译器自动优化成循环\n主题直通车\n先来简单看下一个简单验证方法 对比普通的递归： def fun2(x: Int): Int = { if (x == 1) throw new Exception(\u0026#34;nooo\u0026#34;) else fun2(x - 1) + 0 } 结果： Exception in thread \u0026#34;main\u0026#34; java.lang.Exception: nooo at Main$.fun2(Main.scala:17) at Main$.fun2(Main.scala:19) at Main$.fun2(Main.scala:19) at Main$.fun2(Main.scala:19) at Main$.fun2(Main.scala:19) 。。。。 at Main$.fun2(Main.scala:19) at Main$.main(Main.scala:25) at Main.main(Main.scala) 现象： 我们能看到在递归结束前，这个方法已经进入自己很多次了。\n尾递归 def fun(x: Int): Int = { if (x == 0) throw new Exception(\u0026#34;nooo\u0026#34;) else fun(x - 1) } 结果：",
+  "keywords": [
+    "BigData"
+  ],
+  "articleBody": "先说概念：\nScala的尾递归会被编译器自动优化成循环\n主题直通车\n先来简单看下一个简单验证方法 对比普通的递归： def fun2(x: Int): Int = { if (x == 1) throw new Exception(\"nooo\") else fun2(x - 1) + 0 } 结果： Exception in thread \"main\" java.lang.Exception: nooo at Main$.fun2(Main.scala:17) at Main$.fun2(Main.scala:19) at Main$.fun2(Main.scala:19) at Main$.fun2(Main.scala:19) at Main$.fun2(Main.scala:19) 。。。。 at Main$.fun2(Main.scala:19) at Main$.main(Main.scala:25) at Main.main(Main.scala) 现象： 我们能看到在递归结束前，这个方法已经进入自己很多次了。\n尾递归 def fun(x: Int): Int = { if (x == 0) throw new Exception(\"nooo\") else fun(x - 1) } 结果：\nException in thread \"main\" java.lang.Exception: nooo at Main$.fun(Main.scala:9) at Main$.main(Main.scala:25) at Main.main(Main.scala) 现象 只进入这个方法一次\n结论 从中我们能看到尾递归的确不会一直调用自己\n。 字节码验证 假设咱们知道了JITWatch的使用。\n1.先看主函数，从bytecode区域，我们能看到在标号为8 这一行\n8: invokevirtual #30 // Method fun:(I)I 得知 invokevirtual指令是用来执行函数\n我们看“普通递归”，在红线那一行 13: invokevirtual #20 // Method fun2:(I)I，对应着fun2(x-1)+1这条命令。\n这代表 这里的调用自己，是真的在调用自己。使用invokevirtual再次进入自己 这次呢，是尾递归，我们发现这次没有invokevirtual 了呢，为之代替的是一个名为goto的指令。他goto到哪了呢，到0这行了。也就是这个函数的开头。这也就是循环的代表。\n结论： 看来确实如此呢\nScala的尾递归会被编译器自动优化成循环\n",
+  "wordCount" : "114",
+  "inLanguage": "en",
+  "datePublished": "0001-01-01T00:00:00Z",
+  "dateModified": "0001-01-01T00:00:00Z",
+  "author":{
+    "@type": "Person",
+    "name": "SuCicada"
+  },
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://sucicada.github.io/blog/posts/bigdata/%E5%85%B3%E4%BA%8Escala-%E7%9A%84%E5%B0%BE%E9%80%92%E5%BD%92%E4%BD%BF%E7%94%A8jitwatch%E4%BB%8E%E5%AD%97%E8%8A%82%E7%A0%81%E8%A7%82%E5%AF%9F%E5%85%B6%E5%8E%9F%E7%90%86/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "SuCicada",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://sucicada.github.io/blog/favicon.ico"
+    }
+  }
+}
+</script>
+</head>
+
+<body class="" id="top">
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.body.classList.add('dark');
+    } else if (localStorage.getItem("pref-theme") === "light") {
+        document.body.classList.remove('dark')
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.body.classList.add('dark');
+    }
+
+</script>
+
+<header class="header">
+    <nav class="nav">
+        <div class="logo">
+            <a href="https://sucicada.github.io/blog" accesskey="h" title="SuCicada (Alt + H)">SuCicada</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" accesskey="t" title="(Alt + T)">
+                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu">
+            <li>
+                <a href="https://sucicada.github.io/blog/archives/" title="Archive">
+                    <span>Archive</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://sucicada.github.io/blog/search/" title="Search (Alt &#43; /)" accesskey=/>
+                    <span>Search</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://sucicada.github.io/blog/tags/" title="Tags">
+                    <span>Tags</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://sucicada.github.io/blog/about/" title="About">
+                    <span>About</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+
+    <h1 class="post-title">
+      关于Scala 的尾递归，使用JITWatch从字节码观察其原理
+    </h1>
+    <div class="post-meta">SuCicada&nbsp;|&nbsp;<a href="https://github.com/SuCicada/mysite-hugo/blob/master/content/posts/BigData/%e5%85%b3%e4%ba%8eScala%20%e7%9a%84%e5%b0%be%e9%80%92%e5%bd%92%ef%bc%8c%e4%bd%bf%e7%94%a8JITWatch%e4%bb%8e%e5%ad%97%e8%8a%82%e7%a0%81%e8%a7%82%e5%af%9f%e5%85%b6%e5%8e%9f%e7%90%86.md" rel="noopener noreferrer" target="_blank">Suggest Changes</a>
+
+</div>
+    <ul class="post-tags">
+      <li><a href="https://sucicada.github.io/blog/tags/bigdata/">BigData</a></li>
+    </ul>
+  </header> <div class="toc">
+    <details  open>
+        <summary accesskey="c" title="(Alt + C)">
+            <span class="details">Table of Contents</span>
+        </summary>
+
+        <div class="inner"><ul><ul><ul>
+                <li>
+                    <a href="#%e5%85%88%e6%9d%a5%e7%ae%80%e5%8d%95%e7%9c%8b%e4%b8%8b%e4%b8%80%e4%b8%aa%e7%ae%80%e5%8d%95%e9%aa%8c%e8%af%81%e6%96%b9%e6%b3%95" aria-label="先来简单看下一个简单验证方法">先来简单看下一个简单验证方法</a><ul>
+                        
+                <li>
+                    <a href="#%e5%af%b9%e6%af%94%e6%99%ae%e9%80%9a%e7%9a%84%e9%80%92%e5%bd%92" aria-label="对比普通的递归：">对比普通的递归：</a><ul>
+                        
+                <li>
+                    <a href="#%e7%bb%93%e6%9e%9c" aria-label="结果：">结果：</a></li>
+                <li>
+                    <a href="#%e7%8e%b0%e8%b1%a1" aria-label="现象：">现象：</a></li></ul>
+                </li>
+                <li>
+                    <a href="#%e5%b0%be%e9%80%92%e5%bd%92" aria-label="尾递归">尾递归</a><ul>
+                        
+                <li>
+                    <a href="#%e7%8e%b0%e8%b1%a1-1" aria-label="现象">现象</a></li></ul>
+                </li>
+                <li>
+                    <a href="#%e7%bb%93%e8%ae%ba" aria-label="结论">结论</a></li></ul>
+                </li></ul>
+                    </ul>
+                    
+                <li>
+                    <a href="#main0" aria-label="。">。</a><ul>
+                        
+                <li>
+                    <a href="#%e5%ad%97%e8%8a%82%e7%a0%81%e9%aa%8c%e8%af%81" aria-label="字节码验证">字节码验证</a><ul>
+                        
+                <li>
+                    <a href="#%e7%bb%93%e8%ae%ba-1" aria-label="结论：">结论：</a>
+                </li>
+            </ul>
+            </li>
+            </ul>
+            </li>
+            </ul>
+        </div>
+    </details>
+</div>
+
+  <div class="post-content"><p>先说概念：</p>
+<blockquote>
+<p><strong>Scala的尾递归会被编译器自动优化成循环</strong></p>
+</blockquote>
+<p><a href="#main0" target="_self">主题直通车</a></p>
+<h3 id="先来简单看下一个简单验证方法">先来简单看下一个简单验证方法<a hidden class="anchor" aria-hidden="true" href="#先来简单看下一个简单验证方法">#</a></h3>
+<h4 id="对比普通的递归">对比普通的递归：<a hidden class="anchor" aria-hidden="true" href="#对比普通的递归">#</a></h4>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl">    <span class="n">def</span> <span class="nf">fun2</span><span class="o">(</span><span class="n">x</span><span class="o">:</span> <span class="n">Int</span><span class="o">):</span> <span class="n">Int</span> <span class="o">=</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="o">(</span><span class="n">x</span> <span class="o">==</span> <span class="mi">1</span><span class="o">)</span>
+</span></span><span class="line"><span class="cl">            <span class="k">throw</span> <span class="k">new</span> <span class="n">Exception</span><span class="o">(</span><span class="s">&#34;nooo&#34;</span><span class="o">)</span>
+</span></span><span class="line"><span class="cl">        <span class="k">else</span>
+</span></span><span class="line"><span class="cl">            <span class="n">fun2</span><span class="o">(</span><span class="n">x</span> <span class="o">-</span> <span class="mi">1</span><span class="o">)</span> <span class="o">+</span> <span class="mi">0</span>
+</span></span><span class="line"><span class="cl">    <span class="o">}</span>
+</span></span></code></pre></div><h5 id="结果">结果：<a hidden class="anchor" aria-hidden="true" href="#结果">#</a></h5>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="n">Exception</span> <span class="n">in</span> <span class="n">thread</span> <span class="s">&#34;main&#34;</span> <span class="n">java</span><span class="o">.</span><span class="na">lang</span><span class="o">.</span><span class="na">Exception</span><span class="o">:</span> <span class="n">nooo</span>
+</span></span><span class="line"><span class="cl">	<span class="n">at</span> <span class="n">Main$</span><span class="o">.</span><span class="na">fun2</span><span class="o">(</span><span class="n">Main</span><span class="o">.</span><span class="na">scala</span><span class="o">:</span><span class="mi">17</span><span class="o">)</span>
+</span></span><span class="line"><span class="cl">	<span class="n">at</span> <span class="n">Main$</span><span class="o">.</span><span class="na">fun2</span><span class="o">(</span><span class="n">Main</span><span class="o">.</span><span class="na">scala</span><span class="o">:</span><span class="mi">19</span><span class="o">)</span>
+</span></span><span class="line"><span class="cl">	<span class="n">at</span> <span class="n">Main$</span><span class="o">.</span><span class="na">fun2</span><span class="o">(</span><span class="n">Main</span><span class="o">.</span><span class="na">scala</span><span class="o">:</span><span class="mi">19</span><span class="o">)</span>
+</span></span><span class="line"><span class="cl">	<span class="n">at</span> <span class="n">Main$</span><span class="o">.</span><span class="na">fun2</span><span class="o">(</span><span class="n">Main</span><span class="o">.</span><span class="na">scala</span><span class="o">:</span><span class="mi">19</span><span class="o">)</span>
+</span></span><span class="line"><span class="cl">	<span class="n">at</span> <span class="n">Main$</span><span class="o">.</span><span class="na">fun2</span><span class="o">(</span><span class="n">Main</span><span class="o">.</span><span class="na">scala</span><span class="o">:</span><span class="mi">19</span><span class="o">)</span>
+</span></span><span class="line"><span class="cl">	<span class="err">。。。。</span>
+</span></span><span class="line"><span class="cl">	<span class="n">at</span> <span class="n">Main$</span><span class="o">.</span><span class="na">fun2</span><span class="o">(</span><span class="n">Main</span><span class="o">.</span><span class="na">scala</span><span class="o">:</span><span class="mi">19</span><span class="o">)</span>
+</span></span><span class="line"><span class="cl">	<span class="n">at</span> <span class="n">Main$</span><span class="o">.</span><span class="na">main</span><span class="o">(</span><span class="n">Main</span><span class="o">.</span><span class="na">scala</span><span class="o">:</span><span class="mi">25</span><span class="o">)</span>
+</span></span><span class="line"><span class="cl">	<span class="n">at</span> <span class="n">Main</span><span class="o">.</span><span class="na">main</span><span class="o">(</span><span class="n">Main</span><span class="o">.</span><span class="na">scala</span><span class="o">)</span>
+</span></span></code></pre></div><h5 id="现象">现象：<a hidden class="anchor" aria-hidden="true" href="#现象">#</a></h5>
+<p>我们能看到在递归结束前，这个方法已经进入自己很多次了。</p>
+<hr>
+<h4 id="尾递归">尾递归<a hidden class="anchor" aria-hidden="true" href="#尾递归">#</a></h4>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl">    <span class="n">def</span> <span class="nf">fun</span><span class="o">(</span><span class="n">x</span><span class="o">:</span> <span class="n">Int</span><span class="o">):</span> <span class="n">Int</span> <span class="o">=</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="o">(</span><span class="n">x</span> <span class="o">==</span> <span class="mi">0</span><span class="o">)</span>
+</span></span><span class="line"><span class="cl">            <span class="k">throw</span> <span class="k">new</span> <span class="n">Exception</span><span class="o">(</span><span class="s">&#34;nooo&#34;</span><span class="o">)</span>
+</span></span><span class="line"><span class="cl">        <span class="k">else</span>
+</span></span><span class="line"><span class="cl">            <span class="n">fun</span><span class="o">(</span><span class="n">x</span> <span class="o">-</span> <span class="mi">1</span><span class="o">)</span>
+</span></span><span class="line"><span class="cl">    <span class="o">}</span>
+</span></span></code></pre></div><p><strong>结果：</strong></p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="n">Exception</span> <span class="n">in</span> <span class="n">thread</span> <span class="s">&#34;main&#34;</span> <span class="n">java</span><span class="o">.</span><span class="na">lang</span><span class="o">.</span><span class="na">Exception</span><span class="o">:</span> <span class="n">nooo</span>
+</span></span><span class="line"><span class="cl">	<span class="n">at</span> <span class="n">Main$</span><span class="o">.</span><span class="na">fun</span><span class="o">(</span><span class="n">Main</span><span class="o">.</span><span class="na">scala</span><span class="o">:</span><span class="mi">9</span><span class="o">)</span>
+</span></span><span class="line"><span class="cl">	<span class="n">at</span> <span class="n">Main$</span><span class="o">.</span><span class="na">main</span><span class="o">(</span><span class="n">Main</span><span class="o">.</span><span class="na">scala</span><span class="o">:</span><span class="mi">25</span><span class="o">)</span>
+</span></span><span class="line"><span class="cl">	<span class="n">at</span> <span class="n">Main</span><span class="o">.</span><span class="na">main</span><span class="o">(</span><span class="n">Main</span><span class="o">.</span><span class="na">scala</span><span class="o">)</span>
+</span></span></code></pre></div><h5 id="现象-1">现象<a hidden class="anchor" aria-hidden="true" href="#现象-1">#</a></h5>
+<p>只进入这个方法一次</p>
+<h4 id="结论">结论<a hidden class="anchor" aria-hidden="true" href="#结论">#</a></h4>
+<p>从中我们能看到尾递归的确不会一直调用自己</p>
+<hr>
+<hr>
+<h1 id="main0">。<a hidden class="anchor" aria-hidden="true" href="#main0">#</a></h1>
+<h2 id="字节码验证">字节码验证<a hidden class="anchor" aria-hidden="true" href="#字节码验证">#</a></h2>
+<p>假设咱们知道了JITWatch的使用。</p>
+<p>1.先看主函数，从bytecode区域，我们能看到在标号为8 这一行</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"> <span class="mi">8</span><span class="p">:</span> <span class="n">invokevirtual</span>   <span class="c1">#30  // Method fun:(I)I</span>
+</span></span></code></pre></div><p>得知 <code>invokevirtual</code>指令是用来执行函数<br>
+
+
+
+
+<img loading="lazy" src="https://img-blog.csdnimg.cn/20200117182545175.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3N1X2NpY2FkYQ==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"  />
+</p>
+<ol start="2">
+<li>我们看“普通递归”，在红线那一行 <code>13: invokevirtual   #20  // Method fun2:(I)I</code>，对应着<code>fun2(x-1)+1</code>这条命令。<br>
+这代表 这里的调用自己，是真的在调用自己。使用<code>invokevirtual</code>再次进入自己</li>
+</ol>
+<p>
+
+
+
+<img loading="lazy" src="https://img-blog.csdnimg.cn/20200117183250160.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3N1X2NpY2FkYQ==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"  />
+</p>
+<ol start="3">
+<li>这次呢，是尾递归，我们发现这次没有<code>invokevirtual</code> 了呢，为之代替的是一个名为<code>goto</code>的指令。他goto到哪了呢，到<strong>0</strong>这行了。也就是这个函数的开头。这也就是循环的代表。<br>
+
+
+
+
+<img loading="lazy" src="https://img-blog.csdnimg.cn/2020011718361381.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3N1X2NpY2FkYQ==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"  />
+</li>
+</ol>
+<hr>
+<h3 id="结论-1">结论：<a hidden class="anchor" aria-hidden="true" href="#结论-1">#</a></h3>
+<p>看来确实如此呢</p>
+<blockquote>
+<p><strong>Scala的尾递归会被编译器自动优化成循环</strong></p>
+</blockquote>
+
+
+  </div>
+
+  <footer class="post-footer">
+<nav class="paginav">
+  <a class="prev" href="https://sucicada.github.io/blog/posts/soft/%E5%85%B3%E4%BA%8Elinux%E4%B8%8A%E8%BF%90%E8%A1%8Cons/">
+    <span class="title">« Prev</span>
+    <br>
+    <span>关于linux上运行ONS</span>
+  </a>
+  <a class="next" href="https://sucicada.github.io/blog/posts/soft/%E5%85%B3%E4%BA%8Essh-scp-%E4%B8%8D%E7%94%A8%E4%BA%A4%E4%BA%92%E5%BC%8F-%E5%8D%B3%E8%87%AA%E5%8A%A8%E6%88%96%E8%80%85%E5%B8%A6%E5%AF%86%E7%A0%81%E6%89%A7%E8%A1%8C/">
+    <span class="title">Next »</span>
+    <br>
+    <span>关于ssh scp 不用交互式 即自动或者带密码执行</span>
+  </a>
+</nav>
+
+
+<div class="share-buttons">
+    <a target="_blank" rel="noopener noreferrer" aria-label="share 关于Scala 的尾递归，使用JITWatch从字节码观察其原理 on twitter"
+        href="https://twitter.com/intent/tweet/?text=%e5%85%b3%e4%ba%8eScala%20%e7%9a%84%e5%b0%be%e9%80%92%e5%bd%92%ef%bc%8c%e4%bd%bf%e7%94%a8JITWatch%e4%bb%8e%e5%ad%97%e8%8a%82%e7%a0%81%e8%a7%82%e5%af%9f%e5%85%b6%e5%8e%9f%e7%90%86&amp;url=https%3a%2f%2fsucicada.github.io%2fblog%2fposts%2fbigdata%2f%25E5%2585%25B3%25E4%25BA%258Escala-%25E7%259A%2584%25E5%25B0%25BE%25E9%2580%2592%25E5%25BD%2592%25E4%25BD%25BF%25E7%2594%25A8jitwatch%25E4%25BB%258E%25E5%25AD%2597%25E8%258A%2582%25E7%25A0%2581%25E8%25A7%2582%25E5%25AF%259F%25E5%2585%25B6%25E5%258E%259F%25E7%2590%2586%2f&amp;hashtags=BigData">
+        <svg version="1.1" viewBox="0 0 512 512" xml:space="preserve" height="30px" width="30px" fill="currentColor">
+            <path
+                d="M449.446,0c34.525,0 62.554,28.03 62.554,62.554l0,386.892c0,34.524 -28.03,62.554 -62.554,62.554l-386.892,0c-34.524,0 -62.554,-28.03 -62.554,-62.554l0,-386.892c0,-34.524 28.029,-62.554 62.554,-62.554l386.892,0Zm-253.927,424.544c135.939,0 210.268,-112.643 210.268,-210.268c0,-3.218 0,-6.437 -0.153,-9.502c14.406,-10.421 26.973,-23.448 36.935,-38.314c-13.18,5.824 -27.433,9.809 -42.452,11.648c15.326,-9.196 26.973,-23.602 32.49,-40.92c-14.252,8.429 -30.038,14.56 -46.896,17.931c-13.487,-14.406 -32.644,-23.295 -53.946,-23.295c-40.767,0 -73.87,33.104 -73.87,73.87c0,5.824 0.613,11.494 1.992,16.858c-61.456,-3.065 -115.862,-32.49 -152.337,-77.241c-6.284,10.881 -9.962,23.601 -9.962,37.088c0,25.594 13.027,48.276 32.95,61.456c-12.107,-0.307 -23.448,-3.678 -33.41,-9.196l0,0.92c0,35.862 25.441,65.594 59.311,72.49c-6.13,1.686 -12.72,2.606 -19.464,2.606c-4.751,0 -9.348,-0.46 -13.946,-1.38c9.349,29.426 36.628,50.728 68.965,51.341c-25.287,19.771 -57.164,31.571 -91.8,31.571c-5.977,0 -11.801,-0.306 -17.625,-1.073c32.337,21.15 71.264,33.41 112.95,33.41Z" />
+        </svg>
+    </a>
+    <a target="_blank" rel="noopener noreferrer" aria-label="share 关于Scala 的尾递归，使用JITWatch从字节码观察其原理 on telegram"
+        href="https://telegram.me/share/url?text=%e5%85%b3%e4%ba%8eScala%20%e7%9a%84%e5%b0%be%e9%80%92%e5%bd%92%ef%bc%8c%e4%bd%bf%e7%94%a8JITWatch%e4%bb%8e%e5%ad%97%e8%8a%82%e7%a0%81%e8%a7%82%e5%af%9f%e5%85%b6%e5%8e%9f%e7%90%86&amp;url=https%3a%2f%2fsucicada.github.io%2fblog%2fposts%2fbigdata%2f%25E5%2585%25B3%25E4%25BA%258Escala-%25E7%259A%2584%25E5%25B0%25BE%25E9%2580%2592%25E5%25BD%2592%25E4%25BD%25BF%25E7%2594%25A8jitwatch%25E4%25BB%258E%25E5%25AD%2597%25E8%258A%2582%25E7%25A0%2581%25E8%25A7%2582%25E5%25AF%259F%25E5%2585%25B6%25E5%258E%259F%25E7%2590%2586%2f">
+        <svg version="1.1" xml:space="preserve" viewBox="2 2 28 28" height="30px" width="30px" fill="currentColor">
+            <path
+                d="M26.49,29.86H5.5a3.37,3.37,0,0,1-2.47-1,3.35,3.35,0,0,1-1-2.47V5.48A3.36,3.36,0,0,1,3,3,3.37,3.37,0,0,1,5.5,2h21A3.38,3.38,0,0,1,29,3a3.36,3.36,0,0,1,1,2.46V26.37a3.35,3.35,0,0,1-1,2.47A3.38,3.38,0,0,1,26.49,29.86Zm-5.38-6.71a.79.79,0,0,0,.85-.66L24.73,9.24a.55.55,0,0,0-.18-.46.62.62,0,0,0-.41-.17q-.08,0-16.53,6.11a.59.59,0,0,0-.41.59.57.57,0,0,0,.43.52l4,1.24,1.61,4.83a.62.62,0,0,0,.63.43.56.56,0,0,0,.4-.17L16.54,20l4.09,3A.9.9,0,0,0,21.11,23.15ZM13.8,20.71l-1.21-4q8.72-5.55,8.78-5.55c.15,0,.23,0,.23.16a.18.18,0,0,1,0,.06s-2.51,2.3-7.52,6.8Z" />
+        </svg>
+    </a>
+</div>
+
+  </footer><div id="disqus_thread"></div>
+<script type="application/javascript">
+    window.disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "sucicada" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+</article>
+    </main>
+    
+<footer class="footer">
+    <span>&copy; 2023 <a href="https://sucicada.github.io/blog">SuCicada</a></span>
+    <span>
+        Powered by
+        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+        <path d="M12 6H0l6-6z" />
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu')
+    if (menu) {
+        menu.scrollLeft = localStorage.getItem("menu-scroll-position");
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var mybutton = document.getElementById("top-link");
+    window.onscroll = function () {
+        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
+            mybutton.style.visibility = "visible";
+            mybutton.style.opacity = "1";
+        } else {
+            mybutton.style.visibility = "hidden";
+            mybutton.style.opacity = "0";
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        if (document.body.className.includes("dark")) {
+            document.body.classList.remove('dark');
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            document.body.classList.add('dark');
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+<script>
+    document.querySelectorAll('pre > code').forEach((codeblock) => {
+        const container = codeblock.parentNode.parentNode;
+
+        const copybutton = document.createElement('button');
+        copybutton.classList.add('copy-code');
+        copybutton.innerHTML = 'copy';
+
+        function copyingDone() {
+            copybutton.innerHTML = 'copied!';
+            setTimeout(() => {
+                copybutton.innerHTML = 'copy';
+            }, 2000);
+        }
+
+        copybutton.addEventListener('click', (cb) => {
+            if ('clipboard' in navigator) {
+                navigator.clipboard.writeText(codeblock.textContent);
+                copyingDone();
+                return;
+            }
+
+            const range = document.createRange();
+            range.selectNodeContents(codeblock);
+            const selection = window.getSelection();
+            selection.removeAllRanges();
+            selection.addRange(range);
+            try {
+                document.execCommand('copy');
+                copyingDone();
+            } catch (e) { };
+            selection.removeRange(range);
+        });
+
+        if (container.classList.contains("highlight")) {
+            container.appendChild(copybutton);
+        } else if (container.parentNode.firstChild == container) {
+            
+        } else if (codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName == "TABLE") {
+            
+            codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(copybutton);
+        } else {
+            
+            codeblock.parentNode.appendChild(copybutton);
+        }
+    });
+</script>
+</body>
+
+</html>

@@ -148,246 +148,197 @@
 
 <article class="post-entry tag-entry"> 
   <header class="entry-header">
-    <h2>sublime 自定义主题(linux版)
+    <h2>简单聊天机器人(百度语音识别,语音合成,图灵机器人API实现)
     </h2>
   </header>
   <div class="entry-content">
-    <p>先ctrl&#43;`安装packa：
-import urllib.request,os; pf = ‘Package Control.sublime-package’; ipp = sublime.installed_packages_path(); urllib.request.install_opener( urllib.request.build_opener( urllib.request.ProxyHandler()) ); open(os.path.join(ipp, pf), ‘wb’).write(urllib.request.urlopen( ‘http://sublime.wbond.net/&#39; &#43; pf.replace(’ ‘,’%20’)).read())
-使用快捷键ctrl&#43;shift&#43;p，输入packet control install package
-这个网站上可以自制主题
-http://tmtheme-editor.herokuapp.com/#!/editor/local/undefined
-之后将文件放到home/peng/.config/sublime-text-3/Packages
-从preferences里的theme选项可以换了</p>
+    <p>百度语音识别API的使用样例（python实现）
+【Python】调用百度REST API实现语音识别
+python 调用图灵机器人api实现简单的人机交互
+百度语音识别api调用 python
+Python 调用图灵机器人API
+图灵机器人api调用
+【Python】调用百度REST API实现语音识别
+语音识别的技术原理是什么？
+处理音频–pyaudio
+Py之pyaudio：Python库之pyaudio简介、安装、使用方法之详细攻略
+关于ALSA lib pcm.c:7843:(snd_pcm_recover) underrun occurred等错误(未解决)
+https://blog.csdn.net/gaonii/article/details/69358270
+https://blog.petrockblock.com/forums/topic/alsa-lib-pcm-c7339snd_pcm_recover-underrun-occurred/
+https://stackoverflow.com/questions/23151269/alsa-lib-pcm-c7843snd-pcm-recover-underrun-occurred-error-in-julia-while
+树莓派上安装pyaudio 及 对声音实时监控
+http://www.tuling123.com/help/h_cent_webapi.jhtml?nav=doc
+http://ai.baidu.com/
+http://ai.baidu.com/docs#/ASR-API/top</p>
   </div>
   <footer class="entry-footer">SuCicada</footer>
-  <a class="entry-link" aria-label="post link to sublime 自定义主题(linux版)" href="https://sucicada.github.io/blog/posts/soft/sublime-%E8%87%AA%E5%AE%9A%E4%B9%89%E4%B8%BB%E9%A2%98linux%E7%89%88/"></a>
+  <a class="entry-link" aria-label="post link to 简单聊天机器人(百度语音识别,语音合成,图灵机器人API实现)" href="https://sucicada.github.io/blog/posts/soft/%E7%AE%80%E5%8D%95%E8%81%8A%E5%A4%A9%E6%9C%BA%E5%99%A8%E4%BA%BA%E7%99%BE%E5%BA%A6%E8%AF%AD%E9%9F%B3%E8%AF%86%E5%88%AB%E8%AF%AD%E9%9F%B3%E5%90%88%E6%88%90%E5%9B%BE%E7%81%B5%E6%9C%BA%E5%99%A8%E4%BA%BAapi%E5%AE%9E%E7%8E%B0/"></a>
 </article>
 
 <article class="post-entry tag-entry"> 
   <header class="entry-header">
-    <h2>ubuntu 18.04 使用 Docker 安装 kiwenlau版Hadoop
+    <h2>背包问题 01 和完全
     </h2>
   </header>
   <div class="entry-content">
-    <p>1. docker 安装 参考
-sudo apt-get update sudo dpkg --configure -a sudo apt-get install apt-transport-https ca-certificates curl software-properties-common curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add - sudo add-apt-repository &#34;deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable&#34; sudo apt-get update sudo apt-get install docker-ce 1.5 docker换源（可选） 参考
-2. docker验证 docker --version sudo docker run hello-world 3. docker非root使用 参考
-sudo usermod -aG docker $USER sudo service docker restart newgrp docker 4. hadoop的docker image 参考：基于Docker搭建Hadoop集群之升级版...</p>
+    <p>#include&lt;iostream&gt; using namespace std; int w[] = {0,2,3,4,7}; int v[] = {0,1,3,5,9}; const int Cap = 10; int m[Cap&#43;1][Cap&#43;1] = {0}; int N = 4; void show(); int pack01(){ //https://www.cnblogs.com/Christal-R/p/Dynamic_programming.html for(int i=1;i&lt;=4;i&#43;&#43;){ // for(int j=1;j&lt;=Cap;j&#43;&#43;){ for(int j=Cap;j&gt;0;j--){ if(j&lt;w[i]){ m[i][j] = m[i-1][j]; }else{ m[i][j] = max(m[i-1][j],m[i-1][j-w[i]]&#43;v[i]); } cout&lt;&lt;i&lt;&lt;&#34; &#34;&lt;&lt;j&lt;&lt;endl; cout&lt;&lt;v[i]&lt;&lt;&#34; &#34;&lt;&lt;w[i]&lt;&lt;endl; show(); } } } int m2[10] = {0}; int pack01_2(){ for(int i=1;i&lt;=4;i&#43;&#43;){ for(int j=Cap;j&gt;0;j--){ if(j &lt; w[i]){ m2[j] = m2[j]; }else{ m2[j] = max( m2[j], m2[j-w[i]] &#43; v[i]); } cout&lt;&lt;i&lt;&lt;&#34; &#34;&lt;&lt;j&lt;&lt;endl; cout&lt;&lt;m2[j-w[i]] &#43; v[i]&lt;&lt;endl; for(int i=0;i&lt;=Cap;i&#43;&#43;) cout&lt;&lt;m2[i]&lt;&lt;&#34; &#34;; cout&lt;&lt;endl; } } } void show(){ for(int i=0;i&lt;=4;i&#43;&#43;){ for(int j=0;j&lt;=Cap;j&#43;&#43;){ cout&lt;&lt;m[i][j]&lt;&lt;&#34; &#34;; } cout&lt;&lt;endl; } cout&lt;&lt;&#34;----------------&#34;&lt;&lt;endl; } int goback(){ int i=N,j=Cap; cout&lt;&lt;m[i][j]&lt;&lt;endl; while(i&gt;0 &amp;&amp; j&gt;0){ cout&lt;&lt;i&lt;&lt;&#34; &#34;&lt;&lt;j&lt;&lt;&#34; &#34;&lt;&lt;m[i][j]&lt;&lt;endl; if(m[i][j] == m[i-1][j]){ i--; }else{ cout&lt;&lt;&#34;choosen: &#34;&lt;&lt;v[i]&lt;&lt;&#34; &#34;&lt;&lt;w[i]&lt;&lt;endl; j -= w[i]; i--; } } } int packfull(){ // https://blog....</p>
   </div>
   <footer class="entry-footer">SuCicada</footer>
-  <a class="entry-link" aria-label="post link to ubuntu 18.04 使用 Docker 安装 kiwenlau版Hadoop" href="https://sucicada.github.io/blog/posts/soft/ubuntu-18.04-%E4%BD%BF%E7%94%A8-docker-%E5%AE%89%E8%A3%85-kiwenlau%E7%89%88hadoop/"></a>
+  <a class="entry-link" aria-label="post link to 背包问题 01 和完全" href="https://sucicada.github.io/blog/posts/soft/%E8%83%8C%E5%8C%85%E9%97%AE%E9%A2%98-01-%E5%92%8C%E5%AE%8C%E5%85%A8/"></a>
 </article>
 
 <article class="post-entry tag-entry"> 
   <header class="entry-header">
-    <h2>三柱体hanoi问题（C_C&#43;&#43;语言版）
+    <h2>能被学的东西 【已知】
     </h2>
   </header>
   <div class="entry-content">
-    <p>控制台运行输入数据格式 ： xxx（程序名） 3（汉诺塔层数）
-会显示出每一步的移动步骤，以及每一柱上留有的盘数
-#include&lt;iostream&gt; #include&lt;sstream&gt; using namespace std; int a=0,b=0,c=0; void hno(int n,char from,char mid,char to) { if(n&gt;1) { hno(n-1,from,to,mid); hno(1,from,mid,to); hno(n-1,mid,from,to); } else { switch(from) { case &#39;A&#39;:a--;break; case &#39;B&#39;:b--;break; case &#39;C&#39;:c--;break; } switch(to) { case &#39;A&#39;:a&#43;&#43;;break; case &#39;B&#39;:b&#43;&#43;;break; case &#39;C&#39;:c&#43;&#43;;break; } cout&lt;&lt;from&lt;&lt;&#34;--&gt;&#34;&lt;&lt;to&lt;&lt;&#34; A:&#34;&lt;&lt;a&lt;&lt;&#34; B:&#34;&lt;&lt;b&lt;&lt;&#34; C:&#34;&lt;&lt;c&lt;&lt;endl; } } int main(int argc,char *argv[]) { // cout&lt;&lt;argc&lt;&lt;endl; // cout&lt;&lt;&#34;_&#34;&lt;&lt;argv[1]&lt;&lt;&#34;_&#34;&lt;&lt;endl; // return 0; stringstream s; int n;//=*argv[1]; s&lt;&lt;argv[1]; s&gt;&gt;n; //cin&gt;&gt;n; a=n; //hno(n,) hno(n,&#39;A&#39;,&#39;B&#39;,&#39;C&#39;); return 0; } </p>
+    <p>可新学 Lucene Vertx Clojure Haskell 可深入 Netty Redis </p>
   </div>
   <footer class="entry-footer">SuCicada</footer>
-  <a class="entry-link" aria-label="post link to 三柱体hanoi问题（C_C&#43;&#43;语言版）" href="https://sucicada.github.io/blog/posts/soft/%E4%B8%89%E6%9F%B1%E4%BD%93hanoi%E9%97%AE%E9%A2%98c_c&#43;&#43;%E8%AF%AD%E8%A8%80%E7%89%88/"></a>
+  <a class="entry-link" aria-label="post link to 能被学的东西 【已知】" href="https://sucicada.github.io/blog/posts/soft/%E8%83%BD%E8%A2%AB%E5%AD%A6%E7%9A%84%E4%B8%9C%E8%A5%BF-%E5%B7%B2%E7%9F%A5/"></a>
 </article>
 
 <article class="post-entry tag-entry"> 
   <header class="entry-header">
-    <h2>三柱汉诺塔问题（Python版）
+    <h2>解决 vboxdrv.sh: failed: Cannot change group vboxusers for device _dev_vboxdrv.
     </h2>
   </header>
   <div class="entry-content">
-    <p>思路一样
-def move(n, a, b, c): if(n&gt;1): move(n-1,a,c,b) move(1,a,b,c) move(n-1,b,a,c) else: print a,&#39;--&gt;&#39;,c n = input(&#39;input a number&#39;) #int(raw_input()) move(n, &#39;A&#39;, &#39;B&#39;, &#39;C&#39;) </p>
+    <p>virtualbox 报错 ,看提示让执行以下
+sudo /sbin/vboxconfig 如果报错:
+vboxdrv.sh: failed: Cannot change group vboxusers for device /dev/vboxdrv.
+那么应该是本用户没有加入vboxusers.
+参考:
+https://ubuntuforums.org/archive/index.php/t-790303.html
+执行:
+sudo addgroup vboxusers sudo adduser your_username vboxusers sudo /etc/init.d/vboxdrv setup 即可
+错误原因应该是我卸载mysql时将一些旧的配置删了,我不知道,我相信没人会闲到犯和我一样的错误</p>
   </div>
   <footer class="entry-footer">SuCicada</footer>
-  <a class="entry-link" aria-label="post link to 三柱汉诺塔问题（Python版）" href="https://sucicada.github.io/blog/posts/soft/%E4%B8%89%E6%9F%B1%E6%B1%89%E8%AF%BA%E5%A1%94%E9%97%AE%E9%A2%98python%E7%89%88/"></a>
+  <a class="entry-link" aria-label="post link to 解决 vboxdrv.sh: failed: Cannot change group vboxusers for device _dev_vboxdrv." href="https://sucicada.github.io/blog/posts/soft/%E8%A7%A3%E5%86%B3-vboxdrv.sh-failed-cannot-change-group-vboxusers-for-device-_dev_vboxdrv./"></a>
 </article>
 
 <article class="post-entry tag-entry"> 
   <header class="entry-header">
-    <h2>关于 1.0_0.0 以及 0.0_0.0 的值
+    <h2>解决sublime 的 package control 问题here are no packages available for installation
     </h2>
   </header>
   <div class="entry-content">
-    <p>#include&lt;cstdio&gt; #include&lt;iostream&gt; using namespace std; int main() { printf(&#34;%d\n&#34;,1.0/0.0);//0 printf(&#34;%d\n&#34;,0.0/0.0);//0 printf(&#34;%lld\n&#34;,1.0/0.0);//9218868437227405312 printf(&#34;%lld\n&#34;,0.0/0.0);//-2251799813685248 printf(&#34;%lf\n&#34;,1.0/0.0);//1.#INF00 printf(&#34;%lf\n&#34;,0.0/0.0);//-1.#INF00 cout&lt;&lt;1.0/0.0&lt;&lt;endl;//inf cout&lt;&lt;0.0/0.0&lt;&lt;endl;//nan return 0; } </p>
+    <p>参考https://blog.csdn.net/zknxx/article/details/52685094
+关于 channel_v3.json 文件 ,下载的压缩包里没有, 需要下载https://packagecontrol.io/channel_v3.json 页面
+但是这个页面我发现一开始没有打开, 可以在这里下载, https://download.csdn.net/download/su_cicada/10568987
+积分至少 1真坑,不想出积分的可以去https://github.com/SuCicada/channel_v3.json 上下载我上传到上面的</p>
   </div>
   <footer class="entry-footer">SuCicada</footer>
-  <a class="entry-link" aria-label="post link to 关于 1.0_0.0 以及 0.0_0.0 的值" href="https://sucicada.github.io/blog/posts/soft/%E5%85%B3%E4%BA%8E-1.0_0.0-%E4%BB%A5%E5%8F%8A-0.0_0.0-%E7%9A%84%E5%80%BC/"></a>
+  <a class="entry-link" aria-label="post link to 解决sublime 的 package control 问题here are no packages available for installation" href="https://sucicada.github.io/blog/posts/soft/%E8%A7%A3%E5%86%B3sublime-%E7%9A%84-package-control-%E9%97%AE%E9%A2%98here-are-no-packages-available-for-installation/"></a>
 </article>
 
 <article class="post-entry tag-entry"> 
   <header class="entry-header">
-    <h2>刘汝佳p35,2-5（分数化小数）算法竞赛入门经典第二版
+    <h2>解决sublime不能输入中文，以及输入中文操作异常，以及文字候选框位置异常
     </h2>
   </header>
   <div class="entry-content">
-    <p>输入a，b，c，输出a/b的小数形式，精确到小数点后c位，a,b&lt;=10^6,c&lt;=100，以a=b=c=0结束，四舍五入
-#include&lt;stdio.h&gt; int main() { int a,b,c,n=1; while(scanf(&#34;%d%d%d&#34;,&amp;a,&amp;b,&amp;c)&amp;&amp;(a||b||c)) { printf(&#34;Case %d: %d.&#34;,n&#43;&#43;,a/b);//整数位和小数点 for(int i=0;i&lt;c-1;i&#43;&#43;) { printf(&#34;%d&#34;,(a*10/b)%10); a=(a*10)%b;//为了不让a溢出，用a/b的余数来算并不影响结果 } printf(&#34;%d\n&#34;,((a*100/b)%100&#43;5)/10);//最后一位四舍五入 } return 0; } 已经连这种简单的算法都要上网看别人写的了，自己想出来的都是错的，浪费了一个小时又。</p>
+    <p>两种办法：都试试吧，两个都试一遍
+https://github.com/YoungZHU/sublime-imfix
+强烈第一个，一定要记的sudo apt-get update &amp;&amp; sudo apt-get upgrade 一般解决不了更新一下系统就都好了
+https://blog.csdn.net/CV_YOU/article/details/77702383
+关于文中改桌面快捷方式的配置文件，来使得其能通过桌面快捷方式打开也能输入中文，有一个更加简单的方法。
+如果你之前通过终端输入subl来打开的sublime能输入中文的话，那么这一条就适用。
+就是将桌面上sublime的快捷方式的属性中的命令一行：改成 subl 。</p>
   </div>
   <footer class="entry-footer">SuCicada</footer>
-  <a class="entry-link" aria-label="post link to 刘汝佳p35,2-5（分数化小数）算法竞赛入门经典第二版" href="https://sucicada.github.io/blog/posts/soft/%E5%88%98%E6%B1%9D%E4%BD%B3p352-5%E5%88%86%E6%95%B0%E5%8C%96%E5%B0%8F%E6%95%B0%E7%AE%97%E6%B3%95%E7%AB%9E%E8%B5%9B%E5%85%A5%E9%97%A8%E7%BB%8F%E5%85%B8%E7%AC%AC%E4%BA%8C%E7%89%88/"></a>
+  <a class="entry-link" aria-label="post link to 解决sublime不能输入中文，以及输入中文操作异常，以及文字候选框位置异常" href="https://sucicada.github.io/blog/posts/soft/%E8%A7%A3%E5%86%B3sublime%E4%B8%8D%E8%83%BD%E8%BE%93%E5%85%A5%E4%B8%AD%E6%96%87%E4%BB%A5%E5%8F%8A%E8%BE%93%E5%85%A5%E4%B8%AD%E6%96%87%E6%93%8D%E4%BD%9C%E5%BC%82%E5%B8%B8%E4%BB%A5%E5%8F%8A%E6%96%87%E5%AD%97%E5%80%99%E9%80%89%E6%A1%86%E4%BD%8D%E7%BD%AE%E5%BC%82%E5%B8%B8/"></a>
 </article>
 
 <article class="post-entry tag-entry"> 
   <header class="entry-header">
-    <h2>刘汝佳p35,2-6（123排列）算法竞赛入门经典第二版
+    <h2>解决Visual Stdio Code python 输出乱码（中文乱码和全部乱码）
     </h2>
   </header>
   <div class="entry-content">
-    <p>算法竞赛入门经典第二版
-刘汝佳p35 , 2-6
-用1,2,3，….，9组成3个三位数abc，def和ghi，每个数字恰好使用一次，要求abc:def:ghi=1:2:3。输出所有解。
-#include&lt;cstdio&gt; #include&lt;iostream&gt; using namespace std; int nn(int a,int *n) { //cout&lt;&lt;&#34;a&#34;&lt;&lt;a&lt;&lt;endl; for(int i=0;i&lt;8;i&#43;&#43;) { if(a==n[i]) { //cout&lt;&lt;n[i]&lt;&lt;endl; n[i]=-1; return 0; } } return 1; } void num(int a) { int n[9]; for(int i=0;i&lt;8;i&#43;&#43;) n[i]=i&#43;1; int b=a*2; int c=a*3; int s[9]; s[0]=a/100; s[1]=(a/10)%10; s[2]=a%10; s[3]=b/100; s[4]=(b/10)%10; s[5]=b%10; s[6]=c/100; s[7]=(c/10)%10; s[8]=c%10; for(int i=0;i&lt;8;i&#43;&#43;) { //cout&lt;&lt;&#34;si&#34;&lt;&lt;s[i]&lt;&lt;endl; if(nn(s[i],n)==1) { //cout&lt;&lt;&#34;return&#34;&lt;&lt;endl; return; } } cout&lt;&lt;a&lt;&lt;&#34; &#34;&lt;&lt;b&lt;&lt;&#34; &#34;&lt;&lt;c&lt;&lt;endl; } int main() { for(int a=100;a&lt;=333;a&#43;&#43;) { num(a); } return 0; } 所以结果是...</p>
+    <p>第一种情况
+无论输出什么都是乱码一堆，但是在切换到别的文件输出正常，在排除了代码错误，以及中文输出（下面会说）的情况，那么你只需要看看是不是你的文件名的关系，如果有空格则不行，别的字符还没有尝试。
+运行环境：vscode版本：1.19.3
+代码语言：python 3.6
+第二种情况
+在vscode里用ctrl&#43;shift&#43;B直接输出python运行结果时。
+print(&#39;是中文吗&#39;) 下面输出栏中却显示的是乱码，而在终端中运行则正常显示中文。
+查了很久，尝试了很多办法，改了很多设置。都没用，在不换ide的前提下，终于找见了一种在vscode中能行的办法。
+在一个py文件里加上以下内容
+#一、如果vs code中输出中文乱码 # -*-coding:utf-8 -*- import io import sys #改变标准输出的默认编码 sys.stdout=io.TextIOWrapper(sys.stdout.buffer,encoding=&#39;utf8&#39;) print(&#39;中文吗&#39;) 即可，如果每次都要写一堆很麻烦，那么就将其作为一个单独的py文件，再写别的py文件时，import进来就行了。
+（别问我为什么不用F5来调试，因为我的vs会告诉我 调试适配器进程已意外终止）</p>
   </div>
   <footer class="entry-footer">SuCicada</footer>
-  <a class="entry-link" aria-label="post link to 刘汝佳p35,2-6（123排列）算法竞赛入门经典第二版" href="https://sucicada.github.io/blog/posts/soft/%E5%88%98%E6%B1%9D%E4%BD%B3p352-6123%E6%8E%92%E5%88%97%E7%AE%97%E6%B3%95%E7%AB%9E%E8%B5%9B%E5%85%A5%E9%97%A8%E7%BB%8F%E5%85%B8%E7%AC%AC%E4%BA%8C%E7%89%88/"></a>
+  <a class="entry-link" aria-label="post link to 解决Visual Stdio Code python 输出乱码（中文乱码和全部乱码）" href="https://sucicada.github.io/blog/posts/soft/%E8%A7%A3%E5%86%B3visual-stdio-code-python-%E8%BE%93%E5%87%BA%E4%B9%B1%E7%A0%81%E4%B8%AD%E6%96%87%E4%B9%B1%E7%A0%81%E5%92%8C%E5%85%A8%E9%83%A8%E4%B9%B1%E7%A0%81/"></a>
 </article>
 
 <article class="post-entry tag-entry"> 
   <header class="entry-header">
-    <h2>刘汝佳p39,3-2（开灯问题）算法竞赛入门经典第二版
+    <h2>解决Visual Stdio Code 调试时显示“调试适配器进程已意外终止”
     </h2>
   </header>
   <div class="entry-content">
-    <p>有n盏灯，编号为1～n，第1个人把所有灯打开，第2个人按下所有编号为2的倍数的开关（这些灯将被关掉），第3个人按下所有编号为3的倍数的开关（其中关掉的灯被打开， 开着灯将被关闭），依此类推。一共有k个人，问最后有哪些灯开着？
-输入：n和k，输出开着的灯编号。k≤n≤1000。
-样例输入：7 3
-样例输出：1 5 6 7
-（题目描述拷贝自http://blog.csdn.net/oceaniwater/article/details/40709609）
-#include&lt;stdio.h&gt; int main() { int n,k,ni,ki,nii; //n=7;k=3; scanf(&#34;%d%d&#34;,&amp;n,&amp;k); for(ni=1;ni&lt;=n;ni&#43;&#43;)//灯数 { nii=ni; for(ki=1;ki&lt;=k;ki&#43;&#43;)//每灯人数 { //printf(&#34;%%%d &#34;,nii%ki); if(nii%ki==0)//当前灯是否为当前人的倍数 { ni*=(-1);//负数为开，正数为灭 } //printf(&#34;!%d\n&#34;,ni); } if(ni&lt;0) { printf(&#34;%d &#34;,ni*=-1); } } return 0; } </p>
+    <p>当我按下F5的时候，这个ide告诉我“调试适配器进程已意外终止”，无法调试，断点就失去了作用，这让我十分烦恼，在尝试了网上的所有办法后，比如重新配置launch文件，或者重新安装python插件，重新安装软件，都没有用 。
+那么这样的话，不妨试试彻底删除，重新安装软件吧。
+在看了https://segmentfault.com/q/1010000008133674中
+2个地方需要删除：
+C:Users{user}AppDataRoamingCode
+C:Users{user}.vscode
+其中我在卸载vscode后只删除了第二个文件夹，然后再重新安装1.19.3后，终于可以调试了。</p>
   </div>
   <footer class="entry-footer">SuCicada</footer>
-  <a class="entry-link" aria-label="post link to 刘汝佳p39,3-2（开灯问题）算法竞赛入门经典第二版" href="https://sucicada.github.io/blog/posts/soft/%E5%88%98%E6%B1%9D%E4%BD%B3p393-2%E5%BC%80%E7%81%AF%E9%97%AE%E9%A2%98%E7%AE%97%E6%B3%95%E7%AB%9E%E8%B5%9B%E5%85%A5%E9%97%A8%E7%BB%8F%E5%85%B8%E7%AC%AC%E4%BA%8C%E7%89%88/"></a>
+  <a class="entry-link" aria-label="post link to 解决Visual Stdio Code 调试时显示“调试适配器进程已意外终止”" href="https://sucicada.github.io/blog/posts/soft/%E8%A7%A3%E5%86%B3visual-stdio-code-%E8%B0%83%E8%AF%95%E6%97%B6%E6%98%BE%E7%A4%BA%E8%B0%83%E8%AF%95%E9%80%82%E9%85%8D%E5%99%A8%E8%BF%9B%E7%A8%8B%E5%B7%B2%E6%84%8F%E5%A4%96%E7%BB%88%E6%AD%A2/"></a>
 </article>
 
 <article class="post-entry tag-entry"> 
   <header class="entry-header">
-    <h2>刘汝佳p39,3-3（蛇形填数）算法竞赛入门经典第二版
+    <h2>论如何解决类似如 &#39;&#39;&#39;使用 openresty 库 lua-resty-kafka 对接kafka 报错 no resolver defined to resolve &#34;xxx&#34; &#39;&#39;&#39; 的问题
     </h2>
   </header>
   <div class="entry-content">
-    <p>在nn方阵里填入1,2,„,nn，要求填成蛇形。例如n=4时方阵为
-10 11 12 1
-9 16 13 2
-8 15 14 3
-7 6 5 4
-上面的方阵中，多余的空格只是为了便于观察规律，不必严格输出。n≤8。
-#include&lt;iostream&gt; #include&lt;iomanip&gt; using namespace std; int const N=120; int main() { int n[N][N]={0}; int m,mm; cin&gt;&gt;m; mm=m; int s=1,i,j; //s=n[i=0][j=m-1]=1; while(m--) { //m--; i=mm-m-1; j=m; while(i&lt;=m-1 &amp;&amp;n[i][j]==0) n[i&#43;&#43;][j]=s&#43;&#43;;//right while(j&gt;=mm-m &amp;&amp;n[i][j]==0) n[i][j--]=s&#43;&#43;;//down while(i&gt;=mm-m &amp;&amp;n[i][j]==0) n[i--][j]=s&#43;&#43;;//left while(j&lt;=m-1 &amp;&amp;n[i][j]==0) n[i][j&#43;&#43;]=s&#43;&#43;;//up if(s==mm*mm)n[i&#43;1][j-1]=s; } for(i=0;i&lt;mm;i&#43;&#43;) { for(j=0;j&lt;mm;j&#43;&#43;) cout&lt;&lt;setw(3)&lt;&lt;n[i][j]; cout&lt;&lt;endl; } return 0; } </p>
+    <p>始苦寻无果，终幸得其所
+参考项目的issue
+https://github.com/doujiang24/lua-resty-kafka/issues/5
+这个issue已经将问题说的很明白了
+在我电脑上当时的表现就是lua从kafka获取到的broker的host一直是ubuntu
+而我明明给lua中配置的host是ip地址。
+而ubuntu这个域名在/etc/hosts中有设置，但是在我去掉域名解析，重启电脑之后，还是没有解决。
+因为有这个被动ip转成了本地域名的灵异现象存在，使得lua-resty-kafka库无法解析域名，导致生产者无法向kafka推送数据。
+而解决办法则是在kafka的配置文件 server.properties中设置
+host.name= {你的ip或域名}
+更新: 原因研究
+根据:kafka主机名解析hostname
+我们查看zookeeper中关于kafka的brokers的信息
+[zk: localhost:2181(CONNECTED) 0] get /brokers/ids/0
+{“listener_security_protocol_map”:{“PLAINTEXT”:“PLAINTEXT”},“endpoints”:[“PLAINTEXT://ubuntu:9092”],“jmx_port”:-1,“host”:“ubuntu”,“timestamp”:“1584515322686”,“port”:9092,“version”:4}
+从中果然发现了ubuntu:9092，所以问题出在zookeeper。
+然后继续搜索，找到
+如何避免将Kafka broker机器的hostname注册进zookeeper
+其中提到了配置文件的注释提示信息，翻回去一看
+# Hostname and port the broker will advertise to producers and consumers. If not set,
+# it uses the value for “listeners” if configured. Otherwise, it will use the value
+# returned from java.net.InetAddress.getCanonicalHostName().
+#advertised.listeners=PLAINTEXT://your.host.name:9092
+果然，如果没有配置就使用 java.net.InetAddress.getCanonicalHostName()获得。
+到服务器上使用命令执行一看
+java&gt; java.net.InetAddress.getLocalHost().getCanonicalHostName(); java.lang.String res0 = &#34;ubuntu&#34; 果然如此！...</p>
   </div>
   <footer class="entry-footer">SuCicada</footer>
-  <a class="entry-link" aria-label="post link to 刘汝佳p39,3-3（蛇形填数）算法竞赛入门经典第二版" href="https://sucicada.github.io/blog/posts/soft/%E5%88%98%E6%B1%9D%E4%BD%B3p393-3%E8%9B%87%E5%BD%A2%E5%A1%AB%E6%95%B0%E7%AE%97%E6%B3%95%E7%AB%9E%E8%B5%9B%E5%85%A5%E9%97%A8%E7%BB%8F%E5%85%B8%E7%AC%AC%E4%BA%8C%E7%89%88/"></a>
+  <a class="entry-link" aria-label="post link to 论如何解决类似如 &#39;&#39;&#39;使用 openresty 库 lua-resty-kafka 对接kafka 报错 no resolver defined to resolve &#34;xxx&#34; &#39;&#39;&#39; 的问题" href="https://sucicada.github.io/blog/posts/soft/%E8%AE%BA%E5%A6%82%E4%BD%95%E8%A7%A3%E5%86%B3%E7%B1%BB%E4%BC%BC%E5%A6%82-%E4%BD%BF%E7%94%A8-openresty-%E5%BA%93-lua-resty-kafka-%E5%AF%B9%E6%8E%A5kafka-%E6%8A%A5%E9%94%99-no-resolver-defined-to-resolve-xxx-%E7%9A%84%E9%97%AE%E9%A2%98/"></a>
 </article>
 
 <article class="post-entry tag-entry"> 
   <header class="entry-header">
-    <h2>刘汝佳p41,3-4（竖式问题）算法竞赛入门经典第二版
+    <h2>读取properties配置文件路径找不到的解决方法
     </h2>
   </header>
   <div class="entry-content">
-    <p> 题目：
-找出所有形如abc*de（三位数乘以两位数）的算式，使得在完整的竖式中，所有数字都属于一个特定的数字集合。输入数字集合（相邻数字之间没有空格），输出所有竖式。每个竖式前应有编号，之后应有一个空行。最后输出解的总数。具体格式见样例输出（为了便于观察，竖式中的空格改用小数点显示，但你的程序应该输出空格，而非小数点）。
-样例输入：2357
-样例输出：
-&lt;1&gt;
-..775
-X..33
-.—–
-.2325
-.—–
-25575
-The number of solutions = 1
-分析：
-尝试所有的abc和de，判断是否满足条件。
-#include&lt;iostream&gt; #include&lt;string.h&gt; #include&lt;cstdio&gt; using namespace std; int main() { char s[15],f[25]; int n=1; cin&gt;&gt;s; for(int a=100;a&lt;1000;a&#43;&#43;) { for(int b=10;b&lt;=99;b&#43;&#43;) { int o=1; int x=a*(b%10),y=a*(b/10),z=a*b; sprintf(f,&#34;%d%d%d%d%d&#34;,a,b,x,y,z);//将abxyz输入到f中 for(int i=0;i&lt;strlen(f);i&#43;&#43;) if(strchr(s,f[i])==NULL) o=0; if(o) printf(&#34;&lt;%d&gt;\n%5d\nX%4d\n-----\n%5d\n%4d \n-----\n%5d\n\n&#34;,n&#43;&#43;,a,b,x,y,z); } } cout&lt;&lt;&#34;The number of solutions = &#34;&lt;&lt;n-1&lt;&lt;endl; return 0; } </p>
+    <p>public class DB_connection { String JDBC_DRIVER;//=&#34;com.mysql.jdbc.Driver&#34;; String DB_URL;// = &#34;jdbc:mysql://localhost:3306/promotion_website?useUnicode=true&amp;characterEncoding=UTF-8&#34;; String FILENAME = &#34;/database.properties&#34;; String USER;// = &#34;root&#34;; String PASS;// = &#34;mysql&#34;; Connection conn = null; public DB_connection() { try { Properties prop = new Properties(); String FILE_PATH = this.getClass().getClassLoader().getResource(FILENAME).getPath(); System.out.println(&#34;path &#34;&#43;FILE_PATH); File file = new File(FILE_PATH); FileInputStream in = new FileInputStream(file); prop.load(in); JDBC_DRIVER = prop.getProperty(&#34;JDBC_DRIVER&#34;); DB_URL = prop.getProperty(&#34;DB_URL&#34;); USER = prop.getProperty(&#34;USER&#34;); PASS = prop.getProperty(&#34;PASS&#34;); } catch (FileNotFoundException ex) { Logger....</p>
   </div>
   <footer class="entry-footer">SuCicada</footer>
-  <a class="entry-link" aria-label="post link to 刘汝佳p41,3-4（竖式问题）算法竞赛入门经典第二版" href="https://sucicada.github.io/blog/posts/soft/%E5%88%98%E6%B1%9D%E4%BD%B3p413-4%E7%AB%96%E5%BC%8F%E9%97%AE%E9%A2%98%E7%AE%97%E6%B3%95%E7%AB%9E%E8%B5%9B%E5%85%A5%E9%97%A8%E7%BB%8F%E5%85%B8%E7%AC%AC%E4%BA%8C%E7%89%88/"></a>
-</article>
-
-<article class="post-entry tag-entry"> 
-  <header class="entry-header">
-    <h2>判断字符是否为字母或数字
-    </h2>
-  </header>
-  <div class="entry-content">
-    <p>参考：
-C语言中isalnum()函数和isalpha()函数的对比使用
-C语言 判断字符的大小写 isalpha()函数
-#include&lt;ctype.h&gt;//或&lt;cctype&gt; int isalpha(int ch)//为英文字母时返回不一定为1的非零，否则返回零 isalnum(c)//判断c是否为英文字母或数字 isupper(c)//判断c是否为大写英文字母 islower(c)//判断c是否为小写英文字母 isdigit(c)//判断c是否为数字 以上若不是所判断字符类型则都返回零</p>
-  </div>
-  <footer class="entry-footer">SuCicada</footer>
-  <a class="entry-link" aria-label="post link to 判断字符是否为字母或数字" href="https://sucicada.github.io/blog/posts/soft/%E5%88%A4%E6%96%AD%E5%AD%97%E7%AC%A6%E6%98%AF%E5%90%A6%E4%B8%BA%E5%AD%97%E6%AF%8D%E6%88%96%E6%95%B0%E5%AD%97/"></a>
-</article>
-
-<article class="post-entry tag-entry"> 
-  <header class="entry-header">
-    <h2>十六进制转十进制.h
-    </h2>
-  </header>
-  <div class="entry-content">
-    <p>#include&lt;stdio.h&gt; #include&lt;ctype.h&gt; int sc(char a[])//传进来代表十六进制的字符串数组，返回十进制 { int i,n=0,t; for(i=0;a[i];i&#43;&#43;) { a[i]=toupper(a[i]); if(a[i]&gt;=&#39;A&#39;) t=a[i]-&#39;A&#39;&#43;10; else t=a[i]-&#39;0&#39;; n=n*16&#43;t; } return n; } </p>
-  </div>
-  <footer class="entry-footer">SuCicada</footer>
-  <a class="entry-link" aria-label="post link to 十六进制转十进制.h" href="https://sucicada.github.io/blog/posts/soft/%E5%8D%81%E5%85%AD%E8%BF%9B%E5%88%B6%E8%BD%AC%E5%8D%81%E8%BF%9B%E5%88%B6.h/"></a>
-</article>
-
-<article class="post-entry tag-entry"> 
-  <header class="entry-header">
-    <h2>控制台光标移动(有尾迹）
-    </h2>
-  </header>
-  <div class="entry-content">
-    <p>更改了网上的代码，实现有尾迹的移动，
-用键盘上的上下左右来控制
-这是借鉴地址：C语言之实现控制台光标随意移动
-#include &lt;stdio.h&gt; #include &lt;windows.h&gt; #include &lt;conio.h&gt; HANDLE hout; //获得输入 char getInput() { int ch; //输入字符串 COORD coord; //屏幕上的坐标 CONSOLE_SCREEN_BUFFER_INFO csbi; //控制台屏幕缓冲区信息 coord.X=11; coord.Y=10; ch=getch(); csbi.dwCursorPosition.X=11; csbi.dwCursorPosition.Y=10; //0x0d表示回车，0XE0表示上下左右等键的键码 while(ch==0xE0||ch==0x0d) { GetConsoleScreenBufferInfo(hout,&amp;csbi);//读取控制台屏幕缓冲信息 coord.X=csbi.dwCursorPosition.X; //得到坐标X的值 coord.Y=csbi.dwCursorPosition.Y; //得到坐标Y的值 ch=getch(); //printf(&#34; &#34;); //上 if(ch==0x48) { if(coord.Y!=0) { coord.Y--; //printf(&#34;%c&#34;,&#39;A&#39;); } } //下 else if(ch==0x50) { coord.Y&#43;&#43;; //printf(&#34;%c&#34;,&#39;A&#39;); } //左 else if(ch==0x4b) { if(coord.X!=0){coord.X--;}//printf(&#34;%c&#34;,&#39;A&#39;);} } //右 else if(ch==0x4d) { if(coord.X!=79) { coord.X&#43;&#43;; //printf(&#34;%c&#34;,&#39;A&#39;); } } printf(&#34;%c&#34;,&#39;....</p>
-  </div>
-  <footer class="entry-footer">SuCicada</footer>
-  <a class="entry-link" aria-label="post link to 控制台光标移动(有尾迹）" href="https://sucicada.github.io/blog/posts/soft/%E6%8E%A7%E5%88%B6%E5%8F%B0%E5%85%89%E6%A0%87%E7%A7%BB%E5%8A%A8%E6%9C%89%E5%B0%BE%E8%BF%B9/"></a>
-</article>
-
-<article class="post-entry tag-entry"> 
-  <header class="entry-header">
-    <h2>比赛中使用文件输入输出
-    </h2>
-  </header>
-  <div class="entry-content">
-    <p>使用文件最简单的方式就是使用输入输出重定向
-freopen(&#34;input.txt&#34;,&#34;r&#34;,stdin);//从文件读入 freopen(&#34;outout.txt&#34;,&#34;w&#34;,stdout);//写入文件 非重定向
-#include&lt;stdio.h&gt; int main() { FILE *fin,*fout; int x; fin = fopen(&#34;input.txt&#34;,&#34;rb&#34;);//从文件读入 fout = fopen(&#34;outout.txt&#34;,&#34;wb&#34;);//写入文件 fscanf(fin,&#34;%d&#34;,&amp;x); fprintf(fout,&#34;%d&#34;,x); fclose(fin); fclose(fout); return 0; } </p>
-  </div>
-  <footer class="entry-footer">SuCicada</footer>
-  <a class="entry-link" aria-label="post link to 比赛中使用文件输入输出" href="https://sucicada.github.io/blog/posts/soft/%E6%AF%94%E8%B5%9B%E4%B8%AD%E4%BD%BF%E7%94%A8%E6%96%87%E4%BB%B6%E8%BE%93%E5%85%A5%E8%BE%93%E5%87%BA/"></a>
-</article>
-
-<article class="post-entry tag-entry"> 
-  <header class="entry-header">
-    <h2>求int型的最大取值（正数）
-    </h2>
-  </header>
-  <div class="entry-content">
-    <p>用的是夹值法
-#include&lt;stdio.h&gt; int main(){ int i=1,n=1,m; do { n=i; i=i*2; printf(&#34;%d\n&#34;,n); } while((i/2)==n);//n是存数，i去趟雷 putchar(&#39;\n&#39;); m=n; for(;;) { n=m; m&#43;=1; if((m-1)!=n) { printf(&#34;break&#34;); break; } else m-=1; i=1; while(1) { if(i!=1) if((n-i/2)!=m) { printf(&#34;int %d\n&#34;,m); return; } printf(&#34;!!!\n&#34;); if(i!=1) m=n;//m是存数，n去趟雷 n=n&#43;i; i*=2; printf(&#34;%d %d\n&#34;,m,n); } } getchar(); return 0; } 最大值：2147483647</p>
-  </div>
-  <footer class="entry-footer">SuCicada</footer>
-  <a class="entry-link" aria-label="post link to 求int型的最大取值（正数）" href="https://sucicada.github.io/blog/posts/soft/%E6%B1%82int%E5%9E%8B%E7%9A%84%E6%9C%80%E5%A4%A7%E5%8F%96%E5%80%BC%E6%AD%A3%E6%95%B0/"></a>
-</article>
-
-<article class="post-entry tag-entry"> 
-  <header class="entry-header">
-    <h2>求最长回文子串
-    </h2>
-  </header>
-  <div class="entry-content">
-    <p>一段字符串中出现的正反读一样的子串
-当时自己写下的泛泛之词
-#include&lt;stdio.h&gt; #define N 20 int main() { char a[N]=&#34;abcb&#34;; char b[N]=&#34;0000&#34;; int i,j,m; for(i=0;i&lt;strlen(a)/2;i&#43;&#43;) { for(j=i&#43;1;j&lt;strlen(a);j&#43;&#43;) { if(a[i]==a[j]) { printf(&#34;%d %d %d &#34;,i,j ,m); for(m=i;m&lt;=j;m&#43;&#43;) { if(a[m]!=a[j&#43;i-m]) break; b[m-i]=a[m]; b[j-i-m]=a[j&#43;i-m]; if((m==j&#43;i-m)||(m==j&#43;i-m-1)) i=j; printf(&#34;%s\n&#34;,b); } } } } printf(&#34;%s\n&#34;,b); return 0; } </p>
-  </div>
-  <footer class="entry-footer">SuCicada</footer>
-  <a class="entry-link" aria-label="post link to 求最长回文子串" href="https://sucicada.github.io/blog/posts/soft/%E6%B1%82%E6%9C%80%E9%95%BF%E5%9B%9E%E6%96%87%E5%AD%90%E4%B8%B2/"></a>
+  <a class="entry-link" aria-label="post link to 读取properties配置文件路径找不到的解决方法" href="https://sucicada.github.io/blog/posts/soft/%E8%AF%BB%E5%8F%96properties%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6%E8%B7%AF%E5%BE%84%E6%89%BE%E4%B8%8D%E5%88%B0%E7%9A%84%E8%A7%A3%E5%86%B3%E6%96%B9%E6%B3%95/"></a>
 </article>
 
 <article class="post-entry tag-entry"> 

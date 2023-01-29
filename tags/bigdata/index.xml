@@ -47,5 +47,146 @@ body 二进制形式存储，从Source接收到的数据会存储在这里
 Source 带着问题 header 里有什么 一些实现类 ExecSource ExecRunnable 主要处理 通过 EventBuilder.withBody 基础创建 Event ， 一行一个 Event header 为空 flushEventBatch 中 ChannelProcessor :: processEventBatch</description>
     </item>
     
+    <item>
+      <title>Hbase2 没有org.apache.hadoop.hbase.mapreduce.TableInputFormat</title>
+      <link>https://sucicada.github.io/blog/posts/bigdata/hbase2-%E6%B2%A1%E6%9C%89org.apache.hadoop.hbase.mapreduce.tableinputformat/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://sucicada.github.io/blog/posts/bigdata/hbase2-%E6%B2%A1%E6%9C%89org.apache.hadoop.hbase.mapreduce.tableinputformat/</guid>
+      <description>导入
+&amp;lt;dependency&amp;gt; &amp;lt;groupId&amp;gt;org.apache.hbase&amp;lt;/groupId&amp;gt; &amp;lt;artifactId&amp;gt;hbase-mapreduce&amp;lt;/artifactId&amp;gt; &amp;lt;version&amp;gt;${hbase.version}&amp;lt;/version&amp;gt; &amp;lt;/dependency&amp;gt; 参考链接：https://juejin.cn/post/6844903959585374221</description>
+    </item>
+    
+    <item>
+      <title>Jetty 报错 Tomcat不报错 maven jetty插件不报错, 可能是jetty版本不统一造成</title>
+      <link>https://sucicada.github.io/blog/posts/bigdata/jetty-%E6%8A%A5%E9%94%99-tomcat%E4%B8%8D%E6%8A%A5%E9%94%99-maven-jetty%E6%8F%92%E4%BB%B6%E4%B8%8D%E6%8A%A5%E9%94%99-%E5%8F%AF%E8%83%BD%E6%98%AFjetty%E7%89%88%E6%9C%AC%E4%B8%8D%E7%BB%9F%E4%B8%80%E9%80%A0%E6%88%90/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://sucicada.github.io/blog/posts/bigdata/jetty-%E6%8A%A5%E9%94%99-tomcat%E4%B8%8D%E6%8A%A5%E9%94%99-maven-jetty%E6%8F%92%E4%BB%B6%E4%B8%8D%E6%8A%A5%E9%94%99-%E5%8F%AF%E8%83%BD%E6%98%AFjetty%E7%89%88%E6%9C%AC%E4%B8%8D%E7%BB%9F%E4%B8%80%E9%80%A0%E6%88%90/</guid>
+      <description>要在服务器上部署, jetty报错找不见hibernate某个函数, 然而此函数存在.
+开发环境为 Intellij
+jetty插件版本: 9.2.6.v20141205
+外置jetty版本: 9.4.21.v20190926
+如果你也有类似问题, 不妨试试将jetty版本统一
+我将外置jetty降版本后成功
+来自这里的启发</description>
+    </item>
+    
+    <item>
+      <title>Spark 2.4.0 cdh6.3.2连接 Hive 2.1.1 cdh6.3.2</title>
+      <link>https://sucicada.github.io/blog/posts/bigdata/spark-2.4.0-cdh6.3.2%E8%BF%9E%E6%8E%A5-hive-2.1.1-cdh6.3.2/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://sucicada.github.io/blog/posts/bigdata/spark-2.4.0-cdh6.3.2%E8%BF%9E%E6%8E%A5-hive-2.1.1-cdh6.3.2/</guid>
+      <description>以下maven配置能正确读取hive.
+不该加的不要加. spark版本用cdh的.
+&amp;lt;properties&amp;gt; &amp;lt;maven.compiler.source&amp;gt;8&amp;lt;/maven.compiler.source&amp;gt; &amp;lt;maven.compiler.target&amp;gt;8&amp;lt;/maven.compiler.target&amp;gt; &amp;lt;spark.version&amp;gt;2.4.0-cdh6.3.2&amp;lt;/spark.version&amp;gt; &amp;lt;hive.version&amp;gt;2.1.1-cdh6.3.2&amp;lt;/hive.version&amp;gt; &amp;lt;/properties&amp;gt; &amp;lt;dependencies&amp;gt; &amp;lt;dependency&amp;gt; &amp;lt;groupId&amp;gt;org.apache.spark&amp;lt;/groupId&amp;gt; &amp;lt;artifactId&amp;gt;spark-sql_2.11&amp;lt;/artifactId&amp;gt; &amp;lt;version&amp;gt;${spark.version}&amp;lt;/version&amp;gt; &amp;lt;/dependency&amp;gt; &amp;lt;dependency&amp;gt; &amp;lt;groupId&amp;gt;org.apache.spark&amp;lt;/groupId&amp;gt; &amp;lt;artifactId&amp;gt;spark-core_2.11&amp;lt;/artifactId&amp;gt; &amp;lt;version&amp;gt;${spark.version}&amp;lt;/version&amp;gt; &amp;lt;/dependency&amp;gt; &amp;lt;dependency&amp;gt; &amp;lt;groupId&amp;gt;org.apache.spark&amp;lt;/groupId&amp;gt; &amp;lt;artifactId&amp;gt;spark-hive_2.11&amp;lt;/artifactId&amp;gt; &amp;lt;version&amp;gt;${spark.version}&amp;lt;/version&amp;gt; &amp;lt;exclusions&amp;gt; &amp;lt;exclusion&amp;gt; &amp;lt;artifactId&amp;gt;hive-metastore&amp;lt;/artifactId&amp;gt; &amp;lt;groupId&amp;gt;org.spark-project.hive&amp;lt;/groupId&amp;gt; &amp;lt;/exclusion&amp;gt; &amp;lt;exclusion&amp;gt; &amp;lt;artifactId&amp;gt;hive-exec&amp;lt;/artifactId&amp;gt; &amp;lt;groupId&amp;gt;org.spark-project.hive&amp;lt;/groupId&amp;gt; &amp;lt;/exclusion&amp;gt; &amp;lt;/exclusions&amp;gt; &amp;lt;/dependency&amp;gt; &amp;lt;!-- &amp;lt;dependency&amp;gt;--&amp;gt; &amp;lt;!-- &amp;lt;groupId&amp;gt;org.apache.hive&amp;lt;/groupId&amp;gt;--&amp;gt; &amp;lt;!-- &amp;lt;artifactId&amp;gt;hive-metastore&amp;lt;/artifactId&amp;gt;--&amp;gt; &amp;lt;!-- &amp;lt;version&amp;gt;${hive.version}&amp;lt;/version&amp;gt;--&amp;gt; &amp;lt;!-- &amp;lt;/dependency&amp;gt;--&amp;gt; &amp;lt;dependency&amp;gt; &amp;lt;groupId&amp;gt;org.apache.hive&amp;lt;/groupId&amp;gt; &amp;lt;artifactId&amp;gt;hive-exec&amp;lt;/artifactId&amp;gt; &amp;lt;version&amp;gt;${hive.version}&amp;lt;/version&amp;gt; &amp;lt;exclusions&amp;gt; &amp;lt;exclusion&amp;gt; &amp;lt;groupId&amp;gt;*&amp;lt;/groupId&amp;gt; &amp;lt;artifactId&amp;gt;*&amp;lt;/artifactId&amp;gt; &amp;lt;/exclusion&amp;gt; &amp;lt;/exclusions&amp;gt; &amp;lt;/dependency&amp;gt; &amp;lt;/dependencies&amp;gt; </description>
+    </item>
+    
+    <item>
+      <title>Spark2 Sql 遇到 Caused by: java.lang.NoSuchFieldError: HIVE_STATS_JDBC_TIMEOUT</title>
+      <link>https://sucicada.github.io/blog/posts/bigdata/spark2-sql-%E9%81%87%E5%88%B0-caused-by-java.lang.nosuchfielderror-hive_stats_jdbc_timeout/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://sucicada.github.io/blog/posts/bigdata/spark2-sql-%E9%81%87%E5%88%B0-caused-by-java.lang.nosuchfielderror-hive_stats_jdbc_timeout/</guid>
+      <description>问题版本：
+Spark：2.14.0
+Hive：2.1.0
+原因参见spark hive java.lang.NoSuchFieldError: HIVE_STATS_JDBC_TIMEOUT
+解决方案：
+使用 cdh版本的包，比如
+&amp;lt;spark.version&amp;gt;2.4.0-cdh6.3.2&amp;lt;/spark.version&amp;gt; &amp;lt;hive.version&amp;gt;2.1.1-cdh6.3.2&amp;lt;/hive.version&amp;gt; 如果遇到有关 apache的log4j包缺失，加入
+&amp;lt;dependency&amp;gt; &amp;lt;groupId&amp;gt;org.apache.logging.log4j&amp;lt;/groupId&amp;gt; &amp;lt;artifactId&amp;gt;log4j-core&amp;lt;/artifactId&amp;gt; &amp;lt;version&amp;gt;2.8.2&amp;lt;/version&amp;gt; &amp;lt;/dependency&amp;gt; 注意版本
+相关问题参见I&amp;rsquo;m getting “NoClassDefFoundError: org/apache/logging/log4j/util/ReflectionUtil”
+掰掰</description>
+    </item>
+    
+    <item>
+      <title>关于 Flink1.11.1 找不到 Hadoop Native库解决方法</title>
+      <link>https://sucicada.github.io/blog/posts/bigdata/%E5%85%B3%E4%BA%8E-flink1.11.1-%E6%89%BE%E4%B8%8D%E5%88%B0-hadoop-native%E5%BA%93%E8%A7%A3%E5%86%B3%E6%96%B9%E6%B3%95/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://sucicada.github.io/blog/posts/bigdata/%E5%85%B3%E4%BA%8E-flink1.11.1-%E6%89%BE%E4%B8%8D%E5%88%B0-hadoop-native%E5%BA%93%E8%A7%A3%E5%86%B3%E6%96%B9%E6%B3%95/</guid>
+      <description>可以试试在 flink 的 conf/flink-conf.yaml 配置文件中加入配置如下
+其中的native库的具体路径换成你自己的。
+yarn.application-master.env.LD_LIBRARY_PATH: /opt/cloudera/parcels/CDH/lib/hadoop/lib/native:$LD_LIBRARY_PATH yarn.taskmanager.env.LD_LIBRARY_PATH: /opt/cloudera/parcels/CDH/lib/hadoop/lib/native:$LD_LIBRARY_PATH </description>
+    </item>
+    
+    <item>
+      <title>关于Flink 本地测试，自定义WebUI 端口的方法</title>
+      <link>https://sucicada.github.io/blog/posts/bigdata/%E5%85%B3%E4%BA%8Eflink-%E6%9C%AC%E5%9C%B0%E6%B5%8B%E8%AF%95%E8%87%AA%E5%AE%9A%E4%B9%89webui-%E7%AB%AF%E5%8F%A3%E7%9A%84%E6%96%B9%E6%B3%95/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://sucicada.github.io/blog/posts/bigdata/%E5%85%B3%E4%BA%8Eflink-%E6%9C%AC%E5%9C%B0%E6%B5%8B%E8%AF%95%E8%87%AA%E5%AE%9A%E4%B9%89webui-%E7%AB%AF%E5%8F%A3%E7%9A%84%E6%96%B9%E6%B3%95/</guid>
+      <description>以1.11.1版本举例，相差不大的版本之间大同小异。
+先给成品：以Scala代码举例，Java大同小异。
+通过反射将配置加入env的配置对象中。之后使用修改过的env来创建flink的任务流即可。
+val env = StreamExecutionEnvironment.getExecutionEnvironment val javaEnv: environment.StreamExecutionEnvironment = env.getJavaEnv val field = classOf[org.apache.flink.streaming.api.environment.StreamExecutionEnvironment].getDeclaredField(&amp;#34;configuration&amp;#34;) field.setAccessible(true) import org.apache.flink.configuration.Configuration val configuration: Configuration = field.get(javaEnv).asInstanceOf[Configuration] configuration.setString(&amp;#34;rest.bind-port&amp;#34;, &amp;#34;8081&amp;#34;) 下面是探索过程，没兴趣的可以过了。
+当我们加入了pom依赖后.发现能够看到本地IDE中的flink的webUI了.
+&amp;lt;dependency&amp;gt; &amp;lt;groupId&amp;gt;org.apache.flink&amp;lt;/groupId&amp;gt; &amp;lt;artifactId&amp;gt;flink-runtime-web_2.11&amp;lt;/artifactId&amp;gt; &amp;lt;version&amp;gt;${flink.version}&amp;lt;/version&amp;gt; &amp;lt;scope&amp;gt;compile&amp;lt;/scope&amp;gt; &amp;lt;/dependency&amp;gt; 根据日志中显示可知我们的本地web端口为16434. 这不是一个我们想要看到的. 而且每一次运行都会产生一个随机的端口.这实在很痛苦.
+17:15:28,577 INFO org.apache.flink.runtime.dispatcher.DispatcherRestEndpoint - Rest endpoint listening at localhost:16434 17:15:28,578 INFO org.apache.flink.runtime.highavailability.nonha.embedded.EmbeddedLeaderService - Proposing leadership to contender http://localhost:16434 17:15:28,581 INFO org.apache.flink.runtime.dispatcher.DispatcherRestEndpoint - Web frontend listening at http://localhost:16434 17:15:28,581 INFO org.apache.flink.runtime.dispatcher.DispatcherRestEndpoint - http://localhost:16434 was granted leadership with leaderSessionID=eb84fead-f735-4350-aff4-a7f883013432 所以我们要想办法来固定端口.</description>
+    </item>
+    
+    <item>
+      <title>关于Flink写入Redis没有incrByFloat等方法的解决措施</title>
+      <link>https://sucicada.github.io/blog/posts/bigdata/%E5%85%B3%E4%BA%8Eflink%E5%86%99%E5%85%A5redis%E6%B2%A1%E6%9C%89incrbyfloat%E7%AD%89%E6%96%B9%E6%B3%95%E7%9A%84%E8%A7%A3%E5%86%B3%E6%8E%AA%E6%96%BD/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://sucicada.github.io/blog/posts/bigdata/%E5%85%B3%E4%BA%8Eflink%E5%86%99%E5%85%A5redis%E6%B2%A1%E6%9C%89incrbyfloat%E7%AD%89%E6%96%B9%E6%B3%95%E7%9A%84%E8%A7%A3%E5%86%B3%E6%8E%AA%E6%96%BD/</guid>
+      <description>首当其冲：改源码。
+使用的是org.apache.bahir:flink-connector-redis_2.11
+目前2020年8月中maven官方库中最新的版本只有1.0。此版本未提供incrByFloat的方法。
+首先猜测可能maven库不是最新的。去到此项目的github上一看。居然是1.1-SNAPSHOT的版本。但是此版本中仍然没有找到incrByFloat。
+所以我们可以使用改源码重新编译的方式来解决这个问题。org.apache.flink:flink-connector-redis_2.11库与其类似。好在这个库比较简单，不需要做结构性的改动。
+本博客意在记录需要改动源码的地方。
+org.apache.flink.streaming.connectors.redis.common.container.RedisCommandsContainer
+redis的操作接口，在这里添加void incrByFloat(String key, Double value);
+的接口定义。 操作接口的实现有2处。org.apache.flink.streaming.connectors.redis.common.container.RedisClusterContainer和org.apache.flink.streaming.connectors.redis.common.container.RedisContainer
+加入incrByFloat实现：（写法完全照抄其他方法实现） @Override public void incrByFloat(String key, Double value) { Jedis jedis = null; try { jedis = getInstance(); jedis.incrByFloat(key, value); } catch (Exception e) { if (LOG.isErrorEnabled()) { LOG.error(&amp;#34;Cannot send Redis message with command INCRBYFLOAT to key {} and value {} error message {}&amp;#34;, key, value, e.getMessage()); } throw e; }finally { releaseInstance(jedis); } } org.apache.flink.streaming.connectors.redis.common.mapper.RedisCommand</description>
+    </item>
+    
+    <item>
+      <title>关于Scala 的尾递归，使用JITWatch从字节码观察其原理</title>
+      <link>https://sucicada.github.io/blog/posts/bigdata/%E5%85%B3%E4%BA%8Escala-%E7%9A%84%E5%B0%BE%E9%80%92%E5%BD%92%E4%BD%BF%E7%94%A8jitwatch%E4%BB%8E%E5%AD%97%E8%8A%82%E7%A0%81%E8%A7%82%E5%AF%9F%E5%85%B6%E5%8E%9F%E7%90%86/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://sucicada.github.io/blog/posts/bigdata/%E5%85%B3%E4%BA%8Escala-%E7%9A%84%E5%B0%BE%E9%80%92%E5%BD%92%E4%BD%BF%E7%94%A8jitwatch%E4%BB%8E%E5%AD%97%E8%8A%82%E7%A0%81%E8%A7%82%E5%AF%9F%E5%85%B6%E5%8E%9F%E7%90%86/</guid>
+      <description>先说概念：
+Scala的尾递归会被编译器自动优化成循环
+主题直通车
+先来简单看下一个简单验证方法 对比普通的递归： def fun2(x: Int): Int = { if (x == 1) throw new Exception(&amp;#34;nooo&amp;#34;) else fun2(x - 1) + 0 } 结果： Exception in thread &amp;#34;main&amp;#34; java.lang.Exception: nooo at Main$.fun2(Main.scala:17) at Main$.fun2(Main.scala:19) at Main$.fun2(Main.scala:19) at Main$.fun2(Main.scala:19) at Main$.fun2(Main.scala:19) 。。。。 at Main$.fun2(Main.scala:19) at Main$.main(Main.scala:25) at Main.main(Main.scala) 现象： 我们能看到在递归结束前，这个方法已经进入自己很多次了。
+尾递归 def fun(x: Int): Int = { if (x == 0) throw new Exception(&amp;#34;nooo&amp;#34;) else fun(x - 1) } 结果：</description>
+    </item>
+    
+    <item>
+      <title>证明 scala 不能从外部调用内部函数</title>
+      <link>https://sucicada.github.io/blog/posts/bigdata/%E8%AF%81%E6%98%8E-scala-%E4%B8%8D%E8%83%BD%E4%BB%8E%E5%A4%96%E9%83%A8%E8%B0%83%E7%94%A8%E5%86%85%E9%83%A8%E5%87%BD%E6%95%B0/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://sucicada.github.io/blog/posts/bigdata/%E8%AF%81%E6%98%8E-scala-%E4%B8%8D%E8%83%BD%E4%BB%8E%E5%A4%96%E9%83%A8%E8%B0%83%E7%94%A8%E5%86%85%E9%83%A8%E5%87%BD%E6%95%B0/</guid>
+      <description>一段代码
+object ASD { def main(args: Array[String]): Unit = { def f(a: Any): Unit = { println(a) } f(&amp;#34;sfsfsfdsdfd&amp;#34;) } } 如果我们想进行类似ASD.main.f(xx)或ASD.f(xx)的操作, 是否可行.
+事实是残酷的, 它告诉我们不可行.
+那么下面从反编译角度来探究为什么不可行:
+首先我们打开编译后的 class 文件所在目录
+有2个文件: ASD.class和ASD$.class
+ASD.class 节选
+public final class ASD { public static void main(String[] paramArrayOfString) { ASD$.MODULE$.main(paramArrayOfString); } } 这个不重要
+ASD$.class 节选
+public final class ASD$ { public static final ASD$ MODULE$; private final void f$1(Object a) { Predef$.MODULE$.println(a); } public void main(String[] args) { f$1(&amp;#34;sfsfsfdsdfd&amp;#34;); } private ASD$() { MODULE$ = this; } } 发现了吗, 内部函数 f 被编译为 私有的 final 方法f$1.</description>
+    </item>
+    
+    <item>
+      <title>针对导入外部Gradle项目发生的版本冲突错误。</title>
+      <link>https://sucicada.github.io/blog/posts/bigdata/%E9%92%88%E5%AF%B9%E5%AF%BC%E5%85%A5%E5%A4%96%E9%83%A8gradle%E9%A1%B9%E7%9B%AE%E5%8F%91%E7%94%9F%E7%9A%84%E7%89%88%E6%9C%AC%E5%86%B2%E7%AA%81%E9%94%99%E8%AF%AF/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://sucicada.github.io/blog/posts/bigdata/%E9%92%88%E5%AF%B9%E5%AF%BC%E5%85%A5%E5%A4%96%E9%83%A8gradle%E9%A1%B9%E7%9B%AE%E5%8F%91%E7%94%9F%E7%9A%84%E7%89%88%E6%9C%AC%E5%86%B2%E7%AA%81%E9%94%99%E8%AF%AF/</guid>
+      <description>比如一个使用场景：Intellij 导入Kafka 2.2.1版本源码。
+在使用gradle初始化项目时各种grafana配置文件报错。
+原因主要是本机构建用的Gradle版本与项目编写配置文件产生冲突，简而言之就是Gradle版本不对。
+比如Kafka 2.2.1 在发布的时候，Gradle 版本最高直到5.4.1。而本机使用了Gradle 6 。导致了冲突，下载 Gradle 5.4.1 并用其构建即可解决。</description>
+    </item>
+    
   </channel>
 </rss>
